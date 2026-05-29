@@ -60,7 +60,7 @@
     .nav-icon { width: 20px; height: 20px; flex-shrink: 0; color: var(--grey-700); }
 
     .main-col { flex: 1; display: flex; flex-direction: column; min-width: 0; }
-    .header { display: flex; align-items: center; justify-content: space-between; padding: 20px 40px 20px 20px; background: var(--bg-subtle); }
+    .header { display: flex; align-items: center; justify-content: space-between; height: 80px; padding: 0 40px; background: var(--bg-subtle); }
     .header-right { display: flex; align-items: center; gap: 16px; }
     .user-chip { display: flex; align-items: center; gap: 8px; padding: 4px 8px 4px 4px; border-radius: 100px; }
     .user-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--accent-500); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; }
@@ -443,11 +443,13 @@
     <div class="main-col">
 
       <header class="header">
-        <div></div>
+        <h1>Good Morning, Aman!</h1>
         <div class="header-right">
+          <button class="bell-btn" aria-label="Notifications"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg></button>
           <div class="user-chip">
             <span class="user-avatar">AS</span>
             <span class="user-name">Aman Singh</span>
+            <svg class="user-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
           </div>
         </div>
       </header>

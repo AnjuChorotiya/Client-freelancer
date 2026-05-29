@@ -61,11 +61,16 @@
 
     /* Main */
     .main-col { flex: 1; display: flex; flex-direction: column; min-width: 0; }
-    .header { display: flex; align-items: center; justify-content: space-between; padding: 20px 40px 20px 20px; background: var(--bg-subtle); }
+    .header { display: flex; align-items: center; justify-content: space-between; height: 80px; padding: 0 40px; background: var(--bg-subtle); }
+    .header h1 { font-family: 'Satoshi', sans-serif; font-size: 23px; font-weight: 700; color: #222224; margin: 0; }
     .header-right { display: flex; align-items: center; gap: 16px; }
+    .bell-btn { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 8px; background: transparent; border: none; color: #404145; cursor: pointer; }
+    .bell-btn:hover { background: rgba(0,0,0,0.04); }
+    .bell-btn svg { width: 22px; height: 22px; }
     .user-chip { display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 4px 8px 4px 4px; border-radius: 100px; }
     .user-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--accent-500); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; }
     .user-name { font-weight: 500; font-size: 16px; color: var(--grey-700); }
+    .user-chev { width: 16px; height: 16px; color: #85878d; }
 
     .content { flex: 1; padding: 8px 40px 56px 20px; }
 
@@ -101,7 +106,7 @@
       line-height: 1.4;
     }
     .wm-card .filter-bar { margin: 0; padding: 16px 20px; background: #fff; }
-    .wm-card .table-card { border: none; border-radius: 0; margin: 0 20px; border: 1px solid #f0f1f1; border-radius: 8px; }
+    .wm-card .table-card { margin: 0 20px; border: none; border-radius: 0; border-top: 1px solid #f0f1f1; }
     .primary-btn { display: inline-flex; align-items: center; gap: 8px; padding: 11px 18px; border-radius: 10px; background: var(--primary-500); color: #fff; font-family: inherit; font-size: 14px; font-weight: 700; cursor: pointer; transition: all 0.15s; border: none; }
     .primary-btn:hover { background: var(--primary-600); }
     .primary-btn svg { width: 16px; height: 16px; }
@@ -189,20 +194,21 @@
       overflow: hidden;
     }
     table { width: 100%; border-collapse: collapse; }
-    thead { background: #f9fafb; border-bottom: 1px solid #e5e7eb; }
+    thead { background: #fafafa; border-bottom: 1px solid #f0f1f1; }
     thead th {
       text-align: left;
-      padding: 12px 20px;
+      padding: 12px 24px;
       font-family: 'Satoshi', sans-serif;
-      font-size: 13px;
-      font-weight: 600;
-      color: #404145;
+      font-size: 12.5px;
+      font-weight: 500;
+      color: #85878d;
     }
-    tbody tr { border-top: 1px solid #f0f1f1; transition: background 0.2s ease; }
-    tbody tr:first-child { border-top: none; }
+    tbody tr { border-bottom: 1px solid #f5f5f5; transition: background 0.2s ease; }
+    tbody tr:last-child { border-bottom: none; }
+    tbody td { border: none; }
     tbody tr:hover { background: #fafbfc; }
-    tbody td { padding: 14px 20px; font-family: 'Satoshi', sans-serif; font-size: 14px; font-weight: 600; color: #404145; vertical-align: middle; }
-    tbody td strong { font-family: 'Satoshi', sans-serif; font-weight: 700; color: #222224; }
+    tbody td { padding: 22px 24px; font-family: 'Satoshi', sans-serif; font-size: 14px; font-weight: 500; color: #404145; vertical-align: middle; }
+    tbody td strong { font-family: 'Satoshi', sans-serif; font-weight: 600; color: #222224; }
 
     .cell-name { display: flex; align-items: center; gap: 12px; min-width: 0; }
     .cell-avatar { width: 36px; height: 36px; background: #2684ff; border-radius: 50%; color: #fff; display: flex; align-items: center; justify-content: center; font-family: 'Satoshi', sans-serif; font-size: 14px; font-weight: 600; flex-shrink: 0; }
@@ -281,11 +287,13 @@
     <div class="main-col">
 
       <header class="header">
-        <div></div>
+        <h1>Good Morning, Aman!</h1>
         <div class="header-right">
+          <button class="bell-btn" aria-label="Notifications"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg></button>
           <div class="user-chip">
             <span class="user-avatar">AS</span>
             <span class="user-name">Aman Singh</span>
+            <svg class="user-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
           </div>
         </div>
       </header>
