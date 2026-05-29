@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard — Wisemonk</title>
+  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@700,500,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-50: #E8F2FF;
+      --primary-100: #C5DCFF;
+      --primary-500: #2684FF;
+      --primary-600: #1A6FE0;
+      --primary-700: #1059BD;
+      --accent-500: #2684FF;
+      --accent-tint: rgba(38, 132, 255, 0.10);
+      --neutral-0: #FFFFFF;
+      --neutral-50: #F7F8FA;
+      --neutral-100: #EEF0F4;
+      --neutral-200: #DDE1E9;
+      --neutral-300: #C4CAD6;
+      --neutral-400: #9AA2B2;
+      --neutral-500: #6B7588;
+      --neutral-700: #363D4D;
+      --neutral-800: #222733;
+      --neutral-900: #121620;
+      --grey-300: #ABADB1;
+      --grey-700: #222224;
+      --bg-subtle: #F1F8FF;
+      --border: #EEF0F4;
+      --border-strong: #DDE1E9;
+      --text-primary: #222733;
+      --text-secondary: #363D4D;
+      --text-muted: #9AA2B2;
+      --success-50: #E6F9F0;
+      --success-500: #12B76A;
+      --success-700: #027A48;
+      --warning-50: #FFFAEB;
+      --warning-500: #F79009;
+      --warning-700: #B54708;
+      --danger-50: #FFF1F0;
+      --danger-500: #F04438;
+      --danger-700: #B42318;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-xl: 20px;
+      --radius-full: 100px;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Satoshi', sans-serif;
+      background: var(--bg-subtle);
+      color: var(--text-primary);
+      min-height: 100vh;
+    }
+    a { text-decoration: none; color: inherit; }
+
+    .app { display: flex; min-height: 100vh; }
+
+    /* ─── SIDEBAR ────────────────────────────────────────── */
+    .sidebar {
+      width: 240px;
+      flex-shrink: 0;
+      background: var(--neutral-0);
+      border-right: 1px solid var(--border);
+      padding: 30px 20px;
+      display: flex; flex-direction: column;
+      gap: 32px;
+    }
+    .sidebar-logo { display: flex; align-items: center; gap: 10px; height: 36px; overflow: hidden; }
+    .sidebar-logo img { height: 56px; width: auto; margin-top: -20px; display: block; }
+    .nav-section { display: flex; flex-direction: column; }
+    .nav-title {
+      font-family: 'Open Sans', sans-serif;
+      font-weight: 300; font-size: 13px;
+      letter-spacing: 0.5px;
+      color: var(--grey-300);
+      padding: 8px;
+      margin-bottom: 2px;
+    }
+    .nav-link {
+      display: flex; align-items: center; gap: 10px;
+      height: 36px;
+      padding: 0 8px;
+      border-radius: 8px;
+      font-weight: 500;
+      font-size: 15px;
+      color: var(--grey-700);
+      transition: background 0.15s;
+    }
+    .nav-link:hover { background: var(--neutral-50); }
+    .nav-link.active { background: var(--accent-tint); color: var(--accent-500); }
+    .nav-link.active .nav-icon { color: var(--accent-500); }
+    .nav-icon { width: 20px; height: 20px; flex-shrink: 0; color: var(--grey-700); }
+
+    /* ─── MAIN ───────────────────────────────────────────── */
+    .main-col { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+
+    .header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 40px 20px 20px;
+      background: var(--bg-subtle);
+    }
+    .header h1 {
+      font-weight: 700;
+      font-size: 23px;
+      color: var(--grey-700);
+    }
+    .header-right { display: flex; align-items: center; gap: 16px; }
+    .user-chip { display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 4px 8px 4px 4px; border-radius: 100px; transition: background 0.15s; }
+    .user-chip:hover { background: var(--neutral-0); }
+    .user-avatar {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      background: var(--accent-500);
+      color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px;
+      font-weight: 600;
+    }
+    .user-name { font-weight: 500; font-size: 16px; color: var(--grey-700); }
+
+    .content {
+      flex: 1;
+      padding: 8px 40px 56px 20px;
+    }
+
+    /* Title row */
+    .title-row {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+    .title-row .greeting {
+      font-family: 'Open Sans', sans-serif;
+      font-weight: 300;
+      font-size: 13px;
+      letter-spacing: 0.4px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .title-row h1 {
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: -0.4px;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+    .title-row p { font-size: 14px; color: var(--text-secondary); }
+
+    /* Hero payouts card */
+    .hero-card {
+      background: linear-gradient(135deg, #0026FF 0%, #001FCC 50%, #00199E 100%);
+      color: #fff;
+      border-radius: 16px;
+      padding: 28px 32px;
+      margin-bottom: 24px;
+      position: relative;
+      overflow: hidden;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 32px;
+    }
+    .hero-card::before {
+      content: '';
+      position: absolute; top: -60px; right: -60px;
+      width: 240px; height: 240px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(77,151,255,0.45), transparent 70%);
+      pointer-events: none;
+    }
+    .hero-left { position: relative; z-index: 1; }
+    .hero-eyebrow {
+      font-family: 'Open Sans', sans-serif;
+      font-weight: 300;
+      font-size: 12px;
+      color: #C5D0FF;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .hero-amount {
+      font-size: 42px;
+      font-weight: 700;
+      letter-spacing: -1px;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .hero-amount .currency { font-size: 22px; font-weight: 700; opacity: 0.7; vertical-align: top; margin-right: 4px; }
+    .hero-sub {
+      font-size: 14px;
+      color: #C5D0FF;
+    }
+    .hero-actions { display: flex; gap: 10px; position: relative; z-index: 1; }
+    .hero-cta {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 22px;
+      border-radius: 10px;
+      background: #fff;
+      color: var(--primary-700);
+      font-family: inherit;
+      font-size: 14.5px;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      transition: all 0.15s;
+    }
+    .hero-cta:hover { transform: translateY(-1px); box-shadow: 0 8px 20px -8px rgba(0,0,0,0.3); }
+    .hero-cta svg { width: 14px; height: 14px; }
+    .hero-ghost {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 22px;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+      font-family: inherit;
+      font-size: 14.5px;
+      font-weight: 700;
+      cursor: pointer;
+      border: 1px solid rgba(255,255,255,0.18);
+      transition: all 0.15s;
+    }
+    .hero-ghost:hover { background: rgba(255,255,255,0.2); }
+    .hero-ghost svg { width: 14px; height: 14px; }
+    .title-actions { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+    .primary-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 11px 18px;
+      border-radius: 10px;
+      background: var(--primary-500);
+      color: #fff;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      border: none;
+    }
+    .primary-btn:hover { background: var(--primary-600); }
+    .primary-btn svg { width: 16px; height: 16px; }
+    .secondary-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 18px;
+      border-radius: 10px;
+      background: var(--primary-50);
+      color: var(--primary-600);
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      border: 1px solid var(--primary-100);
+    }
+    .secondary-btn:hover { background: var(--primary-100); color: var(--primary-700); }
+    .secondary-btn svg { width: 16px; height: 16px; }
+
+    /* Stats */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .stat-card {
+      background: var(--neutral-0);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 22px 24px;
+    }
+    .stat-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 12px;
+    }
+    .stat-value {
+      font-size: 30px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      color: var(--text-primary);
+      line-height: 1.1;
+      margin-bottom: 8px;
+    }
+    .stat-sub {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    /* Approvals card (tabbed Payment + Leave) */
+    .approvals-card {
+      background: var(--neutral-0);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+    .approvals-head {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 16px;
+      padding: 18px 22px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .approvals-head h2 {
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: -0.1px;
+      padding-bottom: 18px;
+    }
+    .approvals-tabs { display: flex; gap: 4px; }
+    .apr-tab {
+      position: relative;
+      padding: 14px 14px 18px;
+      border: none;
+      background: transparent;
+      font-family: inherit;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: color 0.15s;
+    }
+    .apr-tab:hover { color: var(--text-secondary); }
+    .apr-tab.active { color: var(--primary-600); }
+    .apr-tab.active::after {
+      content: '';
+      position: absolute;
+      left: 8px; right: 8px; bottom: -1px;
+      height: 2px;
+      background: var(--primary-500);
+      border-radius: 100px;
+    }
+    .apr-count {
+      display: inline-flex; align-items: center; justify-content: center;
+      min-width: 20px; height: 18px;
+      padding: 0 6px;
+      margin-left: 4px;
+      border-radius: 100px;
+      background: var(--neutral-100);
+      color: var(--text-secondary);
+      font-size: 11.5px;
+      font-weight: 700;
+    }
+    .apr-tab.active .apr-count { background: var(--primary-50); color: var(--primary-700); }
+    .apr-pane { display: none; }
+    .apr-pane.active { display: block; }
+
+    /* Legacy requests section (kept for any remaining references) */
+    .section-title {
+      font-size: 15.5px;
+      font-weight: 700;
+      letter-spacing: -0.1px;
+      color: var(--text-primary);
+      margin: 0 0 10px 2px;
+    }
+    .section-title + .section-title-spacer { margin-top: 20px; }
+
+    .request-card {
+      background: var(--neutral-0);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+    .request-row {
+      display: flex; align-items: center;
+      gap: 24px;
+      padding: 16px 22px;
+    }
+    .req-user {
+      display: flex; align-items: center; gap: 12px;
+      min-width: 200px;
+      flex: 1;
+    }
+    .req-avatar {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: var(--accent-500);
+      color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 700;
+      flex-shrink: 0;
+    }
+    .req-name { font-size: 14.5px; font-weight: 700; color: var(--text-primary); line-height: 1.2; }
+    .req-role { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
+
+    .req-col { text-align: center; min-width: 120px; }
+    .req-col-label {
+      font-size: 13px;
+      color: var(--text-muted);
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+    .req-col-value {
+      font-size: 14.5px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+    .req-col-value.link { color: var(--primary-500); }
+
+    .req-actions { display: flex; gap: 8px; flex-shrink: 0; }
+    .deny-btn {
+      padding: 9px 20px;
+      border: 1px solid var(--border-strong);
+      background: var(--neutral-0);
+      color: var(--text-primary);
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .deny-btn:hover { background: var(--neutral-50); border-color: var(--neutral-400); }
+    .approve-btn {
+      padding: 9px 20px;
+      border: none;
+      background: var(--primary-500);
+      color: #fff;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .approve-btn:hover { background: var(--primary-600); }
+
+    /* Activity panel */
+    .panel {
+      background: var(--neutral-0);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 22px 22px 14px;
+    }
+    .panel-head {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 6px;
+    }
+    .panel-head h2 {
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: -0.1px;
+    }
+    .panel-head a {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--primary-500);
+    }
+    .panel-head a:hover { color: var(--primary-700); }
+
+    .activity-row {
+      display: grid;
+      grid-template-columns: 18px 1fr 120px 110px 110px;
+      align-items: center;
+      gap: 16px;
+      padding: 14px 4px;
+      border-top: 1px solid var(--border);
+    }
+    .activity-row:first-of-type { border-top: none; }
+    .activity-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: var(--primary-500);
+    }
+    .activity-body { min-width: 0; }
+    .activity-title { font-size: 14.5px; font-weight: 700; color: var(--text-primary); line-height: 1.3; }
+    .activity-sub { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
+    .activity-amount { font-size: 14.5px; font-weight: 700; color: var(--text-primary); }
+    .activity-date { font-size: 13.5px; color: var(--text-muted); text-align: right; }
+    .status-pill {
+      display: inline-flex; align-items: center;
+      padding: 4px 12px;
+      border-radius: var(--radius-full);
+      font-size: 12px;
+      font-weight: 700;
+      justify-self: start;
+    }
+    .status-pill.processed { background: var(--success-50); color: var(--success-700); }
+    .status-pill.approved { background: var(--primary-50); color: var(--primary-700); }
+    .status-pill.pending { background: var(--warning-50); color: var(--warning-700); }
+    .tabs-bar {
+      display: flex;
+      gap: 4px;
+      border-bottom: 1px solid var(--border);
+      margin: 0 -22px 16px;
+      padding: 0 16px;
+      overflow-x: auto;
+    }
+    .tab-btn {
+      padding: 14px 16px 14px;
+      border: none;
+      background: transparent;
+      font-family: inherit;
+      font-size: 14.5px;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      position: relative;
+      transition: color 0.15s;
+      white-space: nowrap;
+    }
+    .tab-btn:hover { color: var(--text-secondary); }
+    .tab-btn.active { color: var(--primary-600); }
+    .tab-btn.active::after {
+      content: '';
+      position: absolute;
+      left: 12px; right: 12px; bottom: -1px;
+      height: 2px;
+      background: var(--primary-500);
+      border-radius: 100px;
+    }
+    .tab-count {
+      display: inline-flex; align-items: center; justify-content: center;
+      min-width: 20px; height: 18px;
+      padding: 0 6px;
+      margin-left: 6px;
+      border-radius: 100px;
+      background: var(--neutral-100);
+      color: var(--text-secondary);
+      font-size: 11.5px;
+      font-weight: 700;
+    }
+    .tab-btn.active .tab-count { background: var(--primary-50); color: var(--primary-700); }
+
+    .tab-pane { display: none; }
+    .tab-pane.active { display: block; }
+
+    .pane-head {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 12px;
+    }
+    .pane-sub { font-size: 13px; color: var(--text-muted); }
+    .pane-link { font-size: 13px; font-weight: 700; color: var(--primary-600); }
+    .pane-link:hover { color: var(--primary-700); }
+
+    /* List rows */
+    .row {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px 4px;
+      border-top: 1px solid var(--border);
+    }
+    .row:first-of-type { border-top: none; }
+    .row-avatar {
+      flex-shrink: 0;
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      color: #fff;
+      font-size: 12.5px;
+      font-weight: 700;
+    }
+    .row-body { flex: 1; min-width: 0; }
+    .row-title { font-size: 14.5px; font-weight: 700; color: var(--text-primary); line-height: 1.2; }
+    .row-meta { font-size: 12.5px; color: var(--text-muted); margin-top: 2px; }
+    .row-side { flex-shrink: 0; text-align: right; }
+    .row-amount { font-size: 14.5px; font-weight: 700; color: var(--text-primary); }
+    .pill {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 3px 9px;
+      border-radius: var(--radius-full);
+      font-size: 11.5px;
+      font-weight: 700;
+      letter-spacing: 0.2px;
+    }
+    .pill.active { background: var(--success-50); color: var(--success-700); }
+    .pill.paused { background: var(--neutral-100); color: var(--text-muted); }
+    .pill.paid { background: var(--success-50); color: var(--success-700); }
+    .pill.pending { background: var(--warning-50); color: var(--warning-700); }
+    .pill.overdue { background: var(--danger-50); color: var(--danger-700); }
+    .pill.scheduled { background: var(--primary-50); color: var(--primary-700); }
+
+    /* Time bars */
+    .time-bar {
+      flex: 1;
+      height: 6px;
+      background: var(--neutral-100);
+      border-radius: 100px;
+      overflow: hidden;
+      margin: 0 12px;
+    }
+    .time-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #0026FF, #2684FF);
+      border-radius: 100px;
+    }
+    .time-hours {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--text-primary);
+      min-width: 44px;
+      text-align: right;
+    }
+
+    /* ─── Side panel ─── */
+    .panel-overlay {
+      position: fixed; inset: 0;
+      background: rgba(18, 22, 32, 0.4);
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.2s ease;
+      z-index: 90;
+    }
+    .panel-overlay.open { opacity: 1; pointer-events: auto; }
+
+    .side-panel {
+      position: fixed; top: 0; right: 0; bottom: 0;
+      width: 560px;
+      max-width: 100vw;
+      background: #ffffff;
+      box-shadow: -16px 0 40px -16px rgba(18, 22, 32, 0.18);
+      transform: translateX(100%);
+      transition: transform 0.25s ease-out;
+      z-index: 100;
+      display: flex; flex-direction: column;
+    }
+    .side-panel.open { transform: translateX(0); }
+
+    .sp-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 24px 16px;
+      border-bottom: 1px solid #f0f1f1;
+      gap: 12px;
+    }
+    .sp-header h3 {
+      font-size: 16px; font-weight: 700;
+      display: flex; align-items: center; gap: 10px;
+      flex-wrap: wrap;
+    }
+    .sp-close {
+      width: 32px; height: 32px;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 8px;
+      background: transparent;
+      border: 1px solid #f0f1f1;
+      color: #626368;
+      cursor: pointer;
+    }
+    .sp-close:hover { background: #fafbfc; color: #222224; }
+    .sp-close svg { width: 16px; height: 16px; }
+
+    .sp-body { flex: 1; overflow-y: auto; padding: 24px 28px; }
+    .sp-amount {
+      font-size: 36px;
+      font-weight: 700;
+      letter-spacing: -1px;
+      line-height: 1;
+      margin-bottom: 6px;
+      color: #222224;
+    }
+    .sp-amount .currency { color: #85878d; font-size: 28px; font-weight: 700; margin: 0 2px; }
+    .sp-date { font-size: 14px; color: #85878d; margin-bottom: 24px; }
+
+    .sp-section { margin-bottom: 22px; padding-top: 18px; border-top: 1px solid #f0f1f1; }
+    .sp-section:first-of-type { border-top: none; padding-top: 0; }
+    .sp-section-label {
+      font-family: 'Open Sans', sans-serif;
+      font-weight: 300;
+      font-size: 12px;
+      letter-spacing: 0.5px;
+      color: #85878d;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .kv-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 24px; }
+    .kv-label { font-size: 12.5px; color: #85878d; margin-bottom: 2px; }
+    .kv-value { font-size: 14px; font-weight: 700; color: #222224; }
+
+    .sp-contractor {
+      display: flex; align-items: center; gap: 12px;
+      padding: 14px 16px;
+      border: 1px solid #f0f1f1;
+      border-radius: 10px;
+      margin-bottom: 18px;
+    }
+    .sp-contractor-avatar { width: 40px; height: 40px; border-radius: 50%; background: #2684ff; color: #fff; display: flex; align-items: center; justify-content: center; font-family: 'Open Sans', sans-serif; font-size: 14px; font-weight: 600; flex-shrink: 0; }
+    .sp-contractor-name { font-family: 'Satoshi', sans-serif; font-size: 15px; font-weight: 500; color: #222224; }
+    .sp-contractor-role { font-family: 'Open Sans', sans-serif; font-size: 13px; color: #85878d; margin-top: 2px; }
+
+    .sp-footer {
+      display: flex; gap: 12px;
+      padding: 16px 24px;
+      border-top: 1px solid #f0f1f1;
+    }
+    .sp-footer .deny-btn { flex: 1; padding: 12px 24px; justify-content: center; }
+    .sp-footer .approve-btn { flex: 1; padding: 12px 24px; justify-content: center; }
+
+    .req-col-value.link { cursor: pointer; }
+    .req-col-value.link:hover { text-decoration: underline; }
+
+    @media (max-width: 1180px) {
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .panels { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 980px) {
+      .sidebar { display: none; }
+      .header { padding: 16px 20px; }
+      .content { padding: 8px 20px 56px; }
+      .welcome-row { flex-direction: column; align-items: flex-start; gap: 12px; }
+      .primary-btn { width: 100%; justify-content: center; }
+    }
+    @media (max-width: 560px) {
+      .stats-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app">
+
+    <!-- ============ SIDEBAR ============ -->
+    <aside class="sidebar">
+      <a href="#" class="sidebar-logo">
+        <img src="wisemonk_logo_final.png" alt="Wisemonk">
+      </a>
+
+      <nav class="nav-section">
+        <div class="nav-title">WORKSPACE</div>
+        <a href="home.html" class="nav-link active">
+          <span class="nav-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          </span>
+          Home
+        </a>
+        <a href="freelancers.html" class="nav-link">
+          <span class="nav-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </span>
+          Freelancers
+        </a>
+        <a href="invoices.html" class="nav-link">
+          <span class="nav-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 7h8M8 11h8M8 15h5"/></svg>
+          </span>
+          Invoices
+        </a>
+        <a href="time.html" class="nav-link">
+          <span class="nav-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </span>
+          Time
+        </a>
+      </nav>
+    </aside>
+
+    <!-- ============ MAIN COLUMN ============ -->
+    <div class="main-col">
+
+      <header class="header">
+        <div></div>
+        <div class="header-right">
+          <div class="user-chip">
+            <span class="user-avatar">AS</span>
+            <span class="user-name">Aman Singh</span>
+          </div>
+        </div>
+      </header>
+
+      <div class="content">
+
+        <div class="title-row">
+          <div>
+            <h1>Hi Aman</h1>
+            <p>Here's what needs your attention today.</p>
+          </div>
+          <div class="title-actions">
+            <button class="primary-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+              Add freelancer
+            </button>
+          </div>
+        </div>
+
+
+        <!-- ─── STATS ─── -->
+        <div class="stats-grid">
+
+          <div class="stat-card">
+            <div class="stat-title">Payments due</div>
+            <div class="stat-value">$4,200</div>
+            <div class="stat-sub">Awaiting approval and release this week</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-title">Pending approvals</div>
+            <div class="stat-value">3</div>
+            <div class="stat-sub">Invoices waiting for your review</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-title">Active contractors</div>
+            <div class="stat-value">12</div>
+            <div class="stat-sub">Contractors with active contracts</div>
+          </div>
+
+        </div>
+
+        <!-- ─── APPROVALS (tabbed) ─── -->
+        <div class="approvals-card">
+          <div class="approvals-head">
+            <h2>Needs your approval</h2>
+            <div class="approvals-tabs">
+              <button class="apr-tab active" data-apr="payment">Payment requests <span class="apr-count">1</span></button>
+            </div>
+          </div>
+
+          <div class="apr-pane active" data-apr="payment">
+            <div class="request-row">
+              <div class="req-user">
+                <div class="req-avatar">RS</div>
+                <div>
+                  <div class="req-name">Rajesh Singh</div>
+                  <div class="req-role">Developer · India</div>
+                </div>
+              </div>
+              <div class="req-col">
+                <div class="req-col-label">Date</div>
+                <div class="req-col-value">Mar 05, 2026</div>
+              </div>
+              <div class="req-col">
+                <div class="req-col-label">Invoice</div>
+                <div class="req-col-value link">#INV-2024</div>
+              </div>
+              <div class="req-col">
+                <div class="req-col-label">Amount</div>
+                <div class="req-col-value">$2,500</div>
+              </div>
+              <div class="req-actions">
+                <button class="deny-btn">Deny</button>
+                <button class="approve-btn">Approve</button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ─── RECENT ACTIVITY ─── -->
+        <div class="panel">
+          <div class="panel-head">
+            <h2>Recent Activity</h2>
+            <a href="#">View all</a>
+          </div>
+
+          <div class="activity-row">
+            <span class="activity-dot"></span>
+            <div class="activity-body">
+              <div class="activity-title">Invoice received</div>
+              <div class="activity-sub">INV-1042 · Carlos Mendez</div>
+            </div>
+            <div class="activity-amount">$1,200</div>
+            <span class="status-pill pending">Needs review</span>
+            <div class="activity-date">Feb 28, 2026</div>
+          </div>
+
+          <div class="activity-row">
+            <span class="activity-dot"></span>
+            <div class="activity-body">
+              <div class="activity-title">Payment sent</div>
+              <div class="activity-sub">Priya Sharma · April retainer</div>
+            </div>
+            <div class="activity-amount">$850</div>
+            <span class="status-pill processed">Sent</span>
+            <div class="activity-date">Feb 26, 2026</div>
+          </div>
+
+          <div class="activity-row">
+            <span class="activity-dot"></span>
+            <div class="activity-body">
+              <div class="activity-title">Contract signed</div>
+              <div class="activity-sub">Aisha Khan · 3-month retainer</div>
+            </div>
+            <div class="activity-amount"></div>
+            <span class="status-pill approved">Active</span>
+            <div class="activity-date">Feb 24, 2026</div>
+          </div>
+
+          <div class="activity-row">
+            <span class="activity-dot"></span>
+            <div class="activity-body">
+              <div class="activity-title">Contractor invited</div>
+              <div class="activity-sub">john.lee@example.com · USA</div>
+            </div>
+            <div class="activity-amount"></div>
+            <span class="status-pill approved">Invite sent</span>
+            <div class="activity-date">Feb 22, 2026</div>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── Invoice side panel ─── -->
+  <div class="panel-overlay" id="overlay"></div>
+  <aside class="side-panel" id="invoicePanel" aria-hidden="true">
+    <div class="sp-header">
+      <h3>
+        Invoice <span>#INV-2024</span>
+        <span class="pill pending">Needs review</span>
+      </h3>
+      <button class="sp-close" id="spClose" aria-label="Close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+
+    <div class="sp-body">
+      <div class="sp-amount"><span class="currency">$</span>2,500.00</div>
+      <div class="sp-date">Submitted Mar 05, 2026 · due Mar 19, 2026</div>
+
+      <div class="sp-contractor">
+        <div class="sp-contractor-avatar">RS</div>
+        <div>
+          <div class="sp-contractor-name">Rajesh Singh</div>
+          <div class="sp-contractor-role">Developer · India</div>
+        </div>
+      </div>
+
+      <div class="sp-section">
+        <div class="sp-section-label">Details</div>
+        <div class="kv-grid">
+          <div>
+            <div class="kv-label">Invoice number</div>
+            <div class="kv-value">#INV-2024</div>
+          </div>
+          <div>
+            <div class="kv-label">Period</div>
+            <div class="kv-value">Feb 2026</div>
+          </div>
+          <div>
+            <div class="kv-label">Type</div>
+            <div class="kv-value">Monthly retainer</div>
+          </div>
+          <div>
+            <div class="kv-label">Currency</div>
+            <div class="kv-value">USD</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sp-section">
+        <div class="sp-section-label">Line items</div>
+        <div style="border:1px solid #f0f1f1; border-radius:10px; overflow:hidden;">
+          <div style="display:flex; justify-content:space-between; padding:12px 16px; border-bottom:1px solid #f0f1f1; background:#f9fafb;">
+            <span style="font-family:'Open Sans',sans-serif; font-size:13px; font-weight:600; color:#404145;">Description</span>
+            <span style="font-family:'Open Sans',sans-serif; font-size:13px; font-weight:600; color:#404145;">Amount</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; padding:14px 16px; border-bottom:1px solid #f0f1f1;">
+            <span style="font-size:14px; color:#222224;">Sprint 14 development</span>
+            <span style="font-family:'Satoshi',sans-serif; font-weight:500; color:#222224;">$2,000</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; padding:14px 16px;">
+            <span style="font-size:14px; color:#222224;">Code reviews · 10h</span>
+            <span style="font-family:'Satoshi',sans-serif; font-weight:500; color:#222224;">$500</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="sp-section">
+        <div class="sp-section-label">Note</div>
+        <p style="font-size:14px; color:#626368; line-height:1.55;">February retainer for backend sprint work plus async code-review hours.</p>
+      </div>
+    </div>
+
+    <div class="sp-footer">
+      <button class="deny-btn" id="denyBtn">Deny</button>
+      <button class="approve-btn" id="approveBtn">Approve</button>
+    </div>
+  </aside>
+
+  <script>
+    // Approvals tabs
+    const aprTabs = document.querySelectorAll('.apr-tab');
+    const aprPanes = document.querySelectorAll('.apr-pane');
+    aprTabs.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const t = btn.dataset.apr;
+        aprTabs.forEach(b => b.classList.toggle('active', b === btn));
+        aprPanes.forEach(p => p.classList.toggle('active', p.dataset.apr === t));
+      });
+    });
+
+    // Invoice side panel
+    const panel = document.getElementById('invoicePanel');
+    const overlay = document.getElementById('overlay');
+    function openPanel() { panel.classList.add('open'); overlay.classList.add('open'); panel.setAttribute('aria-hidden', 'false'); }
+    function closePanel() { panel.classList.remove('open'); overlay.classList.remove('open'); panel.setAttribute('aria-hidden', 'true'); }
+
+    // Make invoice link in approvals card clickable
+    document.querySelectorAll('.req-col-value.link').forEach(el => {
+      el.addEventListener('click', openPanel);
+    });
+
+    overlay.addEventListener('click', closePanel);
+    document.getElementById('spClose').addEventListener('click', closePanel);
+    document.getElementById('denyBtn').addEventListener('click', closePanel);
+    document.getElementById('approveBtn').addEventListener('click', closePanel);
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closePanel(); });
+  </script>
+
+</body>
+</html>

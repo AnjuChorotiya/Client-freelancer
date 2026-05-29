@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Check your inbox — Wisemonk</title>
+  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@700,500,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-50: #E8F2FF;
+      --primary-100: #C5DCFF;
+      --primary-500: #2684FF;
+      --primary-600: #1A6FE0;
+      --primary-700: #1059BD;
+      --info-50: #E8F2FF;
+      --info-500: #2684FF;
+      --neutral-0: #FFFFFF;
+      --neutral-50: #F7F8FA;
+      --neutral-100: #EEF0F4;
+      --neutral-200: #DDE1E9;
+      --neutral-300: #C4CAD6;
+      --neutral-400: #9AA2B2;
+      --neutral-500: #6B7588;
+      --neutral-700: #363D4D;
+      --neutral-800: #222733;
+      --neutral-900: #121620;
+      --border: #EEF0F4;
+      --border-strong: #DDE1E9;
+      --text-primary: #222733;
+      --text-secondary: #363D4D;
+      --text-muted: #9AA2B2;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-xl: 20px;
+      --radius-full: 100px;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Satoshi', sans-serif;
+      background: #FFFFFF;
+      color: var(--text-primary);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    a { text-decoration: none; color: inherit; }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 22px 40px 18px;
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: 10px;
+      height: 36px; overflow: hidden;
+    }
+    .nav-logo img { height: 46px; margin-top: -10px; display: block; }
+    .topbar-cta { font-size: 14px; color: var(--text-secondary); }
+    .topbar-cta a { color: var(--neutral-500); font-weight: 600; }
+    .topbar-cta a:hover { color: var(--text-primary); }
+
+    main {
+      flex: 1;
+      padding: 32px 24px 80px;
+      display: flex; justify-content: center; align-items: center;
+    }
+    .wrapper {
+      max-width: 480px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .illustration {
+      width: 220px; height: auto;
+      margin: 0 auto 28px;
+    }
+    .illustration img { width: 100%; height: auto; display: block; }
+
+    h1 {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.4px;
+      color: var(--text-primary);
+      margin-bottom: 10px;
+    }
+    .subhead {
+      font-size: 15px;
+      font-weight: 400;
+      color: var(--text-secondary);
+      line-height: 1.55;
+      margin-bottom: 28px;
+    }
+    .subhead .email { color: var(--text-primary); font-weight: 600; }
+
+    .info-card {
+      background: var(--info-50);
+      border-radius: var(--radius-md);
+      padding: 14px 18px;
+      display: flex; gap: 12px;
+      text-align: left;
+      margin-bottom: 28px;
+    }
+    .info-card .icon {
+      flex-shrink: 0;
+      width: 22px; height: 22px;
+      color: var(--info-500);
+    }
+    .info-card .icon svg { width: 100%; height: 100%; }
+    .info-card-body { flex: 1; }
+    .info-card-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 2px;
+    }
+    .info-card-text {
+      font-size: 13.5px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    .resend-btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 11px 26px;
+      border: none;
+      border-radius: var(--radius-full);
+      background: var(--primary-500);
+      color: #fff;
+      font-family: inherit;
+      font-size: 14.5px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      box-shadow: 0 6px 16px -6px rgba(38, 132, 255, 0.45);
+    }
+    .resend-btn:hover { background: var(--primary-600); transform: translateY(-1px); box-shadow: 0 8px 20px -6px rgba(38, 132, 255, 0.55); }
+    .resend-btn:disabled { background: var(--neutral-200); color: var(--text-muted); cursor: not-allowed; transform: none; box-shadow: none; }
+    .resend-btn svg { width: 16px; height: 16px; }
+
+    .resend-status {
+      margin-top: 16px;
+      font-size: 13px;
+      color: var(--text-muted);
+      min-height: 18px;
+    }
+    .resend-status.success { color: #027A48; }
+
+    @media (max-width: 480px) {
+      .topbar { padding: 16px 18px; }
+      main { padding: 16px 18px 56px; }
+      h1 { font-size: 24px; }
+      .illustration { width: 160px; height: 130px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="topbar">
+    <a href="login.html" class="nav-logo">
+      <img src="wisemonk_logo_final.png" alt="Wisemonk">
+    </a>
+    <div class="topbar-cta">
+      <a href="login.html">Use a different email</a>
+    </div>
+  </header>
+
+  <main>
+    <div class="wrapper">
+
+      <div class="illustration" aria-hidden="true">
+        <img src="2 Check your email.png" alt="">
+      </div>
+
+      <h1>Check your inbox</h1>
+      <p class="subhead">We've sent a verification email to <span class="email" id="emailDisplay">you@wisemonk.co</span></p>
+
+      <div class="info-card">
+        <span class="icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+        </span>
+        <div class="info-card-body">
+          <div class="info-card-title">Can't find your email?</div>
+          <div class="info-card-text">Try checking your spam/junk folder, or resend the email.</div>
+        </div>
+      </div>
+
+      <button class="resend-btn" id="resendBtn">Resend</button>
+      <div class="resend-status" id="resendStatus"></div>
+
+    </div>
+  </main>
+
+  <script>
+    // Show the email that was used
+    const params = new URLSearchParams(location.search);
+    const email = params.get('email');
+    if (email) document.getElementById('emailDisplay').textContent = email;
+
+    // Resend → continue to role selection
+    document.getElementById('resendBtn').addEventListener('click', () => {
+      location.href = 'signup-role.html';
+    });
+  </script>
+
+</body>
+</html>

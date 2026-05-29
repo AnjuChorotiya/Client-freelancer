@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Invoices — Wisemonk</title>
+  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@700,500,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-50: #E8F2FF;
+      --primary-100: #C5DCFF;
+      --primary-500: #2684FF;
+      --primary-600: #1A6FE0;
+      --primary-700: #1059BD;
+      --accent-500: #2684FF;
+      --accent-tint: rgba(38, 132, 255, 0.10);
+      --neutral-0: #FFFFFF;
+      --neutral-50: #F7F8FA;
+      --neutral-100: #EEF0F4;
+      --neutral-200: #DDE1E9;
+      --neutral-300: #C4CAD6;
+      --neutral-400: #9AA2B2;
+      --neutral-500: #6B7588;
+      --neutral-700: #363D4D;
+      --neutral-800: #222733;
+      --neutral-900: #121620;
+      --grey-300: #ABADB1;
+      --grey-700: #222224;
+      --bg-subtle: #F1F8FF;
+      --border: #EEF0F4;
+      --border-strong: #DDE1E9;
+      --text-primary: #222733;
+      --text-secondary: #363D4D;
+      --text-muted: #9AA2B2;
+      --success-50: #E6F9F0;
+      --success-700: #027A48;
+      --warning-50: #FFFAEB;
+      --warning-700: #B54708;
+      --danger-50: #FFF1F0;
+      --danger-700: #B42318;
+      --radius-md: 12px;
+      --radius-full: 100px;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Satoshi', sans-serif; background: var(--bg-subtle); color: var(--text-primary); min-height: 100vh; }
+    a { text-decoration: none; color: inherit; }
+
+    .app { display: flex; min-height: 100vh; }
+
+    .sidebar { width: 240px; flex-shrink: 0; background: var(--neutral-0); border-right: 1px solid var(--border); padding: 30px 20px; display: flex; flex-direction: column; gap: 32px; }
+    .sidebar-logo { display: flex; align-items: center; gap: 10px; height: 36px; overflow: hidden; }
+    .sidebar-logo img { height: 56px; width: auto; margin-top: -20px; display: block; }
+    .nav-section { display: flex; flex-direction: column; }
+    .nav-title { font-family: 'Open Sans', sans-serif; font-weight: 300; font-size: 13px; letter-spacing: 0.5px; color: var(--grey-300); padding: 8px; margin-bottom: 2px; }
+    .nav-link { display: flex; align-items: center; gap: 10px; height: 36px; padding: 0 8px; border-radius: 8px; font-weight: 500; font-size: 15px; color: var(--grey-700); transition: background 0.15s; }
+    .nav-link:hover { background: var(--neutral-50); }
+    .nav-link.active { background: var(--accent-tint); color: var(--accent-500); }
+    .nav-link.active .nav-icon { color: var(--accent-500); }
+    .nav-icon { width: 20px; height: 20px; flex-shrink: 0; color: var(--grey-700); }
+
+    .main-col { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+    .header { display: flex; align-items: center; justify-content: space-between; padding: 20px 40px 20px 20px; background: var(--bg-subtle); }
+    .header-right { display: flex; align-items: center; gap: 16px; }
+    .user-chip { display: flex; align-items: center; gap: 8px; padding: 4px 8px 4px 4px; border-radius: 100px; }
+    .user-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--accent-500); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; }
+    .user-name { font-weight: 500; font-size: 16px; color: var(--grey-700); }
+
+    .content { flex: 1; padding: 8px 40px 56px 20px; }
+
+    .title-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; margin-bottom: 24px; }
+    .title-row h1 { font-size: 24px; font-weight: 700; letter-spacing: -0.3px; margin-bottom: 4px; }
+    .title-row p { font-size: 14px; color: var(--text-secondary); }
+    .secondary-btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border-radius: 10px; background: var(--neutral-0); color: var(--text-primary); border: 1px solid var(--border-strong); font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.15s; }
+    .secondary-btn:hover { background: var(--neutral-50); }
+    .secondary-btn svg { width: 16px; height: 16px; }
+    .primary-btn { display: inline-flex; align-items: center; gap: 8px; padding: 11px 18px; border-radius: 10px; background: var(--primary-500); color: #fff; border: none; font-family: inherit; font-size: 14px; font-weight: 700; cursor: pointer; transition: all 0.15s; }
+    .primary-btn:hover { background: var(--primary-600); }
+    .primary-btn svg { width: 16px; height: 16px; flex-shrink: 0; }
+
+    /* Stats strip */
+    .stats-strip {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 16px; margin-bottom: 24px;
+    }
+    .stat-mini {
+      background: var(--neutral-0);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px 18px;
+    }
+    .stat-mini-label {
+      font-size: 12.5px; color: var(--text-muted); font-weight: 600;
+      letter-spacing: 0.2px;
+      margin-bottom: 6px;
+    }
+    .stat-mini-value { font-size: 22px; font-weight: 700; letter-spacing: -0.3px; }
+    .stat-mini-value .small { font-size: 13px; color: var(--text-muted); font-weight: 600; margin-left: 4px; }
+
+    /* Filter bar */
+    .filter-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
+    .search { width: 500px; position: relative; }
+    .search input {
+      width: 100%;
+      padding: 11px 14px 11px 40px;
+      border: 1px solid var(--border-strong);
+      border-radius: 8px;
+      font-family: inherit; font-size: 14px;
+      background: var(--neutral-0) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239AA2B2' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='11' cy='11' r='8'/><path d='m21 21-4.3-4.3'/></svg>") no-repeat 14px center / 16px;
+      outline: none; transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .search input::placeholder { color: var(--text-muted); }
+    .search input:focus { border-color: var(--primary-500); box-shadow: 0 0 0 4px var(--primary-50); }
+
+    /* Custom dropdown */
+    .filter-dd { position: relative; }
+    .dd-trigger {
+      display: inline-flex; align-items: center; justify-content: space-between;
+      gap: 12px;
+      min-width: 160px;
+      padding: 11px 14px;
+      border: 1px solid var(--border-strong);
+      background: var(--neutral-0);
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .dd-trigger:hover { border-color: var(--neutral-400); }
+    .dd-trigger.open { border-color: var(--primary-500); box-shadow: 0 0 0 4px var(--primary-50); }
+    .dd-trigger .chev { width: 16px; height: 16px; color: var(--text-muted); transition: transform 0.2s; }
+    .dd-trigger.open .chev { transform: rotate(180deg); }
+
+    .dd-menu {
+      position: absolute;
+      top: calc(100% + 6px);
+      right: 0;
+      min-width: 200px;
+      background: var(--neutral-0);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 6px;
+      box-shadow: 0 12px 28px -8px rgba(34, 39, 51, 0.15), 0 4px 8px -4px rgba(34, 39, 51, 0.08);
+      display: none;
+      z-index: 50;
+    }
+    .dd-menu.open { display: block; animation: ddIn 0.12s ease-out; }
+    @keyframes ddIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+    .dd-item {
+      display: flex; align-items: center; justify-content: space-between;
+      width: 100%;
+      padding: 9px 12px;
+      border: none;
+      background: transparent;
+      border-radius: 6px;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-primary);
+      cursor: pointer;
+      text-align: left;
+      transition: background 0.1s;
+    }
+    .dd-item:hover { background: var(--neutral-50); }
+    .dd-item.active { background: var(--primary-50); color: var(--primary-700); font-weight: 700; }
+    .dd-item .check { width: 16px; height: 16px; color: var(--primary-600); opacity: 0; }
+    .dd-item.active .check { opacity: 1; }
+    .dd-dot { width: 8px; height: 8px; border-radius: 50%; margin-right: 8px; flex-shrink: 0; }
+    .dd-dot.due { background: var(--warning-700); }
+    .dd-dot.overdue { background: var(--danger-700); }
+    .dd-dot.paid { background: var(--success-700); }
+    .dd-dot.draft { background: var(--neutral-400); }
+    .dd-item-label { display: flex; align-items: center; }
+
+    /* Table — wm-table aligned */
+    .table-card { background: #ffffff; border: 1px solid #f0f1f1; border-radius: 8px; overflow: hidden; }
+    table { width: 100%; border-collapse: collapse; }
+    thead { background: #f9fafb; border-bottom: 1px solid #e5e7eb; }
+    thead th { text-align: left; padding: 12px 20px; font-family: 'Open Sans', sans-serif; font-size: 13px; font-weight: 600; color: #404145; }
+    tbody tr { border-top: 1px solid #f0f1f1; transition: background 0.2s ease; }
+    tbody tr:first-child { border-top: none; }
+    tbody tr:hover { background: #fafbfc; }
+    tbody td { padding: 14px 20px; font-family: 'Open Sans', sans-serif; font-size: 14px; font-weight: 400; color: #626368; vertical-align: middle; }
+
+    .inv-num { font-family: 'Satoshi', sans-serif; font-weight: 500; color: #222224; }
+    .cell-name { display: flex; align-items: center; gap: 12px; min-width: 0; }
+    .cell-avatar { width: 36px; height: 36px; background: #2684ff; border-radius: 50%; color: #fff; display: flex; align-items: center; justify-content: center; font-family: 'Open Sans', sans-serif; font-size: 14px; font-weight: 600; flex-shrink: 0; }
+    .cell-name span:not(.cell-avatar) { color: #222224; font-family: 'Satoshi', sans-serif; font-weight: 500; }
+    .amount { font-family: 'Satoshi', sans-serif; font-weight: 500; color: #222224; }
+    .text-right { text-align: right; }
+
+    .pill { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 16px; font-family: 'Satoshi', sans-serif; font-size: 12px; font-weight: 500; }
+    .pill.paid     { background: #E1EDFF; color: #2684FF; }
+    .pill.pending  { background: #F0F1F1; color: #626368; }
+    .pill.overdue  { background: #FEECEB; color: #B42318; }
+    .pill.draft    { background: #F0F1F1; color: #626368; }
+    .pill.matching { background: #FEF9C3; color: #CA8A04; }
+    .pill.matching::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: #CA8A04; animation: pulseDot 1.2s ease-in-out infinite; }
+    .pill.initiated { background: #E1EDFF; color: #2684FF; }
+    .pill.initiated::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: #2684FF; }
+    @keyframes pulseDot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.8); }
+    }
+
+    .pay-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 7px 14px; border-radius: 8px;
+      background: var(--primary-500); color: #fff;
+      font-family: inherit; font-size: 13px; font-weight: 700;
+      cursor: pointer; transition: all 0.15s; border: none;
+    }
+    .pay-btn:hover { background: var(--primary-600); }
+    .row-action { width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center; border-radius: 8px; color: var(--text-muted); cursor: pointer; background: transparent; border: none; }
+    .row-action:hover { background: var(--neutral-100); color: var(--text-primary); }
+    .row-action svg { width: 18px; height: 18px; }
+
+    /* ─── Side panel (invoice details) ─── */
+    .panel-overlay {
+      position: fixed; inset: 0;
+      background: rgba(18, 22, 32, 0.4);
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.2s ease;
+      z-index: 90;
+    }
+    .panel-overlay.open { opacity: 1; pointer-events: auto; }
+
+    .side-panel {
+      position: fixed; top: 0; right: 0; bottom: 0;
+      width: 560px;
+      max-width: 100vw;
+      background: var(--neutral-0);
+      box-shadow: -16px 0 40px -16px rgba(18, 22, 32, 0.18);
+      transform: translateX(100%);
+      transition: transform 0.25s ease-out;
+      z-index: 100;
+      display: flex; flex-direction: column;
+    }
+    .side-panel.open { transform: translateX(0); }
+
+    .sp-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 24px 16px;
+      border-bottom: 1px solid var(--border);
+      gap: 12px;
+    }
+    .sp-header h3 {
+      font-size: 16px; font-weight: 700;
+      display: flex; align-items: center; gap: 10px;
+      flex-wrap: wrap;
+    }
+    .sp-close {
+      width: 32px; height: 32px;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 8px;
+      background: transparent;
+      border: 1px solid var(--border-strong);
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .sp-close:hover { background: var(--neutral-50); color: var(--text-primary); }
+    .sp-close svg { width: 16px; height: 16px; }
+
+    .sp-body { flex: 1; overflow-y: auto; padding: 24px 28px; }
+
+    .sp-amount {
+      font-size: 36px;
+      font-weight: 700;
+      letter-spacing: -1px;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .sp-amount .sign { font-weight: 700; }
+    .sp-amount .currency { color: var(--text-muted); font-size: 28px; font-weight: 700; margin: 0 2px; }
+    .sp-date { font-size: 14px; color: var(--text-muted); margin-bottom: 24px; }
+
+    .sp-section { margin-bottom: 22px; padding-top: 18px; border-top: 1px solid var(--border); }
+    .sp-section:first-of-type { border-top: none; padding-top: 0; }
+    .sp-section-label {
+      font-family: 'Open Sans', sans-serif;
+      font-weight: 300;
+      font-size: 12px;
+      letter-spacing: 0.5px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .kv-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px 24px;
+    }
+    .kv-label { font-size: 12.5px; color: var(--text-muted); margin-bottom: 2px; }
+    .kv-value { font-size: 14px; font-weight: 700; color: var(--text-primary); }
+
+    .sp-note { font-size: 14px; color: var(--text-secondary); line-height: 1.5; }
+
+    /* Bank transfer */
+    .bank-toggle {
+      display: inline-flex;
+      background: var(--neutral-100);
+      border-radius: 100px;
+      padding: 3px;
+      margin-bottom: 14px;
+      float: right; margin-top: -34px;
+    }
+    .bank-toggle button {
+      padding: 5px 14px;
+      border: none; background: transparent;
+      font-family: inherit; font-size: 12px; font-weight: 700;
+      color: var(--text-muted); cursor: pointer;
+      border-radius: 100px;
+      transition: all 0.15s;
+    }
+    .bank-toggle button.active { background: var(--neutral-0); color: var(--text-primary); box-shadow: 0 1px 2px rgba(0,0,0,0.06); }
+
+    .bank-row {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+    }
+    .bank-row:last-child { border-bottom: none; }
+    .bank-label { color: var(--text-secondary); }
+    .bank-value {
+      display: flex; align-items: center; gap: 8px;
+      font-weight: 700; color: var(--text-primary);
+      text-align: right;
+    }
+    .bank-value.mono { font-family: 'Courier New', monospace; font-weight: 600; }
+    .copy-btn {
+      width: 24px; height: 24px;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 6px;
+      border: 1px solid var(--border-strong);
+      background: var(--neutral-0);
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .copy-btn:hover { background: var(--primary-50); color: var(--primary-600); border-color: var(--primary-500); }
+    .copy-btn svg { width: 12px; height: 12px; }
+
+    .info-banner {
+      display: flex; align-items: center; gap: 10px;
+      padding: 12px 14px;
+      background: var(--primary-50);
+      border-radius: 8px;
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-top: 14px;
+    }
+    .info-banner svg { width: 16px; height: 16px; color: var(--primary-600); flex-shrink: 0; }
+
+    .sp-footer {
+      display: flex; gap: 12px;
+      padding: 16px 24px;
+      border-top: 1px solid var(--border);
+    }
+    .sp-footer .secondary-btn { padding: 12px 24px; }
+    .sp-footer .primary-btn { flex: 1; justify-content: center; padding: 12px 24px; }
+
+    /* Make table rows look clickable */
+    tbody tr { cursor: pointer; }
+
+    @media (max-width: 1100px) { .stats-strip { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 980px) {
+      .sidebar { display: none; }
+      .header { padding: 16px 20px; }
+      .content { padding: 8px 20px 56px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app">
+
+    <aside class="sidebar">
+      <a href="home.html" class="sidebar-logo">
+        <img src="wisemonk_logo_final.png" alt="Wisemonk">
+      </a>
+      <nav class="nav-section">
+        <div class="nav-title">WORKSPACE</div>
+        <a href="home.html" class="nav-link">
+          <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>
+          Home
+        </a>
+        <a href="freelancers.html" class="nav-link">
+          <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+          Freelancers
+        </a>
+        <a href="invoices.html" class="nav-link active">
+          <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 7h8M8 11h8M8 15h5"/></svg></span>
+          Invoices
+        </a>
+        <a href="time.html" class="nav-link">
+          <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>
+          Time
+        </a>
+      </nav>
+    </aside>
+
+    <div class="main-col">
+
+      <header class="header">
+        <div></div>
+        <div class="header-right">
+          <div class="user-chip">
+            <span class="user-avatar">AS</span>
+            <span class="user-name">Aman Singh</span>
+          </div>
+        </div>
+      </header>
+
+      <div class="content">
+
+        <div class="title-row">
+          <div>
+            <h1>Invoices</h1>
+            <p>Review and pay invoices submitted by your contractors.</p>
+          </div>
+        </div>
+
+        <!-- Summary stats -->
+        <div class="stats-strip">
+          <div class="stat-mini">
+            <div class="stat-mini-label">Pending review</div>
+            <div class="stat-mini-value">3 <span class="small">· $3,650</span></div>
+          </div>
+          <div class="stat-mini">
+            <div class="stat-mini-label">Overdue</div>
+            <div class="stat-mini-value">1 <span class="small">· $600</span></div>
+          </div>
+          <div class="stat-mini">
+            <div class="stat-mini-label">Paid this month</div>
+            <div class="stat-mini-value">$18,420</div>
+          </div>
+          <div class="stat-mini">
+            <div class="stat-mini-label">YTD spend</div>
+            <div class="stat-mini-value">$74,200</div>
+          </div>
+        </div>
+
+        <div class="filter-bar">
+          <div class="search"><input type="text" placeholder="Search by contractor name or invoice"></div>
+          <div class="filter-dd" id="statusDd">
+            <button class="dd-trigger" id="statusTrigger">
+              <span id="statusLabel">All status</span>
+              <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+            </button>
+            <div class="dd-menu" id="statusMenu" role="listbox">
+              <button class="dd-item active" data-value="all" data-label="All status">
+                <span class="dd-item-label">All status</span>
+                <svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+              </button>
+              <button class="dd-item" data-value="due" data-label="Due">
+                <span class="dd-item-label"><span class="dd-dot due"></span>Due</span>
+                <svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+              </button>
+              <button class="dd-item" data-value="overdue" data-label="Overdue">
+                <span class="dd-item-label"><span class="dd-dot overdue"></span>Overdue</span>
+                <svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+              </button>
+              <button class="dd-item" data-value="paid" data-label="Paid">
+                <span class="dd-item-label"><span class="dd-dot paid"></span>Paid</span>
+                <svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+              </button>
+              <button class="dd-item" data-value="draft" data-label="Draft">
+                <span class="dd-item-label"><span class="dd-dot draft"></span>Draft</span>
+                <svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="table-card">
+          <table>
+            <thead>
+              <tr>
+                <th>Invoice</th>
+                <th>Contractor</th>
+                <th>Submitted</th>
+                <th>Due</th>
+                <th class="text-right">Amount</th>
+                <th>Status</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+
+              <tr>
+                <td><span class="inv-num">#INV-1042</span></td>
+                <td><div class="cell-name"><div class="cell-avatar" style="background:#2684FF;">CM</div>Carlos Mendez</div></td>
+                <td>Feb 28, 2026</td>
+                <td>Mar 14, 2026</td>
+                <td class="text-right amount">$1,200</td>
+                <td><span class="pill pending">Due</span></td>
+                <td><a class="pay-btn pay-link">Pay now</a></td>
+              </tr>
+
+              <tr>
+                <td><span class="inv-num">#INV-1041</span></td>
+                <td><div class="cell-name"><div class="cell-avatar" style="background:#0026FF;">PS</div>Priya Sharma</div></td>
+                <td>Feb 26, 2026</td>
+                <td>Mar 12, 2026</td>
+                <td class="text-right amount">$3,400</td>
+                <td><span class="pill pending">Due</span></td>
+                <td><a class="pay-btn pay-link">Pay now</a></td>
+              </tr>
+
+              <tr>
+                <td><span class="inv-num">#INV-1040</span></td>
+                <td><div class="cell-name"><div class="cell-avatar" style="background:#1A6FE0;">AK</div>Aisha Khan</div></td>
+                <td>Feb 22, 2026</td>
+                <td>Feb 28, 2026</td>
+                <td class="text-right amount">$600</td>
+                <td><span class="pill overdue">Overdue</span></td>
+                <td><a class="pay-btn pay-link">Pay now</a></td>
+              </tr>
+
+              <tr>
+                <td><span class="inv-num">#INV-1039</span></td>
+                <td><div class="cell-name"><div class="cell-avatar" style="background:#4D97FF;">JL</div>John Lee</div></td>
+                <td>Feb 20, 2026</td>
+                <td>Mar 6, 2026</td>
+                <td class="text-right amount">$400</td>
+                <td><span class="pill paid">Paid</span></td>
+                <td><button class="row-action"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg></button></td>
+              </tr>
+
+              <tr>
+                <td><span class="inv-num">#INV-1038</span></td>
+                <td><div class="cell-name"><div class="cell-avatar" style="background:#72ABFF;">MS</div>Maria Silva</div></td>
+                <td>Feb 18, 2026</td>
+                <td>Mar 4, 2026</td>
+                <td class="text-right amount">$720</td>
+                <td><span class="pill paid">Paid</span></td>
+                <td><button class="row-action"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg></button></td>
+              </tr>
+
+              <tr>
+                <td><span class="inv-num">#INV-1037</span></td>
+                <td><div class="cell-name"><div class="cell-avatar" style="background:#0026FF;">PS</div>Priya Sharma</div></td>
+                <td>Jan 28, 2026</td>
+                <td>Feb 12, 2026</td>
+                <td class="text-right amount">$3,400</td>
+                <td><span class="pill paid">Paid</span></td>
+                <td><button class="row-action"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg></button></td>
+              </tr>
+
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── Invoice details side panel ─── -->
+  <div class="panel-overlay" id="overlay"></div>
+  <aside class="side-panel" id="invoicePanel" aria-hidden="true">
+    <div class="sp-header">
+      <h3>
+        Invoice <span id="pInvNum">INV-1042</span>
+        <span class="pill paid" id="pStatus">Paid</span>
+      </h3>
+      <button class="sp-close" id="panelClose" aria-label="Close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+
+    <div class="sp-body">
+      <div class="sp-amount"><span class="sign">+</span><span class="currency">$</span><span id="pAmount">15,700.00</span></div>
+      <div class="sp-date" id="pDate">01 May 2026</div>
+
+      <div class="sp-section">
+        <div class="sp-section-label">Details</div>
+        <div class="kv-grid">
+          <div>
+            <div class="kv-label">Type</div>
+            <div class="kv-value">Invoice</div>
+          </div>
+          <div>
+            <div class="kv-label">Reference</div>
+            <div class="kv-value" id="pRef">INV-2026-0042</div>
+          </div>
+          <div>
+            <div class="kv-label">Transaction ID</div>
+            <div class="kv-value" id="pTxn">INV-2026-0042</div>
+          </div>
+          <div>
+            <div class="kv-label">Balance after</div>
+            <div class="kv-value">$24,200.00</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sp-section">
+        <div class="sp-section-label">Note</div>
+        <p class="sp-note">April cycle · received $15,700 against $15,200 invoice.</p>
+      </div>
+
+      <div class="sp-section">
+        <div class="sp-section-label">Bank transfer details</div>
+        <div class="bank-toggle">
+          <button class="active">Local</button>
+          <button>SWIFT</button>
+        </div>
+
+        <div class="bank-row">
+          <span class="bank-label">Beneficiary</span>
+          <span class="bank-value">
+            Anju
+            <button class="copy-btn" aria-label="Copy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+          </span>
+        </div>
+        <div class="bank-row">
+          <span class="bank-label">Receiving currency</span>
+          <span class="bank-value">USD</span>
+        </div>
+        <div class="bank-row">
+          <span class="bank-label">Account number</span>
+          <span class="bank-value mono">
+            99968202787266
+            <button class="copy-btn" aria-label="Copy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+          </span>
+        </div>
+        <div class="bank-row">
+          <span class="bank-label">Routing number</span>
+          <span class="bank-value mono">
+            000000007
+            <button class="copy-btn" aria-label="Copy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+          </span>
+        </div>
+        <div class="bank-row">
+          <span class="bank-label">Account type</span>
+          <span class="bank-value">Business</span>
+        </div>
+        <div class="bank-row">
+          <span class="bank-label">Bank</span>
+          <span class="bank-value">JPMORGAN CHASE BANK, N.A</span>
+        </div>
+        <div class="bank-row">
+          <span class="bank-label">Bank address</span>
+          <span class="bank-value" style="text-align:right; font-weight:600; font-size:13px;">383 Madison Ave,<br>New York, NY 10179, USA</span>
+        </div>
+
+        <div class="info-banner">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+          Use <strong>&nbsp;invoice number&nbsp;</strong> as the transfer reference.
+        </div>
+      </div>
+    </div>
+
+    <div class="sp-footer">
+      <button class="secondary-btn" id="panelCloseBtn">Close</button>
+      <button class="primary-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download receipt
+      </button>
+    </div>
+  </aside>
+
+  <script>
+    // ─── Row state: read pay status from localStorage and update rows ───
+    function getInvoiceNum(row) {
+      const numEl = row.querySelector('.inv-num');
+      return numEl ? numEl.textContent.trim() : '';
+    }
+
+    function applyPayState() {
+      document.querySelectorAll('tbody tr').forEach(row => {
+        const invNum = getInvoiceNum(row);
+        if (!invNum) return;
+        const raw = localStorage.getItem('pay-' + invNum);
+        if (!raw) return;
+        let state;
+        try { state = JSON.parse(raw); } catch (e) { return; }
+
+        const statusCell = row.cells[5];
+        const actionCell = row.cells[6];
+        if (!statusCell || !actionCell) return;
+
+        if (state.status === 'matching') {
+          statusCell.innerHTML = '<span class="pill matching">Matching</span>';
+          actionCell.innerHTML = '';
+        } else if (state.status === 'initiated') {
+          statusCell.innerHTML = '<span class="pill initiated">Transfer initiated</span>';
+          actionCell.innerHTML = '';
+        }
+      });
+    }
+    applyPayState();
+
+    // Wire Pay now links → pay.html with invoice number
+    document.querySelectorAll('.pay-link').forEach(link => {
+      link.addEventListener('click', e => {
+        e.stopPropagation();
+        const row = link.closest('tr');
+        const invNum = getInvoiceNum(row);
+        location.href = 'pay.html?inv=' + encodeURIComponent(invNum);
+      });
+      link.style.cursor = 'pointer';
+    });
+
+    // Side panel open/close
+    const panel = document.getElementById('invoicePanel');
+    const overlay = document.getElementById('overlay');
+    const closeBtn = document.getElementById('panelClose');
+    const closeBtnBottom = document.getElementById('panelCloseBtn');
+    const pInvNum = document.getElementById('pInvNum');
+    const pStatus = document.getElementById('pStatus');
+    const pAmount = document.getElementById('pAmount');
+    const pDate = document.getElementById('pDate');
+    const pRef = document.getElementById('pRef');
+    const pTxn = document.getElementById('pTxn');
+
+    function openPanel(invNum, status, amount, date) {
+      pInvNum.textContent = invNum;
+      pStatus.textContent = status;
+      pStatus.className = 'pill ' + (status === 'Paid' ? 'paid' : status === 'Overdue' ? 'overdue' : 'pending');
+      pAmount.textContent = amount;
+      pDate.textContent = date;
+      pRef.textContent = invNum.replace('#', '');
+      pTxn.textContent = invNum.replace('#', '');
+      panel.classList.add('open');
+      overlay.classList.add('open');
+      panel.setAttribute('aria-hidden', 'false');
+    }
+    function closePanel() {
+      panel.classList.remove('open');
+      overlay.classList.remove('open');
+      panel.setAttribute('aria-hidden', 'true');
+    }
+
+    overlay.addEventListener('click', closePanel);
+    closeBtn.addEventListener('click', closePanel);
+    closeBtnBottom.addEventListener('click', closePanel);
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closePanel(); });
+
+    // Wire up table rows
+    document.querySelectorAll('tbody tr').forEach(tr => {
+      tr.addEventListener('click', e => {
+        // ignore clicks on action buttons
+        if (e.target.closest('button')) return;
+        const cells = tr.querySelectorAll('td');
+        const invNum = cells[0].textContent.trim();
+        const contractor = cells[1].textContent.trim();
+        const amount = cells[4].textContent.trim().replace('$', '').replace(',', ',');
+        const status = cells[5].textContent.trim();
+        const date = cells[2].textContent.trim();
+        openPanel(invNum, status, amount, date);
+      });
+    });
+
+    // Bank toggle
+    document.querySelectorAll('.bank-toggle button').forEach(b => {
+      b.addEventListener('click', () => {
+        document.querySelectorAll('.bank-toggle button').forEach(x => x.classList.toggle('active', x === b));
+      });
+    });
+  </script>
+
+  <script>
+    const dd = document.getElementById('statusDd');
+    const trigger = document.getElementById('statusTrigger');
+    const menu = document.getElementById('statusMenu');
+    const label = document.getElementById('statusLabel');
+
+    trigger.addEventListener('click', e => {
+      e.stopPropagation();
+      const open = menu.classList.toggle('open');
+      trigger.classList.toggle('open', open);
+    });
+
+    menu.querySelectorAll('.dd-item').forEach(item => {
+      item.addEventListener('click', () => {
+        menu.querySelectorAll('.dd-item').forEach(i => i.classList.toggle('active', i === item));
+        label.textContent = item.dataset.label;
+        menu.classList.remove('open');
+        trigger.classList.remove('open');
+      });
+    });
+
+    document.addEventListener('click', e => {
+      if (!dd.contains(e.target)) {
+        menu.classList.remove('open');
+        trigger.classList.remove('open');
+      }
+    });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        menu.classList.remove('open');
+        trigger.classList.remove('open');
+      }
+    });
+  </script>
+
+</body>
+</html>

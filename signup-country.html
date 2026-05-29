@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Where are you based — Wisemonk</title>
+  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@700,500,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-50: #E8F2FF;
+      --primary-100: #C5DCFF;
+      --primary-500: #2684FF;
+      --primary-600: #1A6FE0;
+      --primary-700: #1059BD;
+      --neutral-0: #FFFFFF;
+      --neutral-50: #F7F8FA;
+      --neutral-100: #EEF0F4;
+      --neutral-200: #DDE1E9;
+      --neutral-300: #C4CAD6;
+      --neutral-400: #9AA2B2;
+      --neutral-500: #6B7588;
+      --neutral-700: #363D4D;
+      --neutral-800: #222733;
+      --neutral-900: #121620;
+      --border: #EEF0F4;
+      --border-strong: #DDE1E9;
+      --text-primary: #222733;
+      --text-secondary: #363D4D;
+      --text-muted: #9AA2B2;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-xl: 20px;
+      --radius-full: 100px;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Satoshi', sans-serif;
+      background: var(--neutral-0);
+      color: var(--text-primary);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    a { text-decoration: none; color: inherit; }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 22px 40px 18px;
+      background: var(--neutral-0);
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: 10px;
+      height: 52px;
+      overflow: hidden;
+    }
+    .nav-logo img {
+      height: 56px;
+      width: auto;
+      margin-top: -20px;
+      display: block;
+    }
+
+    .logout-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 18px;
+      border-radius: var(--radius-full);
+      border: 1.5px solid var(--border-strong);
+      background: var(--neutral-0);
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .logout-btn:hover { border-color: var(--text-secondary); color: var(--text-primary); background: var(--neutral-50); }
+    .logout-btn svg { width: 16px; height: 16px; }
+
+    main {
+      flex: 1;
+      padding: 56px 24px 80px;
+      position: relative;
+    }
+    .wrapper {
+      max-width: 520px;
+      margin: 0 auto;
+    }
+    .back-link {
+      position: absolute;
+      top: 60px;
+      right: calc(50% + 300px); /* wrapper half (260) + 40px gap */
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 8px 14px 8px 10px;
+      border-radius: var(--radius-full);
+      font-size: 14.5px; font-weight: 600;
+      color: var(--text-primary);
+      text-decoration: underline;
+      text-underline-offset: 4px;
+      z-index: 2;
+      transition: background 0.15s;
+      white-space: nowrap;
+    }
+    .back-link:hover { color: var(--primary-600); background: var(--neutral-100); }
+    .back-link svg { width: 16px; height: 16px; }
+
+    .question-block {
+      text-align: center;
+      margin-bottom: 36px;
+    }
+    h1 {
+      font-size: 30px;
+      font-weight: 700;
+      letter-spacing: -0.4px;
+      line-height: 1.25;
+      color: var(--text-primary);
+      margin-bottom: 12px;
+    }
+    .subhead {
+      font-size: 15px;
+      font-weight: 400;
+      color: var(--text-muted);
+      line-height: 1.55;
+    }
+    .subhead strong { color: var(--text-secondary); font-weight: 600; }
+
+    /* Country dropdown */
+    .field {
+      position: relative;
+      margin-bottom: 24px;
+    }
+    .field-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+      display: block;
+    }
+    .select-wrap {
+      position: relative;
+    }
+    .country-select {
+      width: 100%;
+      display: flex; align-items: center; gap: 12px;
+      padding: 16px 18px;
+      background: var(--neutral-0);
+      border: 1.5px solid var(--border-strong);
+      border-radius: var(--radius-md);
+      font-family: inherit;
+      font-size: 15.5px;
+      font-weight: 500;
+      color: var(--text-primary);
+      cursor: pointer;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .country-select:hover { border-color: var(--neutral-400); }
+    .country-select.open,
+    .country-select:focus { border-color: var(--primary-500); box-shadow: 0 0 0 4px var(--primary-50); outline: none; }
+    .country-select .flag {
+      width: 24px; height: 24px;
+      border-radius: 50%;
+      object-fit: cover;
+      flex-shrink: 0;
+      box-shadow: 0 0 0 1px var(--border-strong);
+    }
+    .country-select .name { flex: 1; text-align: left; }
+    .country-select .chev { color: var(--text-muted); transition: transform 0.2s; }
+    .country-select.open .chev { transform: rotate(180deg); }
+
+    .dropdown {
+      position: absolute;
+      top: calc(100% + 6px);
+      left: 0; right: 0;
+      background: var(--neutral-0);
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-md);
+      box-shadow: 0 14px 32px -8px rgba(34, 39, 51, 0.18);
+      max-height: 320px;
+      overflow: hidden;
+      display: none;
+      z-index: 10;
+    }
+    .dropdown.open { display: flex; flex-direction: column; }
+    .dropdown-search {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+    }
+    .dropdown-search input {
+      width: 100%;
+      padding: 10px 12px 10px 36px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 14px;
+      background: var(--neutral-50) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239AA2B2' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='11' cy='11' r='8'/><path d='m21 21-4.3-4.3'/></svg>") no-repeat 12px center / 16px;
+      outline: none;
+    }
+    .dropdown-search input:focus { border-color: var(--primary-500); background-color: var(--neutral-0); }
+    .dropdown-list { overflow-y: auto; padding: 6px; }
+    .dropdown-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14.5px;
+      transition: background 0.1s;
+    }
+    .dropdown-item:hover, .dropdown-item.highlight { background: var(--primary-50); }
+    .dropdown-item .flag {
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      object-fit: cover;
+      flex-shrink: 0;
+      box-shadow: 0 0 0 1px var(--border-strong);
+    }
+    .dropdown-item.empty { color: var(--text-muted); text-align: center; cursor: default; }
+    .dropdown-item.empty:hover { background: transparent; }
+
+    /* Continue button */
+    .cta-button {
+      width: 100%;
+      padding: 16px 24px;
+      border: none;
+      border-radius: var(--radius-full);
+      background: var(--primary-500);
+      color: #fff;
+      font-family: inherit;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+      box-shadow: 0 6px 16px -6px rgba(38, 132, 255, 0.45);
+    }
+    .cta-button:hover { background: var(--primary-600); transform: translateY(-1px); box-shadow: 0 8px 20px -6px rgba(38, 132, 255, 0.55); }
+    .cta-button:disabled { background: var(--neutral-200); color: var(--text-muted); cursor: not-allowed; transform: none; box-shadow: none; }
+    .cta-button svg { width: 18px; height: 18px; }
+
+    /* Disclaimer */
+    .disclaimer {
+      margin-top: 22px;
+      text-align: center;
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--text-muted);
+    }
+    .disclaimer a {
+      color: var(--text-secondary);
+      font-weight: 600;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    /* Stack back-link above heading when viewport can't fit it in the side margin */
+    @media (max-width: 880px) {
+      .back-link { position: static; margin-bottom: 16px; }
+    }
+    @media (max-width: 720px) {
+      .topbar { padding: 16px 18px; }
+      main { padding: 32px 18px 56px; }
+      h1 { font-size: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="topbar">
+    <a href="#" class="nav-logo">
+      <img src="wisemonk_logo_final.png" alt="Wisemonk">
+    </a>
+    <a href="login.html" class="logout-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+      Log out
+    </a>
+  </header>
+
+  <main>
+    <div class="wrapper">
+      <a href="signup-role.html" class="back-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Back
+      </a>
+
+      <div class="question-block">
+        <h1 id="question">Where are you based?</h1>
+        <p class="subhead" id="subhead">We'll use this to set up the right tax and payment options for you. <strong>You can change this later.</strong></p>
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="country-input">Country of residence</label>
+        <div class="select-wrap">
+          <button type="button" class="country-select" id="countrySelect" aria-haspopup="listbox" aria-expanded="false">
+            <img class="flag" id="selectedFlag" src="https://hatscripts.github.io/circle-flags/flags/in.svg" alt="">
+            <span class="name" id="selectedName">India</span>
+            <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+          <div class="dropdown" id="dropdown">
+            <div class="dropdown-search">
+              <input type="text" id="searchInput" placeholder="Search country" autocomplete="off">
+            </div>
+            <div class="dropdown-list" id="dropdownList"></div>
+          </div>
+        </div>
+      </div>
+
+      <button class="cta-button" id="continueBtn">
+        Continue
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      </button>
+
+    </div>
+  </main>
+
+  <script>
+    // Role-aware copy
+    const params = new URLSearchParams(location.search);
+    const role = params.get('role') || 'contractor';
+    const q = document.getElementById('question');
+    const s = document.getElementById('subhead');
+    const fl = document.querySelector('.field-label');
+
+    if (role === 'client') {
+      q.textContent = "Where is your business based?";
+      s.innerHTML = "Select the country where your company is registered. We'll set up the right tax and compliance options. <strong>You can change this later.</strong>";
+      fl.textContent = "Country of registration";
+    }
+
+    // Country list (subset — extend as needed)
+    const FLAG = code => `https://hatscripts.github.io/circle-flags/flags/${code.toLowerCase()}.svg`;
+    const countries = [
+      { code: 'IN', name: 'India' },
+      { code: 'US', name: 'United States' },
+      { code: 'GB', name: 'United Kingdom' },
+      { code: 'CA', name: 'Canada' },
+      { code: 'AU', name: 'Australia' },
+      { code: 'DE', name: 'Germany' },
+      { code: 'FR', name: 'France' },
+      { code: 'NL', name: 'Netherlands' },
+      { code: 'IE', name: 'Ireland' },
+      { code: 'ES', name: 'Spain' },
+      { code: 'IT', name: 'Italy' },
+      { code: 'PT', name: 'Portugal' },
+      { code: 'SG', name: 'Singapore' },
+      { code: 'AE', name: 'United Arab Emirates' },
+      { code: 'BR', name: 'Brazil' },
+      { code: 'MX', name: 'Mexico' },
+      { code: 'AR', name: 'Argentina' },
+      { code: 'PH', name: 'Philippines' },
+      { code: 'ID', name: 'Indonesia' },
+      { code: 'JP', name: 'Japan' },
+      { code: 'KR', name: 'South Korea' },
+      { code: 'NG', name: 'Nigeria' },
+      { code: 'KE', name: 'Kenya' },
+      { code: 'ZA', name: 'South Africa' },
+      { code: 'PL', name: 'Poland' }
+    ];
+
+    const select = document.getElementById('countrySelect');
+    const dropdown = document.getElementById('dropdown');
+    const list = document.getElementById('dropdownList');
+    const search = document.getElementById('searchInput');
+    const selectedFlag = document.getElementById('selectedFlag');
+    const selectedName = document.getElementById('selectedName');
+    let selected = countries[0];
+
+    function renderList(filter = '') {
+      const f = filter.toLowerCase().trim();
+      const filtered = countries.filter(c => c.name.toLowerCase().includes(f));
+      list.innerHTML = filtered.length
+        ? filtered.map(c => `<div class="dropdown-item" data-code="${c.code}"><img class="flag" src="${FLAG(c.code)}" alt=""><span>${c.name}</span></div>`).join('')
+        : '<div class="dropdown-item empty">No countries match your search</div>';
+      list.querySelectorAll('.dropdown-item[data-code]').forEach(el => {
+        el.addEventListener('click', () => {
+          selected = countries.find(c => c.code === el.dataset.code);
+          selectedFlag.src = FLAG(selected.code);
+          selectedName.textContent = selected.name;
+          closeDropdown();
+        });
+      });
+    }
+
+    function openDropdown() {
+      select.classList.add('open');
+      dropdown.classList.add('open');
+      select.setAttribute('aria-expanded', 'true');
+      search.value = '';
+      renderList();
+      setTimeout(() => search.focus(), 50);
+    }
+    function closeDropdown() {
+      select.classList.remove('open');
+      dropdown.classList.remove('open');
+      select.setAttribute('aria-expanded', 'false');
+    }
+
+    select.addEventListener('click', () => {
+      dropdown.classList.contains('open') ? closeDropdown() : openDropdown();
+    });
+    search.addEventListener('input', e => renderList(e.target.value));
+    document.addEventListener('click', e => {
+      if (!e.target.closest('.select-wrap')) closeDropdown();
+    });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeDropdown();
+    });
+
+    document.getElementById('continueBtn').addEventListener('click', () => {
+      location.href = `dashboard.html?role=${role}&country=${selected.code}`;
+    });
+  </script>
+
+</body>
+</html>

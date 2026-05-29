@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Log in — Wisemonk</title>
+  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@700,500,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-50: #E8F2FF;
+      --primary-100: #C5DCFF;
+      --primary-500: #2684FF;
+      --primary-600: #1A6FE0;
+      --primary-700: #1059BD;
+      --neutral-0: #FFFFFF;
+      --neutral-50: #F7F8FA;
+      --neutral-100: #EEF0F4;
+      --neutral-200: #DDE1E9;
+      --neutral-300: #C4CAD6;
+      --neutral-400: #9AA2B2;
+      --neutral-500: #6B7588;
+      --neutral-700: #363D4D;
+      --neutral-800: #222733;
+      --neutral-900: #121620;
+      --border: #EEF0F4;
+      --border-strong: #DDE1E9;
+      --text-primary: #222733;
+      --text-secondary: #363D4D;
+      --text-muted: #9AA2B2;
+      --danger-500: #F04438;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-xl: 20px;
+      --radius-full: 100px;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Satoshi', sans-serif;
+      background: var(--neutral-0);
+      color: var(--text-primary);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    a { text-decoration: none; color: inherit; }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 22px 40px 18px;
+      background: var(--neutral-0);
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: 10px;
+      height: 52px;
+      overflow: hidden;
+    }
+    .nav-logo img {
+      height: 56px;
+      width: auto;
+      margin-top: -20px;
+      display: block;
+    }
+    .topbar-cta { font-size: 14px; color: var(--text-secondary); }
+    .topbar-cta a { color: var(--primary-600); font-weight: 600; }
+    .topbar-cta a:hover { color: var(--primary-700); }
+
+    main {
+      flex: 1;
+      padding: 64px 24px 80px;
+    }
+    .wrapper {
+      max-width: 420px;
+      margin: 0 auto;
+    }
+
+    .question-block {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+    h1 {
+      font-size: 30px;
+      font-weight: 700;
+      letter-spacing: -0.4px;
+      line-height: 1.25;
+      color: var(--text-primary);
+      margin-bottom: 10px;
+    }
+    .subhead {
+      font-size: 15px;
+      font-weight: 400;
+      color: var(--text-muted);
+      line-height: 1.55;
+    }
+
+    /* SSO buttons */
+    .sso-stack {
+      display: flex; flex-direction: column; gap: 10px;
+      margin-bottom: 24px;
+    }
+    .sso-btn {
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      width: 100%;
+      padding: 13px 18px;
+      background: var(--neutral-0);
+      border: 1.5px solid var(--border-strong);
+      border-radius: var(--radius-md);
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-primary);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .sso-btn:hover { border-color: var(--neutral-400); background: var(--neutral-50); }
+    .sso-btn svg { width: 20px; height: 20px; flex-shrink: 0; }
+
+    /* Divider */
+    .divider {
+      display: flex; align-items: center; gap: 14px;
+      margin: 4px 0 20px;
+      color: var(--text-muted);
+      font-size: 13px;
+      font-weight: 500;
+    }
+    .divider::before, .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* Form fields */
+    .field { margin-bottom: 16px; }
+    .field-row {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 8px;
+    }
+    .field-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+    .field-link {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--primary-600);
+    }
+    .field-link:hover { color: var(--primary-700); }
+
+    .input-wrap { position: relative; }
+    input[type="email"], input[type="password"], input[type="text"] {
+      width: 100%;
+      padding: 14px 16px;
+      background: var(--neutral-0);
+      border: 1.5px solid var(--border-strong);
+      border-radius: var(--radius-md);
+      font-family: inherit;
+      font-size: 15px;
+      color: var(--text-primary);
+      transition: border-color 0.15s, box-shadow 0.15s;
+      outline: none;
+    }
+    input::placeholder { color: var(--text-muted); }
+    input:hover { border-color: var(--neutral-400); }
+    input:focus { border-color: var(--primary-500); box-shadow: 0 0 0 4px var(--primary-50); }
+    .input-wrap.has-action input { padding-right: 48px; }
+    .toggle-pass {
+      position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+      width: 32px; height: 32px;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 8px;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .toggle-pass:hover { background: var(--neutral-100); color: var(--text-secondary); }
+    .toggle-pass svg { width: 18px; height: 18px; }
+
+    .field-error {
+      display: none;
+      margin-top: 6px;
+      font-size: 13px;
+      color: var(--danger-500);
+    }
+    .field.has-error input { border-color: var(--danger-500); }
+    .field.has-error .field-error { display: block; }
+
+    /* CTA */
+    .cta-button {
+      width: 100%;
+      padding: 16px 24px;
+      border: none;
+      border-radius: var(--radius-full);
+      background: var(--primary-500);
+      color: #fff;
+      font-family: inherit;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+      margin-top: 8px;
+      box-shadow: 0 6px 16px -6px rgba(38, 132, 255, 0.45);
+    }
+    .cta-button:hover { background: var(--primary-600); transform: translateY(-1px); box-shadow: 0 8px 20px -6px rgba(38, 132, 255, 0.55); }
+
+    /* Terms below CTA */
+    .terms {
+      margin-top: 28px;
+      text-align: center;
+      font-size: 12.5px;
+      line-height: 1.55;
+      color: var(--text-muted);
+    }
+    .terms a {
+      color: var(--text-secondary);
+      font-weight: 600;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .terms a:hover { color: var(--text-primary); }
+
+    @media (max-width: 480px) {
+      .topbar { padding: 16px 18px; }
+      main { padding: 32px 18px 56px; }
+      h1 { font-size: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="topbar">
+    <a href="index.html" class="nav-logo">
+      <img src="wisemonk_logo_final.png" alt="Wisemonk">
+    </a>
+    <div class="topbar-cta">
+      Already have an account? <a href="#">Log in</a>
+    </div>
+  </header>
+
+  <main>
+    <div class="wrapper">
+
+      <div class="question-block">
+        <h1>Welcome back</h1>
+        <p class="subhead">Log in to manage your contracts, payments and team.</p>
+      </div>
+
+      <!-- SSO -->
+      <div class="sso-stack">
+        <button class="sso-btn" type="button">
+          <svg viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84A11 11 0 0 0 12 23z" fill="#34A853"/><path d="M5.84 14.09a6.65 6.65 0 0 1 0-4.18V7.07H2.18a11 11 0 0 0 0 9.86l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15A11 11 0 0 0 12 1 11 11 0 0 0 2.18 7.07l3.66 2.84C6.71 7.31 9.14 5.38 12 5.38z" fill="#EA4335"/></svg>
+          Continue with Google
+        </button>
+      </div>
+
+      <div class="divider">or</div>
+
+      <!-- Email & password -->
+      <form id="loginForm" autocomplete="on" novalidate>
+        <div class="field" id="emailField">
+          <div class="field-row">
+            <label class="field-label" for="email">Work email</label>
+          </div>
+          <div class="input-wrap">
+            <input type="email" id="email" name="email" placeholder="you@company.com" required autocomplete="email">
+          </div>
+          <div class="field-error">Please enter a valid email address.</div>
+        </div>
+
+        <button type="submit" class="cta-button">
+          Sign up
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </button>
+
+        <p class="terms">
+          By continuing, you agree to Wisemonk's <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.
+        </p>
+      </form>
+
+    </div>
+  </main>
+
+  <script>
+    const form = document.getElementById('loginForm');
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      const email = document.getElementById('email').value.trim();
+      const url = email
+        ? 'check-inbox.html?email=' + encodeURIComponent(email)
+        : 'check-inbox.html';
+      location.href = url;
+    });
+  </script>
+
+</body>
+</html>

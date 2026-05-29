@@ -1,0 +1,300 @@
+/**
+ * Wisemonk shared grid-table chrome.
+ * Use with page-specific modifiers for column templates.
+ */
+
+.wm-table {
+  border-radius: 8px;
+  overflow-x: auto;
+  overflow-y: visible;
+  width: 100%;
+  max-width: 100%;
+  -webkit-overflow-scrolling: touch;
+  position: relative;
+  background: #ffffff;
+  border: 1px solid #f0f1f1;
+}
+
+.wm-table__inner {
+  min-width: 100%;
+  width: max-content;
+  max-width: none;
+}
+
+.wm-table__actions-cell {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  min-width: 48px;
+  flex-shrink: 0;
+  justify-self: end;
+}
+
+.wm-table__head,
+.wm-table__row {
+  display: grid;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.wm-table__head {
+  padding: 12px 16px;
+  background: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.wm-table__row {
+  padding: 8px 16px;
+  border-bottom: 1px solid #f0f1f1;
+  transition: background 0.2s ease;
+  position: relative;
+  background: #ffffff;
+}
+.wm-table__row:last-child { border-bottom: none; }
+
+.wm-table__row:hover {
+  background: #fafbfc;
+}
+
+.wm-table__head > div {
+  color: #404145;
+  font-size: 13px;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 600;
+}
+
+.wm-table__row > div {
+  color: #626368;
+  font-size: 14px;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 400;
+}
+
+.wm-table__row--clickable {
+  cursor: pointer;
+}
+
+.wm-table__name-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.wm-table__name-primary {
+  color: #222224;
+  font-size: 14px;
+  font-family: 'Satoshi', sans-serif;
+  font-weight: 500;
+}
+
+.wm-table__name-sub {
+  color: #85878d;
+  font-size: 12px;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 400;
+  margin-top: 1px;
+}
+
+.wm-table__avatar {
+  width: 36px;
+  height: 36px;
+  background: #2684ff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: #ffffff;
+  font-size: 14px;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 600;
+}
+
+/* Shared status pills */
+.wm-pill {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-family: 'Satoshi', sans-serif;
+  font-weight: 500;
+  text-transform: none;
+}
+.wm-pill.blue   { background: #E1EDFF; color: #2684FF; }
+.wm-pill.yellow { background: #FEF9C3; color: #CA8A04; }
+.wm-pill.grey   { background: #F0F1F1; color: #626368; }
+.wm-pill.red    { background: #FEECEB; color: #B42318; }
+.wm-pill.green  { background: #E6F9F0; color: #027A48; }
+
+/* Shared toolbar + filter chrome */
+.wm-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  gap: 12px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 16px 20px;
+  background: #ffffff;
+}
+
+.wm-search {
+  display: flex;
+  flex: 1 1 auto;
+  min-width: 0;
+  max-width: 400px;
+}
+.wm-search-inner {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  height: 40px;
+  box-sizing: border-box;
+  gap: 8px;
+  padding: 8px 12px;
+  border: 1px solid #f0f1f1;
+  border-radius: 8px;
+  background: #ffffff;
+}
+.wm-search-inner .icon { flex-shrink: 0; }
+.wm-search-inner input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: 'Satoshi', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: #626368;
+  padding: 0;
+}
+.wm-search-inner input::placeholder { color: #85878d; }
+
+.wm-filter-group {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 12px;
+  flex: 0 0 auto;
+  margin-left: auto;
+}
+
+.wm-filter-wrapper { position: relative; }
+.wm-filter-trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+  height: 40px;
+  min-width: 140px;
+  max-width: 220px;
+  padding: 8px 12px;
+  box-sizing: border-box;
+  border-radius: 8px;
+  border: 1px solid #f0f1f1;
+  background: #ffffff;
+  cursor: pointer;
+  font-family: 'Satoshi', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #626368;
+}
+.wm-filter-trigger:hover { background: #f9fafb; }
+.wm-filter-text {
+  flex: 1;
+  min-width: 0;
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.wm-filter-arrow { flex-shrink: 0; transition: transform 0.2s ease; }
+.wm-filter-wrapper.open .wm-filter-arrow { transform: rotate(180deg); }
+
+.wm-filter-menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  min-width: 100%;
+  width: max-content;
+  max-width: min(320px, calc(100vw - 48px));
+  background: #ffffff;
+  border: 1px solid #f0f1f1;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  max-height: 280px;
+  overflow-y: auto;
+  display: none;
+}
+.wm-filter-wrapper.open .wm-filter-menu { display: block; }
+
+.wm-filter-item {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px 16px;
+  margin: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  font-family: 'Satoshi', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #626368;
+  transition: background 0.2s ease;
+  white-space: normal;
+  word-break: break-word;
+}
+.wm-filter-item:hover { background: #f9fafb; }
+.wm-filter-item.selected { background: #f0f7ff; color: #2684ff; }
+
+/* Page card wrapper (shared with insurance) */
+.wm-card {
+  background: #ffffff;
+  border: 1px solid #f0f1f1;
+  border-radius: 8px;
+  padding: 0 0 16px;
+  max-width: 100%;
+  min-width: 0;
+}
+.wm-card-heading {
+  padding: 16px 20px 12px;
+}
+.wm-card-heading .title {
+  color: #222224;
+  font-family: 'Satoshi', sans-serif;
+  font-size: 1.437rem;
+  font-weight: 700;
+  line-height: 1.3;
+  margin-bottom: 4px;
+}
+.wm-card-heading .sub {
+  color: #85878d;
+  font-family: 'Satoshi', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.wm-table-section {
+  padding: 0 20px 8px;
+  min-width: 0;
+  max-width: 100%;
+}
+.wm-table-section .wm-table { display: block; max-width: 100%; }
+
+.wm-table-empty {
+  padding: 40px 16px;
+  text-align: center;
+  color: #85878d;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 14px;
+  background: #ffffff;
+}

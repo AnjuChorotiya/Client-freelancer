@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pay now — Wisemonk</title>
+  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@700,500,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-50: #E8F2FF;
+      --primary-100: #C5DCFF;
+      --primary-500: #2684FF;
+      --primary-600: #1A6FE0;
+      --primary-700: #1059BD;
+      --neutral-0: #FFFFFF;
+      --neutral-50: #F7F8FA;
+      --neutral-100: #EEF0F4;
+      --neutral-200: #DDE1E9;
+      --neutral-300: #C4CAD6;
+      --neutral-400: #9AA2B2;
+      --neutral-500: #6B7588;
+      --neutral-700: #363D4D;
+      --neutral-800: #222733;
+      --neutral-900: #121620;
+      --bg-subtle: #F1F8FF;
+      --border: #EEF0F4;
+      --border-strong: #DDE1E9;
+      --text-primary: #222733;
+      --text-secondary: #363D4D;
+      --text-muted: #9AA2B2;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-full: 100px;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Satoshi', sans-serif;
+      background: var(--bg-subtle);
+      color: var(--text-primary);
+      min-height: 100vh;
+    }
+    a { text-decoration: none; color: inherit; }
+
+    /* Breadcrumb */
+    .crumb {
+      display: flex; align-items: center; gap: 12px;
+      padding: 20px 32px 0;
+      font-size: 14px;
+    }
+    .crumb a { display: inline-flex; align-items: center; gap: 6px; color: var(--text-muted); font-weight: 600; }
+    .crumb a:hover { color: var(--text-primary); }
+    .crumb .sep { color: var(--text-muted); }
+    .crumb .current { color: var(--text-primary); font-weight: 700; }
+    .crumb svg { width: 16px; height: 16px; }
+
+    /* Page card wrapper */
+    main {
+      padding: 24px;
+      display: flex; justify-content: center;
+    }
+    .step {
+      background: var(--neutral-0);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 40px 56px 36px;
+      max-width: 680px;
+      width: 100%;
+      text-align: center;
+    }
+    .step.hidden { display: none; }
+
+    .step h1 {
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+      margin-bottom: 10px;
+    }
+    .step .sub {
+      font-size: 14.5px;
+      color: var(--text-secondary);
+      line-height: 1.55;
+      margin-bottom: 28px;
+      max-width: 440px;
+      margin-left: auto; margin-right: auto;
+    }
+    .step .eyebrow {
+      font-family: 'Open Sans', sans-serif;
+      font-weight: 300;
+      font-size: 12px;
+      letter-spacing: 1px;
+      color: var(--primary-500);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    /* Receiving account card (Step 1) */
+    .account-card {
+      background: var(--neutral-0);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 26px 28px;
+      text-align: left;
+      margin-bottom: 20px;
+    }
+    .section-label {
+      font-family: 'Open Sans', sans-serif;
+      font-weight: 300;
+      font-size: 11.5px;
+      letter-spacing: 0.6px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    .kv-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px 32px;
+    }
+    .kv-cell-label {
+      font-family: 'Open Sans', sans-serif;
+      font-weight: 300;
+      font-size: 11px;
+      letter-spacing: 0.5px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .kv-cell-value {
+      font-size: 14.5px;
+      font-weight: 700;
+      color: var(--text-primary);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .kv-cell-value.blue { color: var(--primary-500); }
+    .routing-row .kv-cell-value { justify-content: space-between; }
+    .toggle-pill {
+      display: inline-flex;
+      background: var(--neutral-100);
+      border-radius: 100px;
+      padding: 2px;
+    }
+    .toggle-pill button {
+      padding: 3px 10px;
+      border: none; background: transparent;
+      font-family: inherit; font-size: 11px; font-weight: 700;
+      color: var(--text-muted); cursor: pointer;
+      border-radius: 100px;
+    }
+    .toggle-pill button.active { background: var(--neutral-0); color: var(--text-primary); box-shadow: 0 1px 2px rgba(0,0,0,0.06); }
+
+    .ref-block {
+      grid-column: 1 / -1;
+      margin-top: 4px;
+      padding: 14px 16px;
+      background: var(--primary-50);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 12px;
+    }
+    .ref-block-label {
+      font-family: 'Open Sans', sans-serif;
+      font-weight: 300;
+      font-size: 11px;
+      letter-spacing: 0.5px;
+      color: var(--primary-700);
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .ref-block-value {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--primary-500);
+      letter-spacing: 0.2px;
+    }
+    .copy-btn {
+      width: 28px; height: 28px;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 6px;
+      background: var(--neutral-0);
+      border: 1px solid var(--border-strong);
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .copy-btn:hover { background: var(--primary-50); color: var(--primary-600); border-color: var(--primary-500); }
+    .copy-btn svg { width: 14px; height: 14px; }
+
+    /* Info banner */
+    .info-banner {
+      display: flex; gap: 12px;
+      padding: 16px 18px;
+      background: var(--primary-50);
+      border-radius: 10px;
+      text-align: left;
+      font-size: 13.5px;
+      color: var(--text-secondary);
+      line-height: 1.55;
+      margin-bottom: 28px;
+    }
+    .info-banner svg { width: 18px; height: 18px; color: var(--primary-600); flex-shrink: 0; margin-top: 1px; }
+    .info-banner strong { color: var(--text-primary); }
+
+    /* CTA */
+    .primary-btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 13px 28px;
+      border-radius: 10px;
+      background: var(--primary-500);
+      color: #fff;
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      transition: all 0.15s;
+    }
+    .primary-btn:hover { background: var(--primary-600); }
+
+    /* Compact reference card (steps 2 & 3) */
+    .ref-card {
+      background: var(--neutral-50);
+      border-radius: 12px;
+      padding: 20px 24px;
+      margin: 8px auto 0;
+      max-width: 540px;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 20px;
+      text-align: left;
+    }
+    .ref-card .kv-cell-label { margin-bottom: 4px; }
+    .ref-card .kv-cell-value { font-size: 15px; }
+    .ref-card .kv-cell-value.blue { color: var(--primary-500); }
+    .ref-card .kv-cell-value.dual {
+      display: flex; flex-direction: column; align-items: flex-start; gap: 2px;
+      color: var(--primary-500);
+    }
+    .ref-card .kv-cell-value.dual .alt { font-size: 13.5px; color: var(--primary-700); font-weight: 700; }
+
+    /* Help link */
+    .help-link {
+      margin-top: 24px;
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 13.5px;
+      color: var(--text-muted);
+    }
+    .help-link a { color: var(--text-primary); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+    .help-link svg { width: 14px; height: 14px; }
+
+    /* Step 2 dots animation */
+    .dots::after {
+      content: '...';
+      display: inline-block;
+      animation: dots 1.4s infinite;
+    }
+    @keyframes dots {
+      0%, 20% { content: '.'; }
+      40% { content: '..'; }
+      60%, 100% { content: '...'; }
+    }
+
+    @media (max-width: 720px) {
+      .step { padding: 28px 24px; }
+      .kv-grid { grid-template-columns: 1fr; gap: 14px; }
+      .ref-card { grid-template-columns: 1fr; gap: 14px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="crumb">
+    <a href="invoices.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Home
+    </a>
+    <span class="sep">/</span>
+    <span class="current">Pay now</span>
+  </div>
+
+  <main>
+
+    <!-- ─── STEP 1 — Ready to Pay ─── -->
+    <div class="step" id="step1">
+      <h1>Ready to Pay</h1>
+      <p class="sub">Please transfer the funds using the details below to complete your payment.</p>
+
+      <div class="account-card">
+        <div class="section-label">Receiving Account</div>
+
+        <div class="kv-grid">
+          <div>
+            <div class="kv-cell-label">Bank name</div>
+            <div class="kv-cell-value">JPMorgan Chase Bank, N.A.</div>
+          </div>
+          <div>
+            <div class="kv-cell-label">Beneficiary name</div>
+            <div class="kv-cell-value">Rahul Sharma</div>
+          </div>
+
+          <div>
+            <div class="kv-cell-label">Account number</div>
+            <div class="kv-cell-value blue">7723 9904 1182</div>
+          </div>
+          <div class="routing-row">
+            <div class="kv-cell-label">Routing number (ACH)</div>
+            <div class="kv-cell-value">
+              <span>021000021</span>
+              <span class="toggle-pill">
+                <button class="active">Swift</button>
+                <button>Wire</button>
+              </span>
+            </div>
+          </div>
+
+          <div>
+            <div class="kv-cell-label">Swift / BIC (Wire)</div>
+            <div class="kv-cell-value">CHASUS33</div>
+          </div>
+          <div>
+            <div class="kv-cell-label">Amount to transfer</div>
+            <div class="kv-cell-value">$12,450.00</div>
+          </div>
+
+          <div class="ref-block">
+            <div>
+              <div class="ref-block-label">Unique payment reference</div>
+              <div class="ref-block-value">REF-8923-WNK</div>
+            </div>
+            <button class="copy-btn" aria-label="Copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-banner">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+        <div>
+          <strong>Important:</strong> Include the payment reference in your transfer notes to ensure automated matching.
+          Once you've completed the payment, please return here to confirm. We'll then match your payment and update the status to matched.
+        </div>
+      </div>
+
+      <button class="primary-btn" id="madePaymentBtn">I've made the payment</button>
+    </div>
+
+
+    <!-- ─── STEP 2 — Matching ─── -->
+    <div class="step hidden" id="step2">
+      <div class="eyebrow">Awaiting confirmation</div>
+      <h1>Matching your payment<span class="dots"></span></h1>
+      <p class="sub">We are currently verifying your transaction. You'll receive a notification once the status is updated to "Matched".</p>
+
+      <div class="ref-card">
+        <div>
+          <div class="kv-cell-label">Reference</div>
+          <div class="kv-cell-value">WMK-7729-X01</div>
+        </div>
+        <div>
+          <div class="kv-cell-label">Date</div>
+          <div class="kv-cell-value">Oct 24, 2023 · 14:32</div>
+        </div>
+        <div>
+          <div class="kv-cell-label">Amount</div>
+          <div class="kv-cell-value dual">
+            <span>$12,450.00</span>
+            <span class="alt">₹12,49,920.00</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="help-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3"/><circle cx="12" cy="17" r="0.5" fill="currentColor"/></svg>
+        Get <a href="#">help</a> if it takes longer than expected
+      </div>
+    </div>
+
+
+    <!-- ─── STEP 3 — Initiated ─── -->
+    <div class="step hidden" id="step3">
+      <h1>Payment transfer initiated</h1>
+      <p class="sub">Your payment has been received and is being processed for contractor payout.</p>
+
+      <div class="ref-card">
+        <div>
+          <div class="kv-cell-label">Reference</div>
+          <div class="kv-cell-value">WMK-7729-X01</div>
+        </div>
+        <div>
+          <div class="kv-cell-label">Date</div>
+          <div class="kv-cell-value">Oct 24, 2023 · 14:32</div>
+        </div>
+        <div>
+          <div class="kv-cell-label">Amount</div>
+          <div class="kv-cell-value dual">
+            <span>$12,450.00</span>
+            <span class="alt">₹12,49,920.00</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    // Pick up the invoice number from ?inv=
+    const params = new URLSearchParams(location.search);
+    const invNum = params.get('inv') || '#INV-1042';
+
+    function showStep(n) {
+      ['step1', 'step2', 'step3'].forEach((id, i) => {
+        document.getElementById(id).classList.toggle('hidden', i + 1 !== n);
+      });
+    }
+
+    function setPayState(status) {
+      localStorage.setItem('pay-' + invNum, JSON.stringify({ status, t: Date.now() }));
+    }
+
+    document.getElementById('madePaymentBtn').addEventListener('click', () => {
+      setPayState('matching');
+      showStep(2);
+      // Auto-advance to step 3 after ~3s to simulate matching
+      setTimeout(() => {
+        setPayState('initiated');
+        showStep(3);
+      }, 3000);
+    });
+
+    // Toggle Swift / Wire pill
+    document.querySelectorAll('.toggle-pill button').forEach(b => {
+      b.addEventListener('click', () => {
+        document.querySelectorAll('.toggle-pill button').forEach(x => x.classList.toggle('active', x === b));
+      });
+    });
+  </script>
+
+</body>
+</html>
