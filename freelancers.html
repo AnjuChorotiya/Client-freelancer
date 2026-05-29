@@ -201,13 +201,14 @@
     tbody tr { border-top: 1px solid #f0f1f1; transition: background 0.2s ease; }
     tbody tr:first-child { border-top: none; }
     tbody tr:hover { background: #fafbfc; }
-    tbody td { padding: 14px 20px; font-family: 'Open Sans', sans-serif; font-size: 14px; font-weight: 400; color: #626368; vertical-align: middle; }
+    tbody td { padding: 14px 20px; font-family: 'Open Sans', sans-serif; font-size: 14px; font-weight: 500; color: #404145; vertical-align: middle; }
 
     .cell-name { display: flex; align-items: center; gap: 12px; min-width: 0; }
     .cell-avatar { width: 36px; height: 36px; background: #2684ff; border-radius: 50%; color: #fff; display: flex; align-items: center; justify-content: center; font-family: 'Open Sans', sans-serif; font-size: 14px; font-weight: 600; flex-shrink: 0; }
+    .cell-name span:not(.cell-avatar) { font-family: 'Satoshi', sans-serif; font-size: 14px; font-weight: 500; color: #222224; }
     .cell-name-text { display: flex; flex-direction: column; }
     .cell-name-text strong { font-family: 'Satoshi', sans-serif; font-size: 14px; font-weight: 500; color: #222224; }
-    .cell-name-text small { font-family: 'Open Sans', sans-serif; font-size: 12px; font-weight: 400; color: #85878d; margin-top: 1px; }
+    .cell-name-text small { font-family: 'Open Sans', sans-serif; font-size: 12px; font-weight: 500; color: #85878d; margin-top: 1px; }
 
     .country { display: flex; align-items: center; gap: 8px; }
     .country img { width: 18px; height: 18px; border-radius: 50%; object-fit: cover; box-shadow: 0 0 0 1px var(--border-strong); }
@@ -335,85 +336,78 @@
           <table>
             <thead>
               <tr>
-                <th>ID</th>
                 <th>Name</th>
-                <th>Type</th>
-                <th>Job title</th>
-                <th>Contact</th>
+                <th>Contract type</th>
+                <th>Rate</th>
+                <th>Status</th>
                 <th></th>
               </tr>
             </thead>
             <tbody>
 
               <tr>
-                <td>EMP01</td>
-                <td><div class="cell-name">
-                  <div class="cell-avatar">RK</div>
-                  <span>Rahul Kumar</span>
-                </div></td>
-                <td>Employee</td>
-                <td>Designer</td>
-                <td>xyz@gmail.com</td>
-                <td><button class="row-action"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg></button></td>
-              </tr>
-
-              <tr>
-                <td>CON01</td>
-                <td><div class="cell-name">
-                  <div class="cell-avatar">SS</div>
-                  <span>Sarah Sharma</span>
-                </div></td>
-                <td>Contractor</td>
-                <td>Developer</td>
-                <td>abc@gmail.com</td>
-                <td><button class="row-action"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg></button></td>
-              </tr>
-
-              <tr>
-                <td>CON02</td>
                 <td><div class="cell-name">
                   <div class="cell-avatar">PS</div>
-                  <span>Priya Sharma</span>
+                  <div class="cell-name-text"><strong>Priya Sharma</strong><small>Senior Designer</small></div>
                 </div></td>
-                <td>Contractor</td>
-                <td>Senior Designer</td>
-                <td>priya@example.com</td>
+                <td>Contractor · Monthly</td>
+                <td><strong>$3,400</strong>/mo</td>
+                <td><span class="pill active dot">Active</span></td>
                 <td><button class="row-action"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg></button></td>
               </tr>
 
               <tr>
-                <td>CON03</td>
                 <td><div class="cell-name">
                   <div class="cell-avatar">CM</div>
-                  <span>Carlos Mendez</span>
+                  <div class="cell-name-text"><strong>Carlos Mendez</strong><small>Backend Developer</small></div>
                 </div></td>
-                <td>Contractor</td>
-                <td>Backend Developer</td>
-                <td>carlos@example.com</td>
+                <td>Contractor · Hourly</td>
+                <td><strong>$45</strong>/hr</td>
+                <td><span class="pill active dot">Active</span></td>
                 <td><button class="row-action"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg></button></td>
               </tr>
 
               <tr>
-                <td>EMP02</td>
                 <td><div class="cell-name">
                   <div class="cell-avatar">AK</div>
-                  <span>Aisha Khan</span>
+                  <div class="cell-name-text"><strong>Aisha Khan</strong><small>Growth Marketer</small></div>
                 </div></td>
-                <td>Employee</td>
-                <td>Growth Marketer</td>
-                <td>aisha@example.com</td>
+                <td>Contractor · Monthly</td>
+                <td><strong>$2,800</strong>/mo</td>
+                <td><span class="pill paused">Inactive</span></td>
                 <td><button class="row-action"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg></button></td>
               </tr>
 
               <tr>
-                <td>CON04</td>
                 <td><div class="cell-name">
                   <div class="cell-avatar">JL</div>
-                  <span>John Lee</span>
+                  <div class="cell-name-text"><strong>John Lee</strong><small>Content Writer</small></div>
                 </div></td>
-                <td>Contractor</td>
-                <td>Content Writer</td>
-                <td>john@example.com</td>
+                <td>Contractor · Per project</td>
+                <td><strong>$120</strong>/post</td>
+                <td><span class="pill active dot">Active</span></td>
+                <td><button class="row-action"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg></button></td>
+              </tr>
+
+              <tr>
+                <td><div class="cell-name">
+                  <div class="cell-avatar">MS</div>
+                  <div class="cell-name-text"><strong>Maria Silva</strong><small>Translator</small></div>
+                </div></td>
+                <td>Contractor · Hourly</td>
+                <td><strong>$32</strong>/hr</td>
+                <td><span class="pill active dot">Active</span></td>
+                <td><button class="row-action"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg></button></td>
+              </tr>
+
+              <tr>
+                <td><div class="cell-name">
+                  <div class="cell-avatar">RS</div>
+                  <div class="cell-name-text"><strong>Rajesh Singh</strong><small>Developer</small></div>
+                </div></td>
+                <td>Contractor · Monthly</td>
+                <td><strong>$2,500</strong>/mo</td>
+                <td><span class="pill pending">Pending invite</span></td>
                 <td><button class="row-action"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg></button></td>
               </tr>
 
