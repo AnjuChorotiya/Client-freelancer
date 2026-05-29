@@ -69,10 +69,39 @@
 
     .content { flex: 1; padding: 8px 40px 56px 20px; }
 
-    /* Title row */
-    .title-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; margin-bottom: 24px; }
-    .title-row h1 { font-size: 24px; font-weight: 700; letter-spacing: -0.3px; margin-bottom: 4px; }
-    .title-row p { font-size: 14px; color: var(--text-secondary); }
+    /* Unified card wrapper (matches insurance page pattern) */
+    .wm-card {
+      background: #ffffff;
+      border: 1px solid #f0f1f1;
+      border-radius: 8px;
+      padding: 0 0 16px;
+      max-width: 100%;
+      min-width: 0;
+    }
+    .wm-card-heading {
+      padding: 16px 20px 12px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .wm-card-heading h1 {
+      color: #222224;
+      font-family: 'Satoshi', sans-serif;
+      font-size: 1.437rem;
+      font-weight: 700;
+      line-height: 1.3;
+      margin-bottom: 4px;
+    }
+    .wm-card-heading p {
+      color: #85878d;
+      font-family: 'Satoshi', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 1.4;
+    }
+    .wm-card .filter-bar { margin: 0; padding: 16px 20px; background: #fff; }
+    .wm-card .table-card { border: none; border-radius: 0; margin: 0 20px; border: 1px solid #f0f1f1; border-radius: 8px; }
     .primary-btn { display: inline-flex; align-items: center; gap: 8px; padding: 11px 18px; border-radius: 10px; background: var(--primary-500); color: #fff; font-family: inherit; font-size: 14px; font-weight: 700; cursor: pointer; transition: all 0.15s; border: none; }
     .primary-btn:hover { background: var(--primary-600); }
     .primary-btn svg { width: 16px; height: 16px; }
@@ -261,18 +290,20 @@
 
       <div class="content">
 
-        <div class="title-row">
-          <div>
-            <h1>Freelancers</h1>
-            <p>Manage your team of contractors and full-time employees.</p>
-          </div>
-          <button class="primary-btn">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
-            Add freelancer
-          </button>
-        </div>
+        <div class="wm-card">
 
-        <div class="filter-bar">
+          <div class="wm-card-heading">
+            <div>
+              <h1>Freelancers</h1>
+              <p>Manage your team of contractors and full-time employees.</p>
+            </div>
+            <button class="primary-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+              Add freelancer
+            </button>
+          </div>
+
+          <div class="filter-bar">
           <div class="search"><input type="text" placeholder="Search by name or role"></div>
           <div class="filter-dd" id="statusDd">
             <button class="dd-trigger" id="statusTrigger">
@@ -382,6 +413,8 @@
             </tbody>
           </table>
         </div>
+
+        </div> <!-- /.wm-card -->
 
       </div>
     </div>
