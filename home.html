@@ -104,12 +104,31 @@
       background: var(--bg-subtle);
     }
     .header h1 {
+      font-family: 'Satoshi', sans-serif;
       font-weight: 700;
       font-size: 23px;
-      color: var(--grey-700);
+      color: #222224;
+      margin: 0;
     }
     .header-right { display: flex; align-items: center; gap: 16px; }
-    .user-chip { display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 4px 8px 4px 4px; border-radius: 100px; flex-shrink: 0; }
+    .bell-btn {
+      width: 36px; height: 36px;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 8px;
+      background: transparent;
+      border: none;
+      color: #404145;
+      cursor: pointer;
+    }
+    .bell-btn:hover { background: rgba(0,0,0,0.04); }
+    .bell-btn svg { width: 22px; height: 22px; }
+    .user-chip {
+      display: flex; align-items: center; gap: 8px;
+      cursor: pointer;
+      padding: 4px 8px 4px 4px;
+      border-radius: 100px;
+      flex-shrink: 0;
+    }
     .user-avatar {
       width: 32px; height: 32px;
       min-width: 32px;

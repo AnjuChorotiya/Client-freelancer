@@ -60,11 +60,51 @@
     .nav-icon { width: 20px; height: 20px; flex-shrink: 0; color: var(--grey-700); }
 
     .main-col { flex: 1; display: flex; flex-direction: column; min-width: 0; }
-    .header { display: flex; align-items: center; justify-content: space-between; height: 80px; padding: 0 40px; background: var(--bg-subtle); }
+    .header {
+      display: flex; align-items: center; justify-content: space-between;
+      height: 80px;
+      padding: 0 40px;
+      background: var(--bg-subtle);
+    }
+    .header h1 {
+      font-family: 'Satoshi', sans-serif;
+      font-weight: 700;
+      font-size: 23px;
+      color: #222224;
+      margin: 0;
+    }
     .header-right { display: flex; align-items: center; gap: 16px; }
-    .user-chip { display: flex; align-items: center; gap: 8px; padding: 4px 8px 4px 4px; border-radius: 100px; }
-    .user-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--accent-500); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; flex-shrink: 0; }
+    .bell-btn {
+      width: 36px; height: 36px;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 8px;
+      background: transparent;
+      border: none;
+      color: #404145;
+      cursor: pointer;
+    }
+    .bell-btn:hover { background: rgba(0,0,0,0.04); }
+    .bell-btn svg { width: 22px; height: 22px; }
+    .user-chip {
+      display: flex; align-items: center; gap: 8px;
+      cursor: pointer;
+      padding: 4px 8px 4px 4px;
+      border-radius: 100px;
+      flex-shrink: 0;
+    }
+    .user-avatar {
+      width: 32px; height: 32px;
+      min-width: 32px;
+      border-radius: 50%;
+      background: var(--accent-500);
+      color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px;
+      font-weight: 600;
+      flex-shrink: 0;
+    }
     .user-name { font-weight: 500; font-size: 16px; color: var(--grey-700); white-space: nowrap; }
+    .user-chev { width: 16px; height: 16px; color: #85878d; flex-shrink: 0; }
 
     .content { flex: 1; padding: 8px 40px 56px; }
 

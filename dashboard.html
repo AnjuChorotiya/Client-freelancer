@@ -115,51 +115,42 @@
       font-family: 'Satoshi', sans-serif;
       font-weight: 700;
       font-size: 23px;
-      letter-spacing: 0;
-      line-height: 1;
-      color: var(--grey-700);
+      color: #222224;
+      margin: 0;
     }
     .header-right { display: flex; align-items: center; gap: 16px; }
     .bell-btn {
-      width: 32px; height: 32px;
+      width: 36px; height: 36px;
       display: flex; align-items: center; justify-content: center;
-      border-radius: 6px;
-      color: var(--grey-700);
+      border-radius: 8px;
+      background: transparent;
+      border: none;
+      color: #404145;
       cursor: pointer;
-      transition: background 0.15s;
-      position: relative;
     }
-    .bell-btn:hover { background: var(--neutral-100); }
+    .bell-btn:hover { background: rgba(0,0,0,0.04); }
     .bell-btn svg { width: 22px; height: 22px; }
-    .bell-btn .dot {
-      position: absolute; top: 6px; right: 7px;
-      width: 7px; height: 7px;
-      border-radius: 50%;
-      background: var(--accent-500);
-      border: 2px solid var(--bg-subtle);
+    .user-chip {
+      display: flex; align-items: center; gap: 8px;
+      cursor: pointer;
+      padding: 4px 8px 4px 4px;
+      border-radius: 100px;
+      flex-shrink: 0;
     }
-    .user-chip { display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 4px 8px 4px 4px; border-radius: 100px; transition: background 0.15s; }
-    .user-chip:hover { background: var(--neutral-0); }
     .user-avatar {
       width: 32px; height: 32px;
+      min-width: 32px;
       border-radius: 50%;
       background: var(--accent-500);
       color: #fff;
       display: flex; align-items: center; justify-content: center;
-      font-family: 'Inter', 'Satoshi', sans-serif;
       font-size: 11px;
       font-weight: 600;
-      line-height: 20px;
+      flex-shrink: 0;
     }
-    .user-name {
-      font-family: 'Satoshi', sans-serif;
-      font-weight: 500;
-      font-size: 16px;
-      color: var(--grey-700);
-    }
-    .user-chev { width: 16px; height: 16px; color: var(--grey-700); }
+    .user-name { font-weight: 500; font-size: 16px; color: var(--grey-700); white-space: nowrap; }
+    .user-chev { width: 16px; height: 16px; color: #85878d; flex-shrink: 0; }
 
-    /* ─── CONTENT ────────────────────────────────────────── */
     .content {
       flex: 1;
       padding: 8px 40px 48px 20px;
