@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Invoices — Wisemonk</title>
+  <title>Freelancer invoices — Wisemonk</title>
   <link href="https://api.fontshare.com/v2/css?f[]=satoshi@700,500,400&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap" rel="stylesheet">
   <style>
@@ -496,13 +496,13 @@
 
           <div class="wm-card-heading">
             <div>
-              <h1>Invoices</h1>
-              <p>Review and pay invoices submitted by your contractors.</p>
+              <h1>Freelancer invoices</h1>
+              <p>Review and pay invoices submitted by your freelancers.</p>
             </div>
           </div>
 
           <div class="filter-bar">
-          <div class="search"><input type="text" placeholder="Search by contractor name or invoice"></div>
+          <div class="search"><input type="text" placeholder="Search by freelancer name or invoice"></div>
           <div class="filter-dd" id="statusDd">
             <button class="dd-trigger" id="statusTrigger">
               <span id="statusLabel">All status</span>
@@ -538,7 +538,7 @@
             <thead>
               <tr>
                 <th>Invoice</th>
-                <th>Contractor</th>
+                <th>Freelancer</th>
                 <th>Submitted</th>
                 <th>Due</th>
                 <th class="text-right">Amount</th>
@@ -807,7 +807,7 @@
         if (e.target.closest('button')) return;
         const cells = tr.querySelectorAll('td');
         const invNum = cells[0].textContent.trim();
-        const contractor = cells[1].textContent.trim();
+        const freelancer = cells[1].textContent.trim();
         const amount = cells[4].textContent.trim().replace('$', '').replace(',', ',');
         const status = cells[5].textContent.trim();
         const date = cells[2].textContent.trim();
