@@ -266,14 +266,8 @@
     .pill.pending  { background: #F0F1F1; color: #626368; }
     .pill.overdue  { background: #FEECEB; color: #B42318; }
     .pill.draft    { background: #F0F1F1; color: #626368; }
-    .pill.matching { background: #FEF9C3; color: #CA8A04; }
-    .pill.matching::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: #CA8A04; animation: pulseDot 1.2s ease-in-out infinite; }
+    .pill.matching { background: #F0F1F1; color: #626368; }
     .pill.initiated { background: #E1EDFF; color: #2684FF; }
-    .pill.initiated::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: #2684FF; }
-    @keyframes pulseDot {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.4; transform: scale(0.8); }
-    }
 
     .pay-btn {
       display: inline-flex; align-items: center; gap: 6px;
