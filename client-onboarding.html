@@ -206,9 +206,9 @@
     .upload-tile .ut-body { flex: 1; min-width: 0; }
     .upload-tile .ut-title { display: block; font-size: 14px; font-weight: 700; color: var(--text-primary); line-height: 1.3; }
     .upload-tile .ut-sub { display: block; font-size: 12px; color: var(--text-muted); margin-top: 2px; line-height: 1.4; }
-    .upload-tile.uploaded { border-style: solid; border-color: var(--success); background: #ECFDF3; }
-    .upload-tile.uploaded .ut-ico { background: #D1FADF; color: var(--success); }
-    .upload-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .upload-tile.uploaded { border-style: solid; border-color: var(--brand-500); background: var(--brand-50); }
+    .upload-tile.uploaded .ut-ico { background: var(--brand-100); color: var(--brand-500); }
+    .upload-grid { display: flex; flex-direction: column; gap: 12px; }
 
     /* UBO card (legacy — no longer used after UBO step removal, kept for reuse) */
     .ubo-card { background: #FAFBFC; border-radius: 8px; padding: 20px; margin-bottom: 14px; }
@@ -270,7 +270,7 @@
       .topbar { padding: 14px 16px; }
       main { padding: 32px 12px; }
       .page-heading h1 { font-size: 26px; }
-      .fl-row, .upload-grid { grid-template-columns: 1fr; }
+      .fl-row { grid-template-columns: 1fr; }
       .footer-inner { padding: 0 16px; }
       .next-label { display: none; }
     }
@@ -542,7 +542,7 @@
               <span class="ut-sub">front + back · max 5 MB</span>
             </span>
           </label>
-          <label class="upload-tile" style="grid-column: span 2;">
+          <label class="upload-tile">
             <span class="ut-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="10" r="3"/><path d="M7 20.5a5 5 0 0 1 10 0"/></svg></span>
             <span class="ut-body">
               <span class="ut-title">Selfie / liveness check</span>
