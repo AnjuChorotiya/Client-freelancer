@@ -114,8 +114,8 @@
       line-height: 1;
       max-width: calc(100% - 32px);
     }
-    .fl-field input:focus ~ label,
-    .fl-field input:not(:placeholder-shown) ~ label,
+    .fl-field input:not([type="date"]):focus ~ label,
+    .fl-field input:not([type="date"]):not(:placeholder-shown) ~ label,
     .fl-field textarea:focus ~ label,
     .fl-field textarea:not(:placeholder-shown) ~ label,
     .fl-field select.touched ~ label,
