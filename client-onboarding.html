@@ -99,6 +99,7 @@
     .fl-field input:hover, .fl-field select:hover, .fl-field textarea:hover { border-color: var(--border-strong); }
     .fl-field input:focus, .fl-field select:focus, .fl-field textarea:focus {
       border-color: var(--brand-500);
+      border-width: 1.5px;
       box-shadow: 0 0 0 4px var(--brand-100);
     }
     /* Label — sits vertically centered when empty, lifts to top when filled or focused */
@@ -188,11 +189,13 @@
     .fl-field.open { z-index: 51; }
     .fl-field.open > select {
       border-color: var(--brand-500) !important;
+      border-width: 1.5px !important;
       box-shadow: 0 0 0 4px var(--brand-100);
       background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233080FF' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='m6 15 6-6 6 6'/></svg>") !important;
     }
     .fl-field.open > input[type="date"] {
       border-color: var(--brand-500);
+      border-width: 1.5px;
       box-shadow: 0 0 0 4px var(--brand-100);
     }
 
@@ -350,7 +353,7 @@
     }
     .fl-phone .num::placeholder { color: transparent; }
     .fl-phone .num:focus::placeholder { color: var(--text-muted); opacity: 0.6; }
-    .fl-phone .num:focus, .fl-phone .cc:focus { border-color: var(--brand-500); box-shadow: 0 0 0 4px var(--brand-100); position: relative; z-index: 1; }
+    .fl-phone .num:focus, .fl-phone .cc:focus { border-color: var(--brand-500); border-width: 1.5px; box-shadow: 0 0 0 4px var(--brand-100); position: relative; z-index: 1; }
     .fl-phone label {
       position: absolute;
       left: 100px;
