@@ -54,13 +54,68 @@
 
     main { flex: 1; padding: 28px 24px; }
 
-    /* Page heading per step */
-    .page-heading { text-align: center; max-width: 760px; margin: 0 auto 24px; }
-    .page-heading .eyebrow { font-size: 12px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; color: var(--primary-600); margin-bottom: 8px; }
-    .page-heading h1 { font-size: 26px; font-weight: 700; letter-spacing: -0.3px; color: #222224; margin-bottom: 6px; }
-    .page-heading p { font-size: 14.5px; color: var(--text-muted); line-height: 1.55; max-width: 600px; margin: 0 auto; }
+    /* Page heading per step (left-aligned, sits above section cards) */
+    .page-heading { text-align: left; max-width: 760px; margin: 0 auto 20px; padding: 0 4px; }
+    .page-heading h1 { font-size: 22px; font-weight: 700; letter-spacing: -0.2px; color: #222224; margin-bottom: 6px; }
+    .page-heading p { font-size: 13.5px; color: var(--text-muted); line-height: 1.55; }
+    .page-heading p strong { color: var(--text-primary); font-weight: 600; }
 
-    /* Form card */
+    /* Section card — one per logical group on a step */
+    .section-card { max-width: 760px; margin: 0 auto 16px; background: var(--neutral-0); border-radius: 12px; padding: 22px 26px; }
+    .section-card .section-title { font-size: 15.5px; font-weight: 700; color: #222224; margin-bottom: 4px; }
+    .section-card .section-desc { font-size: 12.5px; color: var(--text-muted); margin-bottom: 18px; line-height: 1.55; }
+
+    /* Pill-style input — placeholder doubles as the label (asterisk inline) */
+    .pill-field { margin-bottom: 10px; position: relative; }
+    .pill-field input,
+    .pill-field select,
+    .pill-field textarea {
+      width: 100%;
+      padding: 13px 16px;
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      font-family: 'Satoshi', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-primary);
+      background: #fff;
+      outline: none;
+      appearance: none;
+      transition: border-color 0.15s;
+    }
+    .pill-field input::placeholder, .pill-field textarea::placeholder { color: #9aa2b2; font-weight: 500; }
+    .pill-field textarea { min-height: 84px; resize: vertical; }
+    .pill-field select { color: #9aa2b2; padding-right: 40px;
+      background: #fff url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239AA2B2' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='m6 9 6 6 6-6'/></svg>") no-repeat right 14px center / 18px;
+    }
+    .pill-field select.touched { color: var(--text-primary); }
+    .pill-field input:focus, .pill-field select:focus, .pill-field textarea:focus { border-color: var(--primary-500); }
+
+    /* Upload row inside a section (pill-styled) */
+    .pill-upload {
+      display: flex; align-items: center; justify-content: space-between;
+      width: 100%; padding: 12px 16px;
+      border: 1px dashed #d4d7dd;
+      border-radius: 10px;
+      background: #fff;
+      margin-bottom: 10px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .pill-upload:hover { border-color: var(--primary-500); background: var(--primary-50); }
+    .pill-upload .pu-label { font-size: 14px; color: #9aa2b2; font-weight: 500; }
+    .pill-upload .pu-ico { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 8px; color: var(--text-muted); }
+    .pill-upload .pu-ico svg { width: 18px; height: 18px; }
+    .pill-upload.uploaded { border: 1px solid var(--success); background: #ECFDF3; border-style: solid; }
+    .pill-upload.uploaded .pu-label { color: #222224; }
+    .pill-upload.uploaded .pu-ico { color: var(--success); }
+
+    /* Simple inline checkbox row used inside section cards */
+    .inline-check { display: flex; align-items: center; gap: 10px; padding: 8px 4px 0; }
+    .inline-check input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--primary-500); cursor: pointer; }
+    .inline-check label { font-size: 13.5px; color: #404145; cursor: pointer; }
+
+    /* Legacy form-card (used by steps that still rely on notched-field layout) */
     .form-card { max-width: 700px; margin: 0 auto; background: var(--neutral-0); border-radius: 12px; padding: 26px 28px 22px; }
     .form-section-h { font-size: 16px; font-weight: 700; color: #222224; margin-bottom: 18px; }
     .form-section-h + .form-section-h { margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--border); }
@@ -255,32 +310,89 @@
 
   <main>
 
-    <!-- STEP 1: BUSINESS DETAILS -->
+    <!-- STEP 1: ORGANIZATION DETAILS -->
     <div class="step active" data-step="1">
       <div class="page-heading">
-        <h1>Tell us about your business</h1>
-        <p>We use this to set up locally compliant contracts and the right tax handling for your freelancers.</p>
+        <h1>Tell us about your organization</h1>
+        <p>These details help us create your <strong>partnership terms</strong> agreement and complete the account setup.</p>
       </div>
-      <div class="form-card">
-        <div class="form-section-h">Business details</div>
-        <div class="field"><input type="text" id="bname" placeholder="e.g. Acme Studios Pvt. Ltd." required><label class="field-label">Legal entity name <span class="req">*</span></label></div>
-        <div class="field-row">
-          <div class="field"><select><option>India</option><option>United States</option><option>United Kingdom</option><option>Singapore</option><option>UAE</option><option>Germany</option><option>Australia</option></select><label class="field-label">Country of incorporation <span class="req">*</span></label></div>
-          <div class="field"><select><option>Private Limited (Pvt Ltd)</option><option>Limited Liability Partnership (LLP)</option><option>Sole Proprietorship</option><option>Partnership Firm</option><option>Public Limited</option><option>One Person Company (OPC)</option></select><label class="field-label">Business type <span class="req">*</span></label></div>
+
+      <!-- Card 1: Basic Information -->
+      <div class="section-card">
+        <div class="section-title">Basic Information</div>
+        <p class="section-desc">Provide your name and role for inclusion in your company's service agreement.</p>
+        <div class="pill-field"><input type="text" placeholder="Your full name*" required></div>
+        <div class="pill-field">
+          <select required>
+            <option value="" disabled selected hidden>Designation*</option>
+            <option>Founder</option>
+            <option>CEO</option>
+            <option>Director</option>
+            <option>CFO</option>
+            <option>Authorised signatory</option>
+            <option>Other</option>
+          </select>
         </div>
-        <div class="field-row">
-          <div class="field"><input type="date" required><label class="field-label">Date of incorporation <span class="req">*</span></label></div>
-          <div class="field"><select><option>1 – 10 employees</option><option>11 – 50</option><option>51 – 200</option><option>201 – 500</option><option>500+</option></select><label class="field-label">Company size</label></div>
+      </div>
+
+      <!-- Card 2: Company Information -->
+      <div class="section-card">
+        <div class="section-title">Company Information</div>
+        <p class="section-desc">Enter your company's legal and registration details to generate your service agreement.</p>
+        <div class="pill-field"><input type="text" placeholder="Company name*" required></div>
+        <div class="pill-field">
+          <select required>
+            <option value="" disabled selected hidden>Entity type*</option>
+            <option>Private Limited (Pvt Ltd)</option>
+            <option>Limited Liability Partnership (LLP)</option>
+            <option>Sole Proprietorship</option>
+            <option>Partnership Firm</option>
+            <option>Public Limited</option>
+            <option>One Person Company (OPC)</option>
+          </select>
         </div>
-        <div class="field"><select><option>Technology / SaaS</option><option>Design / Creative</option><option>Marketing / Advertising</option><option>Finance / Fintech</option><option>Healthcare</option><option>E-commerce</option><option>Education</option><option>Other</option></select><label class="field-label">Industry <span class="req">*</span></label></div>
-        <div class="field"><textarea placeholder="Street, city, state, postcode" required></textarea><label class="field-label">Registered office address <span class="req">*</span></label></div>
-        <div class="field-row">
-          <div class="field phone-input">
-            <select class="cc"><option>+91</option><option>+1</option><option>+44</option><option>+65</option></select>
-            <input class="num" type="tel" placeholder="98123 45678" required>
-            <label class="phone-label">Business contact <span class="req">*</span></label>
-          </div>
-          <div class="field"><input type="email" placeholder="e.g. hello@company.com" required><label class="field-label">Business email <span class="req">*</span></label></div>
+        <div class="pill-field">
+          <select required>
+            <option value="" disabled selected hidden>Team size*</option>
+            <option>1 – 10 employees</option>
+            <option>11 – 50</option>
+            <option>51 – 200</option>
+            <option>201 – 500</option>
+            <option>500+</option>
+          </select>
+        </div>
+        <div class="pill-field">
+          <select required>
+            <option value="" disabled selected hidden>Country of incorporation*</option>
+            <option>India</option>
+            <option>United States</option>
+            <option>United Kingdom</option>
+            <option>Singapore</option>
+            <option>UAE</option>
+            <option>Germany</option>
+            <option>Australia</option>
+          </select>
+        </div>
+        <div class="pill-field" id="websiteField"><input type="url" id="companyWebsite" placeholder="Company website*" required></div>
+        <div class="inline-check">
+          <input type="checkbox" id="noWebsite">
+          <label for="noWebsite">We don't have company website.</label>
+        </div>
+      </div>
+
+      <!-- Card 3: Ownership & Management -->
+      <div class="section-card">
+        <div class="section-title">Ownership &amp; Management</div>
+        <p class="section-desc">Provide key management details for compliance and verification as part of MSA setup.</p>
+        <div class="pill-field"><input type="text" placeholder="Name of director*" required></div>
+        <label class="pill-upload">
+          <span class="pu-label">Upload document of director (ID / PAN)</span>
+          <span class="pu-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></span>
+          <input type="file" hidden>
+        </label>
+        <div class="inline-check">
+          <input type="checkbox" id="hasUbo">
+          <label for="hasUbo">Does any individual directly or indirectly hold 25% or more ownership in your company?</label>
         </div>
       </div>
     </div>
@@ -594,6 +706,32 @@
       el.addEventListener('input', updateSaveBtn);
       el.addEventListener('change', updateSaveBtn);
     });
+
+    // Pill selects: switch from placeholder colour to text colour once a real option is chosen
+    document.querySelectorAll('.pill-field select').forEach(sel => {
+      sel.addEventListener('change', () => {
+        if (sel.value) sel.classList.add('touched');
+        else sel.classList.remove('touched');
+      });
+    });
+
+    // "We don't have company website" — hide website field + drop required
+    const noWebsite = document.getElementById('noWebsite');
+    const websiteField = document.getElementById('websiteField');
+    const companyWebsite = document.getElementById('companyWebsite');
+    if (noWebsite && websiteField && companyWebsite) {
+      noWebsite.addEventListener('change', () => {
+        if (noWebsite.checked) {
+          websiteField.style.display = 'none';
+          companyWebsite.removeAttribute('required');
+          companyWebsite.value = '';
+        } else {
+          websiteField.style.display = '';
+          companyWebsite.setAttribute('required', '');
+        }
+        updateSaveBtn();
+      });
+    }
 
     document.getElementById('saveBtn').addEventListener('click', () => {
       if (current === total) {
