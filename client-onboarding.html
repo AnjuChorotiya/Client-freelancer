@@ -310,17 +310,17 @@
 
   <main>
 
-    <!-- STEP 1: ORGANIZATION DETAILS -->
+    <!-- STEP 1: BUSINESS DETAILS -->
     <div class="step active" data-step="1">
       <div class="page-heading">
-        <h1>Tell us about your organization</h1>
-        <p>These details help us create your <strong>partnership terms</strong> agreement and complete the account setup.</p>
+        <h1>Tell us about your business</h1>
+        <p>We use this to set up <strong>locally compliant freelancer contracts</strong> and the right tax handling when you start paying your freelancers.</p>
       </div>
 
-      <!-- Card 1: Basic Information -->
+      <!-- Card 1: Your details (signatory) -->
       <div class="section-card">
-        <div class="section-title">Basic Information</div>
-        <p class="section-desc">Provide your name and role for inclusion in your company's service agreement.</p>
+        <div class="section-title">Your details</div>
+        <p class="section-desc">The name and role of the person setting up this account — this signs freelancer contracts on behalf of the company.</p>
         <div class="pill-field"><input type="text" placeholder="Your full name*" required></div>
         <div class="pill-field">
           <select required>
@@ -333,34 +333,14 @@
             <option>Other</option>
           </select>
         </div>
+        <div class="pill-field"><input type="email" placeholder="Work email*" required></div>
       </div>
 
-      <!-- Card 2: Company Information -->
+      <!-- Card 2: Company details -->
       <div class="section-card">
-        <div class="section-title">Company Information</div>
-        <p class="section-desc">Enter your company's legal and registration details to generate your service agreement.</p>
-        <div class="pill-field"><input type="text" placeholder="Company name*" required></div>
-        <div class="pill-field">
-          <select required>
-            <option value="" disabled selected hidden>Entity type*</option>
-            <option>Private Limited (Pvt Ltd)</option>
-            <option>Limited Liability Partnership (LLP)</option>
-            <option>Sole Proprietorship</option>
-            <option>Partnership Firm</option>
-            <option>Public Limited</option>
-            <option>One Person Company (OPC)</option>
-          </select>
-        </div>
-        <div class="pill-field">
-          <select required>
-            <option value="" disabled selected hidden>Team size*</option>
-            <option>1 – 10 employees</option>
-            <option>11 – 50</option>
-            <option>51 – 200</option>
-            <option>201 – 500</option>
-            <option>500+</option>
-          </select>
-        </div>
+        <div class="section-title">Company details</div>
+        <p class="section-desc">Your company's legal and registration details — required for compliant freelancer contracts and accurate tax handling.</p>
+        <div class="pill-field"><input type="text" placeholder="Legal entity name*" required></div>
         <div class="pill-field">
           <select required>
             <option value="" disabled selected hidden>Country of incorporation*</option>
@@ -373,20 +353,54 @@
             <option>Australia</option>
           </select>
         </div>
+        <div class="pill-field">
+          <select required>
+            <option value="" disabled selected hidden>Business type*</option>
+            <option>Private Limited (Pvt Ltd)</option>
+            <option>Limited Liability Partnership (LLP)</option>
+            <option>Sole Proprietorship</option>
+            <option>Partnership Firm</option>
+            <option>Public Limited</option>
+            <option>One Person Company (OPC)</option>
+          </select>
+        </div>
+        <div class="pill-field">
+          <select required>
+            <option value="" disabled selected hidden>Industry*</option>
+            <option>Technology / SaaS</option>
+            <option>Design / Creative</option>
+            <option>Marketing / Advertising</option>
+            <option>Finance / Fintech</option>
+            <option>Healthcare</option>
+            <option>E-commerce</option>
+            <option>Education</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="pill-field">
+          <select required>
+            <option value="" disabled selected hidden>Company size*</option>
+            <option>1 – 10 employees</option>
+            <option>11 – 50</option>
+            <option>51 – 200</option>
+            <option>201 – 500</option>
+            <option>500+</option>
+          </select>
+        </div>
         <div class="pill-field" id="websiteField"><input type="url" id="companyWebsite" placeholder="Company website*" required></div>
         <div class="inline-check">
           <input type="checkbox" id="noWebsite">
-          <label for="noWebsite">We don't have company website.</label>
+          <label for="noWebsite">We don't have a company website.</label>
         </div>
       </div>
 
       <!-- Card 3: Ownership & Management -->
       <div class="section-card">
         <div class="section-title">Ownership &amp; Management</div>
-        <p class="section-desc">Provide key management details for compliance and verification as part of MSA setup.</p>
+        <p class="section-desc">Director details and ownership declaration — required for AML / KYC checks before we can process freelancer payouts.</p>
         <div class="pill-field"><input type="text" placeholder="Name of director*" required></div>
         <label class="pill-upload">
-          <span class="pu-label">Upload document of director (ID / PAN)</span>
+          <span class="pu-label">Upload director ID (PAN / Aadhaar / Passport)</span>
           <span class="pu-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></span>
           <input type="file" hidden>
         </label>
