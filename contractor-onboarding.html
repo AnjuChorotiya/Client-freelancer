@@ -285,37 +285,40 @@
       z-index: 101;
     }
 
-    /* Phone input */
-    .fl-phone { position: relative; display: flex; }
-    .fl-phone .cc {
-      width: 84px; padding: 16px 28px 16px 14px;
+    /* Phone input — India only, fixed +91 prefix */
+    .fl-phone {
+      position: relative; display: flex; align-items: stretch;
       border: 1px solid var(--border);
-      border-right: none;
-      border-radius: 8px 0 0 8px;
+      border-radius: 8px;
+      background: var(--card);
+    }
+    .fl-phone:focus-within {
+      border-color: var(--brand-500);
+      box-shadow: 0 0 0 1.5px var(--brand-100);
+    }
+    .fl-phone .cc {
+      display: flex; align-items: center;
+      padding: 0 6px 0 14px;
       font-family: 'Satoshi', sans-serif;
       font-size: 16px; font-weight: 500;
       color: var(--text-primary);
-      background: var(--card) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236A7282' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='m6 9 6 6 6-6'/></svg>") no-repeat right 8px center / 14px;
-      outline: none; appearance: none;
-      cursor: pointer;
     }
     .fl-phone .num {
-      flex: 1; padding: 24px 14px 8px;
-      border: 1px solid var(--border);
-      border-radius: 0 8px 8px 0;
+      flex: 1; padding: 24px 14px 8px 4px;
+      border: none;
+      border-radius: 8px;
       font-family: 'Satoshi', sans-serif;
       font-size: 16px; font-weight: 500;
       color: var(--text-primary);
-      background: var(--card);
+      background: transparent;
       outline: none;
       line-height: 1.2;
     }
     .fl-phone .num::placeholder { color: transparent; }
     .fl-phone .num:focus::placeholder { color: var(--text-muted); opacity: 0.6; }
-    .fl-phone .num:focus, .fl-phone .cc:focus { border-color: var(--brand-500); border-width: 1px; box-shadow: 0 0 0 1.5px var(--brand-100); position: relative; z-index: 1; }
     .fl-phone label {
       position: absolute;
-      left: 100px;
+      left: 52px;
       top: 50%; transform: translateY(-50%);
       font-size: 16px; font-weight: 500;
       color: var(--text-muted);
@@ -491,12 +494,7 @@
             <label>Email address</label>
           <p class="field-hint">We'll send the agreement and payment updates here.</p></div>
           <div class="fl-phone">
-            <select class="cc">
-              <option>+91</option>
-              <option>+1</option>
-              <option>+44</option>
-              <option>+65</option>
-            </select>
+            <span class="cc">+91</span>
             <input class="num" type="tel" placeholder=" ">
             <label>Phone number</label>
           </div>

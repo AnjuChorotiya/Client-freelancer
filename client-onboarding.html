@@ -372,6 +372,32 @@
     }
     .fl-phone .req { color: var(--text-muted); margin-left: 2px; }
 
+    /* India-only variant — fixed +91 prefix, no chevron, single unified border */
+    .fl-phone.fixed {
+      align-items: stretch;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--card);
+    }
+    .fl-phone.fixed:focus-within {
+      border-color: var(--brand-500);
+      box-shadow: 0 0 0 1.5px var(--brand-100);
+    }
+    .fl-phone.fixed .cc {
+      display: flex; align-items: center;
+      width: auto; padding: 0 6px 0 14px;
+      border: none; border-radius: 0;
+      background: none;
+      cursor: default; appearance: none;
+    }
+    .fl-phone.fixed .num {
+      padding: 24px 14px 8px 4px;
+      border: none; border-radius: 8px;
+      background: transparent;
+    }
+    .fl-phone.fixed .num:focus { box-shadow: none; }
+    .fl-phone.fixed label { left: 52px; }
+
     /* Inline checkbox row inside section cards */
     .inline-check { display: flex; align-items: center; gap: 10px; padding: 4px 2px 0; }
     .inline-check input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--text-primary); cursor: pointer; }
@@ -1207,13 +1233,8 @@
             <input type="email" placeholder=" " data-must>
             <label>Email address<span class="req">*</span></label>
           <p class="field-hint">We'll send the agreement and payment updates here.</p></div>
-          <div class="fl-phone">
-            <select class="cc">
-              <option>+91</option>
-              <option>+1</option>
-              <option>+44</option>
-              <option>+65</option>
-            </select>
+          <div class="fl-phone fixed">
+            <span class="cc">+91</span>
             <input class="num" type="tel" placeholder=" " data-must>
             <label>Phone number<span class="req">*</span></label>
           </div>
