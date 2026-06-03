@@ -404,6 +404,22 @@
     .check-row input[type="checkbox"] { flex-shrink: 0; width: 18px; height: 18px; margin-top: 2px; accent-color: var(--brand-500); cursor: pointer; }
     .check-row label { font-size: 14px; font-weight: 500; line-height: 1.55; color: var(--text-primary); cursor: pointer; }
     .check-row label a { color: var(--brand-500); font-weight: 700; }
+    .check-row label a.terms-link { color: var(--text-primary); font-weight: 700; text-decoration: underline; }
+
+    /* Selectable option cards (radio-style choice) */
+    .option-cards { display: flex; flex-direction: column; gap: 12px; }
+    .option-card { display: flex; align-items: flex-start; gap: 14px; width: 100%; text-align: left; padding: 16px; border: 1px solid var(--border); border-radius: 12px; background: var(--card); font-family: inherit; cursor: pointer; transition: border-color 0.15s, background 0.15s, box-shadow 0.15s; }
+    .option-card:hover { border-color: var(--border-strong); }
+    .option-card.selected { border-color: var(--brand-500); background: var(--brand-50); box-shadow: 0 0 0 1.5px var(--brand-100); }
+    .option-card-icon { width: 40px; height: 40px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; border-radius: 10px; background: #F3F4F6; color: var(--text-muted); transition: background 0.15s, color 0.15s; }
+    .option-card.selected .option-card-icon { background: var(--brand-500); color: #fff; }
+    .option-card-icon svg { width: 20px; height: 20px; }
+    .option-card-body { flex: 1; }
+    .option-card-title { display: block; font-size: 16px; font-weight: 700; color: var(--text-primary); line-height: 1.3; }
+    .option-card-desc { display: block; font-size: 14px; color: var(--text-muted); margin-top: 4px; line-height: 1.55; }
+    .option-card-radio { width: 20px; height: 20px; flex-shrink: 0; margin-top: 2px; border: 2px solid var(--border-strong); border-radius: 50%; position: relative; transition: border-color 0.15s; }
+    .option-card.selected .option-card-radio { border-color: var(--brand-500); }
+    .option-card.selected .option-card-radio::after { content: ''; position: absolute; inset: 3px; border-radius: 50%; background: var(--brand-500); }
 
     /* Step panels */
     .step { display: none; }
@@ -424,7 +440,7 @@
     .save-btn { height: 48px; padding: 0 28px; background: var(--brand-500); color: #fff; border: none; border-radius: 8px; font-family: inherit; font-size: 16px; font-weight: 700; cursor: pointer; transition: background 0.15s; }
     .save-btn:hover:not(:disabled) { background: var(--brand-600); }
     .save-btn:disabled { background: #E5E7EB; color: #99A1AF; cursor: not-allowed; }
-    .save-btn.success { background: var(--brand-500); }
+    .save-btn.success:not(:disabled) { background: var(--brand-500); }
 
     @media (max-width: 720px) {
       .topbar { padding: 14px 16px; }
@@ -691,12 +707,52 @@
           </div>
           <div class="check-row">
             <input type="checkbox" id="agree2" data-must>
-            <label for="agree2">By proceeding, you agree to <a href="#">Wisemonk's terms</a> for managing contractor payments on your behalf.</label>
+            <label for="agree2">By proceeding, you agree to <a href="#" class="terms-link">Wisemonk's terms</a> for managing contractor payments on your behalf.</label>
           </div>
         </div>
       </div>
 
-      <p class="agreement-foot">For any questions, please reach out to us at <a href="mailto:support@wisemonk.co">support@wisemonk.co</a></p>
+    </div>
+
+    <!-- STEP 5: INVOICING (FINAL) -->
+    <div class="step" data-step="5">
+      <div class="page-heading">
+        <h1>How should invoices be raised?</h1>
+        <p>Choose how invoices are raised for this contractor. This is the last step — you can change it any time later.</p>
+      </div>
+
+      <div class="section-card">
+        <div class="section-title">Invoicing</div>
+        <div class="section-desc">Choose how invoices are raised for this contractor.</div>
+        <div class="option-cards">
+          <button type="button" class="option-card selected" data-invoice="auto">
+            <span class="option-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5.5 3.5h13a1 1 0 0 1 1 1V21l-2.5-1.5L14.5 21 12 19.5 9.5 21 7 19.5 4.5 21V4.5a1 1 0 0 1 1-1Z"/>
+                <path d="M8.5 8.5h7M8.5 12h7M8.5 15.5h4"/>
+              </svg>
+            </span>
+            <span class="option-card-body">
+              <span class="option-card-title">Auto-generate each month</span>
+              <span class="option-card-desc">Wisemonk creates and sends the invoice on the 1st of every month — no action needed from the contractor.</span>
+            </span>
+            <span class="option-card-radio"></span>
+          </button>
+          <button type="button" class="option-card" data-invoice="request">
+            <span class="option-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 15V4M12 4 8 8M12 4l4 4"/>
+                <path d="M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/>
+              </svg>
+            </span>
+            <span class="option-card-body">
+              <span class="option-card-title">On contractor request</span>
+              <span class="option-card-desc">The contractor submits their own invoice each cycle and you approve it before payout.</span>
+            </span>
+            <span class="option-card-radio"></span>
+          </button>
+        </div>
+      </div>
     </div>
 
   </main>
@@ -723,7 +779,8 @@
     const nextLabels = [
       'Contract & payment terms',
       'GST & tax applicability',
-      'Review & sign',
+      'Set up agreement',
+      'Invoicing',
       'Finish'
     ];
 
@@ -797,6 +854,16 @@
     // Choice cards — single choice per group (uses .selected)
     document.querySelectorAll('.choice-cards').forEach(grp => {
       const cards = grp.querySelectorAll('.choice-card');
+      cards.forEach(card => {
+        card.addEventListener('click', () => {
+          cards.forEach(c => c.classList.toggle('selected', c === card));
+        });
+      });
+    });
+
+    // Selectable option cards — single choice per group (uses .selected)
+    document.querySelectorAll('.option-cards').forEach(grp => {
+      const cards = grp.querySelectorAll('.option-card');
       cards.forEach(card => {
         card.addEventListener('click', () => {
           cards.forEach(c => c.classList.toggle('selected', c === card));

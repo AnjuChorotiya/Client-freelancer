@@ -431,6 +431,7 @@
     .check-row { display: flex; gap: 12px; padding: 8px 0; align-items: flex-start; }
     .check-row input[type="checkbox"] { flex-shrink: 0; width: 18px; height: 18px; margin-top: 2px; accent-color: var(--brand-500); cursor: pointer; }
     .check-row label { font-size: 14px; font-weight: 500; line-height: 1.55; color: var(--text-primary); cursor: pointer; }
+    .check-row label a.terms-link { color: var(--text-primary); font-weight: 700; text-decoration: underline; }
     .prohibited-toggle { display: inline-flex; align-items: center; gap: 6px; margin-top: 16px; color: var(--brand-500); font-weight: 700; font-size: 14px; cursor: pointer; }
     .prohibited-toggle svg { width: 16px; height: 16px; transition: transform 0.2s; }
     .prohibited-toggle.open svg { transform: rotate(180deg); }
@@ -534,7 +535,7 @@
     .save-btn { height: 48px; padding: 0 28px; background: var(--brand-500); color: #fff; border: none; border-radius: 8px; font-family: inherit; font-size: 16px; font-weight: 700; cursor: pointer; transition: background 0.15s; }
     .save-btn:hover:not(:disabled) { background: var(--brand-600); }
     .save-btn:disabled { background: #E5E7EB; color: #99A1AF; cursor: not-allowed; }
-    .save-btn.success { background: var(--brand-500); }
+    .save-btn.success:not(:disabled) { background: var(--brand-500); }
 
     @media (max-width: 720px) {
       .topbar { padding: 14px 16px; }
@@ -1423,12 +1424,11 @@
           </div>
           <div class="check-row">
             <input type="checkbox" id="agree2" data-must>
-            <label for="agree2">By proceeding, you agree to <a href="#">Wisemonk's terms</a> for managing contractor payments on your behalf.</label>
+            <label for="agree2">By proceeding, you agree to <a href="#" class="terms-link">Wisemonk's terms</a> for managing contractor payments on your behalf.</label>
           </div>
         </div>
       </div>
 
-      <p class="agreement-foot">For any questions, please reach out to us at <a href="mailto:support@wisemonk.co">support@wisemonk.co</a></p>
     </div>
 
     <!-- STEP 10: INVOICING (FINAL) -->
