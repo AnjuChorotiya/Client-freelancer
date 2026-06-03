@@ -88,7 +88,7 @@
       transition: border-color 0.15s, box-shadow 0.15s;
       line-height: 1.2;
     }
-    .fl-field textarea { min-height: 100px; resize: vertical; padding-top: 26px; }
+    .fl-field textarea { min-height: 100px; resize: vertical; }
     .fl-field select {
       padding-right: 40px;
       cursor: pointer;
@@ -130,7 +130,7 @@
        so the centred floating label can sit on top without clashing. */
     .fl-field input[type="date"]:not(.has-value):not(:focus)::-webkit-datetime-edit { color: transparent; }
     .fl-field input[type="date"]:not(.has-value):not(:focus) { color: transparent; }
-    .fl-field textarea ~ label { top: 26px; transform: none; }
+    .fl-field textarea ~ label { top: 22px; transform: none; }
     .fl-field textarea:focus ~ label,
     .fl-field textarea:not(:placeholder-shown) ~ label { top: 9px; }
     .fl-field .req { color: var(--text-muted); margin-left: 2px; font-weight: 500; }
