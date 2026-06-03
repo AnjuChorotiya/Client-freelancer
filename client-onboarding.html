@@ -65,6 +65,11 @@
     .section-card .fields { display: flex; flex-direction: column; gap: 20px; }
     .section-card .fields + .section-title { margin-top: 28px; padding-top: 24px; border-top: 1px solid var(--border); }
 
+    /* Divided variant — title gets a horizontal hairline under it (used on compliance step) */
+    .section-card.divided { padding: 24px; }
+    .section-card.divided .section-title { padding-bottom: 16px; margin-bottom: 20px; border-bottom: 1px solid var(--border); }
+    .section-card.divided .section-desc { margin-bottom: 16px; }
+
     /* Floating-label field — the centrepiece component */
     .fl-field { position: relative; }
     .fl-field input,
@@ -222,19 +227,17 @@
     .add-ubo svg { width: 16px; height: 16px; }
 
     /* Compliance attestation rows */
-    .check-row { display: flex; gap: 12px; padding: 14px 0; align-items: flex-start; }
-    .check-row + .check-row { border-top: 1px solid var(--border); }
-    .check-row input[type="checkbox"] { flex-shrink: 0; width: 18px; height: 18px; margin-top: 1px; accent-color: var(--text-primary); cursor: pointer; }
+    .check-row { display: flex; gap: 12px; padding: 8px 0; align-items: flex-start; }
+    .check-row input[type="checkbox"] { flex-shrink: 0; width: 18px; height: 18px; margin-top: 2px; accent-color: var(--brand-500); cursor: pointer; }
     .check-row label { font-size: 14px; font-weight: 500; line-height: 1.55; color: var(--text-primary); cursor: pointer; }
-    .check-row strong { color: var(--text-primary); font-weight: 700; }
-    .prohibited-toggle { display: inline-flex; align-items: center; gap: 6px; margin-top: 12px; color: var(--brand-500); font-weight: 700; font-size: 14px; cursor: pointer; }
+    .prohibited-toggle { display: inline-flex; align-items: center; gap: 6px; margin-top: 16px; color: var(--brand-500); font-weight: 700; font-size: 14px; cursor: pointer; }
     .prohibited-toggle svg { width: 16px; height: 16px; transition: transform 0.2s; }
     .prohibited-toggle.open svg { transform: rotate(180deg); }
-    .prohibited-list { display: none; margin-top: 12px; padding: 16px 18px; background: #FAFBFC; border-radius: 8px; }
+    .prohibited-list { display: none; margin-top: 16px; padding: 16px 18px; background: var(--card); border: 1px solid var(--border); border-radius: 8px; }
     .prohibited-list.open { display: block; }
-    .prohibited-list strong { display: block; font-size: 14px; font-weight: 700; color: var(--text-primary); margin-bottom: 8px; }
+    .prohibited-list > strong { display: block; font-size: 14px; font-weight: 700; color: var(--text-primary); margin-bottom: 8px; }
     .prohibited-list ul { padding-left: 18px; }
-    .prohibited-list li { font-size: 13.5px; color: var(--text-secondary); line-height: 1.55; padding: 2px 0; }
+    .prohibited-list li { font-size: 13.5px; font-weight: 500; color: var(--text-secondary); line-height: 1.55; padding: 2px 0; }
 
     /* Pill row (toggle row on last step) */
     .pill-row { display: flex; align-items: center; justify-content: space-between; padding: 16px; border: 1px solid var(--border); border-radius: 8px; background: var(--card); }
@@ -556,38 +559,35 @@
 
     <!-- STEP 4: COMPLIANCE DECLARATION -->
     <div class="step" data-step="4">
-      <div class="page-heading">
-        <h1>Compliance declaration</h1>
-        <p>A few attestations for AML, sanctions, and prohibited-business checks.</p>
-      </div>
 
-      <div class="section-card">
-        <div class="section-title">Please confirm the following</div>
+      <div class="section-card divided">
+        <div class="section-title">Compliance declaration</div>
+        <p class="section-desc">Please confirm the following to verify your company's compliance status:</p>
 
-        <div class="check-row" style="border-top: none;">
+        <div class="check-row">
           <input type="checkbox" id="c1">
-          <label for="c1">I confirm that all funds used for payroll purposes are sourced from <strong>legitimate and traceable business activities</strong>.</label>
+          <label for="c1">I confirm that all funds used for payroll purposes are sourced from legitimate and traceable business activities.</label>
         </div>
         <div class="check-row">
           <input type="checkbox" id="c2">
-          <label for="c2">I declare that neither the company nor any of its directors or Ultimate Beneficial Owners (UBOs) are listed on any <strong>international sanctions or embargo lists</strong>.</label>
+          <label for="c2">I declare that neither the company nor any of its directors or Ultimate Beneficial Owners (UBOs) are listed on any international sanctions or embargo lists.</label>
         </div>
         <div class="check-row">
           <input type="checkbox" id="c3">
-          <label for="c3">I affirm that my company complies with <strong>Anti-Money Laundering (AML)</strong> and <strong>Counter Financing of Terrorism (CFT)</strong> laws in its jurisdiction.</label>
+          <label for="c3">I affirm that my company complies with Anti-Money Laundering (AML) and Counter Financing of Terrorism (CFT) laws in its jurisdiction.</label>
         </div>
         <div class="check-row">
           <input type="checkbox" id="c4">
-          <label for="c4">I confirm that none of the directors or UBOs of my company are considered <strong>Politically Exposed Persons (PEPs)</strong>, nor are they closely associated with a PEP.</label>
+          <label for="c4">I confirm that none of the directors or UBOs of my company are considered Politically Exposed Persons (PEPs), nor are they closely associated with a PEP.</label>
         </div>
       </div>
 
-      <div class="section-card">
-        <div class="section-title">Prohibited / high-risk industries</div>
+      <div class="section-card divided">
+        <div class="section-title">Prohibited / High-Risk Industries</div>
 
-        <div class="check-row" style="border-top: none;">
+        <div class="check-row">
           <input type="checkbox" id="c5">
-          <label for="c5">I hereby declare that my company is <strong>not involved in any prohibited or high-risk activities</strong>, including but not limited to the list below.</label>
+          <label for="c5">I hereby declare that my company is not involved in any prohibited or high-risk activities, including but not limited to the following.</label>
         </div>
 
         <span class="prohibited-toggle" id="probTog">
