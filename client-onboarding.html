@@ -445,18 +445,20 @@
     .prohibited-list li { font-size: 13.5px; font-weight: 500; color: var(--text-secondary); line-height: 1.55; padding: 2px 0; }
 
     /* Pill row (toggle row on last step) */
-    .pill-row { display: flex; align-items: flex-start; gap: 14px; padding: 16px; border: 1px solid var(--border); border-radius: 12px; background: var(--card); transition: border-color 0.15s, background 0.15s, box-shadow 0.15s; }
-    .pill-row:hover { border-color: var(--border-strong); }
-    .pill-row.is-on { border-color: var(--brand-100); background: var(--brand-50); }
-    .pill-row-icon { width: 40px; height: 40px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; border-radius: 10px; background: var(--brand-500); color: #fff; }
-    .pill-row-icon svg { width: 20px; height: 20px; }
-    .pill-row-body { flex: 1; padding-right: 4px; }
-    .pill-row-title { font-size: 16px; font-weight: 700; color: var(--text-primary); line-height: 1.3; }
-    .pill-row-desc { font-size: 14px; color: var(--text-muted); margin-top: 4px; line-height: 1.55; }
-    .toggle { width: 44px; height: 26px; margin-top: 1px; background: var(--border-strong); border-radius: 100px; position: relative; cursor: pointer; transition: background 0.2s; flex-shrink: 0; }
-    .toggle::after { content: ''; position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 50%; background: #fff; transition: transform 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
-    .toggle.on { background: var(--brand-500); }
-    .toggle.on::after { transform: translateX(18px); }
+    /* Selectable option cards (radio-style choice) */
+    .option-cards { display: flex; flex-direction: column; gap: 12px; }
+    .option-card { display: flex; align-items: flex-start; gap: 14px; width: 100%; text-align: left; padding: 16px; border: 1px solid var(--border); border-radius: 12px; background: var(--card); font-family: inherit; cursor: pointer; transition: border-color 0.15s, background 0.15s, box-shadow 0.15s; }
+    .option-card:hover { border-color: var(--border-strong); }
+    .option-card.selected { border-color: var(--brand-500); background: var(--brand-50); box-shadow: 0 0 0 1.5px var(--brand-100); }
+    .option-card-icon { width: 40px; height: 40px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; border-radius: 10px; background: var(--brand-100); color: var(--brand-600); transition: background 0.15s, color 0.15s; }
+    .option-card.selected .option-card-icon { background: var(--brand-500); color: #fff; }
+    .option-card-icon svg { width: 20px; height: 20px; }
+    .option-card-body { flex: 1; }
+    .option-card-title { display: block; font-size: 16px; font-weight: 700; color: var(--text-primary); line-height: 1.3; }
+    .option-card-desc { display: block; font-size: 14px; color: var(--text-muted); margin-top: 4px; line-height: 1.55; }
+    .option-card-radio { width: 20px; height: 20px; flex-shrink: 0; margin-top: 2px; border: 2px solid var(--border-strong); border-radius: 50%; position: relative; transition: border-color 0.15s; }
+    .option-card.selected .option-card-radio { border-color: var(--brand-500); }
+    .option-card.selected .option-card-radio::after { content: ''; position: absolute; inset: 3px; border-radius: 50%; background: var(--brand-500); }
 
     /* Step panels */
     .step { display: none; }
@@ -1189,18 +1191,34 @@
 
       <div class="section-card">
         <div class="section-title">Invoicing</div>
-        <div class="pill-row is-on">
-          <div class="pill-row-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M5.5 3.5h13a1 1 0 0 1 1 1V21l-2.5-1.5L14.5 21 12 19.5 9.5 21 7 19.5 4.5 21V4.5a1 1 0 0 1 1-1Z"/>
-              <path d="M8.5 8.5h7M8.5 12h7M8.5 15.5h4"/>
-            </svg>
-          </div>
-          <div class="pill-row-body">
-            <div class="pill-row-title">Auto-generate invoices each month</div>
-            <div class="pill-row-desc">Wisemonk creates and sends invoices on the 1st of every month. Toggle off if you'd rather have the freelancer submit invoices manually.</div>
-          </div>
-          <div class="toggle on"></div>
+        <div class="section-desc">Choose how invoices are raised for this freelancer.</div>
+        <div class="option-cards">
+          <button type="button" class="option-card selected" data-invoice="auto">
+            <span class="option-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5.5 3.5h13a1 1 0 0 1 1 1V21l-2.5-1.5L14.5 21 12 19.5 9.5 21 7 19.5 4.5 21V4.5a1 1 0 0 1 1-1Z"/>
+                <path d="M8.5 8.5h7M8.5 12h7M8.5 15.5h4"/>
+              </svg>
+            </span>
+            <span class="option-card-body">
+              <span class="option-card-title">Auto-generate each month</span>
+              <span class="option-card-desc">Wisemonk creates and sends the invoice on the 1st of every month — no action needed from the freelancer.</span>
+            </span>
+            <span class="option-card-radio"></span>
+          </button>
+          <button type="button" class="option-card" data-invoice="request">
+            <span class="option-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 15V4M12 4 8 8M12 4l4 4"/>
+                <path d="M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/>
+              </svg>
+            </span>
+            <span class="option-card-body">
+              <span class="option-card-title">On contractor request</span>
+              <span class="option-card-desc">The freelancer submits their own invoice each cycle and you approve it before payout.</span>
+            </span>
+            <span class="option-card-radio"></span>
+          </button>
         </div>
       </div>
     </div>
@@ -1328,15 +1346,14 @@
       });
     });
 
-    // Pill-row toggles — clicking anywhere on the row flips the switch and syncs the card tint
-    document.querySelectorAll('.pill-row').forEach(row => {
-      const t = row.querySelector('.toggle');
-      if (!t) return;
-      const flip = () => {
-        const on = t.classList.toggle('on');
-        row.classList.toggle('is-on', on);
-      };
-      row.addEventListener('click', flip);
+    // Selectable option cards — single choice per group
+    document.querySelectorAll('.option-cards').forEach(grp => {
+      const cards = grp.querySelectorAll('.option-card');
+      cards.forEach(card => {
+        card.addEventListener('click', () => {
+          cards.forEach(c => c.classList.toggle('selected', c === card));
+        });
+      });
     });
 
     // Prohibited list collapse
