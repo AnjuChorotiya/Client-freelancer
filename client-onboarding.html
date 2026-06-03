@@ -445,7 +445,7 @@
     .option-card { display: flex; align-items: flex-start; gap: 14px; width: 100%; text-align: left; padding: 16px; border: 1px solid var(--border); border-radius: 12px; background: var(--card); font-family: inherit; cursor: pointer; transition: border-color 0.15s, background 0.15s, box-shadow 0.15s; }
     .option-card:hover { border-color: var(--border-strong); }
     .option-card.selected { border-color: var(--brand-500); background: var(--brand-50); box-shadow: 0 0 0 1.5px var(--brand-100); }
-    .option-card-icon { width: 40px; height: 40px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; border-radius: 10px; background: var(--brand-100); color: var(--brand-600); transition: background 0.15s, color 0.15s; }
+    .option-card-icon { width: 40px; height: 40px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; border-radius: 10px; background: #F3F4F6; color: var(--text-muted); transition: background 0.15s, color 0.15s; }
     .option-card.selected .option-card-icon { background: var(--brand-500); color: #fff; }
     .option-card-icon svg { width: 20px; height: 20px; }
     .option-card-body { flex: 1; }
@@ -474,7 +474,7 @@
     .save-btn { height: 48px; padding: 0 28px; background: var(--brand-500); color: #fff; border: none; border-radius: 8px; font-family: inherit; font-size: 16px; font-weight: 700; cursor: pointer; transition: background 0.15s; }
     .save-btn:hover:not(:disabled) { background: var(--brand-600); }
     .save-btn:disabled { background: #E5E7EB; color: #99A1AF; cursor: not-allowed; }
-    .save-btn.success { background: var(--success); }
+    .save-btn.success { background: var(--brand-500); }
 
     @media (max-width: 720px) {
       .topbar { padding: 14px 16px; }
