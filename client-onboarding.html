@@ -296,10 +296,10 @@
       <div class="form-card">
         <div class="form-section-h">Business documents</div>
         <div class="field-row">
-          <div class="field"><input type="text" placeholder="L74999HR2021PTC123456"><label class="field-label">CIN <span class="req">*</span></label></div>
-          <div class="field"><input type="text" placeholder="ABCDE1234F"><label class="field-label">Company PAN <span class="req">*</span></label></div>
+          <div class="field"><input type="text" placeholder="e.g. L74999HR2021PTC123456" required><label class="field-label">CIN <span class="req">*</span></label></div>
+          <div class="field"><input type="text" placeholder="e.g. ABCDE1234F" required><label class="field-label">Company PAN <span class="req">*</span></label></div>
         </div>
-        <div class="field"><input type="text" placeholder="06AABCU9603R1ZM"><label class="field-label">GSTIN <span style="color:var(--text-muted)">(if applicable)</span></label></div>
+        <div class="field"><input type="text" placeholder="e.g. 06AABCU9603R1ZM"><label class="field-label">GSTIN <span style="color:var(--text-muted)">(if applicable)</span></label></div>
 
         <div class="form-section-h">Upload documents</div>
         <div class="upload-grid">
@@ -351,20 +351,20 @@
             <button class="ubo-remove">Remove</button>
           </div>
           <div class="field-row">
-            <div class="field"><input type="text" value="Aman Singh"><label class="field-label">Full legal name <span class="req">*</span></label></div>
-            <div class="field"><input type="date" value="1989-04-12"><label class="field-label">Date of birth <span class="req">*</span></label></div>
+            <div class="field"><input type="text" placeholder="e.g. Aman Singh" required><label class="field-label">Full legal name <span class="req">*</span></label></div>
+            <div class="field"><input type="date" required><label class="field-label">Date of birth <span class="req">*</span></label></div>
           </div>
           <div class="field-row">
             <div class="field"><select><option>Indian</option><option>American</option><option>British</option></select><label class="field-label">Nationality <span class="req">*</span></label></div>
             <div class="field"><select><option>India</option><option>United States</option><option>United Kingdom</option></select><label class="field-label">Country of residence <span class="req">*</span></label></div>
           </div>
           <div class="field-row">
-            <div class="field"><input type="number" value="60"><label class="field-label">% ownership <span class="req">*</span></label></div>
+            <div class="field"><input type="number" placeholder="e.g. 60" required><label class="field-label">% ownership <span class="req">*</span></label></div>
             <div class="field"><select><option>Direct shareholding</option><option>Indirect (through another entity)</option><option>Voting rights only</option><option>Control through other means</option></select><label class="field-label">Type of ownership <span class="req">*</span></label></div>
           </div>
           <div class="field-row">
             <div class="field"><select><option>PAN</option><option>Aadhaar</option><option>Passport</option><option>Driving licence</option></select><label class="field-label">Government ID type <span class="req">*</span></label></div>
-            <div class="field"><input type="text" placeholder="ABCDE1234F"><label class="field-label">ID number <span class="req">*</span></label></div>
+            <div class="field"><input type="text" placeholder="e.g. ABCDE1234F" required><label class="field-label">ID number <span class="req">*</span></label></div>
           </div>
           <div class="check-row" style="border-top: none;">
             <input type="checkbox" id="pep1">
@@ -390,23 +390,23 @@
         <div class="form-section-h">Authorised signatory</div>
 
         <div class="check-row" style="border-top: none; margin-bottom: 8px;">
-          <input type="checkbox" id="sameAsUbo" checked>
-          <label for="sameAsUbo">Same as beneficial owner #1 (Aman Singh)</label>
+          <input type="checkbox" id="sameAsUbo">
+          <label for="sameAsUbo">Same as beneficial owner #1</label>
         </div>
 
         <div class="field-row">
-          <div class="field"><input type="text" value="Aman Singh"><label class="field-label">Full legal name <span class="req">*</span></label></div>
+          <div class="field"><input type="text" placeholder="e.g. Aman Singh" required><label class="field-label">Full legal name <span class="req">*</span></label></div>
           <div class="field"><select><option>Director</option><option>Founder</option><option>CEO</option><option>Authorised signatory</option><option>CFO</option></select><label class="field-label">Role <span class="req">*</span></label></div>
         </div>
         <div class="field-row">
-          <div class="field"><input type="email" value="aman@acmestudios.in"><label class="field-label">Personal email <span class="req">*</span></label></div>
+          <div class="field"><input type="email" placeholder="e.g. aman@acmestudios.in" required><label class="field-label">Personal email <span class="req">*</span></label></div>
           <div class="field phone-input">
             <select class="cc"><option>+91</option><option>+1</option><option>+44</option></select>
-            <input class="num" type="tel" value="98765 43210">
+            <input class="num" type="tel" placeholder="98765 43210" required>
             <label class="phone-label">Personal phone <span class="req">*</span></label>
           </div>
         </div>
-        <div class="field"><textarea>Tower B, Apt 1402, Sector 45, Gurugram, Haryana 122003</textarea><label class="field-label">Residential address <span class="req">*</span></label></div>
+        <div class="field"><textarea placeholder="Street, city, state, postcode" required></textarea><label class="field-label">Residential address <span class="req">*</span></label></div>
 
         <div class="form-section-h">Identity documents</div>
         <div class="upload-grid">
@@ -437,15 +437,15 @@
         <div class="form-section-h">Please confirm the following</div>
 
         <div class="check-row" style="border-top: none;">
-          <input type="checkbox" id="c1" checked>
+          <input type="checkbox" id="c1" data-required>
           <label for="c1">I confirm that all funds used for payroll purposes are sourced from <strong>legitimate and traceable business activities</strong>.</label>
         </div>
         <div class="check-row">
-          <input type="checkbox" id="c2" checked>
+          <input type="checkbox" id="c2" data-required>
           <label for="c2">I declare that neither the company nor any of its directors or Ultimate Beneficial Owners (UBOs) are listed on any <strong>international sanctions or embargo lists</strong>.</label>
         </div>
         <div class="check-row">
-          <input type="checkbox" id="c3" checked>
+          <input type="checkbox" id="c3" data-required>
           <label for="c3">I affirm that my company complies with <strong>Anti-Money Laundering (AML)</strong> and <strong>Counter Financing of Terrorism (CFT)</strong> laws in its jurisdiction.</label>
         </div>
         <div class="check-row">
@@ -455,7 +455,7 @@
 
         <div class="form-section-h">Prohibited / high-risk industries</div>
         <div class="check-row" style="border-top: none;">
-          <input type="checkbox" id="c5" checked>
+          <input type="checkbox" id="c5" data-required>
           <label for="c5">I hereby declare that my company is <strong>not involved in any prohibited or high-risk activities</strong>, including but not limited to the list below.</label>
         </div>
 
@@ -520,18 +520,18 @@
       <div class="form-card">
         <div class="form-section-h">Freelancer details</div>
         <div class="field-row">
-          <div class="field"><input type="text" placeholder="Priya Sharma"><label class="field-label">Full name <span class="req">*</span></label></div>
-          <div class="field"><input type="email" placeholder="priya@example.com"><label class="field-label">Email <span class="req">*</span></label></div>
+          <div class="field"><input type="text" placeholder="e.g. Priya Sharma" required><label class="field-label">Full name <span class="req">*</span></label></div>
+          <div class="field"><input type="email" placeholder="e.g. priya@example.com" required><label class="field-label">Email <span class="req">*</span></label></div>
         </div>
         <div class="field-row">
           <div class="field"><select><option>India</option><option>United States</option><option>United Kingdom</option><option>Mexico</option><option>Brazil</option></select><label class="field-label">Country <span class="req">*</span></label></div>
-          <div class="field"><input type="text" placeholder="Senior Designer"><label class="field-label">Role / job title <span class="req">*</span></label></div>
+          <div class="field"><input type="text" placeholder="e.g. Senior Designer" required><label class="field-label">Role / job title <span class="req">*</span></label></div>
         </div>
         <div class="field-row">
           <div class="field"><select><option>Monthly retainer</option><option>Hourly</option><option>Per project</option><option>Fixed price</option></select><label class="field-label">Engagement type <span class="req">*</span></label></div>
-          <div class="field"><input type="number" placeholder="3400"><label class="field-label">Rate (USD) <span class="req">*</span></label></div>
+          <div class="field"><input type="number" placeholder="e.g. 3400" required><label class="field-label">Rate (USD) <span class="req">*</span></label></div>
         </div>
-        <div class="field"><input type="date" value="2026-07-01"><label class="field-label">Start date <span class="req">*</span></label></div>
+        <div class="field"><input type="date" required><label class="field-label">Start date <span class="req">*</span></label></div>
 
         <div class="form-section-h">Invoicing</div>
         <div class="pill-row">
@@ -578,6 +578,8 @@
       if (!activeStep) return true;
       const required = activeStep.querySelectorAll('input[required], textarea[required], select[required]');
       for (const f of required) { if (!f.value.trim()) return false; }
+      const reqChecks = activeStep.querySelectorAll('input[type="checkbox"][data-required]');
+      for (const c of reqChecks) { if (!c.checked) return false; }
       return true;
     }
     function updateSaveBtn() {
