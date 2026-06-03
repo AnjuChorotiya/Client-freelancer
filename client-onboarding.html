@@ -142,6 +142,148 @@
     /* 2-column field row */
     .fl-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 
+    /* Custom select dropdown menu (replaces native browser dropdown) */
+    .custom-select-menu {
+      display: none;
+      position: absolute;
+      top: calc(100% + 6px);
+      left: 0; right: 0;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 6px;
+      max-height: 280px;
+      overflow-y: auto;
+      z-index: 50;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.10), 0 4px 8px rgba(0, 0, 0, 0.04);
+    }
+    .custom-select-menu.open { display: block; }
+    .custom-select-item {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      padding: 10px 12px;
+      background: transparent;
+      border: none;
+      text-align: left;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-primary);
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.1s;
+    }
+    .custom-select-item:hover { background: var(--brand-50); }
+    .custom-select-item.selected { background: var(--brand-50); color: var(--brand-500); font-weight: 700; }
+    .custom-select-item.selected::after {
+      content: '';
+      width: 6px; height: 11px;
+      margin-left: auto;
+      border: solid var(--brand-500);
+      border-width: 0 2px 2px 0;
+      transform: rotate(45deg);
+      margin-bottom: 3px;
+    }
+    /* Field that has its dropdown / calendar popover open */
+    .fl-field.open { z-index: 51; }
+    .fl-field.open > select {
+      border-color: var(--brand-500) !important;
+      box-shadow: 0 0 0 4px var(--brand-100);
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233080FF' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='m6 15 6-6 6 6'/></svg>") !important;
+    }
+    .fl-field.open > input[type="date"] {
+      border-color: var(--brand-500);
+      box-shadow: 0 0 0 4px var(--brand-100);
+    }
+
+    /* Custom calendar popover (replaces native browser date picker) */
+    .custom-calendar {
+      display: none;
+      position: absolute;
+      top: calc(100% + 6px);
+      left: 0;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      width: 300px;
+      z-index: 50;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.10), 0 4px 8px rgba(0, 0, 0, 0.04);
+      font-family: inherit;
+    }
+    .custom-calendar.open { display: block; }
+    .cal-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 14px;
+    }
+    .cal-title {
+      font-size: 14.5px; font-weight: 700;
+      color: var(--text-primary);
+    }
+    .cal-nav { display: flex; gap: 4px; }
+    .cal-prev, .cal-next {
+      width: 28px; height: 28px;
+      background: transparent; border: none;
+      border-radius: 6px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.1s, color 0.1s;
+    }
+    .cal-prev:hover, .cal-next:hover { background: var(--muted-bg); color: var(--text-primary); }
+    .cal-prev svg, .cal-next svg { width: 16px; height: 16px; }
+    .cal-weekdays {
+      display: grid; grid-template-columns: repeat(7, 1fr);
+      gap: 2px;
+      margin-bottom: 6px;
+    }
+    .cal-weekdays span {
+      font-size: 11px; font-weight: 700;
+      color: var(--text-muted);
+      text-align: center;
+      padding: 6px 0;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+    .cal-days {
+      display: grid; grid-template-columns: repeat(7, 1fr);
+      gap: 2px;
+    }
+    .cal-day {
+      height: 36px;
+      background: transparent; border: none;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 13.5px; font-weight: 500;
+      color: var(--text-primary);
+      cursor: pointer;
+      transition: background 0.1s, color 0.1s;
+    }
+    .cal-day:hover:not(.muted) { background: var(--brand-50); color: var(--brand-500); }
+    .cal-day.muted { color: var(--text-muted); opacity: 0.45; cursor: pointer; }
+    .cal-day.muted:hover { background: var(--muted-bg); opacity: 0.7; }
+    .cal-day.today { color: var(--brand-500); font-weight: 700; }
+    .cal-day.selected { background: var(--brand-500); color: #fff; font-weight: 700; }
+    .cal-day.selected:hover { background: var(--brand-600); color: #fff; }
+    .cal-footer {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+    }
+    .cal-footer button {
+      background: transparent; border: none;
+      font-family: inherit;
+      font-size: 13px; font-weight: 700;
+      color: var(--brand-500);
+      cursor: pointer;
+      padding: 6px 10px;
+      border-radius: 6px;
+      transition: background 0.1s;
+    }
+    .cal-footer button:hover { background: var(--brand-50); }
+
     /* Info icon (top-right of a field) + hover tooltip */
     .fl-field .info-icon {
       position: absolute; top: 14px; right: 14px;
@@ -1180,6 +1322,166 @@
     const probTog = document.getElementById('probTog');
     const probList = document.getElementById('probList');
     if (probTog) probTog.addEventListener('click', () => { probTog.classList.toggle('open'); probList.classList.toggle('open'); });
+
+    // ----- Custom select dropdowns -----
+    function closeAllPopovers() {
+      document.querySelectorAll('.custom-select-menu.open, .custom-calendar.open').forEach(m => m.classList.remove('open'));
+      document.querySelectorAll('.fl-field.open').forEach(f => f.classList.remove('open'));
+    }
+    function enhanceSelect(selectEl) {
+      const wrap = selectEl.closest('.fl-field');
+      if (!wrap || wrap.dataset.selectEnhanced) return;
+      wrap.dataset.selectEnhanced = '1';
+
+      const menu = document.createElement('div');
+      menu.className = 'custom-select-menu';
+
+      Array.from(selectEl.options).forEach(opt => {
+        if (opt.disabled || opt.hidden) return;
+        const item = document.createElement('button');
+        item.type = 'button';
+        item.className = 'custom-select-item';
+        item.textContent = opt.textContent;
+        if ((opt.value || opt.textContent) === selectEl.value) item.classList.add('selected');
+        item.addEventListener('click', e => {
+          e.stopPropagation();
+          selectEl.value = opt.value || opt.textContent;
+          selectEl.dispatchEvent(new Event('change', { bubbles: true }));
+          Array.from(menu.children).forEach(c => c.classList.remove('selected'));
+          item.classList.add('selected');
+          closeMenu();
+        });
+        menu.appendChild(item);
+      });
+      wrap.appendChild(menu);
+
+      function openMenu() { closeAllPopovers(); menu.classList.add('open'); wrap.classList.add('open'); }
+      function closeMenu() { menu.classList.remove('open'); wrap.classList.remove('open'); }
+
+      selectEl.addEventListener('mousedown', e => {
+        e.preventDefault();
+        if (menu.classList.contains('open')) closeMenu();
+        else openMenu();
+      });
+      selectEl.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowDown') { e.preventDefault(); openMenu(); }
+        else if (e.key === 'Escape') closeMenu();
+      });
+    }
+    document.querySelectorAll('.fl-field select').forEach(enhanceSelect);
+
+    // ----- Custom calendar date picker -----
+    function pad(n) { return n < 10 ? '0' + n : '' + n; }
+    function isSameDay(a, b) {
+      return a && b && a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
+    }
+    function enhanceDate(inputEl) {
+      const wrap = inputEl.closest('.fl-field');
+      if (!wrap || wrap.dataset.dateEnhanced) return;
+      wrap.dataset.dateEnhanced = '1';
+
+      const cal = document.createElement('div');
+      cal.className = 'custom-calendar';
+      cal.innerHTML = `
+        <div class="cal-header">
+          <span class="cal-title"></span>
+          <div class="cal-nav">
+            <button type="button" class="cal-prev" aria-label="Previous month"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg></button>
+            <button type="button" class="cal-next" aria-label="Next month"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button>
+          </div>
+        </div>
+        <div class="cal-weekdays"><span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span></div>
+        <div class="cal-days"></div>
+        <div class="cal-footer">
+          <button type="button" class="cal-clear">Clear</button>
+          <button type="button" class="cal-today">Today</button>
+        </div>
+      `;
+      wrap.appendChild(cal);
+
+      const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+      const today = new Date();
+      let view = new Date();
+
+      function render() {
+        const selected = inputEl.value ? new Date(inputEl.value + 'T00:00') : null;
+        cal.querySelector('.cal-title').textContent = months[view.getMonth()] + ' ' + view.getFullYear();
+        const grid = cal.querySelector('.cal-days');
+        grid.innerHTML = '';
+        const firstDay = new Date(view.getFullYear(), view.getMonth(), 1);
+        const lastDay = new Date(view.getFullYear(), view.getMonth() + 1, 0);
+        const startDow = firstDay.getDay();
+        const prevLast = new Date(view.getFullYear(), view.getMonth(), 0).getDate();
+        // Previous month leading cells
+        for (let i = startDow - 1; i >= 0; i--) {
+          addCell(prevLast - i, new Date(view.getFullYear(), view.getMonth() - 1, prevLast - i), true);
+        }
+        // Current month
+        for (let d = 1; d <= lastDay.getDate(); d++) {
+          addCell(d, new Date(view.getFullYear(), view.getMonth(), d), false);
+        }
+        // Next month trailing cells to fill grid (max 42 total = 6 rows)
+        const cells = grid.children.length;
+        const remaining = (cells <= 35) ? 35 - cells : 42 - cells;
+        for (let d = 1; d <= remaining; d++) {
+          addCell(d, new Date(view.getFullYear(), view.getMonth() + 1, d), true);
+        }
+        function addCell(label, date, muted) {
+          const b = document.createElement('button');
+          b.type = 'button';
+          b.className = 'cal-day' + (muted ? ' muted' : '') + (isSameDay(date, today) ? ' today' : '') + (isSameDay(date, selected) ? ' selected' : '');
+          b.textContent = label;
+          b.addEventListener('click', e => { e.stopPropagation(); select(date); });
+          grid.appendChild(b);
+        }
+      }
+      function select(d) {
+        inputEl.value = d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
+        inputEl.classList.add('has-value');
+        inputEl.dispatchEvent(new Event('change', { bubbles: true }));
+        inputEl.dispatchEvent(new Event('input', { bubbles: true }));
+        closeCal();
+      }
+      function openCal() {
+        closeAllPopovers();
+        view = inputEl.value ? new Date(inputEl.value + 'T00:00') : new Date();
+        render();
+        cal.classList.add('open');
+        wrap.classList.add('open');
+      }
+      function closeCal() { cal.classList.remove('open'); wrap.classList.remove('open'); }
+
+      // Replace native picker behaviour
+      inputEl.setAttribute('readonly', 'readonly');
+      inputEl.style.cursor = 'pointer';
+      inputEl.addEventListener('mousedown', e => {
+        e.preventDefault();
+        inputEl.focus();
+        if (cal.classList.contains('open')) closeCal();
+        else openCal();
+      });
+      inputEl.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowDown') { e.preventDefault(); openCal(); }
+        else if (e.key === 'Escape') closeCal();
+      });
+
+      cal.querySelector('.cal-prev').addEventListener('click', e => { e.stopPropagation(); view.setMonth(view.getMonth() - 1); render(); });
+      cal.querySelector('.cal-next').addEventListener('click', e => { e.stopPropagation(); view.setMonth(view.getMonth() + 1); render(); });
+      cal.querySelector('.cal-clear').addEventListener('click', e => {
+        e.stopPropagation();
+        inputEl.value = '';
+        inputEl.classList.remove('has-value');
+        inputEl.dispatchEvent(new Event('change', { bubbles: true }));
+        closeCal();
+      });
+      cal.querySelector('.cal-today').addEventListener('click', e => { e.stopPropagation(); select(new Date()); });
+    }
+    document.querySelectorAll('.fl-field input[type="date"]').forEach(enhanceDate);
+
+    // Global click-outside closes any open popover
+    document.addEventListener('mousedown', e => {
+      if (!e.target.closest('.fl-field.open')) closeAllPopovers();
+    });
 
     render();
   </script>
