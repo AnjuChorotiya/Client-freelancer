@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Set up your account — Wisemonk</title>
+  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@700,500,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-50: #E8F2FF;
+      --primary-100: #C5DCFF;
+      --primary-500: #2684FF;
+      --primary-600: #1A6FE0;
+      --primary-700: #1059BD;
+      --neutral-0: #FFFFFF;
+      --neutral-50: #F7F8FA;
+      --neutral-100: #EEF0F4;
+      --neutral-200: #DDE1E9;
+      --neutral-300: #C4CAD6;
+      --neutral-400: #9AA2B2;
+      --neutral-500: #6B7588;
+      --neutral-700: #363D4D;
+      --bg-subtle: #F1F8FF;
+      --border: #EEF0F4;
+      --border-strong: #DDE1E9;
+      --text-primary: #222733;
+      --text-secondary: #363D4D;
+      --text-muted: #85878d;
+      --grey-700: #222224;
+      --danger: #B42318;
+      --success: #027A48;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Satoshi', sans-serif;
+      background: var(--bg-subtle);
+      color: var(--text-primary);
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      padding-bottom: 90px;
+    }
+    a { text-decoration: none; color: inherit; }
+
+    /* Topbar */
+    .topbar { display: flex; align-items: center; justify-content: space-between; padding: 18px 32px; background: var(--neutral-0); }
+    .topbar-logo { display: flex; height: 26px; overflow: hidden; }
+    .topbar-logo img { height: 56px; width: auto; margin-top: -30px; display: block; }
+    .topbar-right { display: flex; align-items: center; gap: 14px; }
+    .need-help { padding: 9px 16px; background: var(--primary-50); color: var(--primary-600); border-radius: 100px; font-size: 13.5px; font-weight: 700; border: none; cursor: pointer; }
+    .need-help:hover { background: #DCE5FF; }
+    .top-close { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 8px; color: var(--text-secondary); cursor: pointer; transition: background 0.15s; }
+    .top-close:hover { background: rgba(0,0,0,0.05); }
+    .top-close svg { width: 18px; height: 18px; }
+
+    main { flex: 1; padding: 28px 24px; }
+
+    /* Page heading per step */
+    .page-heading { text-align: center; max-width: 760px; margin: 0 auto 24px; }
+    .page-heading .eyebrow { font-size: 12px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; color: var(--primary-600); margin-bottom: 8px; }
+    .page-heading h1 { font-size: 26px; font-weight: 700; letter-spacing: -0.3px; color: #222224; margin-bottom: 6px; }
+    .page-heading p { font-size: 14.5px; color: var(--text-muted); line-height: 1.55; max-width: 600px; margin: 0 auto; }
+
+    /* Form card */
+    .form-card { max-width: 700px; margin: 0 auto; background: var(--neutral-0); border-radius: 12px; padding: 26px 28px 22px; }
+    .form-section-h { font-size: 16px; font-weight: 700; color: #222224; margin-bottom: 18px; }
+    .form-section-h + .form-section-h { margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--border); }
+
+    /* Floating-label fields */
+    .field { position: relative; margin-bottom: 14px; }
+    .field input[type="text"],
+    .field input[type="email"],
+    .field input[type="tel"],
+    .field input[type="number"],
+    .field input[type="date"],
+    .field select,
+    .field textarea {
+      width: 100%;
+      padding: 22px 14px 8px;
+      border: 1.5px solid var(--border-strong);
+      border-radius: 8px;
+      font-family: 'Satoshi', sans-serif;
+      font-size: 15px; font-weight: 500;
+      color: var(--text-primary);
+      background: #fff;
+      outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      appearance: none;
+    }
+    .field textarea { min-height: 88px; resize: vertical; padding-top: 24px; }
+    .field select {
+      background: #fff url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239AA2B2' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='m6 9 6 6 6-6'/></svg>") no-repeat right 14px center / 18px;
+      padding-right: 40px;
+    }
+    .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--primary-500); box-shadow: 0 0 0 4px var(--primary-50); }
+    .field-label { position: absolute; top: 7px; left: 15px; font-size: 11.5px; font-weight: 500; color: var(--text-muted); pointer-events: none; letter-spacing: 0.2px; }
+    .field-label .req { color: var(--danger); margin-left: 1px; }
+    .field-hint { font-size: 12.5px; color: var(--text-muted); margin-top: 4px; padding: 0 4px; }
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+    /* Phone input */
+    .phone-input { display: flex; position: relative; }
+    .phone-input .cc { width: 88px; padding: 22px 12px 8px; border: 1.5px solid var(--border-strong); border-right: none; border-radius: 8px 0 0 8px; background: #fff; font-size: 15px; font-weight: 500; outline: none; }
+    .phone-input .num { flex: 1; padding: 22px 14px 8px; border: 1.5px solid var(--border-strong); border-radius: 0 8px 8px 0; font-family: 'Satoshi', sans-serif; font-size: 15px; font-weight: 500; outline: none; }
+    .phone-input .num:focus, .phone-input .cc:focus { border-color: var(--primary-500); }
+    .phone-input .phone-label { position: absolute; top: 7px; left: 15px; font-size: 11.5px; color: var(--text-muted); font-weight: 500; pointer-events: none; }
+
+    /* Yes/No toggle */
+    .yn-toggle { display: inline-flex; padding: 4px; background: #f0f1f1; border-radius: 8px; margin-bottom: 16px; }
+    .yn-toggle button { padding: 8px 22px; border: none; background: transparent; border-radius: 6px; font-family: inherit; font-size: 13.5px; font-weight: 700; color: #626368; cursor: pointer; }
+    .yn-toggle button.active { background: #fff; color: #222224; box-shadow: 0 1px 2px rgba(0,0,0,0.08); }
+
+    /* Upload tiles */
+    .upload-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .upload-box {
+      display: flex; align-items: center; gap: 14px;
+      padding: 16px 18px;
+      border: 1.5px dashed var(--border-strong);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.15s;
+      background: #fafbfc;
+    }
+    .upload-box:hover { border-color: var(--primary-500); background: var(--primary-50); }
+    .upload-box .ico { width: 40px; height: 40px; border-radius: 10px; background: var(--primary-50); color: var(--primary-600); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .upload-box .ico svg { width: 20px; height: 20px; }
+    .upload-box .ub-title { font-size: 14px; font-weight: 700; color: #222224; }
+    .upload-box .ub-sub { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+    .upload-box.uploaded { border: 1.5px solid var(--success); background: #ECFDF3; border-style: solid; }
+    .upload-box.uploaded .ico { background: #D1FADF; color: var(--success); }
+
+    /* UBO card */
+    .ubo-card {
+      background: #fafbfc;
+      border-radius: 10px;
+      padding: 18px;
+      margin-bottom: 14px;
+    }
+    .ubo-card-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+    .ubo-card-head h4 { font-size: 14.5px; font-weight: 700; color: #222224; }
+    .ubo-remove { background: transparent; border: none; color: var(--danger); font-size: 13px; font-weight: 700; cursor: pointer; }
+    .add-ubo {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 16px; border: 1.5px dashed var(--primary-300, #93B8FF);
+      border-radius: 10px;
+      background: transparent; color: var(--primary-600);
+      font-family: inherit; font-size: 13.5px; font-weight: 700; cursor: pointer;
+    }
+    .add-ubo:hover { background: var(--primary-50); }
+    .add-ubo svg { width: 16px; height: 16px; }
+
+    /* Compliance checkboxes */
+    .check-row { display: flex; gap: 12px; padding: 12px 0; align-items: flex-start; }
+    .check-row + .check-row { border-top: 1px solid var(--border); }
+    .check-row input[type="checkbox"] {
+      flex-shrink: 0;
+      width: 20px; height: 20px;
+      margin-top: 2px;
+      accent-color: var(--primary-500);
+      cursor: pointer;
+    }
+    .check-row label { font-size: 14px; line-height: 1.55; color: #222224; cursor: pointer; }
+    .prohibited-toggle { display: inline-flex; align-items: center; gap: 6px; margin-top: 12px; color: var(--primary-600); font-weight: 700; font-size: 13.5px; cursor: pointer; }
+    .prohibited-toggle svg { width: 16px; height: 16px; transition: transform 0.2s; }
+    .prohibited-toggle.open svg { transform: rotate(180deg); }
+    .prohibited-list { display: none; margin-top: 12px; padding: 16px 18px; background: #fafbfc; border-radius: 10px; }
+    .prohibited-list.open { display: block; }
+    .prohibited-list strong { display: block; font-size: 13.5px; font-weight: 700; color: #222224; margin-bottom: 8px; }
+    .prohibited-list ul { padding-left: 18px; }
+    .prohibited-list li { font-size: 13px; color: var(--text-secondary); line-height: 1.55; padding: 2px 0; }
+
+    /* Toggle pill row (auto-invoice toggle on last step) */
+    .pill-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 16px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #fafbfc;
+      margin-bottom: 12px;
+    }
+    .pill-row-body { flex: 1; }
+    .pill-row-title { font-size: 14px; font-weight: 700; color: #222224; }
+    .pill-row-desc { font-size: 12.5px; color: var(--text-muted); margin-top: 2px; }
+    .toggle { width: 38px; height: 22px; background: var(--neutral-300); border-radius: 100px; position: relative; cursor: pointer; transition: background 0.2s; flex-shrink: 0; }
+    .toggle::after { content: ''; position: absolute; top: 2px; left: 2px; width: 18px; height: 18px; border-radius: 50%; background: #fff; transition: transform 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.15); }
+    .toggle.on { background: var(--primary-500); }
+    .toggle.on::after { transform: translateX(16px); }
+
+    /* Step panels */
+    .step { display: none; }
+    .step.active { display: block; }
+
+    /* Bottom footer */
+    .footer-bar { position: fixed; bottom: 0; left: 0; right: 0; background: var(--neutral-0); border-top: 1px solid var(--border); padding: 16px 32px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+    .progress-row { position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--neutral-100); }
+    .progress-fill { height: 100%; background: var(--primary-500); transition: width 0.3s; }
+    .back-link { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 700; color: var(--text-primary); cursor: pointer; background: none; border: none; }
+    .back-link svg { width: 16px; height: 16px; }
+    .back-link:hover { color: var(--primary-600); }
+    .back-link:disabled { opacity: 0.3; cursor: not-allowed; }
+    .footer-right { display: flex; align-items: center; gap: 18px; }
+    .next-label { font-size: 13.5px; color: var(--text-muted); }
+    .next-label strong { color: var(--text-primary); font-weight: 600; margin-left: 4px; }
+    .save-btn { padding: 12px 22px; background: var(--primary-500); color: #fff; border: none; border-radius: 8px; font-family: inherit; font-size: 14.5px; font-weight: 700; cursor: pointer; transition: background 0.15s; }
+    .save-btn:hover { background: var(--primary-600); }
+    .save-btn.success { background: var(--success); }
+
+    @media (max-width: 720px) {
+      .topbar { padding: 14px 16px; }
+      main { padding: 24px 12px; }
+      .form-card { padding: 20px; }
+      .field-row, .upload-grid { grid-template-columns: 1fr; }
+      .footer-bar { padding: 12px 16px; }
+      .next-label { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="topbar">
+    <a href="dashboard.html" class="topbar-logo"><img src="wisemonk_logo_final.png" alt="Wisemonk"></a>
+    <div class="topbar-right">
+      <button class="need-help">Need help?</button>
+      <a href="dashboard.html" class="top-close" aria-label="Close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </a>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- STEP 1: BUSINESS DETAILS -->
+    <div class="step active" data-step="1">
+      <div class="page-heading">
+        <div class="eyebrow">Step 1 of 7</div>
+        <h1>Tell us about your business</h1>
+        <p>We use this to set up locally compliant contracts and the right tax handling for your freelancers.</p>
+      </div>
+      <div class="form-card">
+        <div class="form-section-h">Business details</div>
+        <div class="field"><input type="text" id="bname" value="Acme Studios Pvt. Ltd."><label class="field-label">Legal entity name <span class="req">*</span></label></div>
+        <div class="field-row">
+          <div class="field"><select><option>India</option><option>United States</option><option>United Kingdom</option><option>Singapore</option><option>UAE</option><option>Germany</option><option>Australia</option></select><label class="field-label">Country of incorporation <span class="req">*</span></label></div>
+          <div class="field"><select><option>Private Limited (Pvt Ltd)</option><option>Limited Liability Partnership (LLP)</option><option>Sole Proprietorship</option><option>Partnership Firm</option><option>Public Limited</option><option>One Person Company (OPC)</option></select><label class="field-label">Business type <span class="req">*</span></label></div>
+        </div>
+        <div class="field-row">
+          <div class="field"><input type="date" value="2021-06-14"><label class="field-label">Date of incorporation <span class="req">*</span></label></div>
+          <div class="field"><select><option>1 – 10 employees</option><option>11 – 50</option><option>51 – 200</option><option>201 – 500</option><option>500+</option></select><label class="field-label">Company size</label></div>
+        </div>
+        <div class="field"><select><option>Technology / SaaS</option><option>Design / Creative</option><option>Marketing / Advertising</option><option>Finance / Fintech</option><option>Healthcare</option><option>E-commerce</option><option>Education</option><option>Other</option></select><label class="field-label">Industry <span class="req">*</span></label></div>
+        <div class="field"><textarea>Plot 42, Sector 18, Gurugram, Haryana 122015</textarea><label class="field-label">Registered office address <span class="req">*</span></label></div>
+        <div class="field-row">
+          <div class="field phone-input">
+            <select class="cc"><option>+91</option><option>+1</option><option>+44</option><option>+65</option></select>
+            <input class="num" type="tel" value="98123 45678">
+            <label class="phone-label">Business contact <span class="req">*</span></label>
+          </div>
+          <div class="field"><input type="email" value="hello@acmestudios.in"><label class="field-label">Business email <span class="req">*</span></label></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 2: VERIFY BUSINESS (KYB DOCS) -->
+    <div class="step" data-step="2">
+      <div class="page-heading">
+        <div class="eyebrow">Step 2 of 7</div>
+        <h1>Verify your business</h1>
+        <p>Upload the official documents that prove your company's existence and tax registration.</p>
+      </div>
+      <div class="form-card">
+        <div class="form-section-h">Business documents</div>
+        <div class="field-row">
+          <div class="field"><input type="text" placeholder="L74999HR2021PTC123456"><label class="field-label">CIN <span class="req">*</span></label></div>
+          <div class="field"><input type="text" placeholder="ABCDE1234F"><label class="field-label">Company PAN <span class="req">*</span></label></div>
+        </div>
+        <div class="field"><input type="text" placeholder="06AABCU9603R1ZM"><label class="field-label">GSTIN <span style="color:var(--text-muted)">(if applicable)</span></label></div>
+
+        <div class="form-section-h">Upload documents</div>
+        <div class="upload-grid">
+          <label class="upload-box uploaded">
+            <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
+            <div><div class="ub-title">Certificate of Incorporation</div><div class="ub-sub">incorporation-cert.pdf · uploaded</div></div>
+            <input type="file" hidden>
+          </label>
+          <label class="upload-box">
+            <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
+            <div><div class="ub-title">Company PAN card</div><div class="ub-sub">PDF or image · max 5 MB</div></div>
+            <input type="file" hidden>
+          </label>
+          <label class="upload-box">
+            <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
+            <div><div class="ub-title">GST certificate</div><div class="ub-sub">if registered for GST</div></div>
+            <input type="file" hidden>
+          </label>
+          <label class="upload-box">
+            <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
+            <div><div class="ub-title">MOA / AOA</div><div class="ub-sub">optional</div></div>
+            <input type="file" hidden>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 3: UBO -->
+    <div class="step" data-step="3">
+      <div class="page-heading">
+        <div class="eyebrow">Step 3 of 7</div>
+        <h1>Beneficial owners</h1>
+        <p>Tell us about the individuals who ultimately own or control 25% or more of your company.</p>
+      </div>
+      <div class="form-card">
+        <div class="form-section-h">Ownership declaration</div>
+
+        <label style="font-size: 14px; font-weight: 600; color: #404145; display: block; margin-bottom: 10px;">
+          Does any individual own 25% or more of this business, directly or indirectly? <span style="color:var(--danger)">*</span>
+        </label>
+        <div class="yn-toggle">
+          <button class="active" type="button">Yes</button>
+          <button type="button">No</button>
+        </div>
+
+        <div class="ubo-card">
+          <div class="ubo-card-head">
+            <h4>Beneficial owner #1</h4>
+            <button class="ubo-remove">Remove</button>
+          </div>
+          <div class="field-row">
+            <div class="field"><input type="text" value="Aman Singh"><label class="field-label">Full legal name <span class="req">*</span></label></div>
+            <div class="field"><input type="date" value="1989-04-12"><label class="field-label">Date of birth <span class="req">*</span></label></div>
+          </div>
+          <div class="field-row">
+            <div class="field"><select><option>Indian</option><option>American</option><option>British</option></select><label class="field-label">Nationality <span class="req">*</span></label></div>
+            <div class="field"><select><option>India</option><option>United States</option><option>United Kingdom</option></select><label class="field-label">Country of residence <span class="req">*</span></label></div>
+          </div>
+          <div class="field-row">
+            <div class="field"><input type="number" value="60"><label class="field-label">% ownership <span class="req">*</span></label></div>
+            <div class="field"><select><option>Direct shareholding</option><option>Indirect (through another entity)</option><option>Voting rights only</option><option>Control through other means</option></select><label class="field-label">Type of ownership <span class="req">*</span></label></div>
+          </div>
+          <div class="field-row">
+            <div class="field"><select><option>PAN</option><option>Aadhaar</option><option>Passport</option><option>Driving licence</option></select><label class="field-label">Government ID type <span class="req">*</span></label></div>
+            <div class="field"><input type="text" placeholder="ABCDE1234F"><label class="field-label">ID number <span class="req">*</span></label></div>
+          </div>
+          <div class="check-row" style="border-top: none;">
+            <input type="checkbox" id="pep1">
+            <label for="pep1">This person is a Politically Exposed Person (PEP) or closely related to one.</label>
+          </div>
+        </div>
+
+        <button class="add-ubo">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+          Add another beneficial owner
+        </button>
+      </div>
+    </div>
+
+    <!-- STEP 4: VERIFY IDENTITY (signatory) -->
+    <div class="step" data-step="4">
+      <div class="page-heading">
+        <div class="eyebrow">Step 4 of 7</div>
+        <h1>Verify your identity</h1>
+        <p>The authorised signatory's details — the person who can legally sign agreements on behalf of the company.</p>
+      </div>
+      <div class="form-card">
+        <div class="form-section-h">Authorised signatory</div>
+
+        <div class="check-row" style="border-top: none; margin-bottom: 8px;">
+          <input type="checkbox" id="sameAsUbo" checked>
+          <label for="sameAsUbo">Same as beneficial owner #1 (Aman Singh)</label>
+        </div>
+
+        <div class="field-row">
+          <div class="field"><input type="text" value="Aman Singh"><label class="field-label">Full legal name <span class="req">*</span></label></div>
+          <div class="field"><select><option>Director</option><option>Founder</option><option>CEO</option><option>Authorised signatory</option><option>CFO</option></select><label class="field-label">Role <span class="req">*</span></label></div>
+        </div>
+        <div class="field-row">
+          <div class="field"><input type="email" value="aman@acmestudios.in"><label class="field-label">Personal email <span class="req">*</span></label></div>
+          <div class="field phone-input">
+            <select class="cc"><option>+91</option><option>+1</option><option>+44</option></select>
+            <input class="num" type="tel" value="98765 43210">
+            <label class="phone-label">Personal phone <span class="req">*</span></label>
+          </div>
+        </div>
+        <div class="field"><textarea>Tower B, Apt 1402, Sector 45, Gurugram, Haryana 122003</textarea><label class="field-label">Residential address <span class="req">*</span></label></div>
+
+        <div class="form-section-h">Identity documents</div>
+        <div class="upload-grid">
+          <label class="upload-box uploaded">
+            <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
+            <div><div class="ub-title">PAN card</div><div class="ub-sub">pan-card.pdf · uploaded</div></div>
+          </label>
+          <label class="upload-box">
+            <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
+            <div><div class="ub-title">Aadhaar / Government ID</div><div class="ub-sub">front + back · max 5 MB</div></div>
+          </label>
+          <label class="upload-box" style="grid-column: span 2;">
+            <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="10" r="3"/><path d="M7 20.5a5 5 0 0 1 10 0"/></svg></div>
+            <div><div class="ub-title">Selfie / liveness check</div><div class="ub-sub">Take a quick selfie to confirm it's you</div></div>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 5: COMPLIANCE DECLARATION -->
+    <div class="step" data-step="5">
+      <div class="page-heading">
+        <div class="eyebrow">Step 5 of 7</div>
+        <h1>Compliance declaration</h1>
+        <p>A few attestations required for AML, sanctions, and prohibited-business checks.</p>
+      </div>
+      <div class="form-card">
+        <div class="form-section-h">Please confirm the following</div>
+
+        <div class="check-row" style="border-top: none;">
+          <input type="checkbox" id="c1" checked>
+          <label for="c1">I confirm that all funds used for payroll purposes are sourced from <strong>legitimate and traceable business activities</strong>.</label>
+        </div>
+        <div class="check-row">
+          <input type="checkbox" id="c2" checked>
+          <label for="c2">I declare that neither the company nor any of its directors or Ultimate Beneficial Owners (UBOs) are listed on any <strong>international sanctions or embargo lists</strong>.</label>
+        </div>
+        <div class="check-row">
+          <input type="checkbox" id="c3" checked>
+          <label for="c3">I affirm that my company complies with <strong>Anti-Money Laundering (AML)</strong> and <strong>Counter Financing of Terrorism (CFT)</strong> laws in its jurisdiction.</label>
+        </div>
+        <div class="check-row">
+          <input type="checkbox" id="c4">
+          <label for="c4">I confirm that none of the directors or UBOs of my company are considered <strong>Politically Exposed Persons (PEPs)</strong>, nor are they closely associated with a PEP.</label>
+        </div>
+
+        <div class="form-section-h">Prohibited / high-risk industries</div>
+        <div class="check-row" style="border-top: none;">
+          <input type="checkbox" id="c5" checked>
+          <label for="c5">I hereby declare that my company is <strong>not involved in any prohibited or high-risk activities</strong>, including but not limited to the list below.</label>
+        </div>
+
+        <span class="prohibited-toggle" id="probTog">
+          View activities
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </span>
+        <div class="prohibited-list" id="probList">
+          <strong>Your company does not engage in any of the following activities:</strong>
+          <ul>
+            <li>Arms, weapons, ammunition, or explosives</li>
+            <li>Gambling, betting, or online casinos</li>
+            <li>Adult entertainment or pornography</li>
+            <li>Narcotics, illegal drugs, or related trade</li>
+            <li>Shell companies or anonymous ownership structures</li>
+            <li>Postal services, MLM schemes, or pyramid models</li>
+            <li>Unlicensed money services, lending, or investment businesses</li>
+            <li>Unregulated foreign exchange or remittance businesses</li>
+            <li>Counterfeit goods or intellectual property infringement</li>
+            <li>Environmental crimes (illegal mining, logging, wildlife trafficking)</li>
+            <li>Cryptocurrency or digital asset businesses (exchanges, wallets, ICOs, DeFi platforms)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 6: TAX & COMPLIANCE SETUP -->
+    <div class="step" data-step="6">
+      <div class="page-heading">
+        <div class="eyebrow">Step 6 of 7</div>
+        <h1>Tax &amp; payment preferences</h1>
+        <p>How invoices should be billed and approved when you start paying freelancers.</p>
+      </div>
+      <div class="form-card">
+        <div class="form-section-h">Tax</div>
+        <div class="field-row">
+          <div class="field"><select><option>USD</option><option>INR</option><option>EUR</option><option>GBP</option><option>SGD</option></select><label class="field-label">Primary billing currency <span class="req">*</span></label></div>
+          <div class="field"><select><option>Yes — withhold TDS</option><option>No — pay freelancer in full</option></select><label class="field-label">Withhold tax on payments? <span class="req">*</span></label></div>
+        </div>
+        <div class="field-row">
+          <div class="field"><select><option>Section 194J — Professional services (10%)</option><option>Section 194C — Contract work (2%)</option><option>Section 194O — E-commerce (1%)</option></select><label class="field-label">TDS section</label></div>
+          <div class="field"><select><option>Registered</option><option>Not registered</option><option>Composition scheme</option></select><label class="field-label">GST status</label></div>
+        </div>
+
+        <div class="form-section-h">Approval rules</div>
+        <div class="field-row">
+          <div class="field"><select><option>14 days after submission</option><option>7 days</option><option>30 days</option><option>End of month</option></select><label class="field-label">Default invoice due</label></div>
+          <div class="field"><input type="number" placeholder="500"><label class="field-label">Auto-approve invoices under (USD)</label></div>
+        </div>
+        <div class="field"><input type="number" placeholder="10000"><label class="field-label">Require dual approval above (USD)</label></div>
+        <p class="field-hint">Invoices over this amount will require approval from a second admin before payout.</p>
+      </div>
+    </div>
+
+    <!-- STEP 7: ADD FIRST FREELANCER -->
+    <div class="step" data-step="7">
+      <div class="page-heading">
+        <div class="eyebrow">Step 7 of 7</div>
+        <h1>Add your first freelancer</h1>
+        <p>Invite a freelancer to start sending contracts, time entries, and invoices.</p>
+      </div>
+      <div class="form-card">
+        <div class="form-section-h">Freelancer details</div>
+        <div class="field-row">
+          <div class="field"><input type="text" placeholder="Priya Sharma"><label class="field-label">Full name <span class="req">*</span></label></div>
+          <div class="field"><input type="email" placeholder="priya@example.com"><label class="field-label">Email <span class="req">*</span></label></div>
+        </div>
+        <div class="field-row">
+          <div class="field"><select><option>India</option><option>United States</option><option>United Kingdom</option><option>Mexico</option><option>Brazil</option></select><label class="field-label">Country <span class="req">*</span></label></div>
+          <div class="field"><input type="text" placeholder="Senior Designer"><label class="field-label">Role / job title <span class="req">*</span></label></div>
+        </div>
+        <div class="field-row">
+          <div class="field"><select><option>Monthly retainer</option><option>Hourly</option><option>Per project</option><option>Fixed price</option></select><label class="field-label">Engagement type <span class="req">*</span></label></div>
+          <div class="field"><input type="number" placeholder="3400"><label class="field-label">Rate (USD) <span class="req">*</span></label></div>
+        </div>
+        <div class="field"><input type="date" value="2026-07-01"><label class="field-label">Start date <span class="req">*</span></label></div>
+
+        <div class="form-section-h">Invoicing</div>
+        <div class="pill-row">
+          <div class="pill-row-body">
+            <div class="pill-row-title">Auto-generate invoices each month</div>
+            <div class="pill-row-desc">Wisemonk creates and sends invoices on the 1st of every month. Toggle off if you'd rather have Priya submit invoices manually.</div>
+          </div>
+          <div class="toggle on"></div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="footer-bar">
+    <div class="progress-row"><div class="progress-fill" id="progressFill"></div></div>
+    <button class="back-link" id="backBtn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Back
+    </button>
+    <div class="footer-right">
+      <div class="next-label" id="nextLabel">Next: <strong>Verify your business</strong></div>
+      <button class="save-btn" id="saveBtn">Save &amp; continue</button>
+    </div>
+  </footer>
+
+  <script>
+    const steps = document.querySelectorAll('.step');
+    const total = steps.length;
+    let current = 1;
+
+    const nextLabels = [
+      'Verify your business',
+      'Beneficial owners',
+      'Verify your identity',
+      'Compliance declaration',
+      'Tax & payment preferences',
+      'Add your first freelancer',
+      'Finish'
+    ];
+
+    function render() {
+      steps.forEach(s => s.classList.toggle('active', +s.dataset.step === current));
+      document.getElementById('progressFill').style.width = (current / total * 100) + '%';
+      document.getElementById('backBtn').disabled = current === 1;
+      const isLast = current === total;
+      document.getElementById('saveBtn').textContent = isLast ? 'Finish setup' : 'Save & continue';
+      document.getElementById('saveBtn').classList.toggle('success', isLast);
+      document.getElementById('nextLabel').innerHTML = isLast ? '' : 'Next: <strong>' + nextLabels[current - 1] + '</strong>';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    document.getElementById('saveBtn').addEventListener('click', () => {
+      if (current === total) {
+        location.href = 'home.html';
+        return;
+      }
+      current++;
+      render();
+    });
+
+    document.getElementById('backBtn').addEventListener('click', () => {
+      if (current > 1) { current--; render(); }
+    });
+
+    // Yes/No toggle
+    document.querySelectorAll('.yn-toggle').forEach(grp => {
+      grp.querySelectorAll('button').forEach(b => {
+        b.addEventListener('click', () => grp.querySelectorAll('button').forEach(x => x.classList.toggle('active', x === b)));
+      });
+    });
+
+    // Toggles
+    document.querySelectorAll('.toggle').forEach(t => t.addEventListener('click', () => t.classList.toggle('on')));
+
+    // Prohibited list collapse
+    const probTog = document.getElementById('probTog');
+    const probList = document.getElementById('probList');
+    if (probTog) probTog.addEventListener('click', () => { probTog.classList.toggle('open'); probList.classList.toggle('open'); });
+
+    render();
+  </script>
+
+</body>
+</html>
