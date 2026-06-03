@@ -396,11 +396,6 @@
     /* Free-standing field hint (used outside .fl-field, e.g. under a checkbox) */
     .field-hint { font-size: 13px; font-weight: 500; color: var(--text-muted); margin-top: 6px; padding: 0 4px; }
 
-    /* Yes / No segmented control */
-    .yn-toggle { display: inline-flex; padding: 4px; background: #F3F4F6; border-radius: 8px; margin-bottom: 16px; }
-    .yn-toggle button { padding: 8px 22px; border: none; background: transparent; border-radius: 6px; font-family: inherit; font-size: 14px; font-weight: 700; color: var(--text-muted); cursor: pointer; }
-    .yn-toggle button.active { background: var(--card); color: var(--text-primary); box-shadow: 0 1px 2px rgba(0,0,0,0.08); }
-
     /* Upload tile (single line, dashed) */
     .upload-tile {
       display: flex; align-items: center; gap: 12px;
@@ -1337,13 +1332,6 @@
 
     document.getElementById('backBtn').addEventListener('click', () => {
       if (current > 1) { current--; render(); }
-    });
-
-    // Yes / No segmented control
-    document.querySelectorAll('.yn-toggle').forEach(grp => {
-      grp.querySelectorAll('button').forEach(b => {
-        b.addEventListener('click', () => grp.querySelectorAll('button').forEach(x => x.classList.toggle('active', x === b)));
-      });
     });
 
     // Selectable option cards — single choice per group
