@@ -210,7 +210,7 @@
     .upload-tile.uploaded .ut-ico { background: #D1FADF; color: var(--success); }
     .upload-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 
-    /* UBO card (inside Step 3) */
+    /* UBO card (legacy — no longer used after UBO step removal, kept for reuse) */
     .ubo-card { background: #FAFBFC; border-radius: 8px; padding: 20px; margin-bottom: 14px; }
     .ubo-card-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
     .ubo-card-head h4 { font-size: 15px; font-weight: 700; color: var(--text-primary); }
@@ -235,7 +235,7 @@
     .prohibited-list ul { padding-left: 18px; }
     .prohibited-list li { font-size: 13.5px; color: var(--text-secondary); line-height: 1.55; padding: 2px 0; }
 
-    /* Pill row (toggle row on step 7) */
+    /* Pill row (toggle row on last step) */
     .pill-row { display: flex; align-items: center; justify-content: space-between; padding: 16px; border: 1px solid var(--border); border-radius: 8px; background: var(--card); }
     .pill-row-body { flex: 1; padding-right: 16px; }
     .pill-row-title { font-size: 15px; font-weight: 700; color: var(--text-primary); }
@@ -411,10 +411,6 @@
             </span>
             <input type="file" hidden>
           </label>
-          <div class="inline-check">
-            <input type="checkbox" id="hasUbo">
-            <label for="hasUbo">Does any individual directly or indirectly hold 25% or more ownership in your company?</label>
-          </div>
         </div>
       </div>
     </div>
@@ -483,100 +479,8 @@
       </div>
     </div>
 
-    <!-- STEP 3: UBO -->
+    <!-- STEP 3: VERIFY IDENTITY (signatory) -->
     <div class="step" data-step="3">
-      <div class="page-heading">
-        <h1>Beneficial owners</h1>
-        <p>Tell us about the individuals who ultimately own or control 25% or more of your company.</p>
-      </div>
-
-      <div class="section-card">
-        <div class="section-title">Ownership declaration</div>
-
-        <label style="font-size: 14px; font-weight: 500; color: var(--text-primary); display: block; margin-bottom: 10px;">
-          Does any individual own 25% or more of this business?
-        </label>
-        <div class="yn-toggle">
-          <button class="active" type="button">Yes</button>
-          <button type="button">No</button>
-        </div>
-
-        <div class="ubo-card">
-          <div class="ubo-card-head">
-            <h4>Beneficial owner #1</h4>
-            <button class="ubo-remove">Remove</button>
-          </div>
-          <div class="fields">
-            <div class="fl-field">
-              <input type="text" placeholder=" ">
-              <label>Full legal name</label>
-            </div>
-            <div class="fl-field">
-              <input type="date" placeholder=" ">
-              <label>Date of birth</label>
-            </div>
-            <div class="fl-field">
-              <select>
-                <option value="" disabled selected hidden></option>
-                <option>Indian</option>
-                <option>American</option>
-                <option>British</option>
-              </select>
-              <label>Nationality</label>
-            </div>
-            <div class="fl-field">
-              <select>
-                <option value="" disabled selected hidden></option>
-                <option>India</option>
-                <option>United States</option>
-                <option>United Kingdom</option>
-              </select>
-              <label>Country of residence</label>
-            </div>
-            <div class="fl-field">
-              <input type="number" placeholder=" ">
-              <label>% ownership</label>
-            </div>
-            <div class="fl-field">
-              <select>
-                <option value="" disabled selected hidden></option>
-                <option>Direct shareholding</option>
-                <option>Indirect (through another entity)</option>
-                <option>Voting rights only</option>
-                <option>Control through other means</option>
-              </select>
-              <label>Type of ownership</label>
-            </div>
-            <div class="fl-field">
-              <select>
-                <option value="" disabled selected hidden></option>
-                <option>PAN</option>
-                <option>Aadhaar</option>
-                <option>Passport</option>
-                <option>Driving licence</option>
-              </select>
-              <label>Government ID type</label>
-            </div>
-            <div class="fl-field">
-              <input type="text" placeholder=" ">
-              <label>ID number</label>
-            </div>
-            <div class="check-row" style="border-top: none; padding: 4px 0 0;">
-              <input type="checkbox" id="pep1">
-              <label for="pep1">This person is a Politically Exposed Person (PEP) or closely related to one.</label>
-            </div>
-          </div>
-        </div>
-
-        <button class="add-ubo">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
-          Add another beneficial owner
-        </button>
-      </div>
-    </div>
-
-    <!-- STEP 4: VERIFY IDENTITY (signatory) -->
-    <div class="step" data-step="4">
       <div class="page-heading">
         <h1>Verify your identity</h1>
         <p>The authorised signatory's details — the person who can legally sign agreements on behalf of the company.</p>
@@ -584,11 +488,6 @@
 
       <div class="section-card">
         <div class="section-title">Authorised signatory</div>
-
-        <div class="inline-check" style="padding-bottom: 16px;">
-          <input type="checkbox" id="sameAsUbo">
-          <label for="sameAsUbo">Same as beneficial owner #1</label>
-        </div>
 
         <div class="fields">
           <div class="fl-field">
@@ -654,8 +553,8 @@
       </div>
     </div>
 
-    <!-- STEP 5: COMPLIANCE DECLARATION -->
-    <div class="step" data-step="5">
+    <!-- STEP 4: COMPLIANCE DECLARATION -->
+    <div class="step" data-step="4">
       <div class="page-heading">
         <h1>Compliance declaration</h1>
         <p>A few attestations for AML, sanctions, and prohibited-business checks.</p>
@@ -713,8 +612,8 @@
       </div>
     </div>
 
-    <!-- STEP 6: TAX & PAYMENT PREFERENCES -->
-    <div class="step" data-step="6">
+    <!-- STEP 5: TAX & PAYMENT PREFERENCES -->
+    <div class="step" data-step="5">
       <div class="page-heading">
         <h1>Tax &amp; payment preferences</h1>
         <p>How invoices should be billed and approved when you start paying freelancers.</p>
@@ -789,8 +688,8 @@
       </div>
     </div>
 
-    <!-- STEP 7: ADD FIRST FREELANCER -->
-    <div class="step" data-step="7">
+    <!-- STEP 6: ADD FIRST FREELANCER -->
+    <div class="step" data-step="6">
       <div class="page-heading">
         <h1>Add your first freelancer</h1>
         <p>Invite a freelancer to start sending contracts, time entries, and invoices.</p>
@@ -878,7 +777,6 @@
 
     const nextLabels = [
       'Verify your business',
-      'Beneficial owners',
       'Verify your identity',
       'Compliance declaration',
       'Tax & payment preferences',
