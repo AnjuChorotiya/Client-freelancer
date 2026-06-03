@@ -120,12 +120,17 @@
     .fl-field textarea:focus ~ label,
     .fl-field textarea:not(:placeholder-shown) ~ label,
     .fl-field select.touched ~ label,
-    .fl-field input[type="date"] ~ label,
+    .fl-field input[type="date"].has-value ~ label,
+    .fl-field input[type="date"]:focus ~ label,
     .fl-field.float label {
       top: 9px; transform: none;
       font-size: 11px;
       font-weight: 500;
     }
+    /* Hide the browser's dd-mm-yyyy format string when the date input is empty + unfocused,
+       so the centred floating label can sit on top without clashing. */
+    .fl-field input[type="date"]:not(.has-value):not(:focus)::-webkit-datetime-edit { color: transparent; }
+    .fl-field input[type="date"]:not(.has-value):not(:focus) { color: transparent; }
     .fl-field textarea ~ label { top: 26px; transform: none; }
     .fl-field textarea:focus ~ label,
     .fl-field textarea:not(:placeholder-shown) ~ label { top: 9px; }
@@ -1089,6 +1094,15 @@
       const sync = () => sel.classList.toggle('touched', !!sel.value);
       sync();
       sel.addEventListener('change', sync);
+    });
+
+    // Floating-label state for date inputs (browsers paint dd-mm-yyyy as a native format
+    // string, which :placeholder-shown can't detect — so we track value presence ourselves)
+    document.querySelectorAll('.fl-field input[type="date"]').forEach(d => {
+      const sync = () => d.classList.toggle('has-value', !!d.value);
+      sync();
+      d.addEventListener('change', sync);
+      d.addEventListener('input', sync);
     });
 
     // "Trading address same as registered" — reveal trading-address field when unticked
