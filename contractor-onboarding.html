@@ -70,7 +70,7 @@
     .fl-field select,
     .fl-field textarea {
       width: 100%;
-      padding: 12px 14px;
+      padding: 24px 14px 8px;
       border: 1px solid var(--border);
       border-radius: 8px;
       font-family: 'Satoshi', sans-serif;
@@ -117,15 +117,15 @@
     .fl-field input[type="date"].has-value ~ label,
     .fl-field input[type="date"]:focus ~ label,
     .fl-field.float label {
-      top: 3px; transform: none;
+      top: 8px; transform: none;
       font-size: 10px;
       font-weight: 500;
     }
     .fl-field input[type="date"]:not(.has-value):not(:focus)::-webkit-datetime-edit { color: transparent; }
     .fl-field input[type="date"]:not(.has-value):not(:focus) { color: transparent; }
-    .fl-field textarea ~ label { top: 12px; transform: none; }
+    .fl-field textarea ~ label { top: 20px; transform: none; }
     .fl-field textarea:focus ~ label,
-    .fl-field textarea:not(:placeholder-shown) ~ label { top: 3px; }
+    .fl-field textarea:not(:placeholder-shown) ~ label { top: 8px; }
     .fl-field .req { color: var(--text-muted); margin-left: 2px; font-weight: 500; }
     .fl-field select:not(.touched) { color: var(--text-muted); }
     .fl-field select.touched { color: var(--text-primary); }
@@ -286,7 +286,7 @@
     /* Phone input */
     .fl-phone { position: relative; display: flex; }
     .fl-phone .cc {
-      width: 84px; padding: 12px 28px 12px 14px;
+      width: 84px; padding: 24px 28px 8px 14px;
       border: 1px solid var(--border);
       border-right: none;
       border-radius: 8px 0 0 8px;
@@ -298,7 +298,7 @@
       cursor: pointer;
     }
     .fl-phone .num {
-      flex: 1; padding: 12px 14px;
+      flex: 1; padding: 24px 14px 8px;
       border: 1px solid var(--border);
       border-radius: 0 8px 8px 0;
       font-family: 'Satoshi', sans-serif;
@@ -323,7 +323,7 @@
     }
     .fl-phone .num:focus ~ label,
     .fl-phone .num:not(:placeholder-shown) ~ label {
-      top: 3px; transform: none;
+      top: 8px; transform: none;
       font-size: 10px;
     }
     .fl-phone .req { color: var(--text-muted); margin-left: 2px; }
