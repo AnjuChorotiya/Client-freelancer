@@ -123,7 +123,7 @@
     }
     .fl-field input[type="date"]:not(.has-value):not(:focus)::-webkit-datetime-edit { color: transparent; }
     .fl-field input[type="date"]:not(.has-value):not(:focus) { color: transparent; }
-    .fl-field textarea ~ label { top: 20px; transform: none; }
+    .fl-field textarea ~ label { top: 24px; transform: none; }
     .fl-field textarea:focus ~ label,
     .fl-field textarea:not(:placeholder-shown) ~ label { top: 8px; }
     .fl-field .req { color: var(--text-muted); margin-left: 2px; font-weight: 500; }
@@ -483,12 +483,12 @@
             <label>Contractor company</label>
           <p class="field-hint">The contractor's registered business name, if they invoice through a company.</p></div>
           <div class="fl-field">
-            <input type="text" placeholder=" " data-must>
-            <label>Contractor's full name<span class="req">*</span></label>
+            <input type="text" placeholder=" ">
+            <label>Contractor's full name</label>
           <p class="field-hint">Full legal name as it appears on their government ID.</p></div>
           <div class="fl-field">
-            <input type="email" placeholder=" " data-must>
-            <label>Email address<span class="req">*</span></label>
+            <input type="email" placeholder=" ">
+            <label>Email address</label>
           <p class="field-hint">We'll send the agreement and payment updates here.</p></div>
           <div class="fl-phone">
             <select class="cc">
@@ -497,13 +497,13 @@
               <option>+44</option>
               <option>+65</option>
             </select>
-            <input class="num" type="tel" placeholder=" " data-must>
-            <label>Phone number<span class="req">*</span></label>
+            <input class="num" type="tel" placeholder=" ">
+            <label>Phone number</label>
           </div>
           <div class="fl-row">
             <div class="fl-field">
-              <input type="date" placeholder=" " data-must>
-              <label>Start date<span class="req">*</span></label>
+              <input type="date" placeholder=" ">
+              <label>Start date</label>
             </div>
             <div class="fl-field">
               <input type="date" placeholder=" ">
@@ -529,11 +529,11 @@
         <div class="section-title">Scope of work</div>
         <div class="fields">
           <div class="fl-field">
-            <input type="text" placeholder=" " data-must>
-            <label>Role<span class="req">*</span></label>
+            <input type="text" placeholder=" ">
+            <label>Role</label>
           <p class="field-hint">The contractor's role or job title — appears on the agreement.</p></div>
           <div class="fl-field">
-            <textarea placeholder=" " data-must></textarea>
+            <textarea placeholder=" "></textarea>
             <label>Describe the role, responsibilities, and requirements…</label>
           <p class="field-hint">This description becomes the scope-of-work clause in the contract.</p></div>
         </div>
@@ -559,7 +559,7 @@
           </div>
           <div class="fl-row-3">
             <div class="fl-field">
-              <select data-must>
+              <select>
                 <option value="" disabled selected hidden></option>
                 <option>USD</option>
                 <option>INR</option>
@@ -568,14 +568,14 @@
                 <option>SGD</option>
                 <option>AUD</option>
               </select>
-              <label>Currency<span class="req">*</span></label>
+              <label>Currency</label>
             </div>
             <div class="fl-field">
-              <input type="number" placeholder=" " data-must>
-              <label>Payment rate<span class="req">*</span></label>
+              <input type="number" placeholder=" ">
+              <label>Payment rate</label>
             </div>
             <div class="fl-field">
-              <select data-must>
+              <select>
                 <option value="" disabled selected hidden></option>
                 <option>Monthly</option>
                 <option>Weekly</option>
@@ -583,7 +583,7 @@
                 <option>Per milestone</option>
                 <option>One-time</option>
               </select>
-              <label>Frequency<span class="req">*</span></label>
+              <label>Frequency</label>
             </div>
           </div>
           <div class="fl-field">
@@ -598,8 +598,8 @@
         <div class="section-title">Governing law &amp; Jurisdiction</div>
         <div class="fields">
           <div class="fl-field">
-            <input type="text" placeholder=" " data-must>
-            <label>State of jurisdiction<span class="req">*</span></label>
+            <input type="text" placeholder=" ">
+            <label>State of jurisdiction</label>
           </div>
         </div>
         <div class="excerpt">
@@ -618,16 +618,16 @@
         </div>
         <div class="fields">
           <div class="fl-field">
-            <input type="text" placeholder=" " data-must>
-            <label>Full legal name<span class="req">*</span></label>
+            <input type="text" placeholder=" ">
+            <label>Full legal name</label>
           </div>
           <div class="fl-field">
-            <input type="email" placeholder=" " data-must>
-            <label>Email address<span class="req">*</span></label>
+            <input type="email" placeholder=" ">
+            <label>Email address</label>
           </div>
           <div class="fl-field">
-            <input type="text" placeholder=" " data-must>
-            <label>Designation / Job title<span class="req">*</span></label>
+            <input type="text" placeholder=" ">
+            <label>Designation / Job title</label>
           </div>
         </div>
       </div>
@@ -702,11 +702,11 @@
 
         <div style="margin-top:20px;">
           <div class="check-row">
-            <input type="checkbox" id="agree1" data-must>
+            <input type="checkbox" id="agree1">
             <label for="agree1">I confirm the agreement above is accurate and I am authorized to send it to contractors on behalf of my company.</label>
           </div>
           <div class="check-row">
-            <input type="checkbox" id="agree2" data-must>
+            <input type="checkbox" id="agree2">
             <label for="agree2">By proceeding, you agree to <a href="#" class="terms-link">Wisemonk's terms</a> for managing contractor payments on your behalf.</label>
           </div>
         </div>
