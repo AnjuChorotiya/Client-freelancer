@@ -29,6 +29,7 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: 'Satoshi', sans-serif;
+      font-weight: 500;
       background: var(--bg);
       color: var(--text-primary);
       min-height: 100vh;
@@ -180,7 +181,7 @@
     /* Inline checkbox row inside section cards */
     .inline-check { display: flex; align-items: center; gap: 10px; padding: 4px 2px 0; }
     .inline-check input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--text-primary); cursor: pointer; }
-    .inline-check label { font-size: 14px; color: var(--text-primary); cursor: pointer; }
+    .inline-check label { font-size: 14px; font-weight: 500; color: var(--text-primary); cursor: pointer; }
 
     /* Field hint below an input */
     .field-hint { font-size: 13px; color: var(--text-muted); margin-top: -10px; padding: 0 4px; }
@@ -224,8 +225,8 @@
     .check-row { display: flex; gap: 12px; padding: 14px 0; align-items: flex-start; }
     .check-row + .check-row { border-top: 1px solid var(--border); }
     .check-row input[type="checkbox"] { flex-shrink: 0; width: 18px; height: 18px; margin-top: 1px; accent-color: var(--text-primary); cursor: pointer; }
-    .check-row label { font-size: 14px; line-height: 1.55; color: var(--text-primary); cursor: pointer; }
-    .check-row strong { color: var(--text-primary); }
+    .check-row label { font-size: 14px; font-weight: 500; line-height: 1.55; color: var(--text-primary); cursor: pointer; }
+    .check-row strong { color: var(--text-primary); font-weight: 700; }
     .prohibited-toggle { display: inline-flex; align-items: center; gap: 6px; margin-top: 12px; color: var(--brand-500); font-weight: 700; font-size: 14px; cursor: pointer; }
     .prohibited-toggle svg { width: 16px; height: 16px; transition: transform 0.2s; }
     .prohibited-toggle.open svg { transform: rotate(180deg); }
