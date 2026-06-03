@@ -59,7 +59,7 @@
     /* Section card */
     .section-card { max-width: 632px; margin: 0 auto 16px; background: var(--card); border-radius: 8px; padding: 20px; }
     .section-card .section-title { font-size: 18px; font-weight: 700; color: var(--text-primary); margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
-    .section-card .section-desc { font-size: 14px; color: var(--text-muted); margin-bottom: 16px; line-height: 1.55; }
+    .section-card .section-desc { font-size: 14px; color: var(--text-muted); margin-bottom: 24px; line-height: 1.55; }
     .section-card .section-desc:last-child { margin-bottom: 0; }
     .section-card .fields { display: flex; flex-direction: column; gap: 12px; }
     .section-card .fields + .section-title { margin-top: 28px; }
@@ -258,7 +258,9 @@
     .fl-field .info-icon svg { width: 16px; height: 16px; }
     .fl-field.has-info select { padding-right: 64px; background-position: right 38px center; }
     /* Inline info icon (in a question label, not a field) */
-    .info-icon.inline { position: relative; top: auto; right: auto; width: 18px; height: 18px; vertical-align: middle; }
+    .info-icon.inline { position: relative; top: auto; right: auto; width: 18px; height: 18px; vertical-align: middle; display: inline-flex; align-items: center; justify-content: center; background: transparent; border: none; padding: 0; color: var(--text-muted); cursor: help; border-radius: 50%; transition: color 0.15s, background 0.15s; }
+    .info-icon.inline:hover { color: var(--brand-500); background: var(--brand-50); }
+    .info-icon.inline svg { width: 16px; height: 16px; display: block; }
     .info-icon[data-tip]:hover::after {
       content: attr(data-tip);
       position: absolute;
@@ -387,7 +389,7 @@
     /* Agreement file row + upload */
     .file-row { display: flex; align-items: center; gap: 14px; padding: 16px; border: 1px solid var(--border); border-radius: 10px; background: var(--card); cursor: pointer; transition: border-color 0.15s, background 0.15s; }
     .file-row:hover { border-color: var(--brand-500); background: var(--brand-50); }
-    .file-pdf { width: 40px; height: 40px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; border-radius: 8px; background: #FDECEC; color: #DC2626; }
+    .file-pdf { width: 40px; height: 40px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; border-radius: 8px; background: var(--brand-50); color: var(--brand-500); }
     .file-pdf svg { width: 22px; height: 22px; }
     .file-body { flex: 1; min-width: 0; }
     .file-title { display: block; font-size: 14px; font-weight: 700; color: var(--text-primary); line-height: 1.3; }
