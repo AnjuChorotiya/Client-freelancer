@@ -445,14 +445,18 @@
     .prohibited-list li { font-size: 13.5px; font-weight: 500; color: var(--text-secondary); line-height: 1.55; padding: 2px 0; }
 
     /* Pill row (toggle row on last step) */
-    .pill-row { display: flex; align-items: center; justify-content: space-between; padding: 16px; border: 1px solid var(--border); border-radius: 8px; background: var(--card); }
-    .pill-row-body { flex: 1; padding-right: 16px; }
-    .pill-row-title { font-size: 15px; font-weight: 700; color: var(--text-primary); }
-    .pill-row-desc { font-size: 13px; color: var(--text-muted); margin-top: 2px; line-height: 1.5; }
-    .toggle { width: 38px; height: 22px; background: var(--border-strong); border-radius: 100px; position: relative; cursor: pointer; transition: background 0.2s; flex-shrink: 0; }
-    .toggle::after { content: ''; position: absolute; top: 2px; left: 2px; width: 18px; height: 18px; border-radius: 50%; background: #fff; transition: transform 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.15); }
+    .pill-row { display: flex; align-items: flex-start; gap: 14px; padding: 16px; border: 1px solid var(--border); border-radius: 12px; background: var(--card); transition: border-color 0.15s, background 0.15s, box-shadow 0.15s; }
+    .pill-row:hover { border-color: var(--border-strong); }
+    .pill-row.is-on { border-color: var(--brand-100); background: var(--brand-50); }
+    .pill-row-icon { width: 40px; height: 40px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; border-radius: 10px; background: var(--brand-100); color: var(--brand-600); }
+    .pill-row-icon svg { width: 20px; height: 20px; }
+    .pill-row-body { flex: 1; padding-right: 4px; }
+    .pill-row-title { font-size: 16px; font-weight: 700; color: var(--text-primary); line-height: 1.3; }
+    .pill-row-desc { font-size: 14px; color: var(--text-muted); margin-top: 4px; line-height: 1.55; }
+    .toggle { width: 44px; height: 26px; margin-top: 1px; background: var(--border-strong); border-radius: 100px; position: relative; cursor: pointer; transition: background 0.2s; flex-shrink: 0; }
+    .toggle::after { content: ''; position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 50%; background: #fff; transition: transform 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
     .toggle.on { background: var(--brand-500); }
-    .toggle.on::after { transform: translateX(16px); }
+    .toggle.on::after { transform: translateX(18px); }
 
     /* Step panels */
     .step { display: none; }
@@ -1185,7 +1189,13 @@
 
       <div class="section-card">
         <div class="section-title">Invoicing</div>
-        <div class="pill-row">
+        <div class="pill-row is-on">
+          <div class="pill-row-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5.5 3.5h13a1 1 0 0 1 1 1V21l-2.5-1.5L14.5 21 12 19.5 9.5 21 7 19.5 4.5 21V4.5a1 1 0 0 1 1-1Z"/>
+              <path d="M8.5 8.5h7M8.5 12h7M8.5 15.5h4"/>
+            </svg>
+          </div>
           <div class="pill-row-body">
             <div class="pill-row-title">Auto-generate invoices each month</div>
             <div class="pill-row-desc">Wisemonk creates and sends invoices on the 1st of every month. Toggle off if you'd rather have the freelancer submit invoices manually.</div>
@@ -1318,8 +1328,16 @@
       });
     });
 
-    // Pill-row toggles
-    document.querySelectorAll('.toggle').forEach(t => t.addEventListener('click', () => t.classList.toggle('on')));
+    // Pill-row toggles — clicking anywhere on the row flips the switch and syncs the card tint
+    document.querySelectorAll('.pill-row').forEach(row => {
+      const t = row.querySelector('.toggle');
+      if (!t) return;
+      const flip = () => {
+        const on = t.classList.toggle('on');
+        row.classList.toggle('is-on', on);
+      };
+      row.addEventListener('click', flip);
+    });
 
     // Prohibited list collapse
     const probTog = document.getElementById('probTog');
