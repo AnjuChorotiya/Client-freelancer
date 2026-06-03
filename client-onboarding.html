@@ -14,13 +14,14 @@
       --brand-700: #0B43B8;
 
       --neutral-0: #FFFFFF;
-      --bg: #F5F7FB;
+      --bg: #F6F9FF;
       --card: #FFFFFF;
       --border: #E5E7EB;
       --border-strong: #D1D5DB;
       --text-primary: #1F2937;
       --text-secondary: #4A5565;
       --text-muted: #6A7282;
+      --muted-bg: #F4F6F9;
 
       --danger: #E40014;
       --success: #027A48;
@@ -32,22 +33,22 @@
       color: var(--text-primary);
       min-height: 100vh;
       display: flex; flex-direction: column;
-      padding-bottom: 100px;
     }
     a { text-decoration: none; color: inherit; }
 
-    /* Topbar */
-    .topbar { display: flex; align-items: center; justify-content: space-between; padding: 18px 32px; background: var(--card); }
-    .topbar-logo { display: flex; height: 26px; overflow: hidden; }
-    .topbar-logo img { height: 56px; width: auto; margin-top: -30px; display: block; }
-    .topbar-right { display: flex; align-items: center; gap: 14px; }
-    .need-help { padding: 9px 16px; background: var(--brand-50); color: var(--brand-500); border-radius: 100px; font-size: 13.5px; font-weight: 700; border: none; cursor: pointer; }
-    .need-help:hover { background: var(--brand-100); }
-    .top-close { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 8px; color: var(--text-secondary); cursor: pointer; transition: background 0.15s; }
-    .top-close:hover { background: rgba(0,0,0,0.05); }
-    .top-close svg { width: 18px; height: 18px; }
+    /* Topbar — sticky, 80px tall, centred 1440px max-width container */
+    .topbar { position: sticky; top: 0; z-index: 30; background: var(--card); }
+    .topbar-inner { height: 80px; max-width: 1440px; margin: 0 auto; padding: 0 40px; display: flex; align-items: center; justify-content: space-between; }
+    .topbar-logo { display: flex; height: 39px; overflow: hidden; }
+    .topbar-logo img { height: 54px; width: auto; margin-top: -15px; display: block; }
+    .topbar-right { display: flex; align-items: center; gap: 8px; }
+    .need-help { display: inline-flex; align-items: center; height: 40px; padding: 0 16px; background: var(--brand-100); color: var(--brand-500); border-radius: 8px; font-family: inherit; font-size: 14px; font-weight: 700; border: none; cursor: pointer; transition: background 0.15s; }
+    .need-help:hover { background: #B8CEFF; }
+    .top-close { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 8px; color: var(--text-muted); cursor: pointer; transition: background 0.15s, color 0.15s; }
+    .top-close:hover { background: var(--muted-bg); color: var(--text-primary); }
+    .top-close svg { width: 20px; height: 20px; }
 
-    main { flex: 1; padding: 48px 24px 24px; }
+    main { flex: 1; max-width: 1130px; margin: 0 auto; width: 100%; padding: 48px 24px 160px; }
 
     /* Page heading — left-aligned, 32px bold */
     .page-heading { text-align: left; max-width: 632px; margin: 0 auto 24px; padding: 0 4px; }
@@ -55,8 +56,8 @@
     .page-heading p { font-size: 16px; color: var(--text-muted); line-height: 1.55; }
     .page-heading p strong { color: var(--text-primary); font-weight: 700; }
 
-    /* Section card — rounded-8px, light shadow */
-    .section-card { max-width: 632px; margin: 0 auto 16px; background: var(--card); border-radius: 8px; padding: 20px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.03); }
+    /* Section card — rounded-8px, shadow-sm (Tailwind), centred 632px column */
+    .section-card { max-width: 632px; margin: 0 auto 16px; background: var(--card); border-radius: 8px; padding: 20px; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.10), 0 1px 2px -1px rgba(0, 0, 0, 0.10); }
     .section-card .section-title { font-size: 18px; font-weight: 700; color: var(--text-primary); margin-bottom: 20px; }
     .section-card .section-desc { font-size: 14px; color: var(--text-muted); margin-bottom: 24px; line-height: 1.55; }
     .section-card .section-desc:last-child { margin-bottom: 0; }
@@ -278,12 +279,14 @@
 <body>
 
   <header class="topbar">
-    <a href="dashboard.html" class="topbar-logo"><img src="wisemonk_logo_final.png" alt="Wisemonk"></a>
-    <div class="topbar-right">
-      <button class="need-help">Need help?</button>
-      <a href="dashboard.html" class="top-close" aria-label="Close">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
-      </a>
+    <div class="topbar-inner">
+      <a href="dashboard.html" class="topbar-logo"><img src="wisemonk_logo_final.png" alt="Wisemonk"></a>
+      <div class="topbar-right">
+        <button class="need-help">Need help?</button>
+        <a href="dashboard.html" class="top-close" aria-label="Close and exit">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </a>
+      </div>
     </div>
   </header>
 
