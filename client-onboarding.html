@@ -7,291 +7,271 @@
   <link href="https://api.fontshare.com/v2/css?f[]=satoshi@700,500,400&display=swap" rel="stylesheet">
   <style>
     :root {
-      --primary-50: #E8F2FF;
-      --primary-100: #C5DCFF;
-      --primary-500: #2684FF;
-      --primary-600: #1A6FE0;
-      --primary-700: #1059BD;
+      --brand-50: #EBF2FF;
+      --brand-100: #CCDEFF;
+      --brand-500: #3080FF;
+      --brand-600: #155DFC;
+      --brand-700: #0B43B8;
+
       --neutral-0: #FFFFFF;
-      --neutral-50: #F7F8FA;
-      --neutral-100: #EEF0F4;
-      --neutral-200: #DDE1E9;
-      --neutral-300: #C4CAD6;
-      --neutral-400: #9AA2B2;
-      --neutral-500: #6B7588;
-      --neutral-700: #363D4D;
-      --bg-subtle: #F1F8FF;
-      --border: #EEF0F4;
-      --border-strong: #DDE1E9;
-      --text-primary: #222733;
-      --text-secondary: #363D4D;
-      --text-muted: #85878d;
-      --grey-700: #222224;
-      --danger: #B42318;
+      --bg: #F5F7FB;
+      --card: #FFFFFF;
+      --border: #E5E7EB;
+      --border-strong: #D1D5DB;
+      --text-primary: #1F2937;
+      --text-secondary: #4A5565;
+      --text-muted: #6A7282;
+
+      --danger: #E40014;
       --success: #027A48;
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: 'Satoshi', sans-serif;
-      background: var(--bg-subtle);
+      background: var(--bg);
       color: var(--text-primary);
       min-height: 100vh;
       display: flex; flex-direction: column;
-      padding-bottom: 90px;
+      padding-bottom: 100px;
     }
     a { text-decoration: none; color: inherit; }
 
     /* Topbar */
-    .topbar { display: flex; align-items: center; justify-content: space-between; padding: 18px 32px; background: var(--neutral-0); }
+    .topbar { display: flex; align-items: center; justify-content: space-between; padding: 18px 32px; background: var(--card); }
     .topbar-logo { display: flex; height: 26px; overflow: hidden; }
     .topbar-logo img { height: 56px; width: auto; margin-top: -30px; display: block; }
     .topbar-right { display: flex; align-items: center; gap: 14px; }
-    .need-help { padding: 9px 16px; background: var(--primary-50); color: var(--primary-600); border-radius: 100px; font-size: 13.5px; font-weight: 700; border: none; cursor: pointer; }
-    .need-help:hover { background: #DCE5FF; }
+    .need-help { padding: 9px 16px; background: var(--brand-50); color: var(--brand-500); border-radius: 100px; font-size: 13.5px; font-weight: 700; border: none; cursor: pointer; }
+    .need-help:hover { background: var(--brand-100); }
     .top-close { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 8px; color: var(--text-secondary); cursor: pointer; transition: background 0.15s; }
     .top-close:hover { background: rgba(0,0,0,0.05); }
     .top-close svg { width: 18px; height: 18px; }
 
-    main { flex: 1; padding: 28px 24px; }
+    main { flex: 1; padding: 48px 24px 24px; }
 
-    /* Page heading per step (left-aligned, sits above section cards) */
-    .page-heading { text-align: left; max-width: 760px; margin: 0 auto 20px; padding: 0 4px; }
-    .page-heading h1 { font-size: 22px; font-weight: 700; letter-spacing: -0.2px; color: #222224; margin-bottom: 6px; }
-    .page-heading p { font-size: 13.5px; color: var(--text-muted); line-height: 1.55; }
-    .page-heading p strong { color: var(--text-primary); font-weight: 600; }
+    /* Page heading — left-aligned, 32px bold */
+    .page-heading { text-align: left; max-width: 632px; margin: 0 auto 24px; padding: 0 4px; }
+    .page-heading h1 { font-size: 32px; font-weight: 700; letter-spacing: -0.4px; color: var(--text-primary); margin-bottom: 8px; line-height: 1.2; }
+    .page-heading p { font-size: 16px; color: var(--text-muted); line-height: 1.55; }
+    .page-heading p strong { color: var(--text-primary); font-weight: 700; }
 
-    /* Section card — one per logical group on a step */
-    .section-card { max-width: 760px; margin: 0 auto 16px; background: var(--neutral-0); border-radius: 12px; padding: 22px 26px; }
-    .section-card .section-title { font-size: 15.5px; font-weight: 700; color: #222224; margin-bottom: 4px; }
-    .section-card .section-desc { font-size: 12.5px; color: var(--text-muted); margin-bottom: 18px; line-height: 1.55; }
+    /* Section card — rounded-8px, light shadow */
+    .section-card { max-width: 632px; margin: 0 auto 16px; background: var(--card); border-radius: 8px; padding: 20px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.03); }
+    .section-card .section-title { font-size: 18px; font-weight: 700; color: var(--text-primary); margin-bottom: 6px; }
+    .section-card .section-desc { font-size: 14px; color: var(--text-muted); margin-bottom: 24px; line-height: 1.55; }
+    .section-card .section-desc:last-child { margin-bottom: 0; }
+    .section-card .fields { display: flex; flex-direction: column; gap: 20px; }
+    .section-card .fields + .section-title { margin-top: 28px; padding-top: 24px; border-top: 1px solid var(--border); }
 
-    /* Pill-style input — placeholder doubles as the label (asterisk inline) */
-    .pill-field { margin-bottom: 10px; position: relative; }
-    .pill-field input,
-    .pill-field select,
-    .pill-field textarea {
+    /* Floating-label field — the centrepiece component */
+    .fl-field { position: relative; }
+    .fl-field input,
+    .fl-field select,
+    .fl-field textarea {
       width: 100%;
-      padding: 13px 16px;
-      border: 1px solid #e5e7eb;
-      border-radius: 10px;
+      padding: 22px 16px 8px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
       font-family: 'Satoshi', sans-serif;
-      font-size: 14px;
+      font-size: 15px;
       font-weight: 500;
       color: var(--text-primary);
-      background: #fff;
+      background: var(--card);
       outline: none;
       appearance: none;
-      transition: border-color 0.15s;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      line-height: 1.2;
     }
-    .pill-field input::placeholder, .pill-field textarea::placeholder { color: #9aa2b2; font-weight: 500; }
-    .pill-field textarea { min-height: 84px; resize: vertical; }
-    .pill-field select { color: #9aa2b2; padding-right: 40px;
-      background: #fff url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239AA2B2' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='m6 9 6 6 6-6'/></svg>") no-repeat right 14px center / 18px;
-    }
-    .pill-field select.touched { color: var(--text-primary); }
-    .pill-field input:focus, .pill-field select:focus, .pill-field textarea:focus { border-color: var(--primary-500); }
-
-    /* Upload row inside a section (pill-styled) */
-    .pill-upload {
-      display: flex; align-items: center; justify-content: space-between;
-      width: 100%; padding: 12px 16px;
-      border: 1px dashed #d4d7dd;
-      border-radius: 10px;
-      background: #fff;
-      margin-bottom: 10px;
+    .fl-field textarea { min-height: 100px; resize: vertical; padding-top: 26px; }
+    .fl-field select {
+      padding-right: 40px;
       cursor: pointer;
-      transition: all 0.15s;
+      background: var(--card) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236A7282' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='m6 9 6 6 6-6'/></svg>") no-repeat right 14px center / 18px;
     }
-    .pill-upload:hover { border-color: var(--primary-500); background: var(--primary-50); }
-    .pill-upload .pu-label { font-size: 14px; color: #9aa2b2; font-weight: 500; }
-    .pill-upload .pu-ico { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 8px; color: var(--text-muted); }
-    .pill-upload .pu-ico svg { width: 18px; height: 18px; }
-    .pill-upload.uploaded { border: 1px solid var(--success); background: #ECFDF3; border-style: solid; }
-    .pill-upload.uploaded .pu-label { color: #222224; }
-    .pill-upload.uploaded .pu-ico { color: var(--success); }
+    .fl-field input::placeholder, .fl-field textarea::placeholder { color: transparent; }
+    .fl-field input:focus::placeholder, .fl-field textarea:focus::placeholder { color: var(--text-muted); opacity: 0.6; }
+    .fl-field input:hover, .fl-field select:hover, .fl-field textarea:hover { border-color: var(--border-strong); }
+    .fl-field input:focus, .fl-field select:focus, .fl-field textarea:focus {
+      border-color: var(--brand-500);
+      box-shadow: 0 0 0 4px var(--brand-100);
+    }
+    /* Label — sits vertically centered when empty, lifts to top when filled or focused */
+    .fl-field label {
+      position: absolute;
+      left: 16px;
+      top: 50%; transform: translateY(-50%);
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--text-muted);
+      pointer-events: none;
+      transition: top 0.15s ease, font-size 0.15s ease, transform 0.15s ease;
+      line-height: 1;
+      max-width: calc(100% - 32px);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .fl-field input:focus ~ label,
+    .fl-field input:not(:placeholder-shown) ~ label,
+    .fl-field textarea:focus ~ label,
+    .fl-field textarea:not(:placeholder-shown) ~ label,
+    .fl-field select.touched ~ label,
+    .fl-field input[type="date"] ~ label,
+    .fl-field input[type="number"] ~ label,
+    .fl-field.float label {
+      top: 9px; transform: none;
+      font-size: 11px;
+      font-weight: 500;
+    }
+    .fl-field textarea ~ label { top: 26px; transform: none; }
+    .fl-field textarea:focus ~ label,
+    .fl-field textarea:not(:placeholder-shown) ~ label { top: 9px; }
+    .fl-field .req { color: var(--text-muted); margin-left: 2px; font-weight: 500; }
+    /* Select shows muted text colour until touched */
+    .fl-field select:not(.touched) { color: var(--text-muted); }
+    .fl-field select.touched { color: var(--text-primary); }
 
-    /* Simple inline checkbox row used inside section cards */
-    .inline-check { display: flex; align-items: center; gap: 10px; padding: 8px 4px 0; }
-    .inline-check input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--primary-500); cursor: pointer; }
-    .inline-check label { font-size: 13.5px; color: #404145; cursor: pointer; }
+    /* 2-column field row */
+    .fl-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 
-    /* Legacy form-card (used by steps that still rely on notched-field layout) */
-    .form-card { max-width: 700px; margin: 0 auto; background: var(--neutral-0); border-radius: 12px; padding: 26px 28px 22px; }
-    .form-section-h { font-size: 16px; font-weight: 700; color: #222224; margin-bottom: 18px; }
-    .form-section-h + .form-section-h { margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--border); }
-
-    /* Notched-border outlined fields (Material/Infinity style) */
-    .field { position: relative; margin-bottom: 22px; }
-    .field input[type="text"],
-    .field input[type="email"],
-    .field input[type="tel"],
-    .field input[type="number"],
-    .field input[type="date"],
-    .field select,
-    .field textarea {
-      width: 100%;
-      padding: 16px 16px;
-      border: 1.5px solid var(--border-strong);
-      border-radius: 8px;
+    /* Phone input — combined widget with floating label */
+    .fl-phone { position: relative; display: flex; }
+    .fl-phone .cc {
+      width: 84px; padding: 22px 12px 8px;
+      border: 1px solid var(--border);
+      border-right: none;
+      border-radius: 8px 0 0 8px;
       font-family: 'Satoshi', sans-serif;
       font-size: 15px; font-weight: 500;
       color: var(--text-primary);
-      background: #fff;
-      outline: none;
-      transition: border-color 0.15s;
-      appearance: none;
+      background: var(--card);
+      outline: none; appearance: none;
+      cursor: pointer;
     }
-    .field input::placeholder, .field textarea::placeholder { color: #c4cad6; }
-    .field textarea { min-height: 96px; resize: vertical; }
-    .field select {
-      background: #fff url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239AA2B2' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='m6 9 6 6 6-6'/></svg>") no-repeat right 14px center / 18px;
-      padding-right: 40px;
-    }
-    .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--primary-500); }
-    .field-label {
-      position: absolute;
-      top: -8px;
-      left: 12px;
-      padding: 0 6px;
-      background: #fff;
+    .fl-phone .num {
+      flex: 1; padding: 22px 16px 8px;
+      border: 1px solid var(--border);
+      border-radius: 0 8px 8px 0;
       font-family: 'Satoshi', sans-serif;
-      font-size: 12px;
-      font-weight: 500;
-      color: var(--text-muted);
-      pointer-events: none;
-      line-height: 1;
+      font-size: 15px; font-weight: 500;
+      color: var(--text-primary);
+      background: var(--card);
+      outline: none;
+      line-height: 1.2;
     }
-    .field-label .req { color: var(--danger); margin-left: 1px; }
-    .field-hint { font-size: 12.5px; color: var(--text-muted); margin-top: 6px; padding: 0 4px; }
-    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-
-    /* Phone input — notched border on combined widget */
-    .phone-input { display: flex; position: relative; margin-bottom: 22px; }
-    .phone-input .cc { width: 90px; padding: 16px 12px; border: 1.5px solid var(--border-strong); border-right: none; border-radius: 8px 0 0 8px; background: #fff; font-family: 'Satoshi', sans-serif; font-size: 15px; font-weight: 500; color: var(--text-primary); outline: none; appearance: none; }
-    .phone-input .num { flex: 1; padding: 16px 16px; border: 1.5px solid var(--border-strong); border-radius: 0 8px 8px 0; font-family: 'Satoshi', sans-serif; font-size: 15px; font-weight: 500; color: var(--text-primary); outline: none; }
-    .phone-input .num::placeholder { color: #c4cad6; }
-    .phone-input .num:focus, .phone-input .cc:focus { border-color: var(--primary-500); }
-    .phone-input .phone-label {
+    .fl-phone .num::placeholder { color: transparent; }
+    .fl-phone .num:focus::placeholder { color: var(--text-muted); opacity: 0.6; }
+    .fl-phone .num:focus, .fl-phone .cc:focus { border-color: var(--brand-500); box-shadow: 0 0 0 4px var(--brand-100); position: relative; z-index: 1; }
+    .fl-phone label {
       position: absolute;
-      top: -8px;
-      left: 12px;
-      padding: 0 6px;
-      background: #fff;
-      font-size: 12px;
-      font-weight: 500;
+      left: 100px;
+      top: 50%; transform: translateY(-50%);
+      font-size: 15px; font-weight: 500;
       color: var(--text-muted);
       pointer-events: none;
+      transition: top 0.15s ease, font-size 0.15s ease, transform 0.15s ease;
       line-height: 1;
     }
-    .phone-input .phone-label .req { color: var(--danger); margin-left: 1px; }
+    .fl-phone .num:focus ~ label,
+    .fl-phone .num:not(:placeholder-shown) ~ label {
+      top: 9px; transform: none;
+      font-size: 11px;
+    }
+    .fl-phone .req { color: var(--text-muted); margin-left: 2px; }
 
-    /* Yes/No toggle */
-    .yn-toggle { display: inline-flex; padding: 4px; background: #f0f1f1; border-radius: 8px; margin-bottom: 16px; }
-    .yn-toggle button { padding: 8px 22px; border: none; background: transparent; border-radius: 6px; font-family: inherit; font-size: 13.5px; font-weight: 700; color: #626368; cursor: pointer; }
-    .yn-toggle button.active { background: #fff; color: #222224; box-shadow: 0 1px 2px rgba(0,0,0,0.08); }
+    /* Inline checkbox row inside section cards */
+    .inline-check { display: flex; align-items: center; gap: 10px; padding: 4px 2px 0; }
+    .inline-check input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--text-primary); cursor: pointer; }
+    .inline-check label { font-size: 14px; color: var(--text-primary); cursor: pointer; }
 
-    /* Upload tiles */
-    .upload-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    .upload-box {
-      display: flex; align-items: center; gap: 14px;
-      padding: 16px 18px;
-      border: 1.5px dashed var(--border-strong);
-      border-radius: 12px;
+    /* Field hint below an input */
+    .field-hint { font-size: 13px; color: var(--text-muted); margin-top: -10px; padding: 0 4px; }
+
+    /* Yes / No segmented control */
+    .yn-toggle { display: inline-flex; padding: 4px; background: #F3F4F6; border-radius: 8px; margin-bottom: 16px; }
+    .yn-toggle button { padding: 8px 22px; border: none; background: transparent; border-radius: 6px; font-family: inherit; font-size: 14px; font-weight: 700; color: var(--text-muted); cursor: pointer; }
+    .yn-toggle button.active { background: var(--card); color: var(--text-primary); box-shadow: 0 1px 2px rgba(0,0,0,0.08); }
+
+    /* Upload tile (single line, dashed) */
+    .upload-tile {
+      display: flex; align-items: center; gap: 12px;
+      padding: 14px 16px;
+      border: 1px dashed var(--border-strong);
+      border-radius: 8px;
+      background: var(--card);
       cursor: pointer;
       transition: all 0.15s;
-      background: #fafbfc;
     }
-    .upload-box:hover { border-color: var(--primary-500); background: var(--primary-50); }
-    .upload-box .ico { width: 40px; height: 40px; border-radius: 10px; background: var(--primary-50); color: var(--primary-600); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-    .upload-box .ico svg { width: 20px; height: 20px; }
-    .upload-box .ub-title { font-size: 14px; font-weight: 700; color: #222224; }
-    .upload-box .ub-sub { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
-    .upload-box.uploaded { border: 1.5px solid var(--success); background: #ECFDF3; border-style: solid; }
-    .upload-box.uploaded .ico { background: #D1FADF; color: var(--success); }
+    .upload-tile:hover { border-color: var(--brand-500); background: var(--brand-50); }
+    .upload-tile .ut-ico { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 6px; background: #F3F4F6; color: var(--text-muted); flex-shrink: 0; }
+    .upload-tile .ut-ico svg { width: 18px; height: 18px; }
+    .upload-tile .ut-body { flex: 1; min-width: 0; }
+    .upload-tile .ut-title { font-size: 14px; font-weight: 700; color: var(--text-primary); }
+    .upload-tile .ut-sub { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+    .upload-tile.uploaded { border-style: solid; border-color: var(--success); background: #ECFDF3; }
+    .upload-tile.uploaded .ut-ico { background: #D1FADF; color: var(--success); }
+    .upload-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 
-    /* UBO card */
-    .ubo-card {
-      background: #fafbfc;
-      border-radius: 10px;
-      padding: 18px;
-      margin-bottom: 14px;
-    }
-    .ubo-card-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
-    .ubo-card-head h4 { font-size: 14.5px; font-weight: 700; color: #222224; }
+    /* UBO card (inside Step 3) */
+    .ubo-card { background: #FAFBFC; border-radius: 8px; padding: 20px; margin-bottom: 14px; }
+    .ubo-card-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+    .ubo-card-head h4 { font-size: 15px; font-weight: 700; color: var(--text-primary); }
     .ubo-remove { background: transparent; border: none; color: var(--danger); font-size: 13px; font-weight: 700; cursor: pointer; }
-    .add-ubo {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 10px 16px; border: 1.5px dashed var(--primary-300, #93B8FF);
-      border-radius: 10px;
-      background: transparent; color: var(--primary-600);
-      font-family: inherit; font-size: 13.5px; font-weight: 700; cursor: pointer;
-    }
-    .add-ubo:hover { background: var(--primary-50); }
+    .ubo-card .fields { display: flex; flex-direction: column; gap: 16px; }
+    .add-ubo { display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border: 1px dashed var(--brand-100); border-radius: 8px; background: transparent; color: var(--brand-500); font-family: inherit; font-size: 14px; font-weight: 700; cursor: pointer; }
+    .add-ubo:hover { background: var(--brand-50); }
     .add-ubo svg { width: 16px; height: 16px; }
 
-    /* Compliance checkboxes */
-    .check-row { display: flex; gap: 12px; padding: 12px 0; align-items: flex-start; }
+    /* Compliance attestation rows */
+    .check-row { display: flex; gap: 12px; padding: 14px 0; align-items: flex-start; }
     .check-row + .check-row { border-top: 1px solid var(--border); }
-    .check-row input[type="checkbox"] {
-      flex-shrink: 0;
-      width: 20px; height: 20px;
-      margin-top: 2px;
-      accent-color: var(--primary-500);
-      cursor: pointer;
-    }
-    .check-row label { font-size: 14px; line-height: 1.55; color: #222224; cursor: pointer; }
-    .prohibited-toggle { display: inline-flex; align-items: center; gap: 6px; margin-top: 12px; color: var(--primary-600); font-weight: 700; font-size: 13.5px; cursor: pointer; }
+    .check-row input[type="checkbox"] { flex-shrink: 0; width: 18px; height: 18px; margin-top: 1px; accent-color: var(--text-primary); cursor: pointer; }
+    .check-row label { font-size: 14px; line-height: 1.55; color: var(--text-primary); cursor: pointer; }
+    .check-row strong { color: var(--text-primary); }
+    .prohibited-toggle { display: inline-flex; align-items: center; gap: 6px; margin-top: 12px; color: var(--brand-500); font-weight: 700; font-size: 14px; cursor: pointer; }
     .prohibited-toggle svg { width: 16px; height: 16px; transition: transform 0.2s; }
     .prohibited-toggle.open svg { transform: rotate(180deg); }
-    .prohibited-list { display: none; margin-top: 12px; padding: 16px 18px; background: #fafbfc; border-radius: 10px; }
+    .prohibited-list { display: none; margin-top: 12px; padding: 16px 18px; background: #FAFBFC; border-radius: 8px; }
     .prohibited-list.open { display: block; }
-    .prohibited-list strong { display: block; font-size: 13.5px; font-weight: 700; color: #222224; margin-bottom: 8px; }
+    .prohibited-list strong { display: block; font-size: 14px; font-weight: 700; color: var(--text-primary); margin-bottom: 8px; }
     .prohibited-list ul { padding-left: 18px; }
-    .prohibited-list li { font-size: 13px; color: var(--text-secondary); line-height: 1.55; padding: 2px 0; }
+    .prohibited-list li { font-size: 13.5px; color: var(--text-secondary); line-height: 1.55; padding: 2px 0; }
 
-    /* Toggle pill row (auto-invoice toggle on last step) */
-    .pill-row {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 14px 16px;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      background: #fafbfc;
-      margin-bottom: 12px;
-    }
-    .pill-row-body { flex: 1; }
-    .pill-row-title { font-size: 14px; font-weight: 700; color: #222224; }
-    .pill-row-desc { font-size: 12.5px; color: var(--text-muted); margin-top: 2px; }
-    .toggle { width: 38px; height: 22px; background: var(--neutral-300); border-radius: 100px; position: relative; cursor: pointer; transition: background 0.2s; flex-shrink: 0; }
+    /* Pill row (toggle row on step 7) */
+    .pill-row { display: flex; align-items: center; justify-content: space-between; padding: 16px; border: 1px solid var(--border); border-radius: 8px; background: var(--card); }
+    .pill-row-body { flex: 1; padding-right: 16px; }
+    .pill-row-title { font-size: 15px; font-weight: 700; color: var(--text-primary); }
+    .pill-row-desc { font-size: 13px; color: var(--text-muted); margin-top: 2px; line-height: 1.5; }
+    .toggle { width: 38px; height: 22px; background: var(--border-strong); border-radius: 100px; position: relative; cursor: pointer; transition: background 0.2s; flex-shrink: 0; }
     .toggle::after { content: ''; position: absolute; top: 2px; left: 2px; width: 18px; height: 18px; border-radius: 50%; background: #fff; transition: transform 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.15); }
-    .toggle.on { background: var(--primary-500); }
+    .toggle.on { background: var(--brand-500); }
     .toggle.on::after { transform: translateX(16px); }
 
     /* Step panels */
     .step { display: none; }
     .step.active { display: block; }
 
-    /* Bottom footer */
-    .footer-bar { position: fixed; bottom: 0; left: 0; right: 0; background: var(--neutral-0); border-top: 1px solid var(--border); padding: 16px 32px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
-    .progress-row { position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--neutral-100); }
-    .progress-fill { height: 100%; background: var(--primary-500); transition: width 0.3s; }
-    .back-link { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 700; color: var(--text-primary); cursor: pointer; background: none; border: none; }
+    /* Footer — 80px tall, 6px progress bar at very top, brand-100 track + brand-500 fill */
+    .footer-bar { position: fixed; bottom: 0; left: 0; right: 0; background: var(--card); z-index: 30; }
+    .progress-row { height: 6px; background: var(--brand-100); }
+    .progress-fill { height: 100%; background: var(--brand-500); transition: width 0.3s; }
+    .footer-inner { height: 80px; max-width: 1440px; margin: 0 auto; padding: 0 40px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+    .back-link { display: inline-flex; align-items: center; gap: 8px; height: 48px; padding: 0 20px; font-size: 16px; font-weight: 700; color: var(--text-primary); cursor: pointer; background: none; border: none; border-radius: 8px; transition: color 0.15s; }
     .back-link svg { width: 16px; height: 16px; }
-    .back-link:hover { color: var(--primary-600); }
+    .back-link:hover:not(:disabled) { color: var(--text-secondary); }
     .back-link:disabled { opacity: 0.3; cursor: not-allowed; }
     .footer-right { display: flex; align-items: center; gap: 18px; }
-    .next-label { font-size: 13.5px; color: var(--text-muted); }
-    .next-label strong { color: var(--text-primary); font-weight: 600; margin-left: 4px; }
-    .save-btn { padding: 12px 22px; background: var(--primary-500); color: #fff; border: none; border-radius: 8px; font-family: inherit; font-size: 14.5px; font-weight: 700; cursor: pointer; transition: background 0.15s; }
-    .save-btn:hover:not(:disabled) { background: var(--primary-600); }
-    .save-btn:disabled { background: var(--neutral-200); color: var(--neutral-400); cursor: not-allowed; }
+    .next-label { font-size: 14px; color: var(--text-muted); }
+    .next-label strong { color: var(--text-primary); font-weight: 700; margin-left: 4px; }
+    .save-btn { height: 48px; padding: 0 28px; background: var(--brand-500); color: #fff; border: none; border-radius: 8px; font-family: inherit; font-size: 16px; font-weight: 700; cursor: pointer; transition: background 0.15s; }
+    .save-btn:hover:not(:disabled) { background: var(--brand-600); }
+    .save-btn:disabled { background: #E5E7EB; color: #99A1AF; cursor: not-allowed; }
     .save-btn.success { background: var(--success); }
 
     @media (max-width: 720px) {
       .topbar { padding: 14px 16px; }
-      main { padding: 24px 12px; }
-      .form-card { padding: 20px; }
-      .field-row, .upload-grid { grid-template-columns: 1fr; }
-      .footer-bar { padding: 12px 16px; }
+      main { padding: 32px 12px; }
+      .page-heading h1 { font-size: 26px; }
+      .fl-row, .upload-grid { grid-template-columns: 1fr; }
+      .footer-inner { padding: 0 16px; }
       .next-label { display: none; }
     }
   </style>
@@ -317,80 +297,101 @@
         <p>We use this to set up <strong>locally compliant freelancer contracts</strong> and the right tax handling when you start paying your freelancers.</p>
       </div>
 
-      <!-- Card 1: Your details (signatory) -->
+      <!-- Card 1: Your details -->
       <div class="section-card">
         <div class="section-title">Your details</div>
         <p class="section-desc">The name and role of the person setting up this account — this signs freelancer contracts on behalf of the company.</p>
-        <div class="pill-field"><input type="text" placeholder="Your full name*" required></div>
-        <div class="pill-field">
-          <select required>
-            <option value="" disabled selected hidden>Designation*</option>
-            <option>Founder</option>
-            <option>CEO</option>
-            <option>Director</option>
-            <option>CFO</option>
-            <option>Authorised signatory</option>
-            <option>Other</option>
-          </select>
+        <div class="fields">
+          <div class="fl-field">
+            <input type="text" placeholder=" " required>
+            <label>Your full name <span class="req">*</span></label>
+          </div>
+          <div class="fl-field">
+            <select required>
+              <option value="" disabled selected hidden></option>
+              <option>Founder</option>
+              <option>CEO</option>
+              <option>Director</option>
+              <option>CFO</option>
+              <option>Authorised signatory</option>
+              <option>Other</option>
+            </select>
+            <label>Designation <span class="req">*</span></label>
+          </div>
+          <div class="fl-field">
+            <input type="email" placeholder=" " required>
+            <label>Work email <span class="req">*</span></label>
+          </div>
         </div>
-        <div class="pill-field"><input type="email" placeholder="Work email*" required></div>
       </div>
 
       <!-- Card 2: Company details -->
       <div class="section-card">
         <div class="section-title">Company details</div>
         <p class="section-desc">Your company's legal and registration details — required for compliant freelancer contracts and accurate tax handling.</p>
-        <div class="pill-field"><input type="text" placeholder="Legal entity name*" required></div>
-        <div class="pill-field">
-          <select required>
-            <option value="" disabled selected hidden>Country of incorporation*</option>
-            <option>India</option>
-            <option>United States</option>
-            <option>United Kingdom</option>
-            <option>Singapore</option>
-            <option>UAE</option>
-            <option>Germany</option>
-            <option>Australia</option>
-          </select>
-        </div>
-        <div class="pill-field">
-          <select required>
-            <option value="" disabled selected hidden>Business type*</option>
-            <option>Private Limited (Pvt Ltd)</option>
-            <option>Limited Liability Partnership (LLP)</option>
-            <option>Sole Proprietorship</option>
-            <option>Partnership Firm</option>
-            <option>Public Limited</option>
-            <option>One Person Company (OPC)</option>
-          </select>
-        </div>
-        <div class="pill-field">
-          <select required>
-            <option value="" disabled selected hidden>Industry*</option>
-            <option>Technology / SaaS</option>
-            <option>Design / Creative</option>
-            <option>Marketing / Advertising</option>
-            <option>Finance / Fintech</option>
-            <option>Healthcare</option>
-            <option>E-commerce</option>
-            <option>Education</option>
-            <option>Other</option>
-          </select>
-        </div>
-        <div class="pill-field">
-          <select required>
-            <option value="" disabled selected hidden>Company size*</option>
-            <option>1 – 10 employees</option>
-            <option>11 – 50</option>
-            <option>51 – 200</option>
-            <option>201 – 500</option>
-            <option>500+</option>
-          </select>
-        </div>
-        <div class="pill-field" id="websiteField"><input type="url" id="companyWebsite" placeholder="Company website*" required></div>
-        <div class="inline-check">
-          <input type="checkbox" id="noWebsite">
-          <label for="noWebsite">We don't have a company website.</label>
+        <div class="fields">
+          <div class="fl-field">
+            <input type="text" placeholder=" " required>
+            <label>Legal entity name <span class="req">*</span></label>
+          </div>
+          <div class="fl-field">
+            <select required>
+              <option value="" disabled selected hidden></option>
+              <option>India</option>
+              <option>United States</option>
+              <option>United Kingdom</option>
+              <option>Singapore</option>
+              <option>UAE</option>
+              <option>Germany</option>
+              <option>Australia</option>
+            </select>
+            <label>Country of incorporation <span class="req">*</span></label>
+          </div>
+          <div class="fl-field">
+            <select required>
+              <option value="" disabled selected hidden></option>
+              <option>Private Limited (Pvt Ltd)</option>
+              <option>Limited Liability Partnership (LLP)</option>
+              <option>Sole Proprietorship</option>
+              <option>Partnership Firm</option>
+              <option>Public Limited</option>
+              <option>One Person Company (OPC)</option>
+            </select>
+            <label>Business type <span class="req">*</span></label>
+          </div>
+          <div class="fl-field">
+            <select required>
+              <option value="" disabled selected hidden></option>
+              <option>Technology / SaaS</option>
+              <option>Design / Creative</option>
+              <option>Marketing / Advertising</option>
+              <option>Finance / Fintech</option>
+              <option>Healthcare</option>
+              <option>E-commerce</option>
+              <option>Education</option>
+              <option>Other</option>
+            </select>
+            <label>Industry <span class="req">*</span></label>
+          </div>
+          <div class="fl-field">
+            <select required>
+              <option value="" disabled selected hidden></option>
+              <option>1 – 10 employees</option>
+              <option>11 – 50</option>
+              <option>51 – 200</option>
+              <option>201 – 500</option>
+              <option>500+</option>
+            </select>
+            <label>Company size <span class="req">*</span></label>
+          </div>
+          <div class="fl-field" id="websiteField">
+            <input type="url" id="companyWebsite" placeholder=" " required>
+            <label>Company website <span class="req">*</span></label>
+          </div>
+          <div class="inline-check">
+            <input type="checkbox" id="noWebsite">
+            <label for="noWebsite">We don't have a company website.</label>
+          </div>
         </div>
       </div>
 
@@ -398,15 +399,23 @@
       <div class="section-card">
         <div class="section-title">Ownership &amp; Management</div>
         <p class="section-desc">Director details and ownership declaration — required for AML / KYC checks before we can process freelancer payouts.</p>
-        <div class="pill-field"><input type="text" placeholder="Name of director*" required></div>
-        <label class="pill-upload">
-          <span class="pu-label">Upload director ID (PAN / Aadhaar / Passport)</span>
-          <span class="pu-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></span>
-          <input type="file" hidden>
-        </label>
-        <div class="inline-check">
-          <input type="checkbox" id="hasUbo">
-          <label for="hasUbo">Does any individual directly or indirectly hold 25% or more ownership in your company?</label>
+        <div class="fields">
+          <div class="fl-field">
+            <input type="text" placeholder=" " required>
+            <label>Name of director <span class="req">*</span></label>
+          </div>
+          <label class="upload-tile">
+            <span class="ut-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></span>
+            <span class="ut-body">
+              <span class="ut-title">Upload director ID</span>
+              <span class="ut-sub">PAN, Aadhaar or Passport · max 5 MB</span>
+            </span>
+            <input type="file" hidden>
+          </label>
+          <div class="inline-check">
+            <input type="checkbox" id="hasUbo">
+            <label for="hasUbo">Does any individual directly or indirectly hold 25% or more ownership in your company?</label>
+          </div>
         </div>
       </div>
     </div>
@@ -417,34 +426,62 @@
         <h1>Verify your business</h1>
         <p>Upload the official documents that prove your company's existence and tax registration.</p>
       </div>
-      <div class="form-card">
-        <div class="form-section-h">Business documents</div>
-        <div class="field-row">
-          <div class="field"><input type="text" placeholder="e.g. L74999HR2021PTC123456" required><label class="field-label">CIN <span class="req">*</span></label></div>
-          <div class="field"><input type="text" placeholder="e.g. ABCDE1234F" required><label class="field-label">Company PAN <span class="req">*</span></label></div>
-        </div>
-        <div class="field"><input type="text" placeholder="e.g. 06AABCU9603R1ZM"><label class="field-label">GSTIN <span style="color:var(--text-muted)">(if applicable)</span></label></div>
 
-        <div class="form-section-h">Upload documents</div>
+      <div class="section-card">
+        <div class="section-title">Business registration numbers</div>
+        <p class="section-desc">These come from your Certificate of Incorporation and tax registrations.</p>
+        <div class="fields">
+          <div class="fl-row">
+            <div class="fl-field">
+              <input type="text" placeholder=" " required>
+              <label>CIN <span class="req">*</span></label>
+            </div>
+            <div class="fl-field">
+              <input type="text" placeholder=" " required>
+              <label>Company PAN <span class="req">*</span></label>
+            </div>
+          </div>
+          <div class="fl-field">
+            <input type="text" placeholder=" ">
+            <label>GSTIN (if applicable)</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-card">
+        <div class="section-title">Upload documents</div>
+        <p class="section-desc">Scanned PDFs or clear photos. Max 5 MB per file.</p>
         <div class="upload-grid">
-          <label class="upload-box uploaded">
-            <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
-            <div><div class="ub-title">Certificate of Incorporation</div><div class="ub-sub">incorporation-cert.pdf · uploaded</div></div>
+          <label class="upload-tile uploaded">
+            <span class="ut-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
+            <span class="ut-body">
+              <span class="ut-title">Certificate of Incorporation</span>
+              <span class="ut-sub">incorporation-cert.pdf · uploaded</span>
+            </span>
             <input type="file" hidden>
           </label>
-          <label class="upload-box">
-            <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
-            <div><div class="ub-title">Company PAN card</div><div class="ub-sub">PDF or image · max 5 MB</div></div>
+          <label class="upload-tile">
+            <span class="ut-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></span>
+            <span class="ut-body">
+              <span class="ut-title">Company PAN card</span>
+              <span class="ut-sub">PDF or image</span>
+            </span>
             <input type="file" hidden>
           </label>
-          <label class="upload-box">
-            <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
-            <div><div class="ub-title">GST certificate</div><div class="ub-sub">if registered for GST</div></div>
+          <label class="upload-tile">
+            <span class="ut-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></span>
+            <span class="ut-body">
+              <span class="ut-title">GST certificate</span>
+              <span class="ut-sub">if registered for GST</span>
+            </span>
             <input type="file" hidden>
           </label>
-          <label class="upload-box">
-            <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
-            <div><div class="ub-title">MOA / AOA</div><div class="ub-sub">optional</div></div>
+          <label class="upload-tile">
+            <span class="ut-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></span>
+            <span class="ut-body">
+              <span class="ut-title">MOA / AOA</span>
+              <span class="ut-sub">optional</span>
+            </span>
             <input type="file" hidden>
           </label>
         </div>
@@ -457,11 +494,13 @@
         <h1>Beneficial owners</h1>
         <p>Tell us about the individuals who ultimately own or control 25% or more of your company.</p>
       </div>
-      <div class="form-card">
-        <div class="form-section-h">Ownership declaration</div>
 
-        <label style="font-size: 14px; font-weight: 600; color: #404145; display: block; margin-bottom: 10px;">
-          Does any individual own 25% or more of this business, directly or indirectly? <span style="color:var(--danger)">*</span>
+      <div class="section-card">
+        <div class="section-title">Ownership declaration</div>
+        <p class="section-desc">Required for AML and sanctions screening before we can process freelancer payouts.</p>
+
+        <label style="font-size: 14px; font-weight: 500; color: var(--text-primary); display: block; margin-bottom: 10px;">
+          Does any individual own 25% or more of this business? <span style="color:var(--text-muted)">*</span>
         </label>
         <div class="yn-toggle">
           <button class="active" type="button">Yes</button>
@@ -473,25 +512,73 @@
             <h4>Beneficial owner #1</h4>
             <button class="ubo-remove">Remove</button>
           </div>
-          <div class="field-row">
-            <div class="field"><input type="text" placeholder="e.g. Aman Singh" required><label class="field-label">Full legal name <span class="req">*</span></label></div>
-            <div class="field"><input type="date" required><label class="field-label">Date of birth <span class="req">*</span></label></div>
-          </div>
-          <div class="field-row">
-            <div class="field"><select><option>Indian</option><option>American</option><option>British</option></select><label class="field-label">Nationality <span class="req">*</span></label></div>
-            <div class="field"><select><option>India</option><option>United States</option><option>United Kingdom</option></select><label class="field-label">Country of residence <span class="req">*</span></label></div>
-          </div>
-          <div class="field-row">
-            <div class="field"><input type="number" placeholder="e.g. 60" required><label class="field-label">% ownership <span class="req">*</span></label></div>
-            <div class="field"><select><option>Direct shareholding</option><option>Indirect (through another entity)</option><option>Voting rights only</option><option>Control through other means</option></select><label class="field-label">Type of ownership <span class="req">*</span></label></div>
-          </div>
-          <div class="field-row">
-            <div class="field"><select><option>PAN</option><option>Aadhaar</option><option>Passport</option><option>Driving licence</option></select><label class="field-label">Government ID type <span class="req">*</span></label></div>
-            <div class="field"><input type="text" placeholder="e.g. ABCDE1234F" required><label class="field-label">ID number <span class="req">*</span></label></div>
-          </div>
-          <div class="check-row" style="border-top: none;">
-            <input type="checkbox" id="pep1">
-            <label for="pep1">This person is a Politically Exposed Person (PEP) or closely related to one.</label>
+          <div class="fields">
+            <div class="fl-row">
+              <div class="fl-field">
+                <input type="text" placeholder=" " required>
+                <label>Full legal name <span class="req">*</span></label>
+              </div>
+              <div class="fl-field">
+                <input type="date" placeholder=" " required>
+                <label>Date of birth <span class="req">*</span></label>
+              </div>
+            </div>
+            <div class="fl-row">
+              <div class="fl-field">
+                <select required>
+                  <option value="" disabled selected hidden></option>
+                  <option>Indian</option>
+                  <option>American</option>
+                  <option>British</option>
+                </select>
+                <label>Nationality <span class="req">*</span></label>
+              </div>
+              <div class="fl-field">
+                <select required>
+                  <option value="" disabled selected hidden></option>
+                  <option>India</option>
+                  <option>United States</option>
+                  <option>United Kingdom</option>
+                </select>
+                <label>Country of residence <span class="req">*</span></label>
+              </div>
+            </div>
+            <div class="fl-row">
+              <div class="fl-field">
+                <input type="number" placeholder=" " required>
+                <label>% ownership <span class="req">*</span></label>
+              </div>
+              <div class="fl-field">
+                <select required>
+                  <option value="" disabled selected hidden></option>
+                  <option>Direct shareholding</option>
+                  <option>Indirect (through another entity)</option>
+                  <option>Voting rights only</option>
+                  <option>Control through other means</option>
+                </select>
+                <label>Type of ownership <span class="req">*</span></label>
+              </div>
+            </div>
+            <div class="fl-row">
+              <div class="fl-field">
+                <select required>
+                  <option value="" disabled selected hidden></option>
+                  <option>PAN</option>
+                  <option>Aadhaar</option>
+                  <option>Passport</option>
+                  <option>Driving licence</option>
+                </select>
+                <label>Government ID type <span class="req">*</span></label>
+              </div>
+              <div class="fl-field">
+                <input type="text" placeholder=" " required>
+                <label>ID number <span class="req">*</span></label>
+              </div>
+            </div>
+            <div class="check-row" style="border-top: none; padding: 4px 0 0;">
+              <input type="checkbox" id="pep1">
+              <label for="pep1">This person is a Politically Exposed Person (PEP) or closely related to one.</label>
+            </div>
           </div>
         </div>
 
@@ -508,41 +595,80 @@
         <h1>Verify your identity</h1>
         <p>The authorised signatory's details — the person who can legally sign agreements on behalf of the company.</p>
       </div>
-      <div class="form-card">
-        <div class="form-section-h">Authorised signatory</div>
 
-        <div class="check-row" style="border-top: none; margin-bottom: 8px;">
+      <div class="section-card">
+        <div class="section-title">Authorised signatory</div>
+        <p class="section-desc">This person signs freelancer contracts and authorises payouts.</p>
+
+        <div class="inline-check" style="padding-bottom: 16px;">
           <input type="checkbox" id="sameAsUbo">
           <label for="sameAsUbo">Same as beneficial owner #1</label>
         </div>
 
-        <div class="field-row">
-          <div class="field"><input type="text" placeholder="e.g. Aman Singh" required><label class="field-label">Full legal name <span class="req">*</span></label></div>
-          <div class="field"><select><option>Director</option><option>Founder</option><option>CEO</option><option>Authorised signatory</option><option>CFO</option></select><label class="field-label">Role <span class="req">*</span></label></div>
-        </div>
-        <div class="field-row">
-          <div class="field"><input type="email" placeholder="e.g. aman@acmestudios.in" required><label class="field-label">Personal email <span class="req">*</span></label></div>
-          <div class="field phone-input">
-            <select class="cc"><option>+91</option><option>+1</option><option>+44</option></select>
-            <input class="num" type="tel" placeholder="98765 43210" required>
-            <label class="phone-label">Personal phone <span class="req">*</span></label>
+        <div class="fields">
+          <div class="fl-row">
+            <div class="fl-field">
+              <input type="text" placeholder=" " required>
+              <label>Full legal name <span class="req">*</span></label>
+            </div>
+            <div class="fl-field">
+              <select required>
+                <option value="" disabled selected hidden></option>
+                <option>Director</option>
+                <option>Founder</option>
+                <option>CEO</option>
+                <option>Authorised signatory</option>
+                <option>CFO</option>
+              </select>
+              <label>Role <span class="req">*</span></label>
+            </div>
+          </div>
+          <div class="fl-row">
+            <div class="fl-field">
+              <input type="email" placeholder=" " required>
+              <label>Personal email <span class="req">*</span></label>
+            </div>
+            <div class="fl-phone">
+              <select class="cc">
+                <option>+91</option>
+                <option>+1</option>
+                <option>+44</option>
+              </select>
+              <input class="num" type="tel" placeholder=" " required>
+              <label>Personal phone <span class="req">*</span></label>
+            </div>
+          </div>
+          <div class="fl-field">
+            <textarea placeholder=" " required></textarea>
+            <label>Residential address <span class="req">*</span></label>
           </div>
         </div>
-        <div class="field"><textarea placeholder="Street, city, state, postcode" required></textarea><label class="field-label">Residential address <span class="req">*</span></label></div>
+      </div>
 
-        <div class="form-section-h">Identity documents</div>
+      <div class="section-card">
+        <div class="section-title">Identity documents</div>
+        <p class="section-desc">Government-issued ID plus a quick selfie liveness check.</p>
         <div class="upload-grid">
-          <label class="upload-box uploaded">
-            <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
-            <div><div class="ub-title">PAN card</div><div class="ub-sub">pan-card.pdf · uploaded</div></div>
+          <label class="upload-tile uploaded">
+            <span class="ut-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
+            <span class="ut-body">
+              <span class="ut-title">PAN card</span>
+              <span class="ut-sub">pan-card.pdf · uploaded</span>
+            </span>
           </label>
-          <label class="upload-box">
-            <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
-            <div><div class="ub-title">Aadhaar / Government ID</div><div class="ub-sub">front + back · max 5 MB</div></div>
+          <label class="upload-tile">
+            <span class="ut-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></span>
+            <span class="ut-body">
+              <span class="ut-title">Aadhaar / Government ID</span>
+              <span class="ut-sub">front + back · max 5 MB</span>
+            </span>
           </label>
-          <label class="upload-box" style="grid-column: span 2;">
-            <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="10" r="3"/><path d="M7 20.5a5 5 0 0 1 10 0"/></svg></div>
-            <div><div class="ub-title">Selfie / liveness check</div><div class="ub-sub">Take a quick selfie to confirm it's you</div></div>
+          <label class="upload-tile" style="grid-column: span 2;">
+            <span class="ut-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="10" r="3"/><path d="M7 20.5a5 5 0 0 1 10 0"/></svg></span>
+            <span class="ut-body">
+              <span class="ut-title">Selfie / liveness check</span>
+              <span class="ut-sub">Take a quick selfie to confirm it's you</span>
+            </span>
           </label>
         </div>
       </div>
@@ -554,8 +680,10 @@
         <h1>Compliance declaration</h1>
         <p>A few attestations required for AML, sanctions, and prohibited-business checks.</p>
       </div>
-      <div class="form-card">
-        <div class="form-section-h">Please confirm the following</div>
+
+      <div class="section-card">
+        <div class="section-title">Please confirm the following</div>
+        <p class="section-desc">Each statement must be ticked before we can activate freelancer payouts.</p>
 
         <div class="check-row" style="border-top: none;">
           <input type="checkbox" id="c1" data-required>
@@ -573,8 +701,12 @@
           <input type="checkbox" id="c4">
           <label for="c4">I confirm that none of the directors or UBOs of my company are considered <strong>Politically Exposed Persons (PEPs)</strong>, nor are they closely associated with a PEP.</label>
         </div>
+      </div>
 
-        <div class="form-section-h">Prohibited / high-risk industries</div>
+      <div class="section-card">
+        <div class="section-title">Prohibited / high-risk industries</div>
+        <p class="section-desc">We can't onboard companies operating in certain regulated or high-risk industries.</p>
+
         <div class="check-row" style="border-top: none;">
           <input type="checkbox" id="c5" data-required>
           <label for="c5">I hereby declare that my company is <strong>not involved in any prohibited or high-risk activities</strong>, including but not limited to the list below.</label>
@@ -603,30 +735,87 @@
       </div>
     </div>
 
-    <!-- STEP 6: TAX & COMPLIANCE SETUP -->
+    <!-- STEP 6: TAX & PAYMENT PREFERENCES -->
     <div class="step" data-step="6">
       <div class="page-heading">
         <h1>Tax &amp; payment preferences</h1>
         <p>How invoices should be billed and approved when you start paying freelancers.</p>
       </div>
-      <div class="form-card">
-        <div class="form-section-h">Tax</div>
-        <div class="field-row">
-          <div class="field"><select><option>USD</option><option>INR</option><option>EUR</option><option>GBP</option><option>SGD</option></select><label class="field-label">Primary billing currency <span class="req">*</span></label></div>
-          <div class="field"><select><option>Yes — withhold TDS</option><option>No — pay freelancer in full</option></select><label class="field-label">Withhold tax on payments? <span class="req">*</span></label></div>
-        </div>
-        <div class="field-row">
-          <div class="field"><select><option>Section 194J — Professional services (10%)</option><option>Section 194C — Contract work (2%)</option><option>Section 194O — E-commerce (1%)</option></select><label class="field-label">TDS section</label></div>
-          <div class="field"><select><option>Registered</option><option>Not registered</option><option>Composition scheme</option></select><label class="field-label">GST status</label></div>
-        </div>
 
-        <div class="form-section-h">Approval rules</div>
-        <div class="field-row">
-          <div class="field"><select><option>14 days after submission</option><option>7 days</option><option>30 days</option><option>End of month</option></select><label class="field-label">Default invoice due</label></div>
-          <div class="field"><input type="number" placeholder="500"><label class="field-label">Auto-approve invoices under (USD)</label></div>
+      <div class="section-card">
+        <div class="section-title">Tax</div>
+        <p class="section-desc">Drives how we generate freelancer invoices and withhold tax where required.</p>
+        <div class="fields">
+          <div class="fl-row">
+            <div class="fl-field">
+              <select required>
+                <option value="" disabled selected hidden></option>
+                <option>USD</option>
+                <option>INR</option>
+                <option>EUR</option>
+                <option>GBP</option>
+                <option>SGD</option>
+              </select>
+              <label>Primary billing currency <span class="req">*</span></label>
+            </div>
+            <div class="fl-field">
+              <select required>
+                <option value="" disabled selected hidden></option>
+                <option>Yes — withhold TDS</option>
+                <option>No — pay freelancer in full</option>
+              </select>
+              <label>Withhold tax on payments? <span class="req">*</span></label>
+            </div>
+          </div>
+          <div class="fl-row">
+            <div class="fl-field">
+              <select>
+                <option value="" disabled selected hidden></option>
+                <option>Section 194J — Professional services (10%)</option>
+                <option>Section 194C — Contract work (2%)</option>
+                <option>Section 194O — E-commerce (1%)</option>
+              </select>
+              <label>TDS section</label>
+            </div>
+            <div class="fl-field">
+              <select>
+                <option value="" disabled selected hidden></option>
+                <option>Registered</option>
+                <option>Not registered</option>
+                <option>Composition scheme</option>
+              </select>
+              <label>GST status</label>
+            </div>
+          </div>
         </div>
-        <div class="field"><input type="number" placeholder="10000"><label class="field-label">Require dual approval above (USD)</label></div>
-        <p class="field-hint">Invoices over this amount will require approval from a second admin before payout.</p>
+      </div>
+
+      <div class="section-card">
+        <div class="section-title">Approval rules</div>
+        <p class="section-desc">Defaults for invoice processing — you can override these per freelancer later.</p>
+        <div class="fields">
+          <div class="fl-row">
+            <div class="fl-field">
+              <select>
+                <option value="" disabled selected hidden></option>
+                <option>14 days after submission</option>
+                <option>7 days</option>
+                <option>30 days</option>
+                <option>End of month</option>
+              </select>
+              <label>Default invoice due</label>
+            </div>
+            <div class="fl-field">
+              <input type="number" placeholder=" ">
+              <label>Auto-approve invoices under (USD)</label>
+            </div>
+          </div>
+          <div class="fl-field">
+            <input type="number" placeholder=" ">
+            <label>Require dual approval above (USD)</label>
+          </div>
+          <p class="field-hint">Invoices over this amount will require approval from a second admin before payout.</p>
+        </div>
       </div>
     </div>
 
@@ -636,27 +825,68 @@
         <h1>Add your first freelancer</h1>
         <p>Invite a freelancer to start sending contracts, time entries, and invoices.</p>
       </div>
-      <div class="form-card">
-        <div class="form-section-h">Freelancer details</div>
-        <div class="field-row">
-          <div class="field"><input type="text" placeholder="e.g. Priya Sharma" required><label class="field-label">Full name <span class="req">*</span></label></div>
-          <div class="field"><input type="email" placeholder="e.g. priya@example.com" required><label class="field-label">Email <span class="req">*</span></label></div>
-        </div>
-        <div class="field-row">
-          <div class="field"><select><option>India</option><option>United States</option><option>United Kingdom</option><option>Mexico</option><option>Brazil</option></select><label class="field-label">Country <span class="req">*</span></label></div>
-          <div class="field"><input type="text" placeholder="e.g. Senior Designer" required><label class="field-label">Role / job title <span class="req">*</span></label></div>
-        </div>
-        <div class="field-row">
-          <div class="field"><select><option>Monthly retainer</option><option>Hourly</option><option>Per project</option><option>Fixed price</option></select><label class="field-label">Engagement type <span class="req">*</span></label></div>
-          <div class="field"><input type="number" placeholder="e.g. 3400" required><label class="field-label">Rate (USD) <span class="req">*</span></label></div>
-        </div>
-        <div class="field"><input type="date" required><label class="field-label">Start date <span class="req">*</span></label></div>
 
-        <div class="form-section-h">Invoicing</div>
+      <div class="section-card">
+        <div class="section-title">Freelancer details</div>
+        <p class="section-desc">We'll send them an invitation to sign their contract and add bank details.</p>
+        <div class="fields">
+          <div class="fl-row">
+            <div class="fl-field">
+              <input type="text" placeholder=" " required>
+              <label>Full name <span class="req">*</span></label>
+            </div>
+            <div class="fl-field">
+              <input type="email" placeholder=" " required>
+              <label>Email <span class="req">*</span></label>
+            </div>
+          </div>
+          <div class="fl-row">
+            <div class="fl-field">
+              <select required>
+                <option value="" disabled selected hidden></option>
+                <option>India</option>
+                <option>United States</option>
+                <option>United Kingdom</option>
+                <option>Mexico</option>
+                <option>Brazil</option>
+              </select>
+              <label>Country <span class="req">*</span></label>
+            </div>
+            <div class="fl-field">
+              <input type="text" placeholder=" " required>
+              <label>Role / job title <span class="req">*</span></label>
+            </div>
+          </div>
+          <div class="fl-row">
+            <div class="fl-field">
+              <select required>
+                <option value="" disabled selected hidden></option>
+                <option>Monthly retainer</option>
+                <option>Hourly</option>
+                <option>Per project</option>
+                <option>Fixed price</option>
+              </select>
+              <label>Engagement type <span class="req">*</span></label>
+            </div>
+            <div class="fl-field">
+              <input type="number" placeholder=" " required>
+              <label>Rate (USD) <span class="req">*</span></label>
+            </div>
+          </div>
+          <div class="fl-field">
+            <input type="date" placeholder=" " required>
+            <label>Start date <span class="req">*</span></label>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-card">
+        <div class="section-title">Invoicing</div>
+        <p class="section-desc">Choose how invoices are generated for this freelancer.</p>
         <div class="pill-row">
           <div class="pill-row-body">
             <div class="pill-row-title">Auto-generate invoices each month</div>
-            <div class="pill-row-desc">Wisemonk creates and sends invoices on the 1st of every month. Toggle off if you'd rather have Priya submit invoices manually.</div>
+            <div class="pill-row-desc">Wisemonk creates and sends invoices on the 1st of every month. Toggle off if you'd rather have the freelancer submit invoices manually.</div>
           </div>
           <div class="toggle on"></div>
         </div>
@@ -667,13 +897,15 @@
 
   <footer class="footer-bar">
     <div class="progress-row"><div class="progress-fill" id="progressFill"></div></div>
-    <button class="back-link" id="backBtn">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-      Back
-    </button>
-    <div class="footer-right">
-      <div class="next-label" id="nextLabel">Next: <strong>Verify your business</strong></div>
-      <button class="save-btn" id="saveBtn">Save &amp; continue</button>
+    <div class="footer-inner">
+      <button class="back-link" id="backBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Back
+      </button>
+      <div class="footer-right">
+        <div class="next-label" id="nextLabel">Next: <strong>Verify your business</strong></div>
+        <button class="save-btn" id="saveBtn">Save &amp; continue</button>
+      </div>
     </div>
   </footer>
 
@@ -715,21 +947,21 @@
       updateSaveBtn();
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
+
     // Wire up input listeners to update Save button state
     document.querySelectorAll('input, textarea, select').forEach(el => {
       el.addEventListener('input', updateSaveBtn);
       el.addEventListener('change', updateSaveBtn);
     });
 
-    // Pill selects: switch from placeholder colour to text colour once a real option is chosen
-    document.querySelectorAll('.pill-field select').forEach(sel => {
-      sel.addEventListener('change', () => {
-        if (sel.value) sel.classList.add('touched');
-        else sel.classList.remove('touched');
-      });
+    // Floating-label state for selects (needed because <select> doesn't support :placeholder-shown)
+    document.querySelectorAll('.fl-field select').forEach(sel => {
+      const sync = () => sel.classList.toggle('touched', !!sel.value);
+      sync();
+      sel.addEventListener('change', sync);
     });
 
-    // "We don't have company website" — hide website field + drop required
+    // "We don't have a company website" — hide website field + drop required
     const noWebsite = document.getElementById('noWebsite');
     const websiteField = document.getElementById('websiteField');
     const companyWebsite = document.getElementById('companyWebsite');
@@ -760,14 +992,14 @@
       if (current > 1) { current--; render(); }
     });
 
-    // Yes/No toggle
+    // Yes / No segmented control
     document.querySelectorAll('.yn-toggle').forEach(grp => {
       grp.querySelectorAll('button').forEach(b => {
         b.addEventListener('click', () => grp.querySelectorAll('button').forEach(x => x.classList.toggle('active', x === b)));
       });
     });
 
-    // Toggles
+    // Pill-row toggles
     document.querySelectorAll('.toggle').forEach(t => t.addEventListener('click', () => t.classList.toggle('on')));
 
     // Prohibited list collapse
