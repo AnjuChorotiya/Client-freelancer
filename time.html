@@ -225,6 +225,35 @@
       .content { padding: 8px 20px 56px; }
       .stats-strip { grid-template-columns: 1fr; }
     }
+  
+    /* COR (Contractor of Record) promo banner */
+    .cor-banner {
+      display: flex; align-items: center; gap: 16px;
+      background: linear-gradient(135deg, #E8F2FF 0%, #EEF1FF 100%);
+      border: 1px solid #D6DCFF;
+      border-radius: 12px;
+      padding: 14px 18px;
+      margin-bottom: 20px;
+    }
+    .cor-banner-icon {
+      width: 40px; height: 40px;
+      background: var(--primary-500);
+      color: #fff;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .cor-banner-icon svg { width: 22px; height: 22px; }
+    .cor-banner-body { flex: 1; min-width: 0; }
+    .cor-banner-title { font-size: 14.5px; font-weight: 700; color: #222224; margin-bottom: 2px; }
+    .cor-banner-desc { font-size: 13px; color: #404145; line-height: 1.45; }
+    .cor-banner-actions { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+    .cor-banner-link { font-size: 14px; font-weight: 700; color: var(--primary-600); white-space: nowrap; }
+    .cor-banner-link:hover { color: var(--primary-700); }
+    .cor-banner-close { width: 28px; height: 28px; border: none; background: transparent; display: flex; align-items: center; justify-content: center; border-radius: 6px; color: #85878d; cursor: pointer; }
+    .cor-banner-close:hover { background: rgba(0,0,0,0.05); color: #222224; }
+    .cor-banner-close svg { width: 16px; height: 16px; }
+
   </style>
 </head>
 <body>
@@ -271,6 +300,23 @@
       </header>
 
       <div class="content">
+
+        <div class="cor-banner">
+          <div class="cor-banner-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/></svg>
+          </div>
+          <div class="cor-banner-body">
+            <div class="cor-banner-title">Move your freelancers to Contractor of Record</div>
+            <div class="cor-banner-desc">Wisemonk becomes the legal contractor on record — misclassification protection, locally compliant contracts, and IP ownership transfer all handled for you.</div>
+          </div>
+          <div class="cor-banner-actions">
+            <a href="#" class="cor-banner-link">Learn more →</a>
+            <button class="cor-banner-close" aria-label="Dismiss">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+            </button>
+          </div>
+        </div>
+
 
         <div class="title-row">
           <div>
