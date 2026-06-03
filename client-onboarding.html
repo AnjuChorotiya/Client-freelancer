@@ -889,9 +889,9 @@
     function validateStep() {
       const activeStep = document.querySelector('.step.active');
       if (!activeStep) return true;
-      const = activeStep.querySelectorAll('input[required], textarea[required], select[required]');
-      for (const f of) { if (!f.value.trim()) return false; }
-      const reqChecks = activeStep.querySelectorAll('input[type="checkbox"][data-required]');
+      const mustFill = activeStep.querySelectorAll('input[data-must], textarea[data-must], select[data-must]');
+      for (const f of mustFill) { if (!f.value.trim()) return false; }
+      const reqChecks = activeStep.querySelectorAll('input[type="checkbox"][data-must]');
       for (const c of reqChecks) { if (!c.checked) return false; }
       return true;
     }
