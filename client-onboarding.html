@@ -107,7 +107,6 @@
       transition: top 0.15s ease, font-size 0.15s ease, transform 0.15s ease;
       line-height: 1;
       max-width: calc(100% - 32px);
-      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
     .fl-field input:focus ~ label,
     .fl-field input:not(:placeholder-shown) ~ label,
@@ -204,8 +203,8 @@
     .upload-tile .ut-ico { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 6px; background: #F3F4F6; color: var(--text-muted); flex-shrink: 0; }
     .upload-tile .ut-ico svg { width: 18px; height: 18px; }
     .upload-tile .ut-body { flex: 1; min-width: 0; }
-    .upload-tile .ut-title { font-size: 14px; font-weight: 700; color: var(--text-primary); }
-    .upload-tile .ut-sub { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+    .upload-tile .ut-title { display: block; font-size: 14px; font-weight: 700; color: var(--text-primary); line-height: 1.3; }
+    .upload-tile .ut-sub { display: block; font-size: 12px; color: var(--text-muted); margin-top: 2px; line-height: 1.4; }
     .upload-tile.uploaded { border-style: solid; border-color: var(--success); background: #ECFDF3; }
     .upload-tile.uploaded .ut-ico { background: #D1FADF; color: var(--success); }
     .upload-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
@@ -427,15 +426,13 @@
       <div class="section-card">
         <div class="section-title">Business registration numbers</div>
         <div class="fields">
-          <div class="fl-row">
-            <div class="fl-field">
-              <input type="text" placeholder=" " required>
-              <label>CIN <span class="req">*</span></label>
-            </div>
-            <div class="fl-field">
-              <input type="text" placeholder=" " required>
-              <label>Company PAN <span class="req">*</span></label>
-            </div>
+          <div class="fl-field">
+            <input type="text" placeholder=" " required>
+            <label>CIN <span class="req">*</span></label>
+          </div>
+          <div class="fl-field">
+            <input type="text" placeholder=" " required>
+            <label>Company PAN <span class="req">*</span></label>
           </div>
           <div class="fl-field">
             <input type="text" placeholder=" ">
@@ -507,67 +504,59 @@
             <button class="ubo-remove">Remove</button>
           </div>
           <div class="fields">
-            <div class="fl-row">
-              <div class="fl-field">
-                <input type="text" placeholder=" " required>
-                <label>Full legal name <span class="req">*</span></label>
-              </div>
-              <div class="fl-field">
-                <input type="date" placeholder=" " required>
-                <label>Date of birth <span class="req">*</span></label>
-              </div>
+            <div class="fl-field">
+              <input type="text" placeholder=" " required>
+              <label>Full legal name <span class="req">*</span></label>
             </div>
-            <div class="fl-row">
-              <div class="fl-field">
-                <select required>
-                  <option value="" disabled selected hidden></option>
-                  <option>Indian</option>
-                  <option>American</option>
-                  <option>British</option>
-                </select>
-                <label>Nationality <span class="req">*</span></label>
-              </div>
-              <div class="fl-field">
-                <select required>
-                  <option value="" disabled selected hidden></option>
-                  <option>India</option>
-                  <option>United States</option>
-                  <option>United Kingdom</option>
-                </select>
-                <label>Country of residence <span class="req">*</span></label>
-              </div>
+            <div class="fl-field">
+              <input type="date" placeholder=" " required>
+              <label>Date of birth <span class="req">*</span></label>
             </div>
-            <div class="fl-row">
-              <div class="fl-field">
-                <input type="number" placeholder=" " required>
-                <label>% ownership <span class="req">*</span></label>
-              </div>
-              <div class="fl-field">
-                <select required>
-                  <option value="" disabled selected hidden></option>
-                  <option>Direct shareholding</option>
-                  <option>Indirect (through another entity)</option>
-                  <option>Voting rights only</option>
-                  <option>Control through other means</option>
-                </select>
-                <label>Type of ownership <span class="req">*</span></label>
-              </div>
+            <div class="fl-field">
+              <select required>
+                <option value="" disabled selected hidden></option>
+                <option>Indian</option>
+                <option>American</option>
+                <option>British</option>
+              </select>
+              <label>Nationality <span class="req">*</span></label>
             </div>
-            <div class="fl-row">
-              <div class="fl-field">
-                <select required>
-                  <option value="" disabled selected hidden></option>
-                  <option>PAN</option>
-                  <option>Aadhaar</option>
-                  <option>Passport</option>
-                  <option>Driving licence</option>
-                </select>
-                <label>Government ID type <span class="req">*</span></label>
-              </div>
-              <div class="fl-field">
-                <input type="text" placeholder=" " required>
-                <label>ID number <span class="req">*</span></label>
-              </div>
+            <div class="fl-field">
+              <select required>
+                <option value="" disabled selected hidden></option>
+                <option>India</option>
+                <option>United States</option>
+                <option>United Kingdom</option>
+              </select>
+              <label>Country of residence <span class="req">*</span></label>
+            </div>
+            <div class="fl-field">
+              <input type="number" placeholder=" " required>
+              <label>% ownership <span class="req">*</span></label>
+            </div>
+            <div class="fl-field">
+              <select required>
+                <option value="" disabled selected hidden></option>
+                <option>Direct shareholding</option>
+                <option>Indirect (through another entity)</option>
+                <option>Voting rights only</option>
+                <option>Control through other means</option>
+              </select>
+              <label>Type of ownership <span class="req">*</span></label>
+            </div>
+            <div class="fl-field">
+              <select required>
+                <option value="" disabled selected hidden></option>
+                <option>PAN</option>
+                <option>Aadhaar</option>
+                <option>Passport</option>
+                <option>Driving licence</option>
+              </select>
+              <label>Government ID type <span class="req">*</span></label>
+            </div>
+            <div class="fl-field">
+              <input type="text" placeholder=" " required>
+              <label>ID number <span class="req">*</span></label>
             </div>
             <div class="check-row" style="border-top: none; padding: 4px 0 0;">
               <input type="checkbox" id="pep1">
@@ -599,37 +588,33 @@
         </div>
 
         <div class="fields">
-          <div class="fl-row">
-            <div class="fl-field">
-              <input type="text" placeholder=" " required>
-              <label>Full legal name <span class="req">*</span></label>
-            </div>
-            <div class="fl-field">
-              <select required>
-                <option value="" disabled selected hidden></option>
-                <option>Director</option>
-                <option>Founder</option>
-                <option>CEO</option>
-                <option>Authorised signatory</option>
-                <option>CFO</option>
-              </select>
-              <label>Role <span class="req">*</span></label>
-            </div>
+          <div class="fl-field">
+            <input type="text" placeholder=" " required>
+            <label>Full legal name <span class="req">*</span></label>
           </div>
-          <div class="fl-row">
-            <div class="fl-field">
-              <input type="email" placeholder=" " required>
-              <label>Personal email <span class="req">*</span></label>
-            </div>
-            <div class="fl-phone">
-              <select class="cc">
-                <option>+91</option>
-                <option>+1</option>
-                <option>+44</option>
-              </select>
-              <input class="num" type="tel" placeholder=" " required>
-              <label>Personal phone <span class="req">*</span></label>
-            </div>
+          <div class="fl-field">
+            <select required>
+              <option value="" disabled selected hidden></option>
+              <option>Director</option>
+              <option>Founder</option>
+              <option>CEO</option>
+              <option>Authorised signatory</option>
+              <option>CFO</option>
+            </select>
+            <label>Role <span class="req">*</span></label>
+          </div>
+          <div class="fl-field">
+            <input type="email" placeholder=" " required>
+            <label>Personal email <span class="req">*</span></label>
+          </div>
+          <div class="fl-phone">
+            <select class="cc">
+              <option>+91</option>
+              <option>+1</option>
+              <option>+44</option>
+            </select>
+            <input class="num" type="tel" placeholder=" " required>
+            <label>Personal phone <span class="req">*</span></label>
           </div>
           <div class="fl-field">
             <textarea placeholder=" " required></textarea>
@@ -735,46 +720,42 @@
       <div class="section-card">
         <div class="section-title">Tax</div>
         <div class="fields">
-          <div class="fl-row">
-            <div class="fl-field">
-              <select required>
-                <option value="" disabled selected hidden></option>
-                <option>USD</option>
-                <option>INR</option>
-                <option>EUR</option>
-                <option>GBP</option>
-                <option>SGD</option>
-              </select>
-              <label>Primary billing currency <span class="req">*</span></label>
-            </div>
-            <div class="fl-field">
-              <select required>
-                <option value="" disabled selected hidden></option>
-                <option>Yes — withhold TDS</option>
-                <option>No — pay freelancer in full</option>
-              </select>
-              <label>Withhold tax on payments? <span class="req">*</span></label>
-            </div>
+          <div class="fl-field">
+            <select required>
+              <option value="" disabled selected hidden></option>
+              <option>USD</option>
+              <option>INR</option>
+              <option>EUR</option>
+              <option>GBP</option>
+              <option>SGD</option>
+            </select>
+            <label>Primary billing currency <span class="req">*</span></label>
           </div>
-          <div class="fl-row">
-            <div class="fl-field">
-              <select>
-                <option value="" disabled selected hidden></option>
-                <option>Section 194J — Professional services (10%)</option>
-                <option>Section 194C — Contract work (2%)</option>
-                <option>Section 194O — E-commerce (1%)</option>
-              </select>
-              <label>TDS section</label>
-            </div>
-            <div class="fl-field">
-              <select>
-                <option value="" disabled selected hidden></option>
-                <option>Registered</option>
-                <option>Not registered</option>
-                <option>Composition scheme</option>
-              </select>
-              <label>GST status</label>
-            </div>
+          <div class="fl-field">
+            <select required>
+              <option value="" disabled selected hidden></option>
+              <option>Yes — withhold TDS</option>
+              <option>No — pay freelancer in full</option>
+            </select>
+            <label>Withhold tax on payments? <span class="req">*</span></label>
+          </div>
+          <div class="fl-field">
+            <select>
+              <option value="" disabled selected hidden></option>
+              <option>Section 194J — Professional services (10%)</option>
+              <option>Section 194C — Contract work (2%)</option>
+              <option>Section 194O — E-commerce (1%)</option>
+            </select>
+            <label>TDS section</label>
+          </div>
+          <div class="fl-field">
+            <select>
+              <option value="" disabled selected hidden></option>
+              <option>Registered</option>
+              <option>Not registered</option>
+              <option>Composition scheme</option>
+            </select>
+            <label>GST status</label>
           </div>
         </div>
       </div>
@@ -782,21 +763,19 @@
       <div class="section-card">
         <div class="section-title">Approval rules</div>
         <div class="fields">
-          <div class="fl-row">
-            <div class="fl-field">
-              <select>
-                <option value="" disabled selected hidden></option>
-                <option>14 days after submission</option>
-                <option>7 days</option>
-                <option>30 days</option>
-                <option>End of month</option>
-              </select>
-              <label>Default invoice due</label>
-            </div>
-            <div class="fl-field">
-              <input type="number" placeholder=" ">
-              <label>Auto-approve invoices under (USD)</label>
-            </div>
+          <div class="fl-field">
+            <select>
+              <option value="" disabled selected hidden></option>
+              <option>14 days after submission</option>
+              <option>7 days</option>
+              <option>30 days</option>
+              <option>End of month</option>
+            </select>
+            <label>Default invoice due</label>
+          </div>
+          <div class="fl-field">
+            <input type="number" placeholder=" ">
+            <label>Auto-approve invoices under (USD)</label>
           </div>
           <div class="fl-field">
             <input type="number" placeholder=" ">
@@ -817,48 +796,42 @@
       <div class="section-card">
         <div class="section-title">Freelancer details</div>
         <div class="fields">
-          <div class="fl-row">
-            <div class="fl-field">
-              <input type="text" placeholder=" " required>
-              <label>Full name <span class="req">*</span></label>
-            </div>
-            <div class="fl-field">
-              <input type="email" placeholder=" " required>
-              <label>Email <span class="req">*</span></label>
-            </div>
+          <div class="fl-field">
+            <input type="text" placeholder=" " required>
+            <label>Full name <span class="req">*</span></label>
           </div>
-          <div class="fl-row">
-            <div class="fl-field">
-              <select required>
-                <option value="" disabled selected hidden></option>
-                <option>India</option>
-                <option>United States</option>
-                <option>United Kingdom</option>
-                <option>Mexico</option>
-                <option>Brazil</option>
-              </select>
-              <label>Country <span class="req">*</span></label>
-            </div>
-            <div class="fl-field">
-              <input type="text" placeholder=" " required>
-              <label>Role / job title <span class="req">*</span></label>
-            </div>
+          <div class="fl-field">
+            <input type="email" placeholder=" " required>
+            <label>Email <span class="req">*</span></label>
           </div>
-          <div class="fl-row">
-            <div class="fl-field">
-              <select required>
-                <option value="" disabled selected hidden></option>
-                <option>Monthly retainer</option>
-                <option>Hourly</option>
-                <option>Per project</option>
-                <option>Fixed price</option>
-              </select>
-              <label>Engagement type <span class="req">*</span></label>
-            </div>
-            <div class="fl-field">
-              <input type="number" placeholder=" " required>
-              <label>Rate (USD) <span class="req">*</span></label>
-            </div>
+          <div class="fl-field">
+            <select required>
+              <option value="" disabled selected hidden></option>
+              <option>India</option>
+              <option>United States</option>
+              <option>United Kingdom</option>
+              <option>Mexico</option>
+              <option>Brazil</option>
+            </select>
+            <label>Country <span class="req">*</span></label>
+          </div>
+          <div class="fl-field">
+            <input type="text" placeholder=" " required>
+            <label>Role / job title <span class="req">*</span></label>
+          </div>
+          <div class="fl-field">
+            <select required>
+              <option value="" disabled selected hidden></option>
+              <option>Monthly retainer</option>
+              <option>Hourly</option>
+              <option>Per project</option>
+              <option>Fixed price</option>
+            </select>
+            <label>Engagement type <span class="req">*</span></label>
+          </div>
+          <div class="fl-field">
+            <input type="number" placeholder=" " required>
+            <label>Rate (USD) <span class="req">*</span></label>
           </div>
           <div class="fl-field">
             <input type="date" placeholder=" " required>
