@@ -141,6 +141,7 @@
 
     /* 2-column field row */
     .fl-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .fl-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
 
     /* Custom select dropdown menu (replaces native browser dropdown) */
     .custom-select-menu {
@@ -455,6 +456,63 @@
     .option-card.selected .option-card-radio { border-color: var(--brand-500); }
     .option-card.selected .option-card-radio::after { content: ''; position: absolute; inset: 3px; border-radius: 50%; background: var(--brand-500); }
 
+    /* Inline info icon (in a question label, not a field) */
+    .info-icon.inline { position: relative; top: auto; right: auto; width: 18px; height: 18px; vertical-align: middle; }
+
+    /* Question label (above a choice control) */
+    .q-label { display: flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 600; color: var(--text-primary); margin-bottom: 12px; }
+    .q-block { padding: 4px 0; }
+    .q-block + .q-block { margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--border); }
+
+    /* Segmented pill (contract type) */
+    .seg { display: inline-flex; gap: 8px; margin-bottom: 4px; }
+    .seg button { padding: 8px 18px; border: 1px solid var(--border); background: var(--card); border-radius: 999px; font-family: inherit; font-size: 14px; font-weight: 700; color: var(--text-muted); cursor: pointer; transition: border-color 0.15s, color 0.15s, background 0.15s; }
+    .seg button:hover { border-color: var(--border-strong); }
+    .seg button.active { border-color: var(--brand-500); color: var(--brand-500); background: var(--brand-50); }
+    .seg-label { font-size: 13px; font-weight: 600; color: var(--text-secondary); margin-bottom: 10px; }
+
+    /* Yes / No radio pills */
+    .yn { display: inline-flex; gap: 8px; }
+    .yn button { display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px 8px 12px; border: 1px solid var(--border); background: var(--card); border-radius: 999px; font-family: inherit; font-size: 14px; font-weight: 600; color: var(--text-secondary); cursor: pointer; transition: border-color 0.15s, color 0.15s, background 0.15s; }
+    .yn button:hover { border-color: var(--border-strong); }
+    .yn .dot { width: 16px; height: 16px; border: 2px solid var(--border-strong); border-radius: 50%; position: relative; flex-shrink: 0; transition: border-color 0.15s; }
+    .yn button.active { border-color: var(--brand-500); color: var(--brand-600); background: var(--brand-50); }
+    .yn button.active .dot { border-color: var(--brand-500); }
+    .yn button.active .dot::after { content: ''; position: absolute; inset: 3px; border-radius: 50%; background: var(--brand-500); }
+
+    /* Choice cards (horizontal, no icon) */
+    .choice-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .choice-card { text-align: left; padding: 14px 16px; border: 1px solid var(--border); border-radius: 10px; background: var(--card); font-family: inherit; cursor: pointer; transition: border-color 0.15s, background 0.15s, box-shadow 0.15s; }
+    .choice-card:hover { border-color: var(--border-strong); }
+    .choice-card.selected { border-color: var(--brand-500); background: var(--brand-50); box-shadow: 0 0 0 1.5px var(--brand-100); }
+    .choice-card-title { display: block; font-size: 15px; font-weight: 700; color: var(--text-primary); line-height: 1.3; }
+    .choice-card-desc { display: block; font-size: 13px; color: var(--text-muted); margin-top: 3px; line-height: 1.5; }
+
+    /* Info banner */
+    .info-banner { display: flex; align-items: flex-start; gap: 10px; padding: 12px 14px; background: var(--brand-50); border-radius: 8px; margin-bottom: 16px; }
+    .info-banner svg { width: 18px; height: 18px; color: var(--brand-500); flex-shrink: 0; margin-top: 1px; }
+    .info-banner span { font-size: 13px; font-weight: 500; color: var(--text-secondary); line-height: 1.5; }
+
+    /* Legal excerpt box */
+    .excerpt { background: var(--muted-bg); border-radius: 8px; padding: 16px 18px; margin-top: 12px; }
+    .excerpt .excerpt-tag { display: block; font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; }
+    .excerpt h5 { font-size: 14px; font-weight: 700; color: var(--text-primary); margin-bottom: 6px; }
+    .excerpt p { font-size: 13.5px; font-weight: 500; color: var(--text-secondary); line-height: 1.6; margin-bottom: 10px; }
+    .excerpt p:last-child { margin-bottom: 0; }
+
+    /* Agreement file row + upload */
+    .file-row { display: flex; align-items: center; gap: 14px; padding: 16px; border: 1px solid var(--border); border-radius: 10px; background: var(--card); cursor: pointer; transition: border-color 0.15s, background 0.15s; }
+    .file-row:hover { border-color: var(--brand-500); background: var(--brand-50); }
+    .file-pdf { width: 40px; height: 40px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; border-radius: 8px; background: #FDECEC; color: #DC2626; }
+    .file-pdf svg { width: 22px; height: 22px; }
+    .file-body { flex: 1; min-width: 0; }
+    .file-title { display: block; font-size: 14px; font-weight: 700; color: var(--text-primary); line-height: 1.3; }
+    .file-sub { display: block; font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+    .upload-link { display: inline-flex; align-items: center; gap: 6px; margin-top: 14px; color: var(--brand-500); font-size: 14px; font-weight: 700; cursor: pointer; background: none; border: none; font-family: inherit; padding: 0; }
+    .upload-link svg { width: 16px; height: 16px; }
+    .agreement-foot { max-width: 632px; margin: 8px auto 0; padding: 0 4px; font-size: 14px; color: var(--text-muted); text-align: center; }
+    .agreement-foot a { color: var(--brand-500); font-weight: 700; }
+
     /* Step panels */
     .step { display: none; }
     .step.active { display: block; }
@@ -480,7 +538,7 @@
       .topbar { padding: 14px 16px; }
       main { padding: 32px 12px; }
       .page-heading h1 { font-size: 26px; }
-      .fl-row { grid-template-columns: 1fr; }
+      .fl-row, .fl-row-3, .choice-cards { grid-template-columns: 1fr; }
       .footer-inner { padding: 0 16px; }
       .next-label { display: none; }
     }
@@ -1124,69 +1182,263 @@
       </div>
     </div>
 
-    <!-- STEP 6: ADD FIRST FREELANCER -->
+    <!-- STEP 6: CONTRACTOR DETAILS + SCOPE OF WORK -->
     <div class="step" data-step="6">
       <div class="page-heading">
-        <h1>Add your first freelancer</h1>
-        <p>Invite a freelancer to start sending contracts, time entries, and invoices.</p>
+        <h1>Add your first contractor</h1>
+        <p>We'll use these details to generate a compliant independent-contractor agreement and set up payments.</p>
       </div>
 
       <div class="section-card">
-        <div class="section-title">Freelancer details</div>
+        <div class="section-title">Contractor details</div>
         <div class="fields">
           <div class="fl-field">
             <input type="text" placeholder=" ">
-            <label>Full name</label>
-          <p class="field-hint">The freelancer's full legal name as on their government ID.</p></div>
+            <label>Contractor company</label>
+          <p class="field-hint">The contractor's registered business name, if they invoice through a company.</p></div>
           <div class="fl-field">
-            <input type="email" placeholder=" ">
-            <label>Email</label>
-          <p class="field-hint">We'll send the invitation to sign their contract here.</p></div>
-          <div class="fl-field has-info">
+            <input type="text" placeholder=" " data-must>
+            <label>Contractor's full name<span class="req">*</span></label>
+          <p class="field-hint">Full legal name as it appears on their government ID.</p></div>
+          <div class="fl-field">
+            <input type="email" placeholder=" " data-must>
+            <label>Email address<span class="req">*</span></label>
+          <p class="field-hint">We'll send the agreement and payment updates here.</p></div>
+          <div class="fl-phone">
+            <select class="cc">
+              <option>+91</option>
+              <option>+1</option>
+              <option>+44</option>
+              <option>+65</option>
+            </select>
+            <input class="num" type="tel" placeholder=" " data-must>
+            <label>Phone number<span class="req">*</span></label>
+          </div>
+          <div class="fl-row">
+            <div class="fl-field">
+              <input type="date" placeholder=" " data-must>
+              <label>Start date<span class="req">*</span></label>
+            </div>
+            <div class="fl-field">
+              <input type="date" placeholder=" ">
+              <label>End date</label>
+            </div>
+          </div>
+          <div class="fl-field">
             <select>
               <option value="" disabled selected hidden></option>
-              <option>India</option>
-              <option>United States</option>
-              <option>United Kingdom</option>
-              <option>Mexico</option>
-              <option>Brazil</option>
+              <option>No notice period</option>
+              <option>7 days</option>
+              <option>15 days</option>
+              <option>30 days</option>
+              <option>60 days</option>
+              <option>90 days</option>
             </select>
-            <label>Country</label>
-            <button type="button" class="info-icon" data-tip="Determines which contract template, tax form, and payout currency we use for this freelancer.">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
-            </button>
-          <p class="field-hint">Where the freelancer is based — drives contract template and tax handling.</p></div>
-          <div class="fl-field">
-            <input type="text" placeholder=" ">
-            <label>Role / job title</label>
-          <p class="field-hint">Their role at your company. Appears on the contract.</p></div>
-          <div class="fl-field has-info">
-            <select>
-              <option value="" disabled selected hidden></option>
-              <option>Monthly retainer</option>
-              <option>Hourly</option>
-              <option>Per project</option>
-              <option>Fixed price</option>
-            </select>
-            <label>Engagement type</label>
-            <button type="button" class="info-icon" data-tip="Monthly retainer: fixed amount each month. Hourly: timesheet-based. Per project: per deliverable. Fixed price: one-time payment. You can change this later.">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
-            </button>
-          <p class="field-hint">How you'll structure their work and payment cycle.</p></div>
-          <div class="fl-field">
-            <input type="number" placeholder=" ">
-            <label>Rate (USD)</label>
-          <p class="field-hint">Their pay rate based on the engagement type chosen above.</p></div>
-          <div class="fl-field">
-            <input type="date" placeholder=" ">
-            <label>Start date</label>
-          <p class="field-hint">When they begin working with you.</p></div>
+            <label>Notice period</label>
+          <p class="field-hint">How much notice either party must give to end the engagement.</p></div>
         </div>
       </div>
 
       <div class="section-card">
+        <div class="section-title">Scope of work</div>
+        <div class="fields">
+          <div class="fl-field">
+            <input type="text" placeholder=" " data-must>
+            <label>Role<span class="req">*</span></label>
+          <p class="field-hint">The contractor's role or job title — appears on the agreement.</p></div>
+          <div class="fl-field">
+            <textarea placeholder=" " data-must></textarea>
+            <label>Describe the role, responsibilities, and requirements…</label>
+          <p class="field-hint">This description becomes the scope-of-work clause in the contract.</p></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 7: CONTRACT & PAYMENT TERMS -->
+    <div class="step" data-step="7">
+      <div class="page-heading">
+        <h1>Contract &amp; payment terms</h1>
+        <p>Set how this contractor is paid and the legal terms that govern the agreement.</p>
+      </div>
+
+      <div class="section-card">
+        <div class="section-title">Payment details</div>
+        <div class="fields">
+          <div>
+            <div class="seg-label">Contract type</div>
+            <div class="seg" data-name="contractType">
+              <button type="button" class="active" data-value="fixed">Fixed rate</button>
+              <button type="button" data-value="payg">Pay as you go</button>
+            </div>
+          </div>
+          <div class="fl-row-3">
+            <div class="fl-field">
+              <select data-must>
+                <option value="" disabled selected hidden></option>
+                <option>USD</option>
+                <option>INR</option>
+                <option>EUR</option>
+                <option>GBP</option>
+                <option>SGD</option>
+                <option>AUD</option>
+              </select>
+              <label>Currency<span class="req">*</span></label>
+            </div>
+            <div class="fl-field">
+              <input type="number" placeholder=" " data-must>
+              <label>Payment rate<span class="req">*</span></label>
+            </div>
+            <div class="fl-field">
+              <select data-must>
+                <option value="" disabled selected hidden></option>
+                <option>Monthly</option>
+                <option>Weekly</option>
+                <option>Bi-weekly</option>
+                <option>Per milestone</option>
+                <option>One-time</option>
+              </select>
+              <label>Frequency<span class="req">*</span></label>
+            </div>
+          </div>
+          <div class="fl-field">
+            <textarea placeholder=" "></textarea>
+            <label>Special clauses for the contract (if any)</label>
+            <p class="field-hint">This text will appear in the legal agreement.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-card">
+        <div class="section-title">Governing law &amp; Jurisdiction</div>
+        <div class="fields">
+          <div class="fl-field">
+            <input type="text" placeholder=" " data-must>
+            <label>State of jurisdiction<span class="req">*</span></label>
+          </div>
+        </div>
+        <div class="excerpt">
+          <span class="excerpt-tag">Contract excerpt</span>
+          <h5>Governing Law and Jurisdiction</h5>
+          <p>This agreement will be governed by and construed in accordance with the laws of the state where your organization is registered, excluding its body of law controlling conflict of laws.</p>
+          <p>Any legal action or proceeding arising under this agreement will be brought exclusively in the federal or state courts located within the state's jurisdiction, and the parties irrevocably consent to the personal jurisdiction and venue therein.</p>
+        </div>
+      </div>
+
+      <div class="section-card">
+        <div class="section-title">Authorized Signatory</div>
+        <div class="info-banner">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+          <span>This person will receive the agreement for e-signature via our secure signature partner.</span>
+        </div>
+        <div class="fields">
+          <div class="fl-field">
+            <input type="text" placeholder=" " data-must>
+            <label>Full legal name<span class="req">*</span></label>
+          </div>
+          <div class="fl-field">
+            <input type="email" placeholder=" " data-must>
+            <label>Email address<span class="req">*</span></label>
+          </div>
+          <div class="fl-field">
+            <input type="text" placeholder=" " data-must>
+            <label>Designation / Job title<span class="req">*</span></label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 8: GST & TAX APPLICABILITY -->
+    <div class="step" data-step="8">
+      <div class="page-heading">
+        <h1>GST &amp; Tax applicability</h1>
+        <p>A few questions about where the work happens so we apply the right tax treatment to invoices.</p>
+      </div>
+
+      <div class="section-card">
+        <div class="section-title">Company &amp; service location</div>
+
+        <div class="q-block">
+          <div class="q-label">
+            Where will the contractor's services be used?
+            <button type="button" class="info-icon inline" data-tip="Determines whether GST applies. Services consumed within India are taxable; services used outside India may qualify as zero-rated export of services.">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+            </button>
+          </div>
+          <div class="choice-cards" data-name="serviceLocation">
+            <button type="button" class="choice-card selected" data-value="in-india">
+              <span class="choice-card-title">In India</span>
+              <span class="choice-card-desc">Service utilized within Indian borders</span>
+            </button>
+            <button type="button" class="choice-card" data-value="outside-india">
+              <span class="choice-card-title">Outside of India</span>
+              <span class="choice-card-desc">Service utilized globally or remote</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="q-block">
+          <div class="q-label">
+            Are the services connected to any property or office located in India?
+            <button type="button" class="info-icon inline" data-tip="If the services relate to immovable property or a fixed place of business in India, the place of supply is India and GST applies regardless of where the contractor is based.">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+            </button>
+          </div>
+          <div class="yn" data-name="propertyInIndia">
+            <button type="button" data-value="yes"><span class="dot"></span>Yes</button>
+            <button type="button" class="active" data-value="no"><span class="dot"></span>No</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 9: SET UP CONTRACTOR AGREEMENT -->
+    <div class="step" data-step="9">
+      <div class="page-heading">
+        <h1>Set up your contractor agreement</h1>
+        <p>Choose how you want to proceed. You can use our template for signing or upload an already signed agreement.</p>
+      </div>
+
+      <div class="section-card">
+        <div class="file-row" id="viewAgreement">
+          <span class="file-pdf">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M9 13h6M9 17h4"/></svg>
+          </span>
+          <span class="file-body">
+            <span class="file-title">Independent Contractor Agreement</span>
+            <span class="file-sub">Click to view the file</span>
+          </span>
+        </div>
+        <label class="upload-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V4M12 4 8 8M12 4l4 4"/><path d="M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg>
+          Upload signed contractor agreement
+          <input type="file" hidden>
+        </label>
+
+        <div style="margin-top:20px;">
+          <div class="check-row">
+            <input type="checkbox" id="agree1" data-must>
+            <label for="agree1">I confirm the agreement above is accurate and I am authorized to send it to contractors on behalf of my company.</label>
+          </div>
+          <div class="check-row">
+            <input type="checkbox" id="agree2" data-must>
+            <label for="agree2">By proceeding, you agree to <a href="#">Wisemonk's terms</a> for managing contractor payments on your behalf.</label>
+          </div>
+        </div>
+      </div>
+
+      <p class="agreement-foot">For any questions, please reach out to us at <a href="mailto:support@wisemonk.co">support@wisemonk.co</a></p>
+    </div>
+
+    <!-- STEP 10: INVOICING (FINAL) -->
+    <div class="step" data-step="10">
+      <div class="page-heading">
+        <h1>How should invoices be raised?</h1>
+        <p>Choose how invoices are raised for this contractor. This is the last step — you can change it any time later.</p>
+      </div>
+
+      <div class="section-card">
         <div class="section-title">Invoicing</div>
-        <div class="section-desc">Choose how invoices are raised for this freelancer.</div>
+        <div class="section-desc">Choose how invoices are raised for this contractor.</div>
         <div class="option-cards">
           <button type="button" class="option-card selected" data-invoice="auto">
             <span class="option-card-icon">
@@ -1197,7 +1449,7 @@
             </span>
             <span class="option-card-body">
               <span class="option-card-title">Auto-generate each month</span>
-              <span class="option-card-desc">Wisemonk creates and sends the invoice on the 1st of every month — no action needed from the freelancer.</span>
+              <span class="option-card-desc">Wisemonk creates and sends the invoice on the 1st of every month — no action needed from the contractor.</span>
             </span>
             <span class="option-card-radio"></span>
           </button>
@@ -1210,7 +1462,7 @@
             </span>
             <span class="option-card-body">
               <span class="option-card-title">On contractor request</span>
-              <span class="option-card-desc">The freelancer submits their own invoice each cycle and you approve it before payout.</span>
+              <span class="option-card-desc">The contractor submits their own invoice each cycle and you approve it before payout.</span>
             </span>
             <span class="option-card-radio"></span>
           </button>
@@ -1244,7 +1496,11 @@
       'Verify your identity',
       'Compliance declaration',
       'Activity, tax & payments',
-      'Add your first freelancer',
+      'Add your first contractor',
+      'Contract & payment terms',
+      'GST & tax applicability',
+      'Set up agreement',
+      'Invoicing',
       'Finish'
     ];
 
@@ -1337,6 +1593,26 @@
     // Selectable option cards — single choice per group
     document.querySelectorAll('.option-cards').forEach(grp => {
       const cards = grp.querySelectorAll('.option-card');
+      cards.forEach(card => {
+        card.addEventListener('click', () => {
+          cards.forEach(c => c.classList.toggle('selected', c === card));
+        });
+      });
+    });
+
+    // Segmented pills + Yes/No pills — single choice per group (uses .active)
+    document.querySelectorAll('.seg, .yn').forEach(grp => {
+      const btns = grp.querySelectorAll('button');
+      btns.forEach(b => {
+        b.addEventListener('click', () => {
+          btns.forEach(x => x.classList.toggle('active', x === b));
+        });
+      });
+    });
+
+    // Choice cards — single choice per group (uses .selected)
+    document.querySelectorAll('.choice-cards').forEach(grp => {
+      const cards = grp.querySelectorAll('.choice-card');
       cards.forEach(card => {
         card.addEventListener('click', () => {
           cards.forEach(c => c.classList.toggle('selected', c === card));
