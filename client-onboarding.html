@@ -57,7 +57,7 @@
 
     /* Section card — rounded-8px, light shadow */
     .section-card { max-width: 632px; margin: 0 auto 16px; background: var(--card); border-radius: 8px; padding: 20px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.03); }
-    .section-card .section-title { font-size: 18px; font-weight: 700; color: var(--text-primary); margin-bottom: 6px; }
+    .section-card .section-title { font-size: 18px; font-weight: 700; color: var(--text-primary); margin-bottom: 20px; }
     .section-card .section-desc { font-size: 14px; color: var(--text-muted); margin-bottom: 24px; line-height: 1.55; }
     .section-card .section-desc:last-child { margin-bottom: 0; }
     .section-card .fields { display: flex; flex-direction: column; gap: 20px; }
@@ -300,7 +300,6 @@
       <!-- Card 1: Your details -->
       <div class="section-card">
         <div class="section-title">Your details</div>
-        <p class="section-desc">The name and role of the person setting up this account — this signs freelancer contracts on behalf of the company.</p>
         <div class="fields">
           <div class="fl-field">
             <input type="text" placeholder=" " required>
@@ -328,7 +327,6 @@
       <!-- Card 2: Company details -->
       <div class="section-card">
         <div class="section-title">Company details</div>
-        <p class="section-desc">Your company's legal and registration details — required for compliant freelancer contracts and accurate tax handling.</p>
         <div class="fields">
           <div class="fl-field">
             <input type="text" placeholder=" " required>
@@ -398,7 +396,6 @@
       <!-- Card 3: Ownership & Management -->
       <div class="section-card">
         <div class="section-title">Ownership &amp; Management</div>
-        <p class="section-desc">Director details and ownership declaration — required for AML / KYC checks before we can process freelancer payouts.</p>
         <div class="fields">
           <div class="fl-field">
             <input type="text" placeholder=" " required>
@@ -429,7 +426,6 @@
 
       <div class="section-card">
         <div class="section-title">Business registration numbers</div>
-        <p class="section-desc">These come from your Certificate of Incorporation and tax registrations.</p>
         <div class="fields">
           <div class="fl-row">
             <div class="fl-field">
@@ -450,7 +446,6 @@
 
       <div class="section-card">
         <div class="section-title">Upload documents</div>
-        <p class="section-desc">Scanned PDFs or clear photos. Max 5 MB per file.</p>
         <div class="upload-grid">
           <label class="upload-tile uploaded">
             <span class="ut-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
@@ -497,7 +492,6 @@
 
       <div class="section-card">
         <div class="section-title">Ownership declaration</div>
-        <p class="section-desc">Required for AML and sanctions screening before we can process freelancer payouts.</p>
 
         <label style="font-size: 14px; font-weight: 500; color: var(--text-primary); display: block; margin-bottom: 10px;">
           Does any individual own 25% or more of this business? <span style="color:var(--text-muted)">*</span>
@@ -598,7 +592,6 @@
 
       <div class="section-card">
         <div class="section-title">Authorised signatory</div>
-        <p class="section-desc">This person signs freelancer contracts and authorises payouts.</p>
 
         <div class="inline-check" style="padding-bottom: 16px;">
           <input type="checkbox" id="sameAsUbo">
@@ -647,7 +640,6 @@
 
       <div class="section-card">
         <div class="section-title">Identity documents</div>
-        <p class="section-desc">Government-issued ID plus a quick selfie liveness check.</p>
         <div class="upload-grid">
           <label class="upload-tile uploaded">
             <span class="ut-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
@@ -683,7 +675,6 @@
 
       <div class="section-card">
         <div class="section-title">Please confirm the following</div>
-        <p class="section-desc">Each statement must be ticked before we can activate freelancer payouts.</p>
 
         <div class="check-row" style="border-top: none;">
           <input type="checkbox" id="c1" data-required>
@@ -705,7 +696,6 @@
 
       <div class="section-card">
         <div class="section-title">Prohibited / high-risk industries</div>
-        <p class="section-desc">We can't onboard companies operating in certain regulated or high-risk industries.</p>
 
         <div class="check-row" style="border-top: none;">
           <input type="checkbox" id="c5" data-required>
@@ -744,7 +734,6 @@
 
       <div class="section-card">
         <div class="section-title">Tax</div>
-        <p class="section-desc">Drives how we generate freelancer invoices and withhold tax where required.</p>
         <div class="fields">
           <div class="fl-row">
             <div class="fl-field">
@@ -792,7 +781,6 @@
 
       <div class="section-card">
         <div class="section-title">Approval rules</div>
-        <p class="section-desc">Defaults for invoice processing — you can override these per freelancer later.</p>
         <div class="fields">
           <div class="fl-row">
             <div class="fl-field">
@@ -828,7 +816,6 @@
 
       <div class="section-card">
         <div class="section-title">Freelancer details</div>
-        <p class="section-desc">We'll send them an invitation to sign their contract and add bank details.</p>
         <div class="fields">
           <div class="fl-row">
             <div class="fl-field">
@@ -882,7 +869,6 @@
 
       <div class="section-card">
         <div class="section-title">Invoicing</div>
-        <p class="section-desc">Choose how invoices are generated for this freelancer.</p>
         <div class="pill-row">
           <div class="pill-row-body">
             <div class="pill-row-title">Auto-generate invoices each month</div>
