@@ -138,6 +138,46 @@
     /* 2-column field row */
     .fl-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 
+    /* Info icon (top-right of a field) + hover tooltip */
+    .fl-field .info-icon {
+      position: absolute; top: 14px; right: 14px;
+      width: 22px; height: 22px;
+      display: inline-flex; align-items: center; justify-content: center;
+      background: transparent; border: none; padding: 0;
+      color: var(--text-muted); cursor: help;
+      border-radius: 50%;
+      z-index: 2;
+      transition: color 0.15s, background 0.15s;
+    }
+    .fl-field .info-icon:hover { color: var(--brand-500); background: var(--brand-50); }
+    .fl-field .info-icon svg { width: 16px; height: 16px; }
+    /* Push the select chevron left when the field has an info icon */
+    .fl-field.has-info select { padding-right: 64px; background-position: right 38px center; }
+    /* Tooltip popover (pure CSS — uses data-tip attribute) */
+    .info-icon[data-tip]:hover::after {
+      content: attr(data-tip);
+      position: absolute;
+      right: -4px; bottom: calc(100% + 8px);
+      background: var(--text-primary);
+      color: #fff;
+      padding: 10px 12px;
+      border-radius: 6px;
+      font-size: 12.5px; font-weight: 500; line-height: 1.5;
+      width: 240px;
+      white-space: normal;
+      pointer-events: none;
+      z-index: 100;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+    }
+    .info-icon[data-tip]:hover::before {
+      content: '';
+      position: absolute;
+      right: 4px; bottom: calc(100% + 4px);
+      border: 5px solid transparent;
+      border-top-color: var(--text-primary);
+      z-index: 101;
+    }
+
     /* Phone input — combined widget with floating label */
     .fl-phone { position: relative; display: flex; }
     .fl-phone .cc {
@@ -327,6 +367,16 @@
             <input type="email" placeholder=" ">
             <label>Work email</label>
           </div>
+          <div class="fl-phone">
+            <select class="cc">
+              <option>+91</option>
+              <option>+1</option>
+              <option>+44</option>
+              <option>+65</option>
+            </select>
+            <input class="num" type="tel" placeholder=" ">
+            <label>Work phone</label>
+          </div>
         </div>
       </div>
 
@@ -363,7 +413,7 @@
             </select>
             <label>Business type</label>
           </div>
-          <div class="fl-field">
+          <div class="fl-field has-info">
             <select>
               <option value="" disabled selected hidden></option>
               <option>Technology / SaaS</option>
@@ -376,6 +426,9 @@
               <option>Other</option>
             </select>
             <label>Industry</label>
+            <button type="button" class="info-icon" data-tip="Some industries (e.g. gambling, weapons, unlicensed financial services) can't be onboarded. We'll flag any restrictions on the compliance step.">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+            </button>
           </div>
           <div class="fl-field">
             <select>
@@ -387,6 +440,10 @@
               <option>500+</option>
             </select>
             <label>Company size</label>
+          </div>
+          <div class="fl-field">
+            <textarea placeholder=" "></textarea>
+            <label>Registered office address</label>
           </div>
           <div class="fl-field" id="websiteField">
             <input type="url" id="companyWebsite" placeholder=" ">
@@ -429,17 +486,26 @@
       <div class="section-card">
         <div class="section-title">Business registration numbers</div>
         <div class="fields">
-          <div class="fl-field">
+          <div class="fl-field has-info">
             <input type="text" placeholder=" ">
             <label>CIN</label>
+            <button type="button" class="info-icon" data-tip="Corporate Identification Number — the 21-character code on your Certificate of Incorporation issued by MCA.">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+            </button>
           </div>
-          <div class="fl-field">
+          <div class="fl-field has-info">
             <input type="text" placeholder=" ">
             <label>Company PAN</label>
+            <button type="button" class="info-icon" data-tip="Permanent Account Number — 10-character alphanumeric ID issued by the Income Tax department. Required for TDS deduction on freelancer payouts.">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+            </button>
           </div>
-          <div class="fl-field">
+          <div class="fl-field has-info">
             <input type="text" placeholder=" ">
             <label>GSTIN (if applicable)</label>
+            <button type="button" class="info-icon" data-tip="Goods and Services Tax Identification Number. Required only if your company is registered for GST. Leave blank otherwise.">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+            </button>
           </div>
         </div>
       </div>
@@ -634,15 +700,18 @@
             </select>
             <label>Primary billing currency</label>
           </div>
-          <div class="fl-field">
+          <div class="fl-field has-info">
             <select>
               <option value="" disabled selected hidden></option>
               <option>Yes — withhold TDS</option>
               <option>No — pay freelancer in full</option>
             </select>
             <label>Withhold tax on payments?</label>
+            <button type="button" class="info-icon" data-tip="If 'Yes', we deduct the applicable TDS at source and remit the freelancer the net amount. If 'No', the freelancer is responsible for their own tax filing.">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+            </button>
           </div>
-          <div class="fl-field">
+          <div class="fl-field has-info">
             <select>
               <option value="" disabled selected hidden></option>
               <option>Section 194J — Professional services (10%)</option>
@@ -650,8 +719,11 @@
               <option>Section 194O — E-commerce (1%)</option>
             </select>
             <label>TDS section</label>
+            <button type="button" class="info-icon" data-tip="194J: consulting, design, software, legal (10%). 194C: contract execution, manufacturing (2%). 194O: e-commerce sellers (1%). Pick whichever matches the bulk of your freelance work.">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+            </button>
           </div>
-          <div class="fl-field">
+          <div class="fl-field has-info">
             <select>
               <option value="" disabled selected hidden></option>
               <option>Registered</option>
@@ -659,6 +731,9 @@
               <option>Composition scheme</option>
             </select>
             <label>GST status</label>
+            <button type="button" class="info-icon" data-tip="Registered: standard GSTIN. Composition scheme: small businesses under ₹1.5 Cr turnover with flat-rate GST. Not registered: turnover below the threshold. We use this to determine which invoices include GST.">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+            </button>
           </div>
         </div>
       </div>
@@ -676,15 +751,20 @@
             </select>
             <label>Default invoice due</label>
           </div>
-          <div class="fl-field">
+          <div class="fl-field has-info">
             <input type="number" placeholder=" ">
             <label>Auto-approve invoices under (USD)</label>
+            <button type="button" class="info-icon" data-tip="Invoices below this amount are released automatically as long as the freelancer's contract is active. Leave blank to require manual approval on every invoice.">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+            </button>
           </div>
-          <div class="fl-field">
+          <div class="fl-field has-info">
             <input type="number" placeholder=" ">
             <label>Require dual approval above (USD)</label>
+            <button type="button" class="info-icon" data-tip="Invoices over this amount need sign-off from a second admin before they pay out. Useful for catching mistakes on large invoices.">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+            </button>
           </div>
-          <p class="field-hint">Invoices over this amount will require approval from a second admin before payout.</p>
         </div>
       </div>
     </div>
@@ -707,7 +787,7 @@
             <input type="email" placeholder=" ">
             <label>Email</label>
           </div>
-          <div class="fl-field">
+          <div class="fl-field has-info">
             <select>
               <option value="" disabled selected hidden></option>
               <option>India</option>
@@ -717,12 +797,15 @@
               <option>Brazil</option>
             </select>
             <label>Country</label>
+            <button type="button" class="info-icon" data-tip="Determines which contract template, tax form, and payout currency we use for this freelancer.">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+            </button>
           </div>
           <div class="fl-field">
             <input type="text" placeholder=" ">
             <label>Role / job title</label>
           </div>
-          <div class="fl-field">
+          <div class="fl-field has-info">
             <select>
               <option value="" disabled selected hidden></option>
               <option>Monthly retainer</option>
@@ -731,6 +814,9 @@
               <option>Fixed price</option>
             </select>
             <label>Engagement type</label>
+            <button type="button" class="info-icon" data-tip="Monthly retainer: fixed amount each month. Hourly: timesheet-based. Per project: per deliverable. Fixed price: one-time payment. You can change this later.">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+            </button>
           </div>
           <div class="fl-field">
             <input type="number" placeholder=" ">
