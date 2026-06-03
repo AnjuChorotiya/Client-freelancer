@@ -58,11 +58,11 @@
 
     /* Section card — rounded-8px, no shadow, centred 632px column */
     .section-card { max-width: 632px; margin: 0 auto 16px; background: var(--card); border-radius: 8px; padding: 20px; }
-    .section-card .section-title { font-size: 18px; font-weight: 700; color: var(--text-primary); margin-bottom: 20px; }
+    .section-card .section-title { font-size: 18px; font-weight: 700; color: var(--text-primary); margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
     .section-card .section-desc { font-size: 14px; color: var(--text-muted); margin-bottom: 24px; line-height: 1.55; }
     .section-card .section-desc:last-child { margin-bottom: 0; }
     .section-card .fields { display: flex; flex-direction: column; gap: 20px; }
-    .section-card .fields + .section-title { margin-top: 28px; padding-top: 24px; border-top: 1px solid var(--border); }
+    .section-card .fields + .section-title { margin-top: 28px; }
 
     /* Divided variant — title gets a horizontal hairline under it (used on compliance step) */
     .section-card.divided { padding: 24px; }
@@ -75,7 +75,7 @@
     .fl-field select,
     .fl-field textarea {
       width: 100%;
-      padding: 16px;
+      padding: 12px 14px;
       border: 1px solid var(--border);
       border-radius: 8px;
       font-family: 'Satoshi', sans-serif;
@@ -104,7 +104,7 @@
     /* Label — sits vertically centered when empty, lifts to top when filled or focused */
     .fl-field label {
       position: absolute;
-      left: 16px;
+      left: 14px;
       top: 50%; transform: translateY(-50%);
       font-size: 15px;
       font-weight: 500;
@@ -112,7 +112,7 @@
       pointer-events: none;
       transition: top 0.15s ease, font-size 0.15s ease, transform 0.15s ease;
       line-height: 1;
-      max-width: calc(100% - 32px);
+      max-width: calc(100% - 28px);
     }
     .fl-field input:not([type="date"]):focus ~ label,
     .fl-field input:not([type="date"]):not(:placeholder-shown) ~ label,
@@ -122,17 +122,17 @@
     .fl-field input[type="date"].has-value ~ label,
     .fl-field input[type="date"]:focus ~ label,
     .fl-field.float label {
-      top: 5px; transform: none;
-      font-size: 11px;
+      top: 3px; transform: none;
+      font-size: 10px;
       font-weight: 500;
     }
     /* Hide the browser's dd-mm-yyyy format string when the date input is empty + unfocused,
        so the centred floating label can sit on top without clashing. */
     .fl-field input[type="date"]:not(.has-value):not(:focus)::-webkit-datetime-edit { color: transparent; }
     .fl-field input[type="date"]:not(.has-value):not(:focus) { color: transparent; }
-    .fl-field textarea ~ label { top: 16px; transform: none; }
+    .fl-field textarea ~ label { top: 12px; transform: none; }
     .fl-field textarea:focus ~ label,
-    .fl-field textarea:not(:placeholder-shown) ~ label { top: 5px; }
+    .fl-field textarea:not(:placeholder-shown) ~ label { top: 3px; }
     .fl-field .req { color: var(--text-muted); margin-left: 2px; font-weight: 500; }
     /* Select shows muted text colour until touched */
     .fl-field select:not(.touched) { color: var(--text-muted); }
@@ -326,7 +326,7 @@
     /* Phone input — combined widget with floating label */
     .fl-phone { position: relative; display: flex; }
     .fl-phone .cc {
-      width: 84px; padding: 16px 28px 16px 14px;
+      width: 84px; padding: 12px 28px 12px 14px;
       border: 1px solid var(--border);
       border-right: none;
       border-radius: 8px 0 0 8px;
@@ -338,7 +338,7 @@
       cursor: pointer;
     }
     .fl-phone .num {
-      flex: 1; padding: 16px;
+      flex: 1; padding: 12px 14px;
       border: 1px solid var(--border);
       border-radius: 0 8px 8px 0;
       font-family: 'Satoshi', sans-serif;
@@ -363,8 +363,8 @@
     }
     .fl-phone .num:focus ~ label,
     .fl-phone .num:not(:placeholder-shown) ~ label {
-      top: 5px; transform: none;
-      font-size: 11px;
+      top: 3px; transform: none;
+      font-size: 10px;
     }
     .fl-phone .req { color: var(--text-muted); margin-left: 2px; }
 
