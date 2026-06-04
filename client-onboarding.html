@@ -675,7 +675,7 @@
 
       <div class="section-card">
         <div class="section-title">Ultimate beneficiary owner (UBO)</div>
-        <p class="section-desc">Select the individual who owns more than 10% of the business.</p>
+        <p class="section-desc">Select the individual who owns more than 25% of the business.</p>
         <div class="fields">
           <div class="fl-field">
             <select id="uboSelect" data-must>
@@ -689,52 +689,8 @@
       </div>
     </div>
 
-    <!-- STEP 3: BANK DETAILS -->
+    <!-- STEP 3: PROVIDE DOCUMENTS -->
     <div class="step" data-step="3">
-      <div class="page-heading">
-        <h1>Add your bank details</h1>
-        <p>We'll use these details to link your Indian bank account and process payouts.</p>
-      </div>
-
-      <div class="section-card">
-        <div class="section-title">Bank account details</div>
-        <div class="fields">
-          <div class="fl-field">
-            <select data-must>
-              <option value="" disabled selected hidden></option>
-              <option>HDFC Bank</option>
-              <option>ICICI Bank</option>
-              <option>State Bank of India</option>
-              <option>Axis Bank</option>
-              <option>Kotak Mahindra Bank</option>
-              <option>Yes Bank</option>
-              <option>Other</option>
-            </select>
-            <label>Bank name<span class="req">*</span></label>
-          </div>
-          <div class="fl-field">
-            <input type="text" placeholder=" " data-must>
-            <label>Bank account holder name<span class="req">*</span></label>
-          <p class="field-hint">Enter the name exactly as it appears on your bank account.</p></div>
-          <div class="fl-field">
-            <input type="text" placeholder=" " data-must>
-            <label>Account number<span class="req">*</span></label>
-          </div>
-          <div class="fl-field">
-            <input type="text" placeholder=" " data-must>
-            <label>IFSC code<span class="req">*</span></label>
-          <p class="field-hint">Enter 11-digit IFSC code.</p></div>
-        </div>
-        <label class="upload-link">
-          Or upload a bank document instead
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-          <input type="file" hidden>
-        </label>
-      </div>
-    </div>
-
-    <!-- STEP 4: PROVIDE DOCUMENTS -->
-    <div class="step" data-step="4">
       <div class="page-heading">
         <h1>Provide your documents</h1>
         <p>We use these documents to complete verification and activate your account.</p>
@@ -783,8 +739,8 @@
       </div>
     </div>
 
-    <!-- STEP 5: TELL US ABOUT YOUR WORK -->
-    <div class="step" data-step="5">
+    <!-- STEP 4: TELL US ABOUT YOUR WORK -->
+    <div class="step" data-step="4">
       <div class="page-heading">
         <h1>Tell us about your work</h1>
         <p>This helps us understand your work and set things up correctly.</p>
@@ -865,8 +821,8 @@
 
     <!-- (removed: old Verify-business KYB step) -->
 
-    <!-- STEP 6: COMPLIANCE DECLARATION -->
-    <div class="step" data-step="6">
+    <!-- STEP 5: COMPLIANCE DECLARATION -->
+    <div class="step" data-step="5">
 
       <div class="section-card divided">
         <div class="section-title">Compliance declaration</div>
@@ -921,8 +877,8 @@
       </div>
     </div>
 
-    <!-- STEP 7: CONTRACTOR DETAILS + SCOPE OF WORK -->
-    <div class="step" data-step="7">
+    <!-- STEP 6: CONTRACTOR DETAILS + SCOPE OF WORK -->
+    <div class="step" data-step="6">
       <div class="page-heading">
         <h1>Add your first contractor</h1>
         <p>We'll use these details to generate a compliant independent-contractor agreement and set up payments.</p>
@@ -988,8 +944,8 @@
       </div>
     </div>
 
-    <!-- STEP 8: CONTRACT & PAYMENT TERMS -->
-    <div class="step" data-step="8">
+    <!-- STEP 7: CONTRACT & PAYMENT TERMS -->
+    <div class="step" data-step="7">
       <div class="page-heading">
         <h1>Contract &amp; payment terms</h1>
         <p>Set how this contractor is paid and the legal terms that govern the agreement.</p>
@@ -1081,8 +1037,8 @@
       </div>
     </div>
 
-    <!-- STEP 9: GST & TAX APPLICABILITY -->
-    <div class="step" data-step="9">
+    <!-- STEP 8: GST & TAX APPLICABILITY -->
+    <div class="step" data-step="8">
       <div class="page-heading">
         <h1>GST &amp; Tax applicability</h1>
         <p>A few questions about where the work happens so we apply the right tax treatment to invoices.</p>
@@ -1125,8 +1081,8 @@
       </div>
     </div>
 
-    <!-- STEP 10: SET UP CONTRACTOR AGREEMENT -->
-    <div class="step" data-step="10">
+    <!-- STEP 9: SET UP CONTRACTOR AGREEMENT -->
+    <div class="step" data-step="9">
       <div class="page-heading">
         <h1>Set up your contractor agreement</h1>
         <p>Choose how you want to proceed. You can use our template for signing or upload an already signed agreement.</p>
@@ -1162,8 +1118,8 @@
 
     </div>
 
-    <!-- STEP 11: INVOICING (FINAL) -->
-    <div class="step" data-step="11">
+    <!-- STEP 10: INVOICING (FINAL) -->
+    <div class="step" data-step="10">
       <div class="page-heading">
         <h1>How should invoices be raised?</h1>
         <p>Choose how invoices are raised for this contractor. This is the last step — you can change it any time later.</p>
@@ -1226,7 +1182,6 @@
 
     const nextLabels = [
       'People behind your business',
-      'Bank details',
       'Documents',
       'Tell us about your work',
       'Compliance declaration',
