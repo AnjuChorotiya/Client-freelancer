@@ -739,18 +739,22 @@
         <div class="q-block">
           <div class="q-label">Proof of work<span class="req">*</span></div>
           <div class="check-row">
-            <input type="radio" name="proofOfWork" id="pow-gst" checked>
-            <label for="pow-gst">Goods and service tax (GST) certificate</label>
+            <input type="radio" name="proofOfWork" id="pow-coi" checked>
+            <label for="pow-coi">Certificate of incorporation</label>
           </div>
           <div class="check-row">
-            <input type="radio" name="proofOfWork" id="pow-cin">
-            <label for="pow-cin">CIN document</label>
+            <input type="radio" name="proofOfWork" id="pow-reg">
+            <label for="pow-reg">Business registration document</label>
+          </div>
+          <div class="check-row">
+            <input type="radio" name="proofOfWork" id="pow-tax">
+            <label for="pow-tax">Tax registration document (VAT / EIN / Tax ID)</label>
           </div>
         </div>
         <label class="upload-tile" style="margin-top:8px;">
           <span class="ut-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></span>
           <span class="ut-body">
-            <span class="ut-title">Upload GST document</span>
+            <span class="ut-title">Upload business document</span>
             <span class="ut-sub">Helps verify the registration of the company · PDF or image, max 5 MB</span>
           </span>
           <input type="file" hidden>
