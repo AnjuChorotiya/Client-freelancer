@@ -260,15 +260,43 @@
       60%, 100% { content: '...'; }
     }
 
-    /* Payout calculator */
-    .calc-card {
+    /* Payout calculator trigger link */
+    .calc-trigger {
+      display: flex; align-items: center; gap: 14px; width: 100%;
+      padding: 14px 18px; margin-bottom: 20px;
       background: var(--neutral-0);
-      border: 1px solid var(--border);
+      border: 1px solid var(--border-strong);
       border-radius: 12px;
-      padding: 22px 24px;
-      text-align: left;
-      margin-bottom: 20px;
+      text-align: left; cursor: pointer;
+      font-family: inherit;
+      transition: border-color 0.15s, background 0.15s;
     }
+    .calc-trigger:hover { border-color: var(--primary-500); background: var(--primary-50); }
+    .calc-trigger-ic {
+      width: 38px; height: 38px; flex-shrink: 0; border-radius: 10px;
+      background: var(--primary-50); color: var(--primary-600);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .calc-trigger:hover .calc-trigger-ic { background: var(--neutral-0); }
+    .calc-trigger-ic svg { width: 20px; height: 20px; }
+    .calc-trigger-text { flex: 1; min-width: 0; }
+    .calc-trigger-title { display: block; font-size: 14.5px; font-weight: 700; color: var(--text-primary); }
+    .calc-trigger-sub { display: block; font-size: 12.5px; color: var(--text-muted); margin-top: 2px; }
+    .calc-trigger-arrow { width: 18px; height: 18px; flex-shrink: 0; color: var(--text-muted); }
+    .calc-trigger:hover .calc-trigger-arrow { color: var(--primary-600); }
+
+    /* Payout calculator modal */
+    .calc-modal-overlay { position: fixed; inset: 0; background: rgba(18,22,32,0.55); display: none; align-items: center; justify-content: center; padding: 24px; z-index: 2000; }
+    .calc-modal-overlay.open { display: flex; animation: calcFade 0.18s ease; }
+    @keyframes calcFade { from { opacity: 0; } to { opacity: 1; } }
+    .calc-modal { background: var(--neutral-0); border-radius: 16px; width: 100%; max-width: 460px; max-height: 90vh; overflow-y: auto; box-shadow: 0 30px 70px -20px rgba(0,0,0,0.45); }
+    .calc-modal-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 24px 24px 0; }
+    .calc-modal-head h2 { font-family: 'Satoshi', sans-serif; font-size: 19px; font-weight: 700; color: var(--text-primary); margin: 0 0 4px; letter-spacing: -0.2px; }
+    .calc-modal-head p { font-size: 13.5px; color: var(--text-muted); margin: 0; line-height: 1.5; }
+    .calc-modal-close { width: 32px; height: 32px; flex-shrink: 0; border: none; background: transparent; border-radius: 8px; color: var(--text-muted); cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .calc-modal-close:hover { background: var(--neutral-100); color: var(--text-primary); }
+    .calc-modal-close svg { width: 18px; height: 18px; }
+    .calc-modal-body { padding: 18px 24px 24px; text-align: left; }
     .calc-field-label {
       display: block;
       font-family: 'Satoshi', sans-serif;
@@ -324,11 +352,12 @@
 </head>
 <body><!-- wm-icon-sprite --><svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true"><symbol id="ic-arrow-left" viewBox="0 0 24 24" fill="none"><path d="M9.57 5.92993L3.5 11.9999L9.57 18.0699" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M20.5 12H3.67004" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-copy" viewBox="0 0 24 24" fill="none"><path d="M16 12.9V17.1C16 20.6 14.6 22 11.1 22H6.9C3.4 22 2 20.6 2 17.1V12.9C2 9.4 3.4 8 6.9 8H11.1C14.6 8 16 9.4 16 12.9Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M22 6.9V11.1C22 14.6 20.6 16 17.1 16H16V12.9C16 9.4 14.6 8 11.1 8H8V6.9C8 3.4 9.4 2 12.9 2H17.1C20.6 2 22 3.4 22 6.9Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-clock" viewBox="0 0 24 24" fill="none"><path d="M22 12C22 17.52 17.52 22 12 22C6.48 22 2 17.52 2 12C2 6.48 6.48 2 12 2C17.52 2 22 6.48 22 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 7V12.5L15.5 14.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-info-circle" viewBox="0 0 24 24" fill="none"><path d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M22 6.9V11.1C22 14.6 20.6 16 17.1 16H16V12.9C16 9.4 14.6 8 11.1 8H8V6.9C8 3.4 9.4 2 12.9 2H17.1C20.6 2 22 3.4 22 6.9Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-clock" viewBox="0 0 24 24" fill="none"><path d="M22 12C22 17.52 17.52 22 12 22C6.48 22 2 17.52 2 12C2 6.48 6.48 2 12 2C17.52 2 22 6.48 22 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 7V12.5L15.5 14.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-arrow-right" viewBox="0 0 24 24" fill="none"><path d="M14.4301 5.92993L20.5001 11.9999L14.4301 18.0699" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M3.5 12H20.33" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-info-circle" viewBox="0 0 24 24" fill="none"><path d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M12 8V13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M11.9945 16H12.0035" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-message-question" viewBox="0 0 24 24" fill="none"><path d="M17 18.4301H13L8.54999 21.39C7.88999 21.83 7 21.3601 7 20.5601V18.4301C4 18.4301 2 16.4301 2 13.4301V7.42999C2 4.42999 4 2.42999 7 2.42999H17C20 2.42999 22 4.42999 22 7.42999V13.4301C22 16.4301 20 18.4301 17 18.4301Z" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M12.0001 11.36V11.15C12.0001 10.47 12.4201 10.11 12.8401 9.82001C13.2501 9.54001 13.66 9.18002 13.66 8.52002C13.66 7.60002 12.9201 6.85999 12.0001 6.85999C11.0801 6.85999 10.3401 7.60002 10.3401 8.52002" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M11.9955 13.75H12.0045" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol></svg><!-- /wm-icon-sprite -->
+<path d="M11.9955 13.75H12.0045" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-close" viewBox="0 0 24 24" fill="none"><path d="M6 6L18 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M18 6L6 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol></svg><!-- /wm-icon-sprite -->
 
   <div class="crumb">
     <a href="invoices.html">
@@ -395,35 +424,14 @@
         </div>
       </div>
 
-      <div class="calc-card">
-        <div class="section-label">Payout calculator</div>
-        <div>
-          <span class="calc-field-label">You send</span>
-          <div class="calc-input-wrap">
-            <span class="calc-cur">$</span>
-            <input id="calcSend" type="text" inputmode="decimal" value="12,450.00" aria-label="Amount you send in USD">
-            <span class="calc-code">USD</span>
-          </div>
-        </div>
-        <div class="calc-breakdown">
-          <div class="calc-line"><span>Wisemonk fee (6%)</span><span id="calcFee">−$747.00</span></div>
-          <div class="calc-line"><span>Exchange rate</span><span id="calcRate">1 USD = ₹83.50</span></div>
-        </div>
-        <div class="calc-get">
-          <div>
-            <div class="calc-get-label">Rahul Sharma gets</div>
-            <div class="calc-get-value" id="calcGet">₹9,77,200.50</div>
-          </div>
-          <div class="calc-eta">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-clock"/></svg>
-            <div>
-              <div class="calc-eta-label">Est. arrival</div>
-              <div class="calc-eta-value" id="calcEta">Today, by 5:30 PM</div>
-            </div>
-          </div>
-        </div>
-        <div class="calc-note">Pay before 2:00 PM on a business day for same-day delivery. Exchange rate is indicative and locked when your payment is matched.</div>
-      </div>
+      <button type="button" class="calc-trigger" onclick="openCalcModal(event)">
+        <span class="calc-trigger-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-clock"/></svg></span>
+        <span class="calc-trigger-text">
+          <span class="calc-trigger-title">Payout calculator</span>
+          <span class="calc-trigger-sub">See what your freelancer gets &amp; when it arrives</span>
+        </span>
+        <svg class="calc-trigger-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-arrow-right"/></svg>
+      </button>
 
       <div class="info-banner">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-info-circle"/></svg>
@@ -494,6 +502,47 @@
 
   </main>
 
+  <!-- Payout calculator modal -->
+  <div class="calc-modal-overlay" id="calcModal" role="dialog" aria-modal="true" aria-labelledby="calcModalTitle">
+    <div class="calc-modal">
+      <div class="calc-modal-head">
+        <div>
+          <h2 id="calcModalTitle">Payout calculator</h2>
+          <p>See exactly what your freelancer receives and when.</p>
+        </div>
+        <button class="calc-modal-close" type="button" onclick="closeCalcModal()" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-close"/></svg></button>
+      </div>
+      <div class="calc-modal-body">
+        <div>
+          <span class="calc-field-label">You send</span>
+          <div class="calc-input-wrap">
+            <span class="calc-cur">$</span>
+            <input id="calcSend" type="text" inputmode="decimal" value="12,450.00" aria-label="Amount you send in USD">
+            <span class="calc-code">USD</span>
+          </div>
+        </div>
+        <div class="calc-breakdown">
+          <div class="calc-line"><span>Wisemonk fee (6%)</span><span id="calcFee">−$747.00</span></div>
+          <div class="calc-line"><span>Exchange rate</span><span id="calcRate">1 USD = ₹83.50</span></div>
+        </div>
+        <div class="calc-get">
+          <div>
+            <div class="calc-get-label">Rahul Sharma gets</div>
+            <div class="calc-get-value" id="calcGet">₹9,77,200.50</div>
+          </div>
+          <div class="calc-eta">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-clock"/></svg>
+            <div>
+              <div class="calc-eta-label">Est. arrival</div>
+              <div class="calc-eta-value" id="calcEta">Today, by 5:30 PM</div>
+            </div>
+          </div>
+        </div>
+        <div class="calc-note">Pay before 2:00 PM on a business day for same-day delivery. Exchange rate is indicative and locked when your payment is matched.</div>
+      </div>
+    </div>
+  </div>
+
   <script>
     // Pick up the invoice number from ?inv=
     const params = new URLSearchParams(location.search);
@@ -518,6 +567,15 @@
         showStep(3);
       }, 3000);
     });
+
+    // ── Payout calculator modal open / close ──
+    function openCalcModal(e) { if (e) e.preventDefault(); const m = document.getElementById('calcModal'); if (m) { m.classList.add('open'); document.body.style.overflow = 'hidden'; } }
+    function closeCalcModal() { const m = document.getElementById('calcModal'); if (m) { m.classList.remove('open'); document.body.style.overflow = ''; } }
+    (function () {
+      const m = document.getElementById('calcModal');
+      if (m) { m.addEventListener('click', function (ev) { if (ev.target === this) closeCalcModal(); }); }
+      document.addEventListener('keydown', function (ev) { if (ev.key === 'Escape') closeCalcModal(); });
+    })();
 
     // ── Payout calculator + estimated arrival ──
     (function () {
