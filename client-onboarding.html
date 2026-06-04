@@ -452,6 +452,13 @@
     .add-ubo { display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border: 1px dashed var(--brand-100); border-radius: 8px; background: transparent; color: var(--brand-500); font-family: inherit; font-size: 14px; font-weight: 700; cursor: pointer; }
     .add-ubo:hover { background: var(--brand-50); }
     .add-ubo svg { width: 16px; height: 16px; }
+    .director-block { display: flex; flex-direction: column; gap: 12px; }
+    .director-block + .director-block { border-top: 1px solid var(--border); padding-top: 16px; margin-top: 4px; }
+    .director-head { display: flex; align-items: center; justify-content: space-between; }
+    .director-title { font-size: 14px; font-weight: 700; color: var(--text-primary); }
+    .director-remove { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: none; background: transparent; color: var(--text-muted); cursor: pointer; border-radius: 6px; transition: background 0.15s, color 0.15s; }
+    .director-remove:hover { background: var(--brand-50); color: var(--danger); }
+    .director-remove svg { width: 16px; height: 16px; }
 
     /* Compliance attestation rows */
     .check-row { display: flex; gap: 12px; padding: 8px 0; align-items: flex-start; }
@@ -624,30 +631,40 @@
       <div class="section-card">
         <div class="section-title">Director details</div>
         <p class="section-desc">Add details for all directors involved in the business.</p>
-        <div id="directorForm" class="fields" style="display:none; margin-bottom:16px;">
-          <div class="fl-field">
-            <input type="text" placeholder=" ">
-            <label>Name of director</label>
-          </div>
-          <div class="fl-field">
-            <input type="date" placeholder=" ">
-            <label>Date of birth</label>
-          </div>
-          <div class="fl-field">
-            <select>
-              <option value="" disabled selected hidden></option>
-              <option>India</option>
-              <option>United States</option>
-              <option>United Kingdom</option>
-              <option>Singapore</option>
-              <option>UAE</option>
-              <option>Other</option>
-            </select>
-            <label>Country of residence</label>
-          </div>
-          <div class="fl-field">
-            <input type="number" min="0" max="100" placeholder=" ">
-            <label>% ownership</label>
+        <div id="directorList" style="margin-bottom:16px;">
+          <div class="director-block" data-director>
+            <div class="director-head">
+              <span class="director-title">Director 1</span>
+              <button type="button" class="director-remove" aria-label="Remove director" hidden>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M10 11v6M14 11v6"/></svg>
+              </button>
+            </div>
+            <div class="fields">
+              <div class="fl-field">
+                <input type="text" class="dir-name" placeholder=" ">
+                <label>Name of director</label>
+              </div>
+              <div class="fl-field">
+                <input type="date" placeholder=" ">
+                <label>Date of birth</label>
+              </div>
+              <div class="fl-field">
+                <select>
+                  <option value="" disabled selected hidden></option>
+                  <option>India</option>
+                  <option>United States</option>
+                  <option>United Kingdom</option>
+                  <option>Singapore</option>
+                  <option>UAE</option>
+                  <option>Other</option>
+                </select>
+                <label>Country of residence</label>
+              </div>
+              <div class="fl-field">
+                <input type="number" min="0" max="100" placeholder=" ">
+                <label>% ownership</label>
+              </div>
+            </div>
           </div>
         </div>
         <button type="button" class="add-ubo" id="addDirector">
@@ -661,11 +678,10 @@
         <p class="section-desc">Select the individual who owns more than 10% of the business.</p>
         <div class="fields">
           <div class="fl-field">
-            <select data-must>
+            <select id="uboSelect" data-must>
               <option value="" disabled selected hidden></option>
               <option>Director 1</option>
-              <option>Director 2</option>
-              <option>Other shareholder</option>
+              <option value="Other shareholder">Other shareholder</option>
             </select>
             <label>Ultimate beneficial owner<span class="req">*</span></label>
           </div>
@@ -1352,16 +1368,6 @@
       syncCount();
     }
 
-    // Add director — reveal the director sub-form
-    const addDirector = document.getElementById('addDirector');
-    const directorForm = document.getElementById('directorForm');
-    if (addDirector && directorForm) {
-      addDirector.addEventListener('click', () => {
-        directorForm.style.display = 'flex';
-        addDirector.style.display = 'none';
-      });
-    }
-
     // ----- Custom select dropdowns -----
     function closeAllPopovers() {
       document.querySelectorAll('.custom-select-menu.open, .custom-calendar.open').forEach(m => m.classList.remove('open'));
@@ -1375,23 +1381,28 @@
       const menu = document.createElement('div');
       menu.className = 'custom-select-menu';
 
-      Array.from(selectEl.options).forEach(opt => {
-        if (opt.disabled || opt.hidden) return;
-        const item = document.createElement('button');
-        item.type = 'button';
-        item.className = 'custom-select-item';
-        item.textContent = opt.textContent;
-        if ((opt.value || opt.textContent) === selectEl.value) item.classList.add('selected');
-        item.addEventListener('click', e => {
-          e.stopPropagation();
-          selectEl.value = opt.value || opt.textContent;
-          selectEl.dispatchEvent(new Event('change', { bubbles: true }));
-          Array.from(menu.children).forEach(c => c.classList.remove('selected'));
-          item.classList.add('selected');
-          closeMenu();
+      function buildItems() {
+        menu.innerHTML = '';
+        Array.from(selectEl.options).forEach(opt => {
+          if (opt.disabled || opt.hidden) return;
+          const item = document.createElement('button');
+          item.type = 'button';
+          item.className = 'custom-select-item';
+          item.textContent = opt.textContent;
+          if ((opt.value || opt.textContent) === selectEl.value) item.classList.add('selected');
+          item.addEventListener('click', e => {
+            e.stopPropagation();
+            selectEl.value = opt.value || opt.textContent;
+            selectEl.dispatchEvent(new Event('change', { bubbles: true }));
+            Array.from(menu.children).forEach(c => c.classList.remove('selected'));
+            item.classList.add('selected');
+            closeMenu();
+          });
+          menu.appendChild(item);
         });
-        menu.appendChild(item);
-      });
+      }
+      buildItems();
+      selectEl._rebuildMenu = buildItems;
       wrap.appendChild(menu);
 
       function openMenu() { closeAllPopovers(); menu.classList.add('open'); wrap.classList.add('open'); }
@@ -1516,6 +1527,93 @@
       cal.querySelector('.cal-today').addEventListener('click', e => { e.stopPropagation(); select(new Date()); });
     }
     document.querySelectorAll('.fl-field input[type="date"]').forEach(enhanceDate);
+
+    // ----- Directors (repeatable) + dynamic UBO dropdown -----
+    const directorList = document.getElementById('directorList');
+    const addDirectorBtn = document.getElementById('addDirector');
+    const uboSelect = document.getElementById('uboSelect');
+
+    function relabelDirectors() {
+      const blocks = directorList.querySelectorAll('.director-block');
+      blocks.forEach((b, i) => {
+        b.querySelector('.director-title').textContent = 'Director ' + (i + 1);
+        const rm = b.querySelector('.director-remove');
+        if (rm) rm.hidden = (blocks.length === 1);
+      });
+    }
+
+    function syncUBO() {
+      if (!uboSelect) return;
+      const prev = uboSelect.value;
+      const names = Array.from(directorList.querySelectorAll('.dir-name'))
+        .map((inp, i) => inp.value.trim() || ('Director ' + (i + 1)));
+      uboSelect.innerHTML = '<option value="" disabled hidden></option>';
+      names.forEach(n => {
+        const o = document.createElement('option');
+        o.value = n; o.textContent = n;
+        uboSelect.appendChild(o);
+      });
+      const other = document.createElement('option');
+      other.value = 'Other shareholder'; other.textContent = 'Other shareholder';
+      uboSelect.appendChild(other);
+      if (prev && Array.from(uboSelect.options).some(o => o.value === prev)) {
+        uboSelect.value = prev;
+      } else {
+        uboSelect.selectedIndex = 0;
+      }
+      uboSelect.classList.toggle('touched', !!uboSelect.value);
+      if (uboSelect._rebuildMenu) uboSelect._rebuildMenu();
+      updateSaveBtn();
+    }
+
+    function wireDirectorBlock(block, isClone) {
+      if (isClone) {
+        block.querySelectorAll('.fl-field select').forEach(sel => {
+          enhanceSelect(sel);
+          const sync = () => sel.classList.toggle('touched', !!sel.value);
+          sync();
+          sel.addEventListener('change', sync);
+        });
+        block.querySelectorAll('.fl-field input[type="date"]').forEach(d => {
+          enhanceDate(d);
+          const sync = () => d.classList.toggle('has-value', !!d.value);
+          sync();
+          d.addEventListener('change', sync);
+          d.addEventListener('input', sync);
+        });
+        block.querySelectorAll('input, select, textarea').forEach(el => {
+          el.addEventListener('input', updateSaveBtn);
+          el.addEventListener('change', updateSaveBtn);
+        });
+      }
+      const nameInput = block.querySelector('.dir-name');
+      if (nameInput) nameInput.addEventListener('input', syncUBO);
+      const rm = block.querySelector('.director-remove');
+      if (rm) rm.addEventListener('click', () => {
+        block.remove();
+        relabelDirectors();
+        syncUBO();
+      });
+    }
+
+    if (directorList && addDirectorBtn) {
+      directorList.querySelectorAll('.director-block').forEach(b => wireDirectorBlock(b, false));
+      relabelDirectors();
+      syncUBO();
+      addDirectorBtn.addEventListener('click', () => {
+        const tpl = directorList.querySelector('.director-block');
+        const clone = tpl.cloneNode(true);
+        // strip enhanced UI + reset values so the clone re-initialises fresh
+        clone.querySelectorAll('.fl-field').forEach(f => { delete f.dataset.selectEnhanced; delete f.dataset.dateEnhanced; });
+        clone.querySelectorAll('.custom-select-menu, .custom-calendar').forEach(n => n.remove());
+        clone.querySelectorAll('input').forEach(i => { i.value = ''; i.classList.remove('has-value', 'touched'); });
+        clone.querySelectorAll('select').forEach(s => { s.selectedIndex = 0; s.classList.remove('touched'); delete s._rebuildMenu; });
+        directorList.appendChild(clone);
+        wireDirectorBlock(clone, true);
+        relabelDirectors();
+        syncUBO();
+      });
+    }
 
     // Global click-outside closes any open popover
     document.addEventListener('mousedown', e => {
