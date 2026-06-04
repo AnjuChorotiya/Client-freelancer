@@ -140,6 +140,10 @@
     .fl-field select.touched { color: var(--text-primary); }
     .fl-field select:disabled { background: var(--muted-bg); border-color: var(--border); color: var(--text-muted); cursor: not-allowed; opacity: 0.75; }
     .fl-field select:disabled ~ label { color: var(--text-muted); }
+    /* Read-only (auto-filled) field — locked, not editable */
+    .fl-field input[readonly] { background: var(--muted-bg); color: var(--text-muted); cursor: default; }
+    .fl-field input[readonly]:hover { border-color: var(--border); }
+    .fl-field input[readonly]:focus { border-color: var(--border); box-shadow: none; }
 
     /* 2-column field row */
     .fl-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
@@ -834,9 +838,9 @@
               <label>Zip Code/Postal code<span class="req">*</span></label>
             </div>
             <div class="fl-field">
-              <input type="text" value="India" placeholder=" ">
+              <input type="text" value="India" placeholder=" " readonly tabindex="-1">
               <label>Country</label>
-            </div>
+            <p class="field-hint">Auto-filled from the country you selected at sign-up.</p></div>
           </div>
         </div>
       </div>
