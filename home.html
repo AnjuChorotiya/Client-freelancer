@@ -384,7 +384,11 @@
       display: flex; align-items: center;
       gap: 24px;
       padding: 16px 22px;
+      cursor: pointer;
+      border-radius: 12px;
+      transition: background 0.15s ease;
     }
+    .request-row:hover { background: var(--neutral-50); }
     .req-user {
       display: flex; align-items: center; gap: 12px;
       min-width: 200px;
@@ -1131,9 +1135,13 @@
     function openPanel() { panel.classList.add('open'); overlay.classList.add('open'); panel.setAttribute('aria-hidden', 'false'); }
     function closePanel() { panel.classList.remove('open'); overlay.classList.remove('open'); panel.setAttribute('aria-hidden', 'true'); }
 
-    // Make invoice link in approvals card clickable
-    document.querySelectorAll('.req-col-value.link').forEach(el => {
-      el.addEventListener('click', openPanel);
+    // Make the whole approval request row clickable to view details
+    // (ignore clicks on the Deny / Approve action buttons)
+    document.querySelectorAll('.request-row').forEach(row => {
+      row.addEventListener('click', e => {
+        if (e.target.closest('.req-actions')) return;
+        openPanel();
+      });
     });
 
     overlay.addEventListener('click', closePanel);
