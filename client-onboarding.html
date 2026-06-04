@@ -458,6 +458,8 @@
     .check-row input[type="checkbox"] { flex-shrink: 0; width: 18px; height: 18px; margin-top: 2px; accent-color: var(--brand-500); cursor: pointer; }
     .check-row label { font-size: 14px; font-weight: 500; line-height: 1.55; color: var(--text-primary); cursor: pointer; }
     .check-row label a.terms-link { color: var(--text-primary); font-weight: 700; text-decoration: underline; }
+    .check-row input[type="radio"] { flex-shrink: 0; width: 18px; height: 18px; margin-top: 1px; accent-color: var(--brand-500); cursor: pointer; }
+    .char-count { font-size: 12px; font-weight: 500; color: var(--text-muted); text-align: right; margin-top: 4px; padding: 0 4px; }
     .prohibited-toggle { display: inline-flex; align-items: center; gap: 6px; margin-top: 16px; color: var(--brand-500); font-weight: 700; font-size: 14px; cursor: pointer; }
     .prohibited-toggle svg { width: 16px; height: 16px; transition: transform 0.2s; }
     .prohibited-toggle.open svg { transform: rotate(180deg); }
@@ -589,185 +591,48 @@
 
   <main>
 
-    <!-- STEP 1: BUSINESS DETAILS -->
+    <!-- STEP 1: TELL US ABOUT YOURSELF -->
     <div class="step active" data-step="1">
       <div class="page-heading">
-        <h1>Tell us about your business</h1>
-        <p>We use this to set up locally compliant freelancer contracts and the right tax handling when you start paying your freelancers.</p>
+        <h1>Tell us about yourself</h1>
+        <p>We'll use these details to verify your identity and stay in touch as you continue onboarding.</p>
       </div>
 
-      <!-- Card 1: Your details -->
       <div class="section-card">
-        <div class="section-title">Your details</div>
         <div class="fields">
           <div class="fl-field">
-            <input type="text" placeholder=" ">
-            <label>Your full name</label>
-          <p class="field-hint">Use your full legal name as it appears on government ID.</p></div>
-          <div class="fl-field">
-            <select>
-              <option value="" disabled selected hidden></option>
-              <option>Founder</option>
-              <option>CEO</option>
-              <option>Director</option>
-              <option>CFO</option>
-              <option>Authorised signatory</option>
-              <option>Other</option>
-            </select>
-            <label>Designation</label>
-          <p class="field-hint">Your role at the company — used on freelancer contracts.</p></div>
-          <div class="fl-field">
-            <input type="email" placeholder=" ">
-            <label>Work email</label>
-          <p class="field-hint">We'll send onboarding updates and payment confirmations here.</p></div>
-          <div class="fl-phone">
-            <select class="cc">
-              <option>+91</option>
-              <option>+1</option>
-              <option>+44</option>
-              <option>+65</option>
-            </select>
-            <input class="num" type="tel" placeholder=" ">
-            <label>Work phone</label>
+            <input type="text" placeholder=" " data-must>
+            <label>Legal name<span class="req">*</span></label>
+          <p class="field-hint">Enter your name exactly as on your PAN.</p></div>
+          <div class="fl-phone fixed">
+            <span class="cc">+91</span>
+            <input class="num" type="tel" placeholder=" " data-must>
+            <label>Phone number<span class="req">*</span></label>
           </div>
-          <div class="fl-field">
-            <input type="date" placeholder=" ">
-            <label>Date of birth</label>
-          <p class="field-hint">For identity verification only — never shared with freelancers.</p></div>
+          <p class="field-hint">Enter your 10-digit mobile number.</p>
         </div>
       </div>
+    </div>
 
-      <!-- Card 2: Company details -->
-      <div class="section-card">
-        <div class="section-title">Company details</div>
-        <div class="fields">
-          <div class="fl-field">
-            <input type="text" placeholder=" ">
-            <label>Legal entity name</label>
-            <p class="field-hint">Use the exact name as it appears on your Certificate of Incorporation — including suffixes like "Pvt. Ltd." or "LLP".</p>
-          </div>
-          <div class="fl-field">
-            <select>
-              <option value="" disabled selected hidden></option>
-              <option>India</option>
-              <option>United States</option>
-              <option>United Kingdom</option>
-              <option>Singapore</option>
-              <option>UAE</option>
-              <option>Germany</option>
-              <option>Australia</option>
-            </select>
-            <label>Country of incorporation</label>
-            <p class="field-hint">Determines the contract template, the regulator's KYB rules we apply, and the default payout currency.</p>
-          </div>
-          <div class="fl-field">
-            <select>
-              <option value="" disabled selected hidden></option>
-              <option>Private Limited (Pvt Ltd)</option>
-              <option>Limited Liability Partnership (LLP)</option>
-              <option>Sole Proprietorship</option>
-              <option>Partnership Firm</option>
-              <option>Public Limited</option>
-              <option>One Person Company (OPC)</option>
-            </select>
-            <label>Business type</label>
-          <p class="field-hint">Determines the contract template and tax handling for your freelancers.</p></div>
-          <div class="fl-field has-info">
-            <select>
-              <option value="" disabled selected hidden></option>
-              <option>Technology / SaaS</option>
-              <option>Design / Creative</option>
-              <option>Marketing / Advertising</option>
-              <option>Finance / Fintech</option>
-              <option>Healthcare</option>
-              <option>E-commerce</option>
-              <option>Education</option>
-              <option>Other</option>
-            </select>
-            <label>Industry</label>
-            <button type="button" class="info-icon" data-tip="Some industries (e.g. gambling, weapons, unlicensed financial services) can't be onboarded. We'll flag any restrictions on the compliance step.">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
-            </button>
-          <p class="field-hint">Some industries (gambling, weapons, unlicensed financial services) can't be onboarded.</p></div>
-          <div class="fl-field">
-            <select>
-              <option value="" disabled selected hidden></option>
-              <option>1 – 10 employees</option>
-              <option>11 – 50</option>
-              <option>51 – 200</option>
-              <option>201 – 500</option>
-              <option>500+</option>
-            </select>
-            <label>Company size</label>
-          <p class="field-hint">Helps us set the right billing tier and feature limits.</p></div>
-          <div class="fl-field">
-            <textarea placeholder=" "></textarea>
-            <label>Registered office address</label>
-            <p class="field-hint">The address registered with the tax authority — must match the address on your registration documents.</p>
-          </div>
-          <div class="inline-check">
-            <input type="checkbox" id="sameTradingAddress" checked>
-            <label for="sameTradingAddress">Trading address is the same as the registered address.</label>
-          </div>
-          <div class="fl-field has-info" id="tradingAddressField" style="display:none;">
-            <textarea placeholder=" "></textarea>
-            <label>Trading address</label>
-            <button type="button" class="info-icon" data-tip="The address where you actually run the business — your office, store or studio. Used for proof-of-address verification.">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
-            </button>
-          <p class="field-hint">The address where you actually run the business — used for proof of address.</p></div>
-          <div class="fl-field has-info">
-            <select>
-              <option value="" disabled selected hidden></option>
-              <option>Less than $100K</option>
-              <option>$100K – $500K</option>
-              <option>$500K – $1M</option>
-              <option>$1M – $5M</option>
-              <option>$5M – $10M</option>
-              <option>$10M+</option>
-            </select>
-            <label>Annual revenue (USD)</label>
-            <button type="button" class="info-icon" data-tip="Helps us understand the scale of your operations and any KYC tier you'd fall under. Approximate ranges are fine.">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
-            </button>
-          <p class="field-hint">Approximate ranges are fine. Helps us understand your scale.</p></div>
-          <div class="fl-field has-info">
-            <select>
-              <option value="" disabled selected hidden></option>
-              <option>Less than $10K</option>
-              <option>$10K – $50K</option>
-              <option>$50K – $200K</option>
-              <option>$200K – $1M</option>
-              <option>$1M+</option>
-            </select>
-            <label>Expected monthly freelancer payouts (USD)</label>
-            <button type="button" class="info-icon" data-tip="Approximate total monthly amount you expect to pay your freelancers through Wisemonk. Drives transaction limits and reporting tiers.">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
-            </button>
-          <p class="field-hint">Approximate total amount you'll pay freelancers each month.</p></div>
-          <div class="fl-field" id="websiteField">
-            <input type="url" id="companyWebsite" placeholder=" ">
-            <label>Company website</label>
-          <p class="field-hint">Your company's main URL — helps us verify your business online.</p></div>
-          <div class="inline-check">
-            <input type="checkbox" id="noWebsite">
-            <label for="noWebsite">We don't have a company website.</label>
-          </div>
-        </div>
+    <!-- STEP 2: PEOPLE BEHIND THE BUSINESS -->
+    <div class="step" data-step="2">
+      <div class="page-heading">
+        <h1>Tell us about the people behind your business</h1>
+        <p>We need a few details about the partners and ownership structure.</p>
       </div>
 
-      <!-- Card 3: Ownership & Management -->
       <div class="section-card">
-        <div class="section-title">Ownership &amp; Management</div>
-        <div class="fields">
+        <div class="section-title">Director details</div>
+        <p class="section-desc">Add details for all directors involved in the business.</p>
+        <div id="directorForm" class="fields" style="display:none; margin-bottom:16px;">
           <div class="fl-field">
             <input type="text" placeholder=" ">
             <label>Name of director</label>
-          <p class="field-hint">The director's full legal name as on company filings.</p></div>
+          </div>
           <div class="fl-field">
             <input type="date" placeholder=" ">
             <label>Date of birth</label>
-          <p class="field-hint">For identity verification only — never shared with freelancers.</p></div>
+          </div>
           <div class="fl-field">
             <select>
               <option value="" disabled selected hidden></option>
@@ -779,211 +644,213 @@
               <option>Other</option>
             </select>
             <label>Country of residence</label>
-          <p class="field-hint">Determines which government IDs we accept for verification.</p></div>
-          <div class="fl-field has-info">
+          </div>
+          <div class="fl-field">
             <input type="number" min="0" max="100" placeholder=" ">
             <label>% ownership</label>
-            <button type="button" class="info-icon" data-tip="Their direct or indirect shareholding. Anyone with 25% or more is a beneficial owner and triggers extra AML checks.">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
-            </button>
-            <p class="field-hint">Anyone with 25% or more is a beneficial owner — we'll need their ID and proof of address for AML.</p>
           </div>
-          <label class="upload-tile">
-            <span class="ut-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></span>
-            <span class="ut-body">
-              <span class="ut-title">Upload director ID</span>
-              <span class="ut-sub">PAN, Aadhaar or Passport · max 5 MB</span>
-            </span>
-            <input type="file" hidden>
-          </label>
         </div>
-      </div>
-    </div>
-
-    <!-- STEP 2: VERIFY BUSINESS (KYB DOCS) -->
-    <div class="step" data-step="2">
-      <div class="page-heading">
-        <h1>Verify your business</h1>
-        <p>Upload the official documents that prove your company's existence and tax registration.</p>
+        <button type="button" class="add-ubo" id="addDirector">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+          Add director
+        </button>
       </div>
 
       <div class="section-card">
-        <div class="section-title">Business registration numbers</div>
+        <div class="section-title">Ultimate beneficiary owner (UBO)</div>
+        <p class="section-desc">Select the individual who owns more than 10% of the business.</p>
         <div class="fields">
-          <div class="fl-field has-info">
-            <input type="text" placeholder=" ">
-            <label>CIN</label>
-            <button type="button" class="info-icon" data-tip="Corporate Identification Number — the 21-character code on your Certificate of Incorporation issued by MCA.">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
-            </button>
-          <p class="field-hint">21-character Corporate Identification Number from your Certificate of Incorporation.</p></div>
-          <div class="fl-field has-info">
-            <input type="text" placeholder=" ">
-            <label>Company PAN</label>
-            <button type="button" class="info-icon" data-tip="Permanent Account Number — 10-character alphanumeric ID issued by the Income Tax department. Required for TDS deduction on freelancer payouts.">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
-            </button>
-          <p class="field-hint">10-character Permanent Account Number (e.g. ABCDE1234F).</p></div>
-          <div class="fl-field has-info">
-            <input type="text" placeholder=" ">
-            <label>GSTIN (if applicable)</label>
-            <button type="button" class="info-icon" data-tip="Goods and Services Tax Identification Number. Required only if your company is registered for GST. Leave blank otherwise.">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
-            </button>
-          <p class="field-hint">15-character GST Identification Number. Skip if not GST-registered.</p></div>
-        </div>
-      </div>
-
-      <div class="section-card">
-        <div class="section-title">Upload documents</div>
-        <div class="upload-grid">
-          <label class="upload-tile uploaded">
-            <span class="ut-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
-            <span class="ut-body">
-              <span class="ut-title">Certificate of Incorporation</span>
-              <span class="ut-sub">incorporation-cert.pdf · uploaded</span>
-            </span>
-            <input type="file" hidden>
-          </label>
-          <label class="upload-tile">
-            <span class="ut-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></span>
-            <span class="ut-body">
-              <span class="ut-title">Company PAN card</span>
-              <span class="ut-sub">PDF or image</span>
-            </span>
-            <input type="file" hidden>
-          </label>
-          <label class="upload-tile">
-            <span class="ut-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></span>
-            <span class="ut-body">
-              <span class="ut-title">GST certificate</span>
-              <span class="ut-sub">if registered for GST</span>
-            </span>
-            <input type="file" hidden>
-          </label>
-          <label class="upload-tile">
-            <span class="ut-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></span>
-            <span class="ut-body">
-              <span class="ut-title">MOA / AOA</span>
-              <span class="ut-sub">optional</span>
-            </span>
-            <input type="file" hidden>
-          </label>
-          <label class="upload-tile">
-            <span class="ut-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></span>
-            <span class="ut-body">
-              <span class="ut-title">Proof of business address</span>
-              <span class="ut-sub">Recent utility bill, lease or bank statement at the trading address (within 3 months)</span>
-            </span>
-            <input type="file" hidden>
-          </label>
-          <label class="upload-tile">
-            <span class="ut-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></span>
-            <span class="ut-body">
-              <span class="ut-title">Ownership document</span>
-              <span class="ut-sub">Shareholder register, operating agreement or partnership deed</span>
-            </span>
-            <input type="file" hidden>
-          </label>
+          <div class="fl-field">
+            <select data-must>
+              <option value="" disabled selected hidden></option>
+              <option>Director 1</option>
+              <option>Director 2</option>
+              <option>Other shareholder</option>
+            </select>
+            <label>Ultimate beneficial owner<span class="req">*</span></label>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- STEP 3: VERIFY IDENTITY (signatory) -->
+    <!-- STEP 3: BANK DETAILS -->
     <div class="step" data-step="3">
       <div class="page-heading">
-        <h1>Verify your identity</h1>
-        <p>The authorised signatory's details — the person who can legally sign agreements on behalf of the company.</p>
+        <h1>Add your bank details</h1>
+        <p>We'll use these details to link your Indian bank account and process payouts.</p>
       </div>
 
       <div class="section-card">
-        <div class="section-title">Authorised signatory</div>
-
+        <div class="section-title">Bank account details</div>
         <div class="fields">
           <div class="fl-field">
-            <input type="text" placeholder=" ">
-            <label>Full legal name</label>
-          <p class="field-hint">Must match the name on the signatory's government ID.</p></div>
-          <div class="fl-field">
-            <select>
+            <select data-must>
               <option value="" disabled selected hidden></option>
-              <option>Director</option>
-              <option>Founder</option>
-              <option>CEO</option>
-              <option>Authorised signatory</option>
-              <option>CFO</option>
-            </select>
-            <label>Role</label>
-          <p class="field-hint">Their role in the company. They need authority to sign contracts.</p></div>
-          <div class="fl-field">
-            <input type="email" placeholder=" ">
-            <label>Personal email</label>
-          <p class="field-hint">We'll send contract documents and signing requests here.</p></div>
-          <div class="fl-phone">
-            <select class="cc">
-              <option>+91</option>
-              <option>+1</option>
-              <option>+44</option>
-            </select>
-            <input class="num" type="tel" placeholder=" ">
-            <label>Personal phone</label>
-          </div>
-          <div class="fl-field">
-            <textarea placeholder=" "></textarea>
-            <label>Residential address</label>
-          <p class="field-hint">Where the signatory currently lives. Used for proof-of-address checks.</p></div>
-          <div class="fl-field">
-            <input type="date" placeholder=" ">
-            <label>Date of birth</label>
-          <p class="field-hint">For identity verification only — never shared with freelancers.</p></div>
-          <div class="fl-field has-info">
-            <select>
-              <option value="" disabled selected hidden></option>
-              <option>India</option>
-              <option>United States</option>
-              <option>United Kingdom</option>
-              <option>Singapore</option>
-              <option>UAE</option>
+              <option>HDFC Bank</option>
+              <option>ICICI Bank</option>
+              <option>State Bank of India</option>
+              <option>Axis Bank</option>
+              <option>Kotak Mahindra Bank</option>
+              <option>Yes Bank</option>
               <option>Other</option>
             </select>
-            <label>Country of residence</label>
-            <button type="button" class="info-icon" data-tip="Drives which government IDs we accept and which regulator's KYC rules we apply to your verification.">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
-            </button>
-          <p class="field-hint">Determines which government IDs we accept for verification.</p></div>
+            <label>Bank name<span class="req">*</span></label>
+          </div>
+          <div class="fl-field">
+            <input type="text" placeholder=" " data-must>
+            <label>Bank account holder name<span class="req">*</span></label>
+          <p class="field-hint">Enter the name exactly as it appears on your bank account.</p></div>
+          <div class="fl-field">
+            <input type="text" placeholder=" " data-must>
+            <label>Account number<span class="req">*</span></label>
+          </div>
+          <div class="fl-field">
+            <input type="text" placeholder=" " data-must>
+            <label>IFSC code<span class="req">*</span></label>
+          <p class="field-hint">Enter 11-digit IFSC code.</p></div>
+        </div>
+        <label class="upload-link">
+          Or upload a bank document instead
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          <input type="file" hidden>
+        </label>
+      </div>
+    </div>
+
+    <!-- STEP 4: PROVIDE DOCUMENTS -->
+    <div class="step" data-step="4">
+      <div class="page-heading">
+        <h1>Provide your documents</h1>
+        <p>We use these documents to complete verification and activate your account.</p>
+      </div>
+
+      <div class="section-card">
+        <div class="section-title">Business PAN details</div>
+        <div class="fields">
+          <div class="fl-field">
+            <input type="text" placeholder=" " data-must>
+            <label>Name as per PAN<span class="req">*</span></label>
+          <p class="field-hint">Enter the name exactly as it appears on your PAN card.</p></div>
+          <div class="fl-field">
+            <input type="text" placeholder=" " data-must>
+            <label>PAN Number<span class="req">*</span></label>
+          </div>
+        </div>
+        <label class="upload-link">
+          Or upload PAN document instead
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          <input type="file" hidden>
+        </label>
+      </div>
+
+      <div class="section-card">
+        <div class="section-title">Proof of business</div>
+        <div class="q-block">
+          <div class="q-label">Proof of work<span class="req">*</span></div>
+          <div class="check-row">
+            <input type="radio" name="proofOfWork" id="pow-gst" checked>
+            <label for="pow-gst">Goods and service tax (GST) certificate</label>
+          </div>
+          <div class="check-row">
+            <input type="radio" name="proofOfWork" id="pow-cin">
+            <label for="pow-cin">CIN document</label>
+          </div>
+        </div>
+        <label class="upload-tile" style="margin-top:8px;">
+          <span class="ut-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></span>
+          <span class="ut-body">
+            <span class="ut-title">Upload GST document</span>
+            <span class="ut-sub">Helps verify the registration of the company · PDF or image, max 5 MB</span>
+          </span>
+          <input type="file" hidden>
+        </label>
+      </div>
+    </div>
+
+    <!-- STEP 5: TELL US ABOUT YOUR WORK -->
+    <div class="step" data-step="5">
+      <div class="page-heading">
+        <h1>Tell us about your work</h1>
+        <p>This helps us understand your work and set things up correctly.</p>
+      </div>
+
+      <div class="section-card">
+        <div class="section-title">Work Profile</div>
+        <div class="fields">
+          <div class="fl-field">
+            <input type="text" placeholder=" " data-must>
+            <label>Please provide your brand/business name<span class="req">*</span></label>
+          <p class="field-hint">Helps us to establish your relationship with your online presence.</p></div>
+          <div class="fl-field">
+            <textarea id="workDesc" maxlength="400" placeholder=" " data-must></textarea>
+            <label>Work description<span class="req">*</span></label>
+            <div class="char-count"><span id="workDescCount">0</span>/400</div>
+          <p class="field-hint">Helps us understand the kind of work you do.</p></div>
+        </div>
+
+        <div class="q-block">
+          <div class="q-label">Proof of online presence<span class="req">*</span></div>
+          <div class="check-row">
+            <input type="radio" name="onlinePresence" id="op-linkedin" checked>
+            <label for="op-linkedin">An active LinkedIn profile (Recommended)</label>
+          </div>
+          <div class="check-row">
+            <input type="radio" name="onlinePresence" id="op-social">
+            <label for="op-social">An active social media profile (Upwork, Fiverr, Instagram, etc.)</label>
+          </div>
+          <div class="check-row">
+            <input type="radio" name="onlinePresence" id="op-website">
+            <label for="op-website">An active website describing my work</label>
+          </div>
+        </div>
+
+        <div class="fields" style="margin-top:12px;">
+          <div class="fl-field">
+            <input type="url" placeholder=" " data-must>
+            <label>Please provide your LinkedIn profile link<span class="req">*</span></label>
+          <p class="field-hint">e.g. https://www.linkedin.com/in/example</p></div>
         </div>
       </div>
 
       <div class="section-card">
-        <div class="section-title">Identity documents</div>
-        <div class="upload-grid">
-          <label class="upload-tile uploaded">
-            <span class="ut-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
-            <span class="ut-body">
-              <span class="ut-title">PAN card</span>
-              <span class="ut-sub">pan-card.pdf · uploaded</span>
-            </span>
-          </label>
-          <label class="upload-tile">
-            <span class="ut-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></span>
-            <span class="ut-body">
-              <span class="ut-title">Aadhaar / Government ID</span>
-              <span class="ut-sub">front + back · max 5 MB</span>
-            </span>
-          </label>
-          <label class="upload-tile">
-            <span class="ut-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="10" r="3"/><path d="M7 20.5a5 5 0 0 1 10 0"/></svg></span>
-            <span class="ut-body">
-              <span class="ut-title">Selfie / liveness check</span>
-              <span class="ut-sub">Take a quick selfie to confirm it's you</span>
-            </span>
-          </label>
+        <div class="section-title">Work Address</div>
+        <div class="fields">
+          <div class="fl-field">
+            <input type="text" placeholder=" " data-must>
+            <label>Street Address Line 1<span class="req">*</span></label>
+          </div>
+          <div class="fl-field">
+            <input type="text" placeholder=" ">
+            <label>Street Address Line 2</label>
+          </div>
+          <div class="fl-row">
+            <div class="fl-field">
+              <input type="text" placeholder=" " data-must>
+              <label>City<span class="req">*</span></label>
+            </div>
+            <div class="fl-field">
+              <input type="text" placeholder=" " data-must>
+              <label>State<span class="req">*</span></label>
+            </div>
+          </div>
+          <div class="fl-row">
+            <div class="fl-field">
+              <input type="text" placeholder=" " data-must>
+              <label>Zip Code/Postal code<span class="req">*</span></label>
+            </div>
+            <div class="fl-field">
+              <input type="text" value="India" placeholder=" ">
+              <label>Country</label>
+            </div>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- STEP 4: COMPLIANCE DECLARATION -->
-    <div class="step" data-step="4">
+    <!-- (removed: old Verify-business KYB step) -->
+
+    <!-- STEP 6: COMPLIANCE DECLARATION -->
+    <div class="step" data-step="6">
 
       <div class="section-card divided">
         <div class="section-title">Compliance declaration</div>
@@ -1038,181 +905,8 @@
       </div>
     </div>
 
-    <!-- STEP 5: TAX & PAYMENT PREFERENCES -->
-    <div class="step" data-step="5">
-      <div class="page-heading">
-        <h1>Activity, tax &amp; payments</h1>
-        <p>Tell us about your business activity, tax setup, and where freelancer payouts should originate.</p>
-      </div>
-
-      <!-- New: Activity & source of funds -->
-      <div class="section-card">
-        <div class="section-title">Activity &amp; source of funds</div>
-        <div class="fields">
-          <div class="fl-field has-info">
-            <select>
-              <option value="" disabled selected hidden></option>
-              <option>Revenue from business operations</option>
-              <option>Investor / VC funding</option>
-              <option>Founder / owner capital</option>
-              <option>Loans</option>
-              <option>Sale of business assets</option>
-              <option>Mix of the above</option>
-              <option>Other</option>
-            </select>
-            <label>Primary source of funds</label>
-            <button type="button" class="info-icon" data-tip="Where does the money used to pay your freelancers actually come from? Required for AML and source-of-funds checks.">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
-            </button>
-          <p class="field-hint">Where the money used to pay freelancers comes from.</p></div>
-          <div class="fl-field has-info">
-            <select>
-              <option value="" disabled selected hidden></option>
-              <option>Paying freelancers and independent contractors</option>
-              <option>Paying overseas employees</option>
-              <option>Paying vendors and suppliers</option>
-              <option>Operational expenses</option>
-              <option>Mixed use</option>
-            </select>
-            <label>Primary use of Wisemonk</label>
-            <button type="button" class="info-icon" data-tip="What you'll mostly use Wisemonk for. Affects which compliance category and pricing tier your account is set up under.">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
-            </button>
-          <p class="field-hint">Your main use case — affects compliance category and pricing tier.</p></div>
-          <label class="upload-tile">
-            <span class="ut-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></span>
-            <span class="ut-body">
-              <span class="ut-title">Source-of-funds evidence</span>
-              <span class="ut-sub">Recent bank statements, audited financials, or major client invoices (optional but speeds up review)</span>
-            </span>
-            <input type="file" hidden>
-          </label>
-        </div>
-      </div>
-
-      <div class="section-card">
-        <div class="section-title">Tax</div>
-        <div class="fields">
-          <div class="fl-field">
-            <select>
-              <option value="" disabled selected hidden></option>
-              <option>USD</option>
-              <option>INR</option>
-              <option>EUR</option>
-              <option>GBP</option>
-              <option>SGD</option>
-            </select>
-            <label>Primary billing currency</label>
-          <p class="field-hint">Default currency for invoices and reporting.</p></div>
-          <div class="fl-field has-info">
-            <select>
-              <option value="" disabled selected hidden></option>
-              <option>Yes — withhold TDS</option>
-              <option>No — pay freelancer in full</option>
-            </select>
-            <label>Withhold tax on payments?</label>
-            <button type="button" class="info-icon" data-tip="If 'Yes', we deduct the applicable TDS at source and remit the freelancer the net amount. If 'No', the freelancer is responsible for their own tax filing.">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
-            </button>
-          <p class="field-hint">If yes, we deduct TDS at source and remit the net amount.</p></div>
-          <div class="fl-field has-info">
-            <select>
-              <option value="" disabled selected hidden></option>
-              <option>Section 194J — Professional services (10%)</option>
-              <option>Section 194C — Contract work (2%)</option>
-              <option>Section 194O — E-commerce (1%)</option>
-            </select>
-            <label>TDS section</label>
-            <button type="button" class="info-icon" data-tip="194J: consulting, design, software, legal (10%). 194C: contract execution, manufacturing (2%). 194O: e-commerce sellers (1%). Pick whichever matches the bulk of your freelance work.">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
-            </button>
-          <p class="field-hint">Which tax section applies to your freelancers' work.</p></div>
-          <div class="fl-field has-info">
-            <select>
-              <option value="" disabled selected hidden></option>
-              <option>Registered</option>
-              <option>Not registered</option>
-              <option>Composition scheme</option>
-            </select>
-            <label>GST status</label>
-            <button type="button" class="info-icon" data-tip="Registered: standard GSTIN. Composition scheme: small businesses under ₹1.5 Cr turnover with flat-rate GST. Not registered: turnover below the threshold. We use this to determine which invoices include GST.">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
-            </button>
-          <p class="field-hint">Your company's GST registration status.</p></div>
-        </div>
-      </div>
-
-      <div class="section-card">
-        <div class="section-title">Approval rules</div>
-        <div class="fields">
-          <div class="fl-field">
-            <select>
-              <option value="" disabled selected hidden></option>
-              <option>14 days after submission</option>
-              <option>7 days</option>
-              <option>30 days</option>
-              <option>End of month</option>
-            </select>
-            <label>Default invoice due</label>
-          <p class="field-hint">How long freelancers wait for payment after submitting an invoice.</p></div>
-          <div class="fl-field has-info">
-            <input type="number" placeholder=" ">
-            <label>Auto-approve invoices under (USD)</label>
-            <button type="button" class="info-icon" data-tip="Invoices below this amount are released automatically as long as the freelancer's contract is active. Leave blank to require manual approval on every invoice.">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
-            </button>
-          <p class="field-hint">Below this amount, we release payment automatically.</p></div>
-          <div class="fl-field has-info">
-            <input type="number" placeholder=" ">
-            <label>Require dual approval above (USD)</label>
-            <button type="button" class="info-icon" data-tip="Invoices over this amount need sign-off from a second admin before they pay out. Useful for catching mistakes on large invoices.">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
-            </button>
-          <p class="field-hint">Above this amount, a second admin must approve before payout.</p></div>
-        </div>
-      </div>
-
-      <!-- New: Bank account for payouts -->
-      <div class="section-card">
-        <div class="section-title">Bank account for payouts</div>
-        <div class="fields">
-          <div class="fl-field">
-            <input type="text" placeholder=" ">
-            <label>Bank name</label>
-          <p class="field-hint">Name of the bank holding your payout account.</p></div>
-          <div class="fl-field has-info">
-            <input type="text" placeholder=" ">
-            <label>Account holder name</label>
-            <button type="button" class="info-icon" data-tip="Must exactly match the legal entity name on your Certificate of Incorporation. We can't process payouts to a personal account or trading name.">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
-            </button>
-          <p class="field-hint">Must exactly match your legal entity name on the Certificate of Incorporation.</p></div>
-          <div class="fl-field">
-            <input type="text" placeholder=" ">
-            <label>Account number</label>
-          <p class="field-hint">Your business bank account number.</p></div>
-          <div class="fl-field has-info">
-            <input type="text" placeholder=" ">
-            <label>IFSC / SWIFT code</label>
-            <button type="button" class="info-icon" data-tip="IFSC for Indian bank accounts (11 characters, e.g. HDFC0001234). SWIFT/BIC for international banks (8 or 11 characters).">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
-            </button>
-            <p class="field-hint">11 characters for IFSC (e.g. HDFC0001234) or 8–11 for SWIFT/BIC. We'll validate the format before saving.</p>
-          </div>
-          <label class="upload-tile">
-            <span class="ut-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></span>
-            <span class="ut-body">
-              <span class="ut-title">Cancelled cheque or bank letter</span>
-              <span class="ut-sub">Confirms the account belongs to your company · PDF or image, max 5 MB</span>
-            </span>
-            <input type="file" hidden>
-          </label>
-        </div>
-      </div>
-    </div>
-
-    <!-- STEP 6: CONTRACTOR DETAILS + SCOPE OF WORK -->
-    <div class="step" data-step="6">
+    <!-- STEP 7: CONTRACTOR DETAILS + SCOPE OF WORK -->
+    <div class="step" data-step="7">
       <div class="page-heading">
         <h1>Add your first contractor</h1>
         <p>We'll use these details to generate a compliant independent-contractor agreement and set up payments.</p>
@@ -1278,8 +972,8 @@
       </div>
     </div>
 
-    <!-- STEP 7: CONTRACT & PAYMENT TERMS -->
-    <div class="step" data-step="7">
+    <!-- STEP 8: CONTRACT & PAYMENT TERMS -->
+    <div class="step" data-step="8">
       <div class="page-heading">
         <h1>Contract &amp; payment terms</h1>
         <p>Set how this contractor is paid and the legal terms that govern the agreement.</p>
@@ -1371,8 +1065,8 @@
       </div>
     </div>
 
-    <!-- STEP 8: GST & TAX APPLICABILITY -->
-    <div class="step" data-step="8">
+    <!-- STEP 9: GST & TAX APPLICABILITY -->
+    <div class="step" data-step="9">
       <div class="page-heading">
         <h1>GST &amp; Tax applicability</h1>
         <p>A few questions about where the work happens so we apply the right tax treatment to invoices.</p>
@@ -1415,8 +1109,8 @@
       </div>
     </div>
 
-    <!-- STEP 9: SET UP CONTRACTOR AGREEMENT -->
-    <div class="step" data-step="9">
+    <!-- STEP 10: SET UP CONTRACTOR AGREEMENT -->
+    <div class="step" data-step="10">
       <div class="page-heading">
         <h1>Set up your contractor agreement</h1>
         <p>Choose how you want to proceed. You can use our template for signing or upload an already signed agreement.</p>
@@ -1452,8 +1146,8 @@
 
     </div>
 
-    <!-- STEP 10: INVOICING (FINAL) -->
-    <div class="step" data-step="10">
+    <!-- STEP 11: INVOICING (FINAL) -->
+    <div class="step" data-step="11">
       <div class="page-heading">
         <h1>How should invoices be raised?</h1>
         <p>Choose how invoices are raised for this contractor. This is the last step — you can change it any time later.</p>
@@ -1503,7 +1197,7 @@
         Back
       </button>
       <div class="footer-right">
-        <div class="next-label" id="nextLabel">Next: <strong>Verify your business</strong></div>
+        <div class="next-label" id="nextLabel">Next: <strong>People behind your business</strong></div>
         <button class="save-btn" id="saveBtn">Save &amp; continue</button>
       </div>
     </div>
@@ -1515,10 +1209,11 @@
     let current = 1;
 
     const nextLabels = [
-      'Verify your business',
-      'Verify your identity',
+      'People behind your business',
+      'Bank details',
+      'Documents',
+      'Tell us about your work',
       'Compliance declaration',
-      'Activity, tax & payments',
       'Add your first contractor',
       'Contract & payment terms',
       'GST & tax applicability',
@@ -1647,6 +1342,25 @@
     const probTog = document.getElementById('probTog');
     const probList = document.getElementById('probList');
     if (probTog) probTog.addEventListener('click', () => { probTog.classList.toggle('open'); probList.classList.toggle('open'); });
+
+    // Work description character counter
+    const workDesc = document.getElementById('workDesc');
+    const workDescCount = document.getElementById('workDescCount');
+    if (workDesc && workDescCount) {
+      const syncCount = () => { workDescCount.textContent = workDesc.value.length; };
+      workDesc.addEventListener('input', syncCount);
+      syncCount();
+    }
+
+    // Add director — reveal the director sub-form
+    const addDirector = document.getElementById('addDirector');
+    const directorForm = document.getElementById('directorForm');
+    if (addDirector && directorForm) {
+      addDirector.addEventListener('click', () => {
+        directorForm.style.display = 'flex';
+        addDirector.style.display = 'none';
+      });
+    }
 
     // ----- Custom select dropdowns -----
     function closeAllPopovers() {
