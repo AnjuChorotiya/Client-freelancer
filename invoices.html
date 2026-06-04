@@ -477,6 +477,21 @@
       white-space: nowrap;
     }
     .cor-banner-cta:hover { background: #000; }
+    .cor-banner-secondary {
+      display: inline-flex; align-items: center;
+      padding: 11px 22px;
+      background: transparent;
+      color: #1a1d24;
+      border: 1px solid #D1D5DB;
+      border-radius: 8px;
+      font-family: 'Satoshi', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: background 0.15s, border-color 0.15s;
+      white-space: nowrap;
+    }
+    .cor-banner-secondary:hover { background: rgba(0,0,0,0.04); border-color: #9CA3AF; }
     .cor-banner-close {
       width: 28px; height: 28px; border: none; background: transparent;
       display: flex; align-items: center; justify-content: center;
@@ -538,6 +553,7 @@
             <div class="cor-banner-desc">Move them to Contractor of Record · locally compliant contracts, IP &amp; misclassification all covered.</div>
           </div>
           <div class="cor-banner-actions">
+            <a href="#" class="cor-banner-secondary">Learn more</a>
             <a href="#" class="cor-banner-cta">Switch to COR</a>
             <button class="cor-banner-close" aria-label="Dismiss">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
