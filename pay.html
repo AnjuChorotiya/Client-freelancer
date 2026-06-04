@@ -264,13 +264,13 @@
     .calc-trigger {
       display: flex; align-items: center; justify-content: space-between; gap: 6px;
       width: 100%; margin-bottom: 20px; padding: 14px 16px;
-      background: transparent; border: 1px solid transparent; border-radius: 10px;
+      background: transparent; border: none; border-radius: 10px;
       cursor: pointer;
       font-family: inherit; font-size: 14px; font-weight: 700;
       color: var(--text-primary); text-align: left;
-      transition: background 0.15s, border-color 0.15s;
+      transition: background 0.15s;
     }
-    .calc-trigger:hover { background: var(--neutral-50); border-color: var(--border-strong); }
+    .calc-trigger:hover { background: rgba(17,22,32,0.025); }
     .calc-trigger-arrow { width: 16px; height: 16px; flex-shrink: 0; color: var(--text-muted); transition: transform 0.15s; }
     .calc-trigger:hover .calc-trigger-arrow { color: var(--text-primary); transform: translateX(3px); }
 
