@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Set up your account — Wisemonk</title>
+  <title>Add a freelancer — Wisemonk</title>
   <link href="https://api.fontshare.com/v2/css?f[]=satoshi@700,500,400&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -563,15 +563,6 @@
     .step { display: none; }
     .step.active { display: block; }
 
-    /* Review & confirmation summary */
-    .review-group { padding: 16px 0; border-bottom: 1px solid var(--border); }
-    .review-group:first-child { padding-top: 0; }
-    .review-group:last-child { border-bottom: none; padding-bottom: 0; }
-    .review-group-title { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-muted); margin-bottom: 12px; }
-    .review-row { display: flex; justify-content: space-between; gap: 24px; padding: 6px 0; }
-    .review-key { font-size: 15px; color: var(--text-secondary); flex: 0 0 auto; }
-    .review-val { font-size: 15px; font-weight: 600; color: var(--text-primary); text-align: right; word-break: break-word; }
-
     /* Footer — 80px tall, 6px progress bar at very top, brand-100 track + brand-500 fill */
     .footer-bar { position: fixed; bottom: 0; left: 0; right: 0; background: var(--card); z-index: 30; }
     .progress-row { height: 6px; background: var(--brand-100); }
@@ -603,10 +594,10 @@
 
   <header class="topbar">
     <div class="topbar-inner">
-      <a href="dashboard.html" class="topbar-logo"><img src="wisemonk_logo_final.png" alt="Wisemonk"></a>
+      <a href="freelancers.html" class="topbar-logo"><img src="wisemonk_logo_final.png" alt="Wisemonk"></a>
       <div class="topbar-right">
         <button class="need-help">Need help?</button>
-        <a href="dashboard.html" class="top-close" aria-label="Close and exit">
+        <a href="freelancers.html" class="top-close" aria-label="Close and exit">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
         </a>
       </div>
@@ -615,319 +606,284 @@
 
   <main>
 
-    <!-- STEP 1: TELL US ABOUT YOURSELF -->
+    <!-- STEP 1: CONTRACTOR DETAILS + SCOPE OF WORK -->
     <div class="step active" data-step="1">
       <div class="page-heading">
-        <h1>Tell us about yourself</h1>
-        <p>We'll use these details to verify your identity and stay in touch as you continue onboarding.</p>
+        <h1>Add a freelancer</h1>
+        <p>We'll use these details to generate a compliant independent-contractor agreement and set up payments.</p>
       </div>
 
       <div class="section-card">
+        <div class="section-title">Contractor details</div>
         <div class="fields">
           <div class="fl-field">
+            <input type="text" placeholder=" ">
+            <label>Contractor company</label>
+          <p class="field-hint">The contractor's registered business name, if they invoice through a company.</p></div>
+          <div class="fl-field">
             <input type="text" placeholder=" " data-must>
-            <label>Legal name<span class="req">*</span></label>
-          <p class="field-hint">Enter your name exactly as on your government ID.</p></div>
-          <div class="fl-phone">
-            <select class="cc">
-              <option value="+1">+1</option>
-              <option value="+44">+44</option>
-              <option value="+61">+61</option>
-              <option value="+65">+65</option>
-              <option value="+971">+971</option>
-              <option value="+49">+49</option>
-              <option value="+33">+33</option>
-              <option value="+31">+31</option>
-              <option value="+81">+81</option>
-              <option value="+86">+86</option>
-              <option value="+852">+852</option>
-              <option value="+353">+353</option>
-              <option value="+64">+64</option>
-              <option value="+91">+91</option>
-            </select>
+            <label>Contractor's full name<span class="req">*</span></label>
+          <p class="field-hint">Full legal name as it appears on their government ID.</p></div>
+          <div class="fl-field">
+            <input type="email" placeholder=" " data-must>
+            <label>Email address<span class="req">*</span></label>
+          <p class="field-hint">We'll send the agreement and payment updates here.</p></div>
+          <div class="fl-phone fixed">
+            <span class="cc">+91</span>
             <input class="num" type="tel" placeholder=" " data-must>
             <label>Phone number<span class="req">*</span></label>
           </div>
-          <p class="field-hint">Select your country code and enter your phone number.</p>
+          <div class="fl-row">
+            <div class="fl-field">
+              <input type="date" placeholder=" " data-must>
+              <label>Start date<span class="req">*</span></label>
+            </div>
+            <div class="fl-field">
+              <input type="date" placeholder=" ">
+              <label>End date</label>
+            </div>
+          </div>
+          <div class="fl-field">
+            <select>
+              <option value="" disabled selected hidden></option>
+              <option>No notice period</option>
+              <option>7 days</option>
+              <option>15 days</option>
+              <option>30 days</option>
+              <option>60 days</option>
+              <option>90 days</option>
+            </select>
+            <label>Notice period</label>
+          <p class="field-hint">How much notice either party must give to end the engagement.</p></div>
+        </div>
+      </div>
+
+      <div class="section-card">
+        <div class="section-title">Scope of work</div>
+        <div class="fields">
+          <div class="fl-field">
+            <input type="text" placeholder=" " data-must>
+            <label>Role<span class="req">*</span></label>
+          <p class="field-hint">The contractor's role or job title — appears on the agreement.</p></div>
+          <div class="fl-field">
+            <textarea placeholder=" " data-must></textarea>
+            <label>Describe the role, responsibilities, and requirements…</label>
+          <p class="field-hint">This description becomes the scope-of-work clause in the contract.</p></div>
         </div>
       </div>
     </div>
 
-    <!-- STEP 2: PEOPLE BEHIND THE BUSINESS -->
+    <!-- STEP 2: CONTRACT & PAYMENT TERMS -->
     <div class="step" data-step="2">
       <div class="page-heading">
-        <h1>Tell us about the people behind your business</h1>
-        <p>We need a few details about the partners and ownership structure.</p>
+        <h1>Contract &amp; payment terms</h1>
+        <p>Set how this contractor is paid and the legal terms that govern the agreement.</p>
       </div>
 
       <div class="section-card">
-        <div class="section-title">Director details</div>
-        <p class="section-desc">Add details for all directors involved in the business.</p>
-        <div id="directorList"></div>
-        <button type="button" class="add-ubo" id="addDirector">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
-          Add director
-        </button>
-        <template id="directorTpl">
-          <div class="director-block" data-director>
-            <div class="director-head">
-              <span class="director-title">Director 1</span>
-              <button type="button" class="director-remove" aria-label="Remove director">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M10 11v6M14 11v6"/></svg>
-              </button>
-            </div>
-            <div class="fields">
-              <div class="fl-field">
-                <input type="text" class="dir-name" placeholder=" ">
-                <label>Name of director</label>
-              </div>
-              <div class="fl-field">
-                <input type="date" placeholder=" ">
-                <label>Date of birth</label>
-              </div>
-              <div class="fl-field">
-                <select>
-                  <option value="" disabled selected hidden></option>
-                  <option>India</option>
-                  <option>United States</option>
-                  <option>United Kingdom</option>
-                  <option>Singapore</option>
-                  <option>UAE</option>
-                  <option>Other</option>
-                </select>
-                <label>Country of residence</label>
-              </div>
-              <div class="fl-field">
-                <input type="number" min="0" max="100" placeholder=" ">
-                <label>% ownership</label>
-              </div>
+        <div class="section-title">Payment details</div>
+        <div class="fields">
+          <div>
+            <div class="seg-label">Contract type</div>
+            <div class="seg" data-name="contractType">
+              <button type="button" class="active" data-value="fixed">Fixed rate</button>
+              <button type="button" data-value="payg">Pay as you go</button>
             </div>
           </div>
-        </template>
+          <div class="fl-row-3">
+            <div class="fl-field">
+              <select data-must>
+                <option value="" disabled selected hidden></option>
+                <option>USD</option>
+                <option>INR</option>
+                <option>EUR</option>
+                <option>GBP</option>
+                <option>SGD</option>
+                <option>AUD</option>
+              </select>
+              <label>Currency<span class="req">*</span></label>
+            </div>
+            <div class="fl-field">
+              <input type="number" placeholder=" " data-must>
+              <label>Payment rate<span class="req">*</span></label>
+            </div>
+            <div class="fl-field">
+              <select data-must>
+                <option value="" disabled selected hidden></option>
+                <option>Monthly</option>
+                <option>Weekly</option>
+                <option>Bi-weekly</option>
+                <option>Per milestone</option>
+                <option>One-time</option>
+              </select>
+              <label>Frequency<span class="req">*</span></label>
+            </div>
+          </div>
+          <div class="fl-field">
+            <textarea placeholder=" "></textarea>
+            <label>Special clauses for the contract (if any)</label>
+            <p class="field-hint">This text will appear in the legal agreement.</p>
+          </div>
+        </div>
       </div>
 
       <div class="section-card">
-        <div class="section-title">Ultimate beneficiary owner (UBO)</div>
-        <p class="section-desc">Does any individual directly or indirectly hold 25% or more ownership in your company?</p>
+        <div class="section-title">Governing law &amp; Jurisdiction</div>
         <div class="fields">
           <div class="fl-field">
-            <select id="uboSelect" data-must disabled>
-              <option value="" disabled selected hidden></option>
-            </select>
-            <label>Ultimate beneficial owner<span class="req">*</span></label>
+            <input type="text" placeholder=" " data-must>
+            <label>State of jurisdiction<span class="req">*</span></label>
           </div>
-          <p class="field-hint" id="uboHint">Add at least one director above to choose a UBO.</p>
+        </div>
+        <div class="excerpt">
+          <span class="excerpt-tag">Contract excerpt</span>
+          <h5>Governing Law and Jurisdiction</h5>
+          <p>This agreement will be governed by and construed in accordance with the laws of the state where your organization is registered, excluding its body of law controlling conflict of laws.</p>
+          <p>Any legal action or proceeding arising under this agreement will be brought exclusively in the federal or state courts located within the state's jurisdiction, and the parties irrevocably consent to the personal jurisdiction and venue therein.</p>
+        </div>
+      </div>
+
+      <div class="section-card">
+        <div class="section-title">Authorized Signatory</div>
+        <div class="info-banner">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+          <span>This person will receive the agreement for e-signature via our secure signature partner.</span>
+        </div>
+        <div class="fields">
+          <div class="fl-field">
+            <input type="text" placeholder=" " data-must>
+            <label>Full legal name<span class="req">*</span></label>
+          </div>
+          <div class="fl-field">
+            <input type="email" placeholder=" " data-must>
+            <label>Email address<span class="req">*</span></label>
+          </div>
+          <div class="fl-field">
+            <input type="text" placeholder=" " data-must>
+            <label>Designation / Job title<span class="req">*</span></label>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- STEP 3: PROVIDE DOCUMENTS -->
+    <!-- STEP 3: GST & TAX APPLICABILITY -->
     <div class="step" data-step="3">
       <div class="page-heading">
-        <h1>Provide your documents</h1>
-        <p>We use these documents to complete verification and activate your account.</p>
+        <h1>GST &amp; Tax applicability</h1>
+        <p>A few questions about where the work happens so we apply the right tax treatment to invoices.</p>
       </div>
 
       <div class="section-card">
-        <div class="section-title">Business PAN details</div>
-        <div class="fields">
-          <div class="fl-field">
-            <input type="text" placeholder=" " data-must>
-            <label>Name as per PAN<span class="req">*</span></label>
-          <p class="field-hint">Enter the name exactly as it appears on your PAN card.</p></div>
-          <div class="fl-field">
-            <input type="text" placeholder=" " data-must>
-            <label>PAN Number<span class="req">*</span></label>
-          </div>
-        </div>
-        <label class="upload-link">
-          Or upload PAN document instead
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-          <input type="file" hidden>
-        </label>
-      </div>
+        <div class="section-title">Company &amp; service location</div>
 
-      <div class="section-card">
-        <div class="section-title">Proof of business</div>
         <div class="q-block">
-          <div class="q-label">Proof of work<span class="req">*</span></div>
-          <div class="check-row">
-            <input type="radio" name="proofOfWork" id="pow-coi" checked>
-            <label for="pow-coi">Certificate of incorporation</label>
+          <div class="q-label">
+            Where will the contractor's services be used?
+            <button type="button" class="info-icon inline" data-tip="Determines whether GST applies. Services consumed within India are taxable; services used outside India may qualify as zero-rated export of services.">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+            </button>
           </div>
-          <div class="check-row">
-            <input type="radio" name="proofOfWork" id="pow-reg">
-            <label for="pow-reg">Business registration document</label>
-          </div>
-          <div class="check-row">
-            <input type="radio" name="proofOfWork" id="pow-tax">
-            <label for="pow-tax">Tax registration document (VAT / EIN / Tax ID)</label>
+          <div class="choice-cards" data-name="serviceLocation">
+            <button type="button" class="choice-card selected" data-value="in-india">
+              <span class="choice-card-title">In India</span>
+              <span class="choice-card-desc">Service utilized within Indian borders</span>
+            </button>
+            <button type="button" class="choice-card" data-value="outside-india">
+              <span class="choice-card-title">Outside of India</span>
+              <span class="choice-card-desc">Service utilized globally or remote</span>
+            </button>
           </div>
         </div>
-        <label class="upload-tile" style="margin-top:8px;">
-          <span class="ut-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></span>
-          <span class="ut-body">
-            <span class="ut-title">Upload business document</span>
-            <span class="ut-sub">Helps verify the registration of the company · PDF or image, max 5 MB</span>
-          </span>
-          <input type="file" hidden>
-        </label>
+
+        <div class="q-block">
+          <div class="q-label">
+            Are the services connected to any property or office located in India?
+            <button type="button" class="info-icon inline" data-tip="If the services relate to immovable property or a fixed place of business in India, the place of supply is India and GST applies regardless of where the contractor is based.">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+            </button>
+          </div>
+          <div class="yn" data-name="propertyInIndia">
+            <button type="button" data-value="yes"><span class="dot"></span>Yes</button>
+            <button type="button" class="active" data-value="no"><span class="dot"></span>No</button>
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- STEP 4: TELL US ABOUT YOUR WORK -->
+    <!-- STEP 4: SET UP CONTRACTOR AGREEMENT -->
     <div class="step" data-step="4">
       <div class="page-heading">
-        <h1>Tell us about your work</h1>
-        <p>This helps us understand your work and set things up correctly.</p>
+        <h1>Set up your contractor agreement</h1>
+        <p>Choose how you want to proceed. You can use our template for signing or upload an already signed agreement.</p>
       </div>
 
       <div class="section-card">
-        <div class="section-title">Work Profile</div>
-        <div class="fields">
-          <div class="fl-field">
-            <input type="text" placeholder=" " data-must>
-            <label>Please provide your brand/business name<span class="req">*</span></label>
-          <p class="field-hint">Helps us to establish your relationship with your online presence.</p></div>
-          <div class="fl-field">
-            <textarea id="workDesc" maxlength="400" placeholder=" " data-must></textarea>
-            <label>Work description<span class="req">*</span></label>
-            <div class="char-count"><span id="workDescCount">0</span>/400</div>
-          <p class="field-hint">Helps us understand the kind of work you do.</p></div>
+        <div class="file-row" id="viewAgreement">
+          <span class="file-pdf">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M9 13h6M9 17h4"/></svg>
+          </span>
+          <span class="file-body">
+            <span class="file-title">Independent Contractor Agreement</span>
+            <span class="file-sub">Click to view the file</span>
+          </span>
         </div>
+        <label class="upload-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V4M12 4 8 8M12 4l4 4"/><path d="M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg>
+          Upload signed contractor agreement
+          <input type="file" hidden>
+        </label>
 
-        <div class="q-block">
-          <div class="q-label">Proof of online presence<span class="req">*</span></div>
+        <div style="margin-top:20px;">
           <div class="check-row">
-            <input type="radio" name="onlinePresence" id="op-linkedin" checked>
-            <label for="op-linkedin">An active LinkedIn profile (Recommended)</label>
+            <input type="checkbox" id="agree1" data-must>
+            <label for="agree1">I confirm the agreement above is accurate and I am authorized to send it to contractors on behalf of my company.</label>
           </div>
           <div class="check-row">
-            <input type="radio" name="onlinePresence" id="op-social">
-            <label for="op-social">An active social media profile (Upwork, Fiverr, Instagram, etc.)</label>
+            <input type="checkbox" id="agree2" data-must>
+            <label for="agree2">By proceeding, you agree to <a href="#" class="terms-link">Wisemonk's terms</a> for managing contractor payments on your behalf.</label>
           </div>
-          <div class="check-row">
-            <input type="radio" name="onlinePresence" id="op-website">
-            <label for="op-website">An active website describing my work</label>
-          </div>
-        </div>
-
-        <div class="fields" style="margin-top:12px;">
-          <div class="fl-field">
-            <input type="url" placeholder=" " data-must>
-            <label>Please provide your LinkedIn profile link<span class="req">*</span></label>
-          <p class="field-hint">e.g. https://www.linkedin.com/in/example</p></div>
         </div>
       </div>
 
-      <div class="section-card">
-        <div class="section-title">Work Address</div>
-        <div class="fields">
-          <div class="fl-field">
-            <input type="text" placeholder=" " data-must>
-            <label>Street Address Line 1<span class="req">*</span></label>
-          </div>
-          <div class="fl-field">
-            <input type="text" placeholder=" ">
-            <label>Street Address Line 2</label>
-          </div>
-          <div class="fl-row">
-            <div class="fl-field">
-              <input type="text" placeholder=" " data-must>
-              <label>City<span class="req">*</span></label>
-            </div>
-            <div class="fl-field">
-              <input type="text" placeholder=" " data-must>
-              <label>State<span class="req">*</span></label>
-            </div>
-          </div>
-          <div class="fl-row">
-            <div class="fl-field">
-              <input type="text" placeholder=" " data-must>
-              <label>Zip Code/Postal code<span class="req">*</span></label>
-            </div>
-            <div class="fl-field">
-              <input type="text" value="India" placeholder=" " readonly tabindex="-1">
-              <label>Country</label>
-            <p class="field-hint">Auto-filled from the country you selected at sign-up.</p></div>
-          </div>
-        </div>
-      </div>
     </div>
 
-    <!-- (removed: old Verify-business KYB step) -->
-
-    <!-- STEP 5: COMPLIANCE DECLARATION -->
+    <!-- STEP 5: INVOICING (FINAL) -->
     <div class="step" data-step="5">
-
-      <div class="section-card divided">
-        <div class="section-title">Compliance declaration</div>
-        <p class="section-desc">Please confirm the following to verify your company's compliance status:</p>
-
-        <div class="check-row">
-          <input type="checkbox" id="c1">
-          <label for="c1">I confirm that all funds used for payroll purposes are sourced from legitimate and traceable business activities.</label>
-        </div>
-        <div class="check-row">
-          <input type="checkbox" id="c2">
-          <label for="c2">I declare that neither the company nor any of its directors or Ultimate Beneficial Owners (UBOs) are listed on any international sanctions or embargo lists.</label>
-        </div>
-        <div class="check-row">
-          <input type="checkbox" id="c3">
-          <label for="c3">I affirm that my company complies with Anti-Money Laundering (AML) and Counter Financing of Terrorism (CFT) laws in its jurisdiction.</label>
-        </div>
-        <div class="check-row">
-          <input type="checkbox" id="c4">
-          <label for="c4">I confirm that none of the directors or UBOs of my company are considered Politically Exposed Persons (PEPs), nor are they closely associated with a PEP.</label>
-        </div>
-      </div>
-
-      <div class="section-card divided">
-        <div class="section-title">Prohibited / High-Risk Industries</div>
-
-        <div class="check-row">
-          <input type="checkbox" id="c5">
-          <label for="c5">I hereby declare that my company is not involved in any prohibited or high-risk activities, including but not limited to the following.</label>
-        </div>
-
-        <span class="prohibited-toggle" id="probTog">
-          View activities
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
-        </span>
-        <div class="prohibited-list" id="probList">
-          <strong>Your company does not engage in any of the following activities:</strong>
-          <ul>
-            <li>Arms, weapons, ammunition, or explosives</li>
-            <li>Gambling, betting, or online casinos</li>
-            <li>Adult entertainment or pornography</li>
-            <li>Narcotics, illegal drugs, or related trade</li>
-            <li>Shell companies or anonymous ownership structures</li>
-            <li>Postal services, MLM schemes, or pyramid models</li>
-            <li>Unlicensed money services, lending, or investment businesses</li>
-            <li>Unregulated foreign exchange or remittance businesses</li>
-            <li>Counterfeit goods or intellectual property infringement</li>
-            <li>Environmental crimes (illegal mining, logging, wildlife trafficking)</li>
-            <li>Cryptocurrency or digital asset businesses (exchanges, wallets, ICOs, DeFi platforms)</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-
-    <!-- STEP 6: REVIEW & CONFIRMATION (FINAL) -->
-    <div class="step" data-step="6">
       <div class="page-heading">
-        <h1>Review and confirm</h1>
-        <p>Please review the details below before submitting. You can go back to any step to make changes.</p>
-      </div>
-
-      <div class="section-card" id="reviewBody">
-        <!-- Populated by renderReview() -->
+        <h1>How should invoices be raised?</h1>
+        <p>Choose how invoices are raised for this contractor. This is the last step — you can change it any time later.</p>
       </div>
 
       <div class="section-card">
-        <div class="check-row">
-          <input type="checkbox" id="reviewConfirm" data-must>
-          <label for="reviewConfirm">I confirm that the information provided above is accurate and complete to the best of my knowledge, and I am authorized to submit it on behalf of my company.</label>
+        <div class="section-title">Invoicing</div>
+        <div class="section-desc">Choose how invoices are raised for this contractor.</div>
+        <div class="option-cards">
+          <button type="button" class="option-card selected" data-invoice="auto">
+            <span class="option-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5.5 3.5h13a1 1 0 0 1 1 1V21l-2.5-1.5L14.5 21 12 19.5 9.5 21 7 19.5 4.5 21V4.5a1 1 0 0 1 1-1Z"/>
+                <path d="M8.5 8.5h7M8.5 12h7M8.5 15.5h4"/>
+              </svg>
+            </span>
+            <span class="option-card-body">
+              <span class="option-card-title">Auto-generate each month</span>
+              <span class="option-card-desc">Wisemonk creates and sends the invoice on the 1st of every month — no action needed from the contractor.</span>
+            </span>
+            <span class="option-card-radio"></span>
+          </button>
+          <button type="button" class="option-card" data-invoice="request">
+            <span class="option-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 15V4M12 4 8 8M12 4l4 4"/>
+                <path d="M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/>
+              </svg>
+            </span>
+            <span class="option-card-body">
+              <span class="option-card-title">On contractor request</span>
+              <span class="option-card-desc">The contractor submits their own invoice each cycle and you approve it before payout.</span>
+            </span>
+            <span class="option-card-radio"></span>
+          </button>
         </div>
       </div>
     </div>
@@ -954,11 +910,10 @@
     let current = 1;
 
     const nextLabels = [
-      'People behind your business',
-      'Documents',
-      'Tell us about your work',
-      'Compliance declaration',
-      'Review & confirm',
+      'Contract & payment terms',
+      'GST & tax applicability',
+      'Set up agreement',
+      'Invoicing',
       'Finish'
     ];
 
@@ -982,90 +937,8 @@
       document.getElementById('saveBtn').textContent = isLast ? 'Finish setup' : 'Save & continue';
       document.getElementById('saveBtn').classList.toggle('success', isLast);
       document.getElementById('nextLabel').innerHTML = isLast ? '' : 'Next: <strong>' + nextLabels[current - 1] + '</strong>';
-      if (isLast) renderReview();
       updateSaveBtn();
       window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    // Build a read-only summary of everything entered, for the final review step.
-    function renderReview() {
-      const body = document.getElementById('reviewBody');
-      if (!body) return;
-      const stepTitles = {
-        1: 'About you',
-        2: 'People behind the business',
-        3: 'Documents',
-        4: 'Your work'
-      };
-      let html = '';
-
-      [1, 2, 3, 4].forEach(sn => {
-        const step = document.querySelector('.step[data-step="' + sn + '"]');
-        if (!step) return;
-        const rows = [];
-
-        // Standard floating-label fields
-        step.querySelectorAll('.fl-field').forEach(f => {
-          const ctrl = f.querySelector('input, textarea, select');
-          const labelEl = f.querySelector('label');
-          if (!ctrl || !labelEl) return;
-          if (ctrl.id === 'uboSelect') return;
-          const label = labelEl.textContent.replace('*', '').trim();
-          const val = (ctrl.value || '').trim();
-          if (val) rows.push([label, val]);
-        });
-
-        // International phone (legal step)
-        const phone = step.querySelector('.fl-phone');
-        if (phone) {
-          const cc = phone.querySelector('.cc');
-          const num = phone.querySelector('.num');
-          const code = cc ? (cc.value || cc.textContent || '').trim() : '';
-          const n = num ? num.value.trim() : '';
-          if (n) rows.push(['Phone number', (code + ' ' + n).trim()]);
-        }
-
-        // Directors (step 2)
-        if (sn === 2 && directorList) {
-          directorList.querySelectorAll('.director-block').forEach((b, i) => {
-            const nm = (b.querySelector('.dir-name')?.value || '').trim();
-            const own = (b.querySelector('input[type="number"]')?.value || '').trim();
-            const label = 'Director ' + (i + 1);
-            const v = nm + (own ? ' — ' + own + '% ownership' : '');
-            if (nm) rows.push([label, v]);
-          });
-          if (uboSelect && uboSelect.value) rows.push(['Ultimate Beneficial Owner', uboSelect.value]);
-        }
-
-        // Selected radios in this step
-        step.querySelectorAll('input[type="radio"]:checked').forEach(r => {
-          const lbl = step.querySelector('label[for="' + r.id + '"]');
-          if (lbl) rows.push(['Selection', lbl.textContent.trim()]);
-        });
-
-        if (rows.length) {
-          html += '<div class="review-group"><div class="review-group-title">' + stepTitles[sn] + '</div>';
-          rows.forEach(([k, v]) => {
-            html += '<div class="review-row"><span class="review-key">' + escapeHtml(k) + '</span><span class="review-val">' + escapeHtml(v) + '</span></div>';
-          });
-          html += '</div>';
-        }
-      });
-
-      // Compliance summary (step 5 checkboxes)
-      const step5 = document.querySelector('.step[data-step="5"]');
-      if (step5) {
-        const boxes = step5.querySelectorAll('input[type="checkbox"]');
-        const checked = Array.from(boxes).filter(b => b.checked).length;
-        html += '<div class="review-group"><div class="review-group-title">Compliance declaration</div>';
-        html += '<div class="review-row"><span class="review-key">Declarations confirmed</span><span class="review-val">' + checked + ' of ' + boxes.length + '</span></div></div>';
-      }
-
-      body.innerHTML = html || '<p class="section-desc">No details captured yet — go back and complete the previous steps.</p>';
-    }
-
-    function escapeHtml(s) {
-      return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
     }
 
     // Wire up input listeners to update Save button state
@@ -1120,7 +993,7 @@
     document.getElementById('saveBtn').addEventListener('click', () => {
       if (current === total) {
         try { localStorage.removeItem(SAVE_KEY); } catch (e) {}
-        location.href = 'home.html';
+        location.href = 'freelancers.html';
         return;
       }
       current++;
@@ -1435,7 +1308,7 @@
     });
 
     // ===== Auto-save: persist the user's progress to localStorage =====
-    const SAVE_KEY = 'wm_client_onboarding_v1';
+    const SAVE_KEY = 'wm_add_freelancer_v1';
     let saveTimer = null;
     let restoring = false;
 
