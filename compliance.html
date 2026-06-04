@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard — Wisemonk</title>
+  <title>Compliance — Wisemonk</title>
   <link href="https://api.fontshare.com/v2/css?f[]=satoshi@700,500,400&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap" rel="stylesheet">
   <style>
@@ -820,17 +820,12 @@
     .cor-banner-close svg { width: 16px; height: 16px; }
 
 
-    /* wm-cmp-css */
-    .cmp-promo { display: flex; align-items: center; gap: 16px; padding: 18px 20px; margin-bottom: 20px; background: linear-gradient(135deg, #1a1d24, #2a2f3a); border-radius: 16px; text-decoration: none; color: #fff; transition: background .15s ease; }
-    .cmp-promo:hover { background: linear-gradient(135deg, #15171d, #232732); }
-    .cmp-promo-ic { width: 44px; height: 44px; flex-shrink: 0; border-radius: 12px; background: rgba(255,255,255,0.12); display: flex; align-items: center; justify-content: center; }
-    .cmp-promo-ic svg { width: 22px; height: 22px; color: #fff; }
-    .cmp-promo-body { display: flex; flex-direction: column; gap: 3px; flex: 1; min-width: 0; }
-    .cmp-promo-title { font-family: 'Satoshi', sans-serif; font-size: 15px; font-weight: 700; }
-    .cmp-promo-desc { font-size: 13px; color: rgba(255,255,255,0.72); line-height: 1.5; }
-    .cmp-promo-cta { display: inline-flex; align-items: center; gap: 6px; flex-shrink: 0; font-family: 'Satoshi', sans-serif; font-size: 13.5px; font-weight: 700; color: #fff; }
-    .cmp-promo-cta svg { width: 15px; height: 15px; }
-    /* /wm-cmp-css */
+    /* compliance page */
+    .cmp-intro { margin: 8px 0 20px; }
+    .cmp-intro h2 { font-family: 'Satoshi', sans-serif; font-size: 22px; font-weight: 700; color: var(--text-primary); margin: 0 0 6px; letter-spacing: -0.3px; }
+    .cmp-intro p { font-size: 14px; color: var(--text-muted); margin: 0; max-width: 660px; line-height: 1.55; }
+    .cmp-frame { position: relative; border: 1px solid var(--border-strong); border-radius: 16px; overflow: hidden; background: #fff; box-shadow: 0 14px 38px -22px rgba(17,22,32,0.4); height: calc(100vh - 196px); min-height: 560px; }
+    .cmp-frame iframe { width: 100%; height: 100%; border: 0; display: block; }
   </style>
 </head>
 <body><!-- wm-icon-sprite --><svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true"><symbol id="ic-home-2" viewBox="0 0 24 24" fill="none"><path d="M9.02 2.84004L3.63 7.04004C2.73 7.74004 2 9.23004 2 10.36V17.77C2 20.09 3.89 21.99 6.21 21.99H17.79C20.11 21.99 22 20.09 22 17.78V10.5C22 9.29004 21.19 7.74004 20.2 7.05004L14.02 2.72004C12.62 1.74004 10.37 1.79004 9.02 2.84004Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -843,9 +838,7 @@
 <path d="M6.75 13H11.25" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-clock" viewBox="0 0 24 24" fill="none"><path d="M22 12C22 17.52 17.52 22 12 22C6.48 22 2 17.52 2 12C2 6.48 6.48 2 12 2C17.52 2 22 6.48 22 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 7V12.5L15.5 14.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-shield-tick" viewBox="0 0 24 24" fill="none"><path d="M10.49 2.23006L5.50003 4.11006C4.35003 4.54006 3.41003 5.90006 3.41003 7.12006V14.5501C3.41003 15.7301 4.19003 17.2801 5.14003 17.9901L9.44003 21.2001C10.85 22.2601 13.17 22.2601 14.58 21.2001L18.88 17.9901C19.83 17.2801 20.61 15.7301 20.61 14.5501V7.12006C20.61 5.89006 19.67 4.53006 18.52 4.10006L13.53 2.23006C12.68 1.92006 11.32 1.92006 10.49 2.23006Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M9.05005 11.8701L10.66 13.4801L14.96 9.18005" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-notification" viewBox="0 0 24 24" fill="none"><path d="M12.02 2.90991C8.70997 2.90991 6.01997 5.59991 6.01997 8.90991V11.7999C6.01997 12.4099 5.75997 13.3399 5.44997 13.8599L4.29997 15.7699C3.58997 16.9499 4.07997 18.2599 5.37997 18.6999C9.68997 20.1399 14.34 20.1399 18.65 18.6999C19.86 18.2999 20.39 16.8699 19.73 15.7699L18.58 13.8599C18.28 13.3399 18.02 12.4099 18.02 11.7999V8.90991C18.02 5.60991 15.32 2.90991 12.02 2.90991Z" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"/>
 <path d="M13.87 3.19994C13.56 3.10994 13.24 3.03994 12.91 2.99994C11.95 2.87994 11.03 2.94994 10.17 3.19994C10.46 2.45994 11.18 1.93994 12.02 1.93994C12.86 1.93994 13.58 2.45994 13.87 3.19994Z" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M15.02 19.0601C15.02 20.7101 13.67 22.0601 12.02 22.0601C11.2 22.0601 10.44 21.7201 9.90002 21.1801C9.36002 20.6401 9.02002 19.8801 9.02002 19.0601" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10"/></symbol><symbol id="ic-arrow-down" viewBox="0 0 24 24" fill="none"><path d="M19.9201 8.94995L13.4001 15.47C12.6301 16.24 11.3701 16.24 10.6001 15.47L4.08008 8.94995" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-close" viewBox="0 0 24 24" fill="none"><path d="M6 6L18 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M18 6L6 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-arrow-right" viewBox="0 0 24 24" fill="none"><path d="M14.4301 5.92993L20.5001 11.9999L14.4301 18.0699" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M3.5 12H20.33" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-tick-circle" viewBox="0 0 24 24" fill="none"><path d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M7.75 12L10.58 14.83L16.25 9.17004" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol></svg><!-- /wm-icon-sprite -->
+<path d="M15.02 19.0601C15.02 20.7101 13.67 22.0601 12.02 22.0601C11.2 22.0601 10.44 21.7201 9.90002 21.1801C9.36002 20.6401 9.02002 19.8801 9.02002 19.0601" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10"/></symbol><symbol id="ic-arrow-down" viewBox="0 0 24 24" fill="none"><path d="M19.9201 8.94995L13.4001 15.47C12.6301 16.24 11.3701 16.24 10.6001 15.47L4.08008 8.94995" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/></symbol></svg><!-- /wm-icon-sprite -->
 
   <div class="app">
 
@@ -857,7 +850,7 @@
 
       <nav class="nav-section">
         <div class="nav-title">WORKSPACE</div>
-        <a href="home.html" class="nav-link active">
+        <a href="home.html" class="nav-link">
           <span class="nav-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-home-2"/></svg>
           </span>
@@ -881,7 +874,7 @@
           </span>
           Time
         </a>
-        <a href="compliance.html" class="nav-link">
+        <a href="compliance.html" class="nav-link active">
           <span class="nav-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-shield-tick"/></svg>
           </span>
@@ -894,7 +887,7 @@
     <div class="main-col">
 
       <header class="header">
-        <h1>Good Morning, Aman!</h1>
+        <h1>Compliance</h1>
         <div class="header-right">
           <button class="bell-btn" aria-label="Notifications"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-notification"/></svg></button>
           <div class="user-chip">
@@ -905,316 +898,20 @@
         </div>
       </header>
 
-      <div class="content">
+<div class="content">
 
-        <div class="cor-banner">
-          <div class="cor-banner-body">
-            <div class="cor-banner-title">Want full compliance for your freelancers?</div>
-            <div class="cor-banner-desc">Move them to Contractor of Record · locally compliant contracts, IP &amp; misclassification all covered.</div>
-          </div>
-          <div class="cor-banner-actions">
-            <a href="#" class="cor-banner-secondary" onclick="openCorModal(event)">Learn more</a>
-            <a href="#" class="cor-banner-cta">Switch to COR</a>
-            <button class="cor-banner-close" aria-label="Dismiss">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-close"/></svg>
-            </button>
-          </div>
+        <div class="cmp-intro">
+          <h2>Compliance audit</h2>
+          <p>Check every contract, invoice and tax record for your India contractor payments against Indian regulations &mdash; get a verdict in seconds.</p>
         </div>
 
-
-
-
-
-        <!-- wm-cmp-card -->
-        <a href="compliance.html" class="cmp-promo">
-          <span class="cmp-promo-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-shield-tick"/></svg></span>
-          <span class="cmp-promo-body">
-            <span class="cmp-promo-title">Run a compliance audit</span>
-            <span class="cmp-promo-desc">Verify your India contractor contracts, invoices &amp; tax records against local regulations &mdash; verdict in seconds.</span>
-          </span>
-          <span class="cmp-promo-cta">Open audit <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-arrow-right"/></svg></span>
-        </a>
-        <!-- /wm-cmp-card -->
-
-        <!-- ─── STATS ─── -->
-        <div class="stats-grid">
-
-          <div class="stat-card">
-            <div class="stat-title">Payments due</div>
-            <div class="stat-value">$4,200</div>
-            <div class="stat-sub">Awaiting approval and release this week</div>
-          </div>
-
-          <div class="stat-card">
-            <div class="stat-title">Pending approvals</div>
-            <div class="stat-value">3</div>
-            <div class="stat-sub">Invoices waiting for your review</div>
-          </div>
-
-          <div class="stat-card">
-            <div class="stat-title">Active freelancers</div>
-            <div class="stat-value">12</div>
-            <div class="stat-sub">Freelancers with active contracts</div>
-          </div>
-
+        <div class="cmp-frame">
+          <iframe src="https://legal.wisemonk.io/" title="Wisemonk Compliance Audit" loading="lazy" referrerpolicy="no-referrer"></iframe>
         </div>
-
-        <!-- ─── APPROVALS (tabbed) ─── -->
-        <div class="approvals-card">
-          <div class="approvals-head">
-            <h2>Needs your approval</h2>
-            <div class="approvals-tabs">
-              <button class="apr-tab active" data-apr="payment">Payment requests <span class="apr-count">1</span></button>
-            </div>
-          </div>
-
-          <div class="apr-pane active" data-apr="payment">
-            <div class="request-row">
-              <div class="req-user">
-                <div class="req-avatar">RS</div>
-                <div>
-                  <div class="req-name">Rajesh Singh</div>
-                  <div class="req-role">Developer · India</div>
-                </div>
-              </div>
-              <div class="req-col">
-                <div class="req-col-label">Date</div>
-                <div class="req-col-value">Mar 05, 2026</div>
-              </div>
-              <div class="req-col">
-                <div class="req-col-label">Invoice</div>
-                <div class="req-col-value link">#INV-2024</div>
-              </div>
-              <div class="req-col">
-                <div class="req-col-label">Amount</div>
-                <div class="req-col-value">$2,500</div>
-              </div>
-              <div class="req-actions">
-                <button class="deny-btn">Deny</button>
-                <button class="approve-btn">Approve</button>
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-        <!-- ─── RECENT ACTIVITY ─── -->
-        <div class="panel">
-          <div class="panel-head">
-            <h2>Recent Activity</h2>
-            <a href="#">View all</a>
-          </div>
-
-          <div class="activity-row">
-            <span class="activity-dot"></span>
-            <div class="activity-body">
-              <div class="activity-title">Invoice received</div>
-              <div class="activity-sub">INV-1042 · Carlos Mendez</div>
-            </div>
-            <div class="activity-amount">$1,200</div>
-            <span class="status-pill pending">Needs review</span>
-            <div class="activity-date">Feb 28, 2026</div>
-          </div>
-
-          <div class="activity-row">
-            <span class="activity-dot"></span>
-            <div class="activity-body">
-              <div class="activity-title">Payment sent</div>
-              <div class="activity-sub">Priya Sharma · April retainer</div>
-            </div>
-            <div class="activity-amount">$850</div>
-            <span class="status-pill processed">Sent</span>
-            <div class="activity-date">Feb 26, 2026</div>
-          </div>
-
-          <div class="activity-row">
-            <span class="activity-dot"></span>
-            <div class="activity-body">
-              <div class="activity-title">Contract signed</div>
-              <div class="activity-sub">Aisha Khan · 3-month retainer</div>
-            </div>
-            <div class="activity-amount"></div>
-            <span class="status-pill approved">Active</span>
-            <div class="activity-date">Feb 24, 2026</div>
-          </div>
-
-          <div class="activity-row">
-            <span class="activity-dot"></span>
-            <div class="activity-body">
-              <div class="activity-title">Freelancer invited</div>
-              <div class="activity-sub">john.lee@example.com · USA</div>
-            </div>
-            <div class="activity-amount"></div>
-            <span class="status-pill invite">Invite sent</span>
-            <div class="activity-date">Feb 22, 2026</div>
-          </div>
-        </div>
-
 
       </div>
     </div>
   </div>
 
-  <!-- ─── Invoice side panel ─── -->
-  <div class="panel-overlay" id="overlay"></div>
-  <aside class="side-panel" id="invoicePanel" aria-hidden="true">
-    <div class="sp-header">
-      <h3>
-        Invoice <span>#INV-2024</span>
-        <span class="pill pending">Needs review</span>
-      </h3>
-      <button class="sp-close" id="spClose" aria-label="Close">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-close"/></svg>
-      </button>
-    </div>
-
-    <div class="sp-body">
-      <div class="sp-freelancer">
-        <div class="sp-freelancer-avatar">RS</div>
-        <div>
-          <div class="sp-freelancer-name">Rajesh Singh</div>
-          <div class="sp-freelancer-role">Developer · India</div>
-        </div>
-      </div>
-
-      <div class="sp-amount"><span class="currency">$</span>2,500.00</div>
-      <div class="sp-date">Submitted Mar 05, 2026 · due Mar 19, 2026</div>
-
-      <div class="sp-section">
-        <div class="sp-section-label">Details</div>
-        <div class="kv-grid">
-          <div>
-            <div class="kv-label">Invoice number</div>
-            <div class="kv-value">#INV-2024</div>
-          </div>
-          <div>
-            <div class="kv-label">Period</div>
-            <div class="kv-value">Feb 2026</div>
-          </div>
-          <div>
-            <div class="kv-label">Type</div>
-            <div class="kv-value">Monthly retainer</div>
-          </div>
-          <div>
-            <div class="kv-label">Currency</div>
-            <div class="kv-value">USD</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="sp-section">
-        <div class="sp-section-label">Line items</div>
-        <div style="border:1px solid #f0f1f1; border-radius:10px; overflow:hidden;">
-          <div style="display:flex; justify-content:space-between; padding:12px 16px; border-bottom:1px solid #f0f1f1; background:#f9fafb;">
-            <span style="font-family:'Open Sans',sans-serif; font-size:13px; font-weight:600; color:#404145;">Description</span>
-            <span style="font-family:'Open Sans',sans-serif; font-size:13px; font-weight:600; color:#404145;">Amount</span>
-          </div>
-          <div style="display:flex; justify-content:space-between; padding:14px 16px; border-bottom:1px solid #f0f1f1;">
-            <span style="font-size:14px; color:#222224;">Sprint 14 development</span>
-            <span style="font-family:'Satoshi',sans-serif; font-weight:500; color:#222224;">$2,000</span>
-          </div>
-          <div style="display:flex; justify-content:space-between; padding:14px 16px;">
-            <span style="font-size:14px; color:#222224;">Code reviews · 10h</span>
-            <span style="font-family:'Satoshi',sans-serif; font-weight:500; color:#222224;">$500</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="sp-section">
-        <div class="sp-section-label">Note</div>
-        <p style="font-size:14px; color:#626368; line-height:1.55;">February retainer for backend sprint work plus async code-review hours.</p>
-      </div>
-    </div>
-
-    <div class="sp-footer">
-      <button class="deny-btn" id="denyBtn">Deny</button>
-      <button class="approve-btn" id="approveBtn">Approve</button>
-    </div>
-  </aside>
-
-  <script>
-    // Approvals tabs
-    const aprTabs = document.querySelectorAll('.apr-tab');
-    const aprPanes = document.querySelectorAll('.apr-pane');
-    aprTabs.forEach(btn => {
-      btn.addEventListener('click', () => {
-        const t = btn.dataset.apr;
-        aprTabs.forEach(b => b.classList.toggle('active', b === btn));
-        aprPanes.forEach(p => p.classList.toggle('active', p.dataset.apr === t));
-      });
-    });
-
-    // Invoice side panel
-    const panel = document.getElementById('invoicePanel');
-    const overlay = document.getElementById('overlay');
-    function openPanel() { panel.classList.add('open'); overlay.classList.add('open'); panel.setAttribute('aria-hidden', 'false'); }
-    function closePanel() { panel.classList.remove('open'); overlay.classList.remove('open'); panel.setAttribute('aria-hidden', 'true'); }
-
-    // Make invoice link in approvals card clickable
-    document.querySelectorAll('.req-col-value.link').forEach(el => {
-      el.addEventListener('click', openPanel);
-    });
-
-    overlay.addEventListener('click', closePanel);
-    document.getElementById('spClose').addEventListener('click', closePanel);
-    document.getElementById('denyBtn').addEventListener('click', closePanel);
-    document.getElementById('approveBtn').addEventListener('click', closePanel);
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') closePanel(); });
-  </script>
-
-
-  <script>
-    // COR banner dismiss
-    document.querySelectorAll('.cor-banner-close').forEach(btn => {
-      btn.addEventListener('click', () => btn.closest('.cor-banner').remove());
-    });
-  </script>
-
-
-  <!-- wm-cor -->
-  <div class="cor-modal-overlay" id="corModal" role="dialog" aria-modal="true" aria-labelledby="corModalTitle">
-    <div class="cor-modal">
-      <div class="cor-modal-head">
-        <div>
-          <h2 id="corModalTitle">Switch to Contractor of Record</h2>
-          <p>See what changes when you move your freelancers to C-MOR.</p>
-        </div>
-        <button class="cor-modal-close" type="button" onclick="closeCorModal()" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-close"/></svg></button>
-      </div>
-      <div class="cor-modal-body">
-        <table class="cor-table">
-          <thead>
-            <tr>
-              <th class="col-feat"></th>
-              <th class="col-free">Freelancers (Direct)</th>
-              <th class="col-cmor">Contractor of Record (C-MOR)</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr><td class="col-feat">Payments</td><td class="col-free"><span class="cor-cell"><svg class="cor-ic no" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-close"/></svg><span>Paid one by one, separately</span></span></td><td class="col-cmor"><span class="cor-cell"><svg class="cor-ic yes" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-tick-circle"/></svg><span>All contractors paid together, in one place</span></span></td></tr>
-            <tr><td class="col-feat">Invoicing</td><td class="col-free"><span class="cor-cell"><svg class="cor-ic no" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-close"/></svg><span>Manually triggered by you or the contractor</span></span></td><td class="col-cmor"><span class="cor-cell"><svg class="cor-ic yes" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-tick-circle"/></svg><span>Automated, triggered by workflows</span></span></td></tr>
-            <tr><td class="col-feat">Payment speed</td><td class="col-free"><span class="cor-cell"><svg class="cor-ic no" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-close"/></svg><span>2-3 business days + FX / holiday delays</span></span></td><td class="col-cmor"><span class="cor-cell"><svg class="cor-ic yes" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-tick-circle"/></svg><span>Same-day &mdash; paid the day money hits your US account</span></span></td></tr>
-            <tr><td class="col-feat">Manager controls</td><td class="col-free"><span class="cor-cell"><svg class="cor-ic no" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-close"/></svg><span>None &mdash; no hierarchy or oversight</span></span></td><td class="col-cmor"><span class="cor-cell"><svg class="cor-ic yes" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-tick-circle"/></svg><span>Org hierarchy with timesheet approvals &amp; reports</span></span></td></tr>
-            <tr><td class="col-feat">Tax &amp; PE risk</td><td class="col-free"><span class="cor-cell"><svg class="cor-ic no" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-close"/></svg><span>Higher exposure</span></span></td><td class="col-cmor"><span class="cor-cell"><svg class="cor-ic yes" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-tick-circle"/></svg><span>Significantly reduced</span></span></td></tr>
-            <tr><td class="col-feat">Misclassification risk</td><td class="col-free"><span class="cor-cell"><svg class="cor-ic no" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-close"/></svg><span>Falls on you, the employer</span></span></td><td class="col-cmor"><span class="cor-cell"><svg class="cor-ic yes" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-tick-circle"/></svg><span>Significantly reduced</span></span></td></tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="cor-modal-foot">
-        <button class="cor-later" type="button" onclick="closeCorModal()">Maybe later</button>
-        <a href="#" class="cor-switch">Switch to COR <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-arrow-right"/></svg></a>
-      </div>
-    </div>
-  </div>
-  <script>
-    function openCorModal(e){ if(e) e.preventDefault(); var m=document.getElementById('corModal'); if(m){ m.classList.add('open'); document.body.style.overflow='hidden'; } }
-    function closeCorModal(){ var m=document.getElementById('corModal'); if(m){ m.classList.remove('open'); document.body.style.overflow=''; } }
-    (function(){
-      var m=document.getElementById('corModal');
-      if(m){ m.addEventListener('click', function(ev){ if(ev.target===this) closeCorModal(); }); }
-      document.addEventListener('keydown', function(ev){ if(ev.key==='Escape') closeCorModal(); });
-    })();
-  </script>
-  <!-- /wm-cor -->
 </body>
 </html>
