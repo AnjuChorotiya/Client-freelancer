@@ -91,30 +91,42 @@
       white-space: nowrap;
     }
     .cor-banner-secondary:hover { background: rgba(0,0,0,0.04); border-color: #9CA3AF; }
+    /* wm-cor-css */
     /* COR comparison modal */
     .cor-modal-overlay { position: fixed; inset: 0; background: rgba(17,22,32,0.55); display: none; align-items: center; justify-content: center; padding: 24px; z-index: 2000; }
-    .cor-modal-overlay.open { display: flex; }
-    .cor-modal { background: #fff; border-radius: 16px; width: 100%; max-width: 760px; max-height: 90vh; overflow-y: auto; box-shadow: 0 24px 60px -12px rgba(0,0,0,0.35); }
-    .cor-modal-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 24px 28px 8px; }
-    .cor-modal-head h2 { font-family: 'Satoshi', sans-serif; font-size: 20px; font-weight: 700; color: #222224; margin: 0 0 4px; }
+    .cor-modal-overlay.open { display: flex; animation: corFade 0.18s ease; }
+    @keyframes corFade { from { opacity: 0; } to { opacity: 1; } }
+    .cor-modal { background: #fff; border-radius: 18px; width: 100%; max-width: 720px; max-height: 90vh; overflow-y: auto; box-shadow: 0 30px 70px -20px rgba(0,0,0,0.45); }
+    .cor-modal-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 26px 28px 4px; }
+    .cor-modal-head h2 { font-family: 'Satoshi', sans-serif; font-size: 21px; font-weight: 700; color: #222224; margin: 0 0 4px; letter-spacing: -0.2px; }
     .cor-modal-head p { font-size: 14px; color: #85878d; margin: 0; line-height: 1.5; }
     .cor-modal-close { width: 32px; height: 32px; flex-shrink: 0; border: none; background: transparent; border-radius: 8px; color: #85878d; cursor: pointer; display: flex; align-items: center; justify-content: center; }
     .cor-modal-close:hover { background: rgba(0,0,0,0.05); color: #222224; }
     .cor-modal-close svg { width: 18px; height: 18px; }
-    .cor-modal-body { padding: 8px 28px 4px; }
-    .cor-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
-    .cor-table th, .cor-table td { text-align: left; padding: 12px 14px; vertical-align: top; border-bottom: 1px solid #EEF0F4; line-height: 1.45; }
-    .cor-table thead th { font-size: 12px; font-weight: 700; color: #85878d; text-transform: uppercase; letter-spacing: 0.3px; border-bottom: 1.5px solid #DDE1E9; }
-    .cor-table th:first-child, .cor-table td:first-child { font-weight: 600; color: #222224; width: 24%; }
+    .cor-modal-body { padding: 18px 28px 4px; }
+    .cor-table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 13.5px; }
+    .cor-table th, .cor-table td { text-align: left; padding: 13px 16px; vertical-align: top; line-height: 1.45; }
+    .cor-table thead th { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; color: #9AA2B2; padding-top: 10px; padding-bottom: 12px; }
+    .cor-table .col-feat { width: 23%; font-weight: 600; color: #222224; }
     .cor-table .col-free { color: #6B7280; }
-    .cor-table .col-cmor { background: #F1F8FF; color: #1059BD; font-weight: 600; }
-    .cor-table thead .col-cmor { color: #2684FF; background: #E8F2FF; }
-    .cor-table tr:last-child td { border-bottom: none; }
-    .cor-modal-foot { display: flex; align-items: center; justify-content: flex-end; gap: 12px; padding: 16px 28px 24px; }
+    .cor-table tbody td.col-feat, .cor-table tbody td.col-free { border-bottom: 1px solid #F0F1F4; }
+    .cor-table tbody tr:last-child td.col-feat, .cor-table tbody tr:last-child td.col-free { border-bottom: none; }
+    /* highlighted C-MOR column */
+    .cor-table .col-cmor { background: #EAF3FF; color: #105FCB; font-weight: 600; }
+    .cor-table thead .col-cmor { background: #2684FF; color: #fff; border-top-left-radius: 12px; border-top-right-radius: 12px; }
+    .cor-table tbody tr:last-child .col-cmor { border-bottom-left-radius: 12px; border-bottom-right-radius: 12px; }
+    .cor-badge { display: inline-block; margin-left: 8px; background: rgba(255,255,255,0.22); color: #fff; border-radius: 100px; padding: 2px 8px; font-size: 9.5px; font-weight: 700; letter-spacing: 0.4px; vertical-align: middle; }
+    .cor-cell { display: flex; gap: 8px; align-items: flex-start; }
+    .cor-ic { width: 16px; height: 16px; flex-shrink: 0; margin-top: 1px; }
+    .cor-ic.no { color: #C4CAD6; }
+    .cor-ic.yes { color: #2684FF; }
+    .cor-modal-foot { display: flex; align-items: center; justify-content: flex-end; gap: 14px; padding: 18px 28px 24px; }
     .cor-modal-foot .cor-later { background: transparent; border: none; font-family: inherit; font-size: 14px; font-weight: 600; color: #85878d; cursor: pointer; padding: 11px 8px; }
     .cor-modal-foot .cor-later:hover { color: #222224; }
-    .cor-modal-foot .cor-switch { display: inline-flex; align-items: center; padding: 11px 22px; background: #1a1d24; color: #fff; border: none; border-radius: 8px; font-family: inherit; font-size: 14px; font-weight: 700; cursor: pointer; text-decoration: none; }
+    .cor-modal-foot .cor-switch { display: inline-flex; align-items: center; gap: 8px; padding: 12px 22px; background: #1a1d24; color: #fff; border: none; border-radius: 9px; font-family: inherit; font-size: 14px; font-weight: 700; cursor: pointer; text-decoration: none; }
     .cor-modal-foot .cor-switch:hover { background: #000; }
+    .cor-modal-foot .cor-switch svg { width: 16px; height: 16px; }
+    /* /wm-cor-css */
 
     .cor-banner-close { width: 28px; height: 28px; border: none; background: transparent; display: flex; align-items: center; justify-content: center; border-radius: 6px; color: #85878d; cursor: pointer; }
     .cor-banner-close:hover { background: rgba(0,0,0,0.05); color: #222224; }
@@ -221,7 +233,9 @@
 <path d="M8.29431 13.7H8.30329" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M8.29431 16.7H8.30329" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-more" viewBox="0 0 24 24" fill="none"><path d="M5 10C3.9 10 3 10.9 3 12C3 13.1 3.9 14 5 14C6.1 14 7 13.1 7 12C7 10.9 6.1 10 5 10Z" stroke="currentColor" stroke-width="1.5"/>
 <path d="M19 10C17.9 10 17 10.9 17 12C17 13.1 17.9 14 19 14C20.1 14 21 13.1 21 12C21 10.9 20.1 10 19 10Z" stroke="currentColor" stroke-width="1.5"/>
-<path d="M12 10C10.9 10 10 10.9 10 12C10 13.1 10.9 14 12 14C13.1 14 14 13.1 14 12C14 10.9 13.1 10 12 10Z" stroke="currentColor" stroke-width="1.5"/></symbol></svg><!-- /wm-icon-sprite -->
+<path d="M12 10C10.9 10 10 10.9 10 12C10 13.1 10.9 14 12 14C13.1 14 14 13.1 14 12C14 10.9 13.1 10 12 10Z" stroke="currentColor" stroke-width="1.5"/></symbol><symbol id="ic-tick-circle" viewBox="0 0 24 24" fill="none"><path d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M7.75 12L10.58 14.83L16.25 9.17004" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-arrow-right" viewBox="0 0 24 24" fill="none"><path d="M14.4301 5.92993L20.5001 11.9999L14.4301 18.0699" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M3.5 12H20.33" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/></symbol></svg><!-- /wm-icon-sprite -->
 
   <div class="app">
 
@@ -469,6 +483,7 @@
     });
   </script>
 
+  <!-- wm-cor -->
   <div class="cor-modal-overlay" id="corModal" role="dialog" aria-modal="true" aria-labelledby="corModalTitle">
     <div class="cor-modal">
       <div class="cor-modal-head">
@@ -481,21 +496,25 @@
       <div class="cor-modal-body">
         <table class="cor-table">
           <thead>
-            <tr><th>Feature</th><th class="col-free">Freelancers (Direct)</th><th class="col-cmor">Contractor of Record (C-MOR)</th></tr>
+            <tr>
+              <th class="col-feat"></th>
+              <th class="col-free">Freelancers (Direct)</th>
+              <th class="col-cmor">Contractor of Record (C-MOR)<span class="cor-badge">RECOMMENDED</span></th>
+            </tr>
           </thead>
           <tbody>
-            <tr><td>Payments</td><td class="col-free">Paid one by one, separately</td><td class="col-cmor">All contractors paid together, in one place</td></tr>
-            <tr><td>Invoicing</td><td class="col-free">Manually triggered by you or the contractor</td><td class="col-cmor">Automated, triggered by workflows</td></tr>
-            <tr><td>Payment speed</td><td class="col-free">2-3 business days + FX / holiday delays</td><td class="col-cmor">Same-day &mdash; paid the day money hits your US account</td></tr>
-            <tr><td>Manager controls</td><td class="col-free">None &mdash; no hierarchy or oversight</td><td class="col-cmor">Org hierarchy with timesheet approvals &amp; reports</td></tr>
-            <tr><td>Tax &amp; PE risk</td><td class="col-free">Higher exposure</td><td class="col-cmor">Significantly reduced</td></tr>
-            <tr><td>Misclassification risk</td><td class="col-free">Falls on you, the employer</td><td class="col-cmor">Significantly reduced</td></tr>
+            <tr><td class="col-feat">Payments</td><td class="col-free"><span class="cor-cell"><svg class="cor-ic no" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-close"/></svg><span>Paid one by one, separately</span></span></td><td class="col-cmor"><span class="cor-cell"><svg class="cor-ic yes" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-tick-circle"/></svg><span>All contractors paid together, in one place</span></span></td></tr>
+            <tr><td class="col-feat">Invoicing</td><td class="col-free"><span class="cor-cell"><svg class="cor-ic no" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-close"/></svg><span>Manually triggered by you or the contractor</span></span></td><td class="col-cmor"><span class="cor-cell"><svg class="cor-ic yes" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-tick-circle"/></svg><span>Automated, triggered by workflows</span></span></td></tr>
+            <tr><td class="col-feat">Payment speed</td><td class="col-free"><span class="cor-cell"><svg class="cor-ic no" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-close"/></svg><span>2-3 business days + FX / holiday delays</span></span></td><td class="col-cmor"><span class="cor-cell"><svg class="cor-ic yes" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-tick-circle"/></svg><span>Same-day &mdash; paid the day money hits your US account</span></span></td></tr>
+            <tr><td class="col-feat">Manager controls</td><td class="col-free"><span class="cor-cell"><svg class="cor-ic no" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-close"/></svg><span>None &mdash; no hierarchy or oversight</span></span></td><td class="col-cmor"><span class="cor-cell"><svg class="cor-ic yes" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-tick-circle"/></svg><span>Org hierarchy with timesheet approvals &amp; reports</span></span></td></tr>
+            <tr><td class="col-feat">Tax &amp; PE risk</td><td class="col-free"><span class="cor-cell"><svg class="cor-ic no" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-close"/></svg><span>Higher exposure</span></span></td><td class="col-cmor"><span class="cor-cell"><svg class="cor-ic yes" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-tick-circle"/></svg><span>Significantly reduced</span></span></td></tr>
+            <tr><td class="col-feat">Misclassification risk</td><td class="col-free"><span class="cor-cell"><svg class="cor-ic no" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-close"/></svg><span>Falls on you, the employer</span></span></td><td class="col-cmor"><span class="cor-cell"><svg class="cor-ic yes" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-tick-circle"/></svg><span>Significantly reduced</span></span></td></tr>
           </tbody>
         </table>
       </div>
       <div class="cor-modal-foot">
         <button class="cor-later" type="button" onclick="closeCorModal()">Maybe later</button>
-        <a href="#" class="cor-switch">Switch to COR</a>
+        <a href="#" class="cor-switch">Switch to COR <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-arrow-right"/></svg></a>
       </div>
     </div>
   </div>
@@ -508,5 +527,6 @@
       document.addEventListener('keydown', function(ev){ if(ev.key==='Escape') closeCorModal(); });
     })();
   </script>
+  <!-- /wm-cor -->
 </body>
 </html>
