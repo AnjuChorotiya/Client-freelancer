@@ -260,16 +260,71 @@
       60%, 100% { content: '...'; }
     }
 
+    /* Payout calculator */
+    .calc-card {
+      background: var(--neutral-0);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 22px 24px;
+      text-align: left;
+      margin-bottom: 20px;
+    }
+    .calc-field-label {
+      display: block;
+      font-family: 'Satoshi', sans-serif;
+      font-weight: 300;
+      font-size: 11.5px;
+      letter-spacing: 0.5px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .calc-input-wrap {
+      display: flex; align-items: center; gap: 8px;
+      border: 1px solid var(--border-strong);
+      border-radius: 10px;
+      padding: 10px 14px;
+      transition: border-color 0.15s;
+    }
+    .calc-input-wrap:focus-within { border-color: var(--primary-500); }
+    .calc-input-wrap .calc-cur { font-size: 18px; font-weight: 700; color: var(--text-primary); }
+    .calc-input-wrap input {
+      flex: 1; border: none; outline: none; min-width: 0;
+      font-family: inherit; font-size: 18px; font-weight: 700;
+      color: var(--text-primary); background: transparent;
+    }
+    .calc-input-wrap .calc-code { font-size: 13px; font-weight: 700; color: var(--text-muted); }
+    .calc-breakdown { margin: 16px 2px 0; }
+    .calc-line { display: flex; justify-content: space-between; font-size: 13.5px; color: var(--text-secondary); padding: 6px 0; }
+    .calc-line span:last-child { font-weight: 700; color: var(--text-primary); }
+    .calc-get {
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+      margin-top: 16px; padding: 16px 18px;
+      background: var(--primary-50); border-radius: 10px;
+    }
+    .calc-get-label {
+      font-family: 'Satoshi', sans-serif; font-weight: 300;
+      font-size: 11.5px; letter-spacing: 0.5px; color: var(--primary-700);
+      text-transform: uppercase; margin-bottom: 4px;
+    }
+    .calc-get-value { font-size: 22px; font-weight: 700; color: var(--primary-600); letter-spacing: -0.3px; }
+    .calc-eta { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+    .calc-eta svg { width: 26px; height: 26px; color: var(--primary-600); flex-shrink: 0; }
+    .calc-eta-label { font-size: 11px; font-weight: 300; letter-spacing: 0.4px; color: var(--text-muted); text-transform: uppercase; }
+    .calc-eta-value { font-size: 14px; font-weight: 700; color: var(--text-primary); }
+    .calc-note { margin-top: 12px; font-size: 12.5px; color: var(--text-muted); line-height: 1.5; }
+
     @media (max-width: 720px) {
       .step { padding: 28px 24px; }
       .kv-grid { grid-template-columns: 1fr; gap: 14px; }
       .ref-card { grid-template-columns: 1fr; gap: 14px; }
+      .calc-get { flex-direction: column; align-items: flex-start; }
     }
   </style>
 </head>
 <body><!-- wm-icon-sprite --><svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true"><symbol id="ic-arrow-left" viewBox="0 0 24 24" fill="none"><path d="M9.57 5.92993L3.5 11.9999L9.57 18.0699" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M20.5 12H3.67004" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-copy" viewBox="0 0 24 24" fill="none"><path d="M16 12.9V17.1C16 20.6 14.6 22 11.1 22H6.9C3.4 22 2 20.6 2 17.1V12.9C2 9.4 3.4 8 6.9 8H11.1C14.6 8 16 9.4 16 12.9Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M22 6.9V11.1C22 14.6 20.6 16 17.1 16H16V12.9C16 9.4 14.6 8 11.1 8H8V6.9C8 3.4 9.4 2 12.9 2H17.1C20.6 2 22 3.4 22 6.9Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-info-circle" viewBox="0 0 24 24" fill="none"><path d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M22 6.9V11.1C22 14.6 20.6 16 17.1 16H16V12.9C16 9.4 14.6 8 11.1 8H8V6.9C8 3.4 9.4 2 12.9 2H17.1C20.6 2 22 3.4 22 6.9Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-clock" viewBox="0 0 24 24" fill="none"><path d="M22 12C22 17.52 17.52 22 12 22C6.48 22 2 17.52 2 12C2 6.48 6.48 2 12 2C17.52 2 22 6.48 22 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 7V12.5L15.5 14.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-info-circle" viewBox="0 0 24 24" fill="none"><path d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M12 8V13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M11.9945 16H12.0035" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-message-question" viewBox="0 0 24 24" fill="none"><path d="M17 18.4301H13L8.54999 21.39C7.88999 21.83 7 21.3601 7 20.5601V18.4301C4 18.4301 2 16.4301 2 13.4301V7.42999C2 4.42999 4 2.42999 7 2.42999H17C20 2.42999 22 4.42999 22 7.42999V13.4301C22 16.4301 20 18.4301 17 18.4301Z" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M12.0001 11.36V11.15C12.0001 10.47 12.4201 10.11 12.8401 9.82001C13.2501 9.54001 13.66 9.18002 13.66 8.52002C13.66 7.60002 12.9201 6.85999 12.0001 6.85999C11.0801 6.85999 10.3401 7.60002 10.3401 8.52002" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -338,6 +393,36 @@
             </button>
           </div>
         </div>
+      </div>
+
+      <div class="calc-card">
+        <div class="section-label">Payout calculator</div>
+        <div>
+          <span class="calc-field-label">You send</span>
+          <div class="calc-input-wrap">
+            <span class="calc-cur">$</span>
+            <input id="calcSend" type="text" inputmode="decimal" value="12,450.00" aria-label="Amount you send in USD">
+            <span class="calc-code">USD</span>
+          </div>
+        </div>
+        <div class="calc-breakdown">
+          <div class="calc-line"><span>Wisemonk fee (6%)</span><span id="calcFee">−$747.00</span></div>
+          <div class="calc-line"><span>Exchange rate</span><span id="calcRate">1 USD = ₹83.50</span></div>
+        </div>
+        <div class="calc-get">
+          <div>
+            <div class="calc-get-label">Rahul Sharma gets</div>
+            <div class="calc-get-value" id="calcGet">₹9,77,200.50</div>
+          </div>
+          <div class="calc-eta">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-clock"/></svg>
+            <div>
+              <div class="calc-eta-label">Est. arrival</div>
+              <div class="calc-eta-value" id="calcEta">Today, by 5:30 PM</div>
+            </div>
+          </div>
+        </div>
+        <div class="calc-note">Pay before 2:00 PM on a business day for same-day delivery. Exchange rate is indicative and locked when your payment is matched.</div>
       </div>
 
       <div class="info-banner">
@@ -433,6 +518,45 @@
         showStep(3);
       }, 3000);
     });
+
+    // ── Payout calculator + estimated arrival ──
+    (function () {
+      const RATE = 83.50, FEE = 0.06;
+      const sendEl = document.getElementById('calcSend');
+      const feeEl = document.getElementById('calcFee');
+      const rateEl = document.getElementById('calcRate');
+      const getEl = document.getElementById('calcGet');
+      const etaEl = document.getElementById('calcEta');
+      if (!sendEl) return;
+
+      const usd = n => '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      function inr(n) {
+        const p = (Math.round(n * 100) / 100).toFixed(2).split('.');
+        const x = p[0], last3 = x.slice(-3), other = x.slice(0, -3);
+        const head = other.replace(/\B(?=(\d{2})+(?!\d))/g, ',');
+        return '₹' + (other ? head + ',' : '') + last3 + '.' + p[1];
+      }
+      function recompute() {
+        const v = parseFloat((sendEl.value || '').replace(/[^0-9.]/g, '')) || 0;
+        const fee = v * FEE;
+        feeEl.textContent = '−' + usd(fee);
+        rateEl.textContent = '1 USD = ₹' + RATE.toFixed(2);
+        getEl.textContent = inr((v - fee) * RATE);
+      }
+      function setEta() {
+        const now = new Date();
+        const arrive = new Date(now.getTime() + 3 * 60 * 60 * 1000);
+        const time = arrive.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+        etaEl.textContent = (arrive.toDateString() === now.toDateString() ? 'Today' : 'Tomorrow') + ', by ' + time;
+      }
+      sendEl.addEventListener('input', recompute);
+      sendEl.addEventListener('blur', () => {
+        const v = parseFloat((sendEl.value || '').replace(/[^0-9.]/g, '')) || 0;
+        sendEl.value = v.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      });
+      recompute();
+      setEta();
+    })();
 
     // Toggle Swift / Wire pill
     document.querySelectorAll('.toggle-pill button').forEach(b => {
