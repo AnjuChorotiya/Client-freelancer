@@ -269,6 +269,30 @@
       .stats-strip { grid-template-columns: 1fr; padding: 0 16px; }
       .filter-bar, .table-card { padding-left: 16px; padding-right: 16px; }
     }
+  
+    /* wm-qa-css */
+    .qa-wrap { position: fixed; right: 28px; bottom: 28px; z-index: 1800; display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+    .qa-fab { width: 56px; height: 56px; border-radius: 50%; border: none; cursor: pointer; background: #2684FF; color: #fff; box-shadow: 0 12px 28px -8px rgba(38,132,255,0.6); display: flex; align-items: center; justify-content: center; transition: background .15s, transform .15s; }
+    .qa-fab:hover { background: #1A6FE0; transform: translateY(-1px); }
+    .qa-fab svg { width: 24px; height: 24px; position: absolute; transition: opacity .15s, transform .2s; }
+    .qa-fab .qa-ic-close { opacity: 0; transform: rotate(-45deg); }
+    .qa-wrap.open .qa-fab { background: #1A6FE0; }
+    .qa-wrap.open .qa-fab .qa-ic-open { opacity: 0; transform: rotate(45deg); }
+    .qa-wrap.open .qa-fab .qa-ic-close { opacity: 1; transform: rotate(0); }
+    .qa-pop { width: 340px; max-width: calc(100vw - 48px); background: #fff; border-radius: 18px; box-shadow: 0 30px 70px -20px rgba(17,22,32,0.45); padding: 18px; opacity: 0; visibility: hidden; transform: translateY(12px) scale(0.98); transform-origin: bottom right; transition: opacity .18s ease, transform .18s ease, visibility .18s; }
+    .qa-wrap.open .qa-pop { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
+    .qa-pop-head { font-family: 'Satoshi', sans-serif; font-size: 17px; font-weight: 700; color: #222224; margin: 4px 4px 14px; letter-spacing: -0.2px; }
+    .qa-search { display: flex; align-items: center; gap: 10px; background: #F2F3F5; border-radius: 12px; padding: 11px 14px; margin-bottom: 8px; }
+    .qa-search svg { width: 18px; height: 18px; color: #9AA2B2; flex-shrink: 0; }
+    .qa-search input { flex: 1; border: none; background: transparent; outline: none; font-family: inherit; font-size: 14px; color: #222224; min-width: 0; }
+    .qa-search input::placeholder { color: #9AA2B2; }
+    .qa-list { display: flex; flex-direction: column; }
+    .qa-item { display: flex; align-items: center; gap: 14px; padding: 11px 8px; border-radius: 12px; text-decoration: none; color: #222224; font-size: 14.5px; font-weight: 600; transition: background .12s; }
+    .qa-item:hover { background: #F2F3F5; }
+    .qa-ic { width: 40px; height: 40px; flex-shrink: 0; border-radius: 11px; background: #E8F2FF; color: #1A6FE0; display: flex; align-items: center; justify-content: center; }
+    .qa-ic svg { width: 20px; height: 20px; }
+    .qa-empty { padding: 16px 8px; font-size: 13.5px; color: #9AA2B2; display: none; }
+    /* /wm-qa-css */
   </style>
 </head>
 <body><!-- wm-icon-sprite --><svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true"><symbol id="ic-home-2" viewBox="0 0 24 24" fill="none"><path d="M9.02 2.84004L3.63 7.04004C2.73 7.74004 2 9.23004 2 10.36V17.77C2 20.09 3.89 21.99 6.21 21.99H17.79C20.11 21.99 22 20.09 22 17.78V10.5C22 9.29004 21.19 7.74004 20.2 7.05004L14.02 2.72004C12.62 1.74004 10.37 1.79004 9.02 2.84004Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -293,7 +317,22 @@
 <path d="M8.29431 13.7H8.30329" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M8.29431 16.7H8.30329" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-more" viewBox="0 0 24 24" fill="none"><circle cx="5" cy="12" r="2" fill="currentColor"/><circle cx="12" cy="12" r="2" fill="currentColor"/><circle cx="19" cy="12" r="2" fill="currentColor"/></symbol><symbol id="ic-tick-circle" viewBox="0 0 24 24" fill="none"><path d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M7.75 12L10.58 14.83L16.25 9.17004" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-arrow-right" viewBox="0 0 24 24" fill="none"><path d="M14.4301 5.92993L20.5001 11.9999L14.4301 18.0699" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M3.5 12H20.33" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/></symbol></svg><!-- /wm-icon-sprite -->
+<path d="M3.5 12H20.33" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-search-normal" viewBox="0 0 24 24" fill="none"><path d="M11 20C15.9706 20 20 15.9706 20 11C20 6.02944 15.9706 2 11 2C6.02944 2 2 6.02944 2 11C2 15.9706 6.02944 20 11 20Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M18.9299 20.6898C19.4599 22.2898 20.6699 22.4498 21.5999 21.0498C22.4499 19.7698 21.8899 18.7198 20.3499 18.7198C19.2099 18.7098 18.5699 19.5998 18.9299 20.6898Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-user-add" viewBox="0 0 24 24" fill="none"><path d="M12 12C14.7614 12 17 9.76142 17 7C17 4.23858 14.7614 2 12 2C9.23858 2 7 4.23858 7 7C7 9.76142 9.23858 12 12 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M3.40991 22C3.40991 18.13 7.25991 15 11.9999 15C12.9599 15 13.8899 15.13 14.7599 15.37" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M22 18C22 18.32 21.96 18.63 21.88 18.93C21.79 19.33 21.63 19.72 21.42 20.06C20.73 21.22 19.46 22 18 22C16.97 22 16.04 21.61 15.34 20.97C15.04 20.71 14.78 20.4 14.58 20.06C14.21 19.46 14 18.75 14 18C14 16.92 14.43 15.93 15.13 15.21C15.86 14.46 16.88 14 18 14C19.18 14 20.25 14.51 20.97 15.33C21.61 16.04 22 16.98 22 18Z" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M19.49 17.98H16.51" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M18 16.52V19.51" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-document-text" viewBox="0 0 24 24" fill="none"><path d="M21 7V17C21 20 19.5 22 16 22H8C4.5 22 3 20 3 17V7C3 4 4.5 2 8 2H16C19.5 2 21 4 21 7Z" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M14.5 4.5V6.5C14.5 7.6 15.4 8.5 16.5 8.5H18.5" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M8 13H12" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M8 17H16" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-wallet-money" viewBox="0 0 24 24" fill="none"><path d="M10.7516 16.8604V18.8904C10.7516 20.6104 9.15158 22.0004 7.18158 22.0004C5.21158 22.0004 3.60156 20.6104 3.60156 18.8904V16.8604C3.60156 18.5804 5.20158 19.8004 7.18158 19.8004C9.15158 19.8004 10.7516 18.5704 10.7516 16.8604Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M10.7501 14.11C10.7501 14.61 10.6101 15.07 10.3701 15.47C9.78006 16.44 8.57004 17.05 7.17004 17.05C5.77004 17.05 4.56003 16.43 3.97003 15.47C3.73003 15.07 3.59009 14.61 3.59009 14.11C3.59009 13.25 3.99007 12.48 4.63007 11.92C5.28007 11.35 6.17003 11.01 7.16003 11.01C8.15003 11.01 9.04006 11.36 9.69006 11.92C10.3501 12.47 10.7501 13.25 10.7501 14.11Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M10.7516 14.11V16.86C10.7516 18.58 9.15158 19.8 7.18158 19.8C5.21158 19.8 3.60156 18.57 3.60156 16.86V14.11C3.60156 12.39 5.20158 11 7.18158 11C8.17158 11 9.06161 11.35 9.71161 11.91C10.3516 12.47 10.7516 13.25 10.7516 14.11Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M22 10.9699V13.03C22 13.58 21.56 14.0299 21 14.0499H19.0399C17.9599 14.0499 16.97 13.2599 16.88 12.1799C16.82 11.5499 17.0599 10.9599 17.4799 10.5499C17.8499 10.1699 18.36 9.94995 18.92 9.94995H21C21.56 9.96995 22 10.4199 22 10.9699Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M2 10.5V8.5C2 5.78 3.64 3.88 6.19 3.56C6.45 3.52 6.72 3.5 7 3.5H16C16.26 3.5 16.51 3.50999 16.75 3.54999C19.33 3.84999 21 5.76 21 8.5V9.95001H18.92C18.36 9.95001 17.85 10.17 17.48 10.55C17.06 10.96 16.82 11.55 16.88 12.18C16.97 13.26 17.96 14.05 19.04 14.05H21V15.5C21 18.5 19 20.5 16 20.5H13.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-flash" viewBox="0 0 24 24" fill="none"><path d="M9.31993 13.28H12.4099V20.48C12.4099 21.54 13.7299 22.04 14.4299 21.24L21.9999 12.64C22.6599 11.89 22.1299 10.72 21.1299 10.72H18.0399V3.51997C18.0399 2.45997 16.7199 1.95997 16.0199 2.75997L8.44994 11.36C7.79994 12.11 8.32993 13.28 9.31993 13.28Z" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M8.5 4H1.5" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M7.5 20H1.5" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M4.5 12H1.5" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/></symbol></svg><!-- /wm-icon-sprite -->
 
   <div class="app">
 
@@ -594,5 +633,46 @@
     })();
   </script>
   <!-- /wm-cor -->
+
+  <!-- wm-qa -->
+  <div class="qa-wrap" id="qaWrap">
+    <div class="qa-pop" id="qaPop" role="dialog" aria-label="Quick actions">
+      <div class="qa-pop-head">Quick Actions</div>
+      <div class="qa-search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-search-normal"/></svg>
+        <input type="text" id="qaSearch" placeholder="Search actions" aria-label="Search actions">
+      </div>
+      <div class="qa-list" id="qaList">
+        <a href="add-freelancer.html" class="qa-item" data-kw="add freelancer contractor onboard hire"><span class="qa-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-user-add"/></svg></span><span>Add freelancer</span></a>
+        <a href="compliance.html" class="qa-item" data-kw="risk check compliance audit misclassification"><span class="qa-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-shield-tick"/></svg></span><span>Run risk check</span></a>
+        <a href="compliance.html" class="qa-item" data-kw="generate document contract agreement legal doc"><span class="qa-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-document-text"/></svg></span><span>Generate document</span></a>
+        <a href="invoices.html" class="qa-item" data-kw="transfer payment pay money send invoice payout"><span class="qa-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-wallet-money"/></svg></span><span>Transfer payment</span></a>
+        <div class="qa-empty" id="qaEmpty">No matching actions</div>
+      </div>
+    </div>
+    <button class="qa-fab" type="button" id="qaFab" onclick="toggleQa(event)" aria-label="Quick actions">
+      <svg class="qa-ic-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-flash"/></svg>
+      <svg class="qa-ic-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-close"/></svg>
+    </button>
+  </div>
+  <script>
+    function toggleQa(e){ if(e) e.stopPropagation(); var w=document.getElementById('qaWrap'); if(!w) return; var open=w.classList.toggle('open'); if(open){ var s=document.getElementById('qaSearch'); if(s) setTimeout(function(){ s.focus(); },80); } }
+    function closeQa(){ var w=document.getElementById('qaWrap'); if(w) w.classList.remove('open'); }
+    (function(){
+      var search=document.getElementById('qaSearch');
+      var empty=document.getElementById('qaEmpty');
+      if(search){ search.addEventListener('input', function(){
+        var q=this.value.trim().toLowerCase(); var shown=0;
+        document.querySelectorAll('#qaList .qa-item').forEach(function(it){
+          var hit=!q || (it.getAttribute('data-kw')+' '+it.textContent).toLowerCase().indexOf(q)>-1;
+          it.style.display=hit?'':'none'; if(hit) shown++;
+        });
+        if(empty) empty.style.display=shown?'none':'block';
+      }); }
+      document.addEventListener('click', function(ev){ var w=document.getElementById('qaWrap'); if(w && w.classList.contains('open') && !w.contains(ev.target)) closeQa(); });
+      document.addEventListener('keydown', function(ev){ if(ev.key==='Escape') closeQa(); });
+    })();
+  </script>
+  <!-- /wm-qa -->
 </body>
 </html>
