@@ -340,6 +340,31 @@
       white-space: nowrap;
     }
     .cor-banner-secondary:hover { background: rgba(0,0,0,0.04); border-color: #9CA3AF; }
+    /* COR comparison modal */
+    .cor-modal-overlay { position: fixed; inset: 0; background: rgba(17,22,32,0.55); display: none; align-items: center; justify-content: center; padding: 24px; z-index: 2000; }
+    .cor-modal-overlay.open { display: flex; }
+    .cor-modal { background: #fff; border-radius: 16px; width: 100%; max-width: 760px; max-height: 90vh; overflow-y: auto; box-shadow: 0 24px 60px -12px rgba(0,0,0,0.35); }
+    .cor-modal-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 24px 28px 8px; }
+    .cor-modal-head h2 { font-family: 'Satoshi', sans-serif; font-size: 20px; font-weight: 700; color: #222224; margin: 0 0 4px; }
+    .cor-modal-head p { font-size: 14px; color: #85878d; margin: 0; line-height: 1.5; }
+    .cor-modal-close { width: 32px; height: 32px; flex-shrink: 0; border: none; background: transparent; border-radius: 8px; color: #85878d; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .cor-modal-close:hover { background: rgba(0,0,0,0.05); color: #222224; }
+    .cor-modal-close svg { width: 18px; height: 18px; }
+    .cor-modal-body { padding: 8px 28px 4px; }
+    .cor-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+    .cor-table th, .cor-table td { text-align: left; padding: 12px 14px; vertical-align: top; border-bottom: 1px solid #EEF0F4; line-height: 1.45; }
+    .cor-table thead th { font-size: 12px; font-weight: 700; color: #85878d; text-transform: uppercase; letter-spacing: 0.3px; border-bottom: 1.5px solid #DDE1E9; }
+    .cor-table th:first-child, .cor-table td:first-child { font-weight: 600; color: #222224; width: 24%; }
+    .cor-table .col-free { color: #6B7280; }
+    .cor-table .col-cmor { background: #F1F8FF; color: #1059BD; font-weight: 600; }
+    .cor-table thead .col-cmor { color: #2684FF; background: #E8F2FF; }
+    .cor-table tr:last-child td { border-bottom: none; }
+    .cor-modal-foot { display: flex; align-items: center; justify-content: flex-end; gap: 12px; padding: 16px 28px 24px; }
+    .cor-modal-foot .cor-later { background: transparent; border: none; font-family: inherit; font-size: 14px; font-weight: 600; color: #85878d; cursor: pointer; padding: 11px 8px; }
+    .cor-modal-foot .cor-later:hover { color: #222224; }
+    .cor-modal-foot .cor-switch { display: inline-flex; align-items: center; padding: 11px 22px; background: #1a1d24; color: #fff; border: none; border-radius: 8px; font-family: inherit; font-size: 14px; font-weight: 700; cursor: pointer; text-decoration: none; }
+    .cor-modal-foot .cor-switch:hover { background: #000; }
+
     .cor-banner-close {
       width: 28px; height: 28px; border: none; background: transparent;
       display: flex; align-items: center; justify-content: center;
@@ -414,7 +439,7 @@
             <div class="cor-banner-desc">Move them to Contractor of Record · locally compliant contracts, IP &amp; misclassification all covered.</div>
           </div>
           <div class="cor-banner-actions">
-            <a href="#" class="cor-banner-secondary">Learn more</a>
+            <a href="#" class="cor-banner-secondary" onclick="openCorModal(event)">Learn more</a>
             <a href="#" class="cor-banner-cta">Switch to COR</a>
             <button class="cor-banner-close" aria-label="Dismiss">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-close"/></svg>
@@ -596,5 +621,45 @@
     });
   </script>
 
+
+  <div class="cor-modal-overlay" id="corModal" role="dialog" aria-modal="true" aria-labelledby="corModalTitle">
+    <div class="cor-modal">
+      <div class="cor-modal-head">
+        <div>
+          <h2 id="corModalTitle">Switch to Contractor of Record</h2>
+          <p>See what changes when you move your freelancers to C-MOR.</p>
+        </div>
+        <button class="cor-modal-close" type="button" onclick="closeCorModal()" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-close"/></svg></button>
+      </div>
+      <div class="cor-modal-body">
+        <table class="cor-table">
+          <thead>
+            <tr><th>Feature</th><th class="col-free">Freelancers (Direct)</th><th class="col-cmor">Contractor of Record (C-MOR)</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Payments</td><td class="col-free">Paid one by one, separately</td><td class="col-cmor">All contractors paid together, in one place</td></tr>
+            <tr><td>Invoicing</td><td class="col-free">Manually triggered by you or the contractor</td><td class="col-cmor">Automated, triggered by workflows</td></tr>
+            <tr><td>Payment speed</td><td class="col-free">2-3 business days + FX / holiday delays</td><td class="col-cmor">Same-day &mdash; paid the day money hits your US account</td></tr>
+            <tr><td>Manager controls</td><td class="col-free">None &mdash; no hierarchy or oversight</td><td class="col-cmor">Org hierarchy with timesheet approvals &amp; reports</td></tr>
+            <tr><td>Tax &amp; PE risk</td><td class="col-free">Higher exposure</td><td class="col-cmor">Significantly reduced</td></tr>
+            <tr><td>Misclassification risk</td><td class="col-free">Falls on you, the employer</td><td class="col-cmor">Significantly reduced</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="cor-modal-foot">
+        <button class="cor-later" type="button" onclick="closeCorModal()">Maybe later</button>
+        <a href="#" class="cor-switch">Switch to COR</a>
+      </div>
+    </div>
+  </div>
+  <script>
+    function openCorModal(e){ if(e) e.preventDefault(); var m=document.getElementById('corModal'); if(m){ m.classList.add('open'); document.body.style.overflow='hidden'; } }
+    function closeCorModal(){ var m=document.getElementById('corModal'); if(m){ m.classList.remove('open'); document.body.style.overflow=''; } }
+    (function(){
+      var m=document.getElementById('corModal');
+      if(m){ m.addEventListener('click', function(ev){ if(ev.target===this) closeCorModal(); }); }
+      document.addEventListener('keydown', function(ev){ if(ev.key==='Escape') closeCorModal(); });
+    })();
+  </script>
 </body>
 </html>
