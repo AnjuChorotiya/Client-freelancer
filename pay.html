@@ -382,12 +382,12 @@
             <div class="kv-cell-value blue">7723 9904 1182</div>
           </div>
           <div class="routing-row">
-            <div class="kv-cell-label">Routing number (ACH)</div>
+            <div class="kv-cell-label" id="routingLabel">Routing number (ACH)</div>
             <div class="kv-cell-value">
-              <span>021000021</span>
+              <span id="routingValue">021000021</span>
               <span class="toggle-pill">
-                <button class="active">Swift</button>
-                <button>Wire</button>
+                <button class="active" data-method="swift">Swift</button>
+                <button data-method="wire">Wire</button>
               </span>
             </div>
           </div>
@@ -601,12 +601,22 @@
       setEta();
     })();
 
-    // Toggle Swift / Wire pill
-    document.querySelectorAll('.toggle-pill button').forEach(b => {
-      b.addEventListener('click', () => {
-        document.querySelectorAll('.toggle-pill button').forEach(x => x.classList.toggle('active', x === b));
+    // Toggle Swift / Wire pill — swaps the routing number + label
+    (function () {
+      const ROUTING = {
+        swift: { label: 'Routing number (ACH)', value: '021000021' },
+        wire:  { label: 'Routing number (Wire)', value: '021000089' }
+      };
+      const labelEl = document.getElementById('routingLabel');
+      const valueEl = document.getElementById('routingValue');
+      document.querySelectorAll('.toggle-pill button').forEach(b => {
+        b.addEventListener('click', () => {
+          document.querySelectorAll('.toggle-pill button').forEach(x => x.classList.toggle('active', x === b));
+          const m = ROUTING[b.dataset.method];
+          if (m && labelEl && valueEl) { labelEl.textContent = m.label; valueEl.textContent = m.value; }
+        });
       });
-    });
+    })();
   </script>
 
 </body>
