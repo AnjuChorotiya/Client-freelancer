@@ -1295,15 +1295,17 @@
 
     document.getElementById('saveBtn').addEventListener('click', () => {
       if (current === total) {
+        try { localStorage.removeItem(SAVE_KEY); } catch (e) {}
         location.href = 'home.html';
         return;
       }
       current++;
       render();
+      saveState();
     });
 
     document.getElementById('backBtn').addEventListener('click', () => {
-      if (current > 1) { current--; render(); }
+      if (current > 1) { current--; render(); saveState(); }
     });
 
     // Selectable option cards — single choice per group
@@ -1312,6 +1314,7 @@
       cards.forEach(card => {
         card.addEventListener('click', () => {
           cards.forEach(c => c.classList.toggle('selected', c === card));
+          saveState();
         });
       });
     });
@@ -1322,6 +1325,7 @@
       btns.forEach(b => {
         b.addEventListener('click', () => {
           btns.forEach(x => x.classList.toggle('active', x === b));
+          saveState();
         });
       });
     });
@@ -1332,6 +1336,7 @@
       cards.forEach(card => {
         card.addEventListener('click', () => {
           cards.forEach(c => c.classList.toggle('selected', c === card));
+          saveState();
         });
       });
     });
@@ -1605,6 +1610,121 @@
       if (!e.target.closest('.fl-field.open')) closeAllPopovers();
     });
 
+    // ===== Auto-save: persist the user's progress to localStorage =====
+    const SAVE_KEY = 'wm_client_onboarding_v1';
+    let saveTimer = null;
+    let restoring = false;
+
+    function selectableGroups() {
+      const out = [];
+      document.querySelectorAll('.option-cards, .seg, .yn, .choice-cards').forEach((g, i) => {
+        const useActive = g.classList.contains('seg') || g.classList.contains('yn');
+        out.push({ key: 'g' + i, group: g, cls: useActive ? 'active' : 'selected' });
+      });
+      return out;
+    }
+
+    function collectState() {
+      const state = { step: current, fields: {}, radios: {}, checks: {}, cards: {}, directors: [], ubo: '' };
+      document.querySelectorAll('.step').forEach(step => {
+        const sn = step.dataset.step;
+        let idx = 0;
+        step.querySelectorAll('input, textarea, select').forEach(el => {
+          if (el.closest('#directorList')) return;
+          if (el.id === 'uboSelect') { state.ubo = el.value; return; }
+          const key = 's' + sn + '_' + (idx++);
+          if (el.type === 'radio') { if (el.checked) state.radios[el.name] = el.id; }
+          else if (el.type === 'checkbox') { state.checks[key] = el.checked; }
+          else { state.fields[key] = el.value; }
+        });
+      });
+      selectableGroups().forEach(({ key, group, cls }) => {
+        const buttons = Array.from(group.querySelectorAll(':scope > button'));
+        const sel = group.querySelector(':scope > button.' + cls);
+        if (sel) state.cards[key] = buttons.indexOf(sel);
+      });
+      if (directorList) {
+        directorList.querySelectorAll('.director-block').forEach(b => {
+          const g = (sel) => { const el = b.querySelector(sel); return el ? el.value : ''; };
+          state.directors.push({ name: g('.dir-name'), dob: g('input[type="date"]'), country: g('select'), ownership: g('input[type="number"]') });
+        });
+      }
+      return state;
+    }
+
+    function saveState() {
+      if (restoring) return;
+      clearTimeout(saveTimer);
+      saveTimer = setTimeout(() => {
+        try { localStorage.setItem(SAVE_KEY, JSON.stringify(collectState())); } catch (e) {}
+      }, 250);
+    }
+
+    function restoreState() {
+      let raw;
+      try { raw = JSON.parse(localStorage.getItem(SAVE_KEY) || 'null'); } catch (e) { raw = null; }
+      if (!raw) return;
+      restoring = true;
+
+      // Recreate saved directors first (clicking re-uses the normal add + wire path)
+      (raw.directors || []).forEach((d, i) => {
+        if (addDirectorBtn) addDirectorBtn.click();
+        const b = directorList.querySelectorAll('.director-block')[i];
+        if (!b) return;
+        const nm = b.querySelector('.dir-name'); if (nm) nm.value = d.name || '';
+        const dob = b.querySelector('input[type="date"]'); if (dob) { dob.value = d.dob || ''; dob.classList.toggle('has-value', !!dob.value); }
+        const sel = b.querySelector('select'); if (sel) { sel.value = d.country || ''; sel.classList.toggle('touched', !!sel.value); if (sel._rebuildMenu) sel._rebuildMenu(); }
+        const own = b.querySelector('input[type="number"]'); if (own) own.value = d.ownership || '';
+      });
+
+      // Static fields (same traversal/keys as collectState)
+      document.querySelectorAll('.step').forEach(step => {
+        const sn = step.dataset.step;
+        let idx = 0;
+        step.querySelectorAll('input, textarea, select').forEach(el => {
+          if (el.closest('#directorList')) return;
+          if (el.id === 'uboSelect') return;
+          const key = 's' + sn + '_' + (idx++);
+          if (el.type === 'radio') return;
+          if (el.type === 'checkbox') { if (raw.checks && key in raw.checks) el.checked = raw.checks[key]; return; }
+          if (raw.fields && key in raw.fields) {
+            el.value = raw.fields[key];
+            if (el.tagName === 'SELECT') { el.classList.toggle('touched', !!el.value); if (el._rebuildMenu) el._rebuildMenu(); }
+            if (el.type === 'date') el.classList.toggle('has-value', !!el.value);
+          }
+        });
+      });
+
+      // Radios
+      Object.values(raw.radios || {}).forEach(id => { const el = id && document.getElementById(id); if (el) el.checked = true; });
+
+      // Card / segment / yes-no groups
+      selectableGroups().forEach(({ key, group, cls }) => {
+        if (!raw.cards || !(key in raw.cards)) return;
+        const buttons = Array.from(group.querySelectorAll(':scope > button'));
+        buttons.forEach((b, i) => b.classList.toggle(cls, i === raw.cards[key]));
+      });
+
+      // UBO — rebuild from restored directors, then apply the saved choice
+      if (typeof syncUBO === 'function') syncUBO();
+      if (raw.ubo && uboSelect && Array.from(uboSelect.options).some(o => o.value === raw.ubo)) {
+        uboSelect.value = raw.ubo;
+        uboSelect.classList.toggle('touched', !!uboSelect.value);
+        if (uboSelect._rebuildMenu) uboSelect._rebuildMenu();
+      }
+
+      // Work-description counter
+      if (workDesc && workDescCount) workDescCount.textContent = workDesc.value.length;
+
+      current = Math.min(Math.max(raw.step || 1, 1), total);
+      restoring = false;
+    }
+
+    // Catch every field edit (including dynamically-added director fields)
+    document.addEventListener('input', saveState, true);
+    document.addEventListener('change', saveState, true);
+
+    restoreState();
     render();
   </script>
 
