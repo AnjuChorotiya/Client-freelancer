@@ -527,6 +527,18 @@
     .yn button.active .dot::after { content: ''; position: absolute; inset: 3px; border-radius: 50%; background: var(--brand-500); }
 
     /* Choice cards (horizontal, no icon) */
+    /* Feature picker — multi-select cards */
+    .feature-cards { display: flex; flex-direction: column; gap: 12px; }
+    .feature-card { display: flex; align-items: flex-start; gap: 14px; width: 100%; text-align: left; padding: 16px; border: 1px solid var(--border); border-radius: 12px; background: var(--card); font-family: inherit; cursor: pointer; transition: border-color 0.15s, background 0.15s, box-shadow 0.15s; }
+    .feature-card:hover { border-color: var(--border-strong); }
+    .feature-card.selected { border-color: var(--brand-500); background: var(--brand-50); box-shadow: 0 0 0 1.5px var(--brand-100); }
+    .feature-card-icon { width: 40px; height: 40px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; border-radius: 10px; background: #F3F4F6; color: var(--text-muted); transition: background 0.15s, color 0.15s; }
+    .feature-card.selected .feature-card-icon { background: var(--brand-500); color: #fff; }
+    .feature-card-icon svg { width: 20px; height: 20px; }
+    .feature-card-check { width: 22px; height: 22px; flex-shrink: 0; margin-top: 2px; border: 2px solid var(--border-strong); border-radius: 6px; position: relative; transition: border-color 0.15s, background 0.15s; }
+    .feature-card.selected .feature-card-check { border-color: var(--brand-500); background: var(--brand-500); }
+    .feature-card.selected .feature-card-check::after { content: ''; position: absolute; left: 6px; top: 2px; width: 6px; height: 11px; border: solid #fff; border-width: 0 2px 2px 0; transform: rotate(45deg); }
+
     .choice-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
     .choice-card { text-align: left; padding: 14px 16px; border: 1px solid var(--border); border-radius: 10px; background: var(--card); font-family: inherit; cursor: pointer; transition: border-color 0.15s, background 0.15s, box-shadow 0.15s; }
     .choice-card:hover { border-color: var(--border-strong); }
@@ -853,6 +865,43 @@
           </div>
         </div>
       </div>
+
+      <div class="section-card">
+        <div class="section-title">Features you'd like to use</div>
+        <p class="section-desc">Choose the Wisemonk modules you want to enable for your team. You can change these any time.</p>
+        <div class="feature-cards" id="featureCards">
+          <button type="button" class="feature-card" data-feature="attendance">
+            <span class="feature-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+            </span>
+            <span class="option-card-body">
+              <span class="option-card-title">Attendance tracking</span>
+              <span class="option-card-desc">Track working hours, clock-in/out, and timesheets for your team.</span>
+            </span>
+            <span class="feature-card-check"></span>
+          </button>
+          <button type="button" class="feature-card" data-feature="leaves">
+            <span class="feature-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+            </span>
+            <span class="option-card-body">
+              <span class="option-card-title">Leave management</span>
+              <span class="option-card-desc">Let your team request time off and approve leaves with a clear balance view.</span>
+            </span>
+            <span class="feature-card-check"></span>
+          </button>
+          <button type="button" class="feature-card" data-feature="managers">
+            <span class="feature-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </span>
+            <span class="option-card-body">
+              <span class="option-card-title">Managers &amp; approvals</span>
+              <span class="option-card-desc">Assign managers who can review timesheets, approve leaves, and oversee their team.</span>
+            </span>
+            <span class="feature-card-check"></span>
+          </button>
+        </div>
+      </div>
     </div>
 
     <!-- (removed: old Verify-business KYB step) -->
@@ -1052,6 +1101,15 @@
         }
       });
 
+      // Features summary
+      const feats = Array.from(document.querySelectorAll('.feature-card.selected'))
+        .map(c => c.querySelector('.option-card-title')?.textContent.trim())
+        .filter(Boolean);
+      if (feats.length) {
+        html += '<div class="review-group"><div class="review-group-title">Features enabled</div>';
+        html += '<div class="review-row"><span class="review-key">Selected modules</span><span class="review-val">' + escapeHtml(feats.join(', ')) + '</span></div></div>';
+      }
+
       // Compliance summary (step 5 checkboxes)
       const step5 = document.querySelector('.step[data-step="5"]');
       if (step5) {
@@ -1152,6 +1210,11 @@
           saveState();
         });
       });
+    });
+
+    // Feature cards — multi-select toggles (independent .selected per card)
+    document.querySelectorAll('.feature-cards .feature-card').forEach(card => {
+      card.addEventListener('click', () => { card.classList.toggle('selected'); saveState(); });
     });
 
     // Choice cards — single choice per group (uses .selected)
@@ -1449,7 +1512,7 @@
     }
 
     function collectState() {
-      const state = { step: current, fields: {}, radios: {}, checks: {}, cards: {}, directors: [], ubo: '' };
+      const state = { step: current, fields: {}, radios: {}, checks: {}, cards: {}, directors: [], ubo: '', features: [] };
       document.querySelectorAll('.step').forEach(step => {
         const sn = step.dataset.step;
         let idx = 0;
@@ -1473,6 +1536,7 @@
           state.directors.push({ name: g('.dir-name'), dob: g('input[type="date"]'), country: g('select'), ownership: g('input[type="number"]') });
         });
       }
+      state.features = Array.from(document.querySelectorAll('.feature-card.selected')).map(c => c.dataset.feature);
       return state;
     }
 
@@ -1535,6 +1599,11 @@
         uboSelect.value = raw.ubo;
         uboSelect.classList.toggle('touched', !!uboSelect.value);
         if (uboSelect._rebuildMenu) uboSelect._rebuildMenu();
+      }
+
+      // Feature cards (multi-select)
+      if (Array.isArray(raw.features)) {
+        document.querySelectorAll('.feature-card').forEach(c => c.classList.toggle('selected', raw.features.includes(c.dataset.feature)));
       }
 
       // Work-description counter
