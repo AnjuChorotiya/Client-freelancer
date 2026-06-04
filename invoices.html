@@ -153,6 +153,36 @@
     .cmp-check-btn:hover { border-color: #9AA2B2; background: #F7F8FA; }
     .cmp-check-btn svg { width: 18px; height: 18px; }
     .primary-btn svg { width: 16px; height: 16px; flex-shrink: 0; }
+    .wm-head-actions { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+
+    /* Request invoice modal */
+    .ri-overlay { position: fixed; inset: 0; background: rgba(18,22,32,0.55); display: none; align-items: center; justify-content: center; padding: 24px; z-index: 2200; }
+    .ri-overlay.open { display: flex; animation: riFade 0.18s ease; }
+    @keyframes riFade { from { opacity: 0; } to { opacity: 1; } }
+    .ri-modal { background: #fff; border-radius: 16px; width: 100%; max-width: 480px; max-height: 90vh; overflow-y: auto; box-shadow: 0 30px 70px -20px rgba(0,0,0,0.45); }
+    .ri-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 24px 24px 0; }
+    .ri-head h2 { font-family: 'Satoshi', sans-serif; font-size: 19px; font-weight: 700; color: var(--text-primary); margin: 0 0 4px; letter-spacing: -0.2px; }
+    .ri-head p { font-size: 13.5px; color: var(--text-muted); margin: 0; line-height: 1.5; }
+    .ri-close { width: 32px; height: 32px; flex-shrink: 0; border: none; background: transparent; border-radius: 8px; color: var(--text-muted); cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .ri-close:hover { background: var(--neutral-100); color: var(--text-primary); }
+    .ri-close svg { width: 18px; height: 18px; }
+    .ri-body { padding: 18px 24px 4px; }
+    .ri-field { margin-bottom: 16px; }
+    .ri-field label { display: block; font-size: 12.5px; font-weight: 700; color: var(--text-secondary); margin-bottom: 6px; }
+    .ri-field input, .ri-field select, .ri-field textarea {
+      width: 100%; font-family: inherit; font-size: 14px; color: var(--text-primary);
+      border: 1px solid var(--border-strong); border-radius: 10px; padding: 11px 13px;
+      background: var(--neutral-0); outline: none; transition: border-color 0.15s;
+    }
+    .ri-field input:focus, .ri-field select:focus, .ri-field textarea:focus { border-color: var(--primary-500); }
+    .ri-field textarea { resize: vertical; min-height: 70px; }
+    .ri-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .ri-amount-wrap { position: relative; }
+    .ri-amount-wrap .ri-cur { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); font-size: 14px; font-weight: 700; color: var(--text-muted); }
+    .ri-amount-wrap input { padding-left: 26px; }
+    .ri-note { display: flex; gap: 10px; padding: 12px 14px; background: var(--primary-50); border-radius: 10px; font-size: 13px; color: var(--text-secondary); line-height: 1.5; margin-top: 4px; }
+    .ri-note svg { width: 18px; height: 18px; color: var(--primary-600); flex-shrink: 0; margin-top: 1px; }
+    .ri-foot { display: flex; align-items: center; justify-content: flex-end; gap: 12px; padding: 18px 24px 24px; }
 
     /* Stats strip */
     .stats-strip {
@@ -581,14 +611,16 @@
 <path d="M6.75 13H11.25" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-clock" viewBox="0 0 24 24" fill="none"><path d="M22 12C22 17.52 17.52 22 12 22C6.48 22 2 17.52 2 12C2 6.48 6.48 2 12 2C17.52 2 22 6.48 22 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 7V12.5L15.5 14.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-shield-tick" viewBox="0 0 24 24" fill="none"><path d="M10.49 2.23006L5.50003 4.11006C4.35003 4.54006 3.41003 5.90006 3.41003 7.12006V14.5501C3.41003 15.7301 4.19003 17.2801 5.14003 17.9901L9.44003 21.2001C10.85 22.2601 13.17 22.2601 14.58 21.2001L18.88 17.9901C19.83 17.2801 20.61 15.7301 20.61 14.5501V7.12006C20.61 5.89006 19.67 4.53006 18.52 4.10006L13.53 2.23006C12.68 1.92006 11.32 1.92006 10.49 2.23006Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M9.05005 11.8701L10.66 13.4801L14.96 9.18005" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-notification" viewBox="0 0 24 24" fill="none"><path d="M12.02 2.90991C8.70997 2.90991 6.01997 5.59991 6.01997 8.90991V11.7999C6.01997 12.4099 5.75997 13.3399 5.44997 13.8599L4.29997 15.7699C3.58997 16.9499 4.07997 18.2599 5.37997 18.6999C9.68997 20.1399 14.34 20.1399 18.65 18.6999C19.86 18.2999 20.39 16.8699 19.73 15.7699L18.58 13.8599C18.28 13.3399 18.02 12.4099 18.02 11.7999V8.90991C18.02 5.60991 15.32 2.90991 12.02 2.90991Z" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"/>
 <path d="M13.87 3.19994C13.56 3.10994 13.24 3.03994 12.91 2.99994C11.95 2.87994 11.03 2.94994 10.17 3.19994C10.46 2.45994 11.18 1.93994 12.02 1.93994C12.86 1.93994 13.58 2.45994 13.87 3.19994Z" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M15.02 19.0601C15.02 20.7101 13.67 22.0601 12.02 22.0601C11.2 22.0601 10.44 21.7201 9.90002 21.1801C9.36002 20.6401 9.02002 19.8801 9.02002 19.0601" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10"/></symbol><symbol id="ic-arrow-down" viewBox="0 0 24 24" fill="none"><path d="M19.9201 8.94995L13.4001 15.47C12.6301 16.24 11.3701 16.24 10.6001 15.47L4.08008 8.94995" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-close" viewBox="0 0 24 24" fill="none"><path d="M6 6L18 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M18 6L6 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-tick-circle" viewBox="0 0 24 24" fill="none"><path d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M15.02 19.0601C15.02 20.7101 13.67 22.0601 12.02 22.0601C11.2 22.0601 10.44 21.7201 9.90002 21.1801C9.36002 20.6401 9.02002 19.8801 9.02002 19.0601" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10"/></symbol><symbol id="ic-arrow-down" viewBox="0 0 24 24" fill="none"><path d="M19.9201 8.94995L13.4001 15.47C12.6301 16.24 11.3701 16.24 10.6001 15.47L4.08008 8.94995" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-close" viewBox="0 0 24 24" fill="none"><path d="M6 6L18 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M18 6L6 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-add" viewBox="0 0 24 24" fill="none"><path d="M6 12H18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M12 18V6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-tick-circle" viewBox="0 0 24 24" fill="none"><path d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M7.75 12L10.58 14.83L16.25 9.17004" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-more" viewBox="0 0 24 24" fill="none"><circle cx="5" cy="12" r="2" fill="currentColor"/><circle cx="12" cy="12" r="2" fill="currentColor"/><circle cx="19" cy="12" r="2" fill="currentColor"/></symbol><symbol id="ic-copy" viewBox="0 0 24 24" fill="none"><path d="M16 12.9V17.1C16 20.6 14.6 22 11.1 22H6.9C3.4 22 2 20.6 2 17.1V12.9C2 9.4 3.4 8 6.9 8H11.1C14.6 8 16 9.4 16 12.9Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M22 6.9V11.1C22 14.6 20.6 16 17.1 16H16V12.9C16 9.4 14.6 8 11.1 8H8V6.9C8 3.4 9.4 2 12.9 2H17.1C20.6 2 22 3.4 22 6.9Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-info-circle" viewBox="0 0 24 24" fill="none"><path d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M12 8V13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M11.9945 16H12.0035" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-document-download" viewBox="0 0 24 24" fill="none"><path d="M9 11V17L11 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M9 17L7 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M22 10V15C22 20 20 22 15 22H9C4 22 2 20 2 15V9C2 4 4 2 9 2H14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M22 10H18C15 10 14 9 14 6V2L22 10Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-arrow-right" viewBox="0 0 24 24" fill="none"><path d="M14.4301 5.92993L20.5001 11.9999L14.4301 18.0699" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M22 10H18C15 10 14 9 14 6V2L22 10Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-sms" viewBox="0 0 24 24" fill="none"><path d="M17 20.5H7C4 20.5 2 19 2 15.5V8.5C2 5 4 3.5 7 3.5H17C20 3.5 22 5 22 8.5V15.5C22 19 20 20.5 17 20.5Z" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M17 9L13.87 11.5C12.84 12.32 11.15 12.32 10.12 11.5L7 9" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-arrow-right" viewBox="0 0 24 24" fill="none"><path d="M14.4301 5.92993L20.5001 11.9999L14.4301 18.0699" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M3.5 12H20.33" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/></symbol></svg><!-- /wm-icon-sprite -->
 
   <div class="app">
@@ -663,10 +695,16 @@
               <h1>Freelancer invoices</h1>
               <p>Review and pay invoices submitted by your freelancers.</p>
             </div>
-            <a href="compliance.html" class="cmp-check-btn">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-shield-tick"/></svg>
-              Run compliance check
-            </a>
+            <div class="wm-head-actions">
+              <a href="compliance.html" class="cmp-check-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-shield-tick"/></svg>
+                Run compliance check
+              </a>
+              <button type="button" class="primary-btn" onclick="openReqInvoice(event)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-add"/></svg>
+                Request invoice
+              </button>
+            </div>
           </div>
 
           <div class="filter-bar">
@@ -926,7 +964,77 @@
     </div>
   </aside>
 
+  <!-- ─── Request invoice modal ─── -->
+  <div class="ri-overlay" id="reqInvoiceModal" role="dialog" aria-modal="true" aria-labelledby="riTitle">
+    <div class="ri-modal">
+      <div class="ri-head">
+        <div>
+          <h2 id="riTitle">Request an invoice</h2>
+          <p>Raise an invoice on behalf of a contractor &mdash; they&rsquo;ll be notified to review and confirm.</p>
+        </div>
+        <button class="ri-close" type="button" onclick="closeReqInvoice()" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-close"/></svg></button>
+      </div>
+      <div class="ri-body">
+        <div class="ri-field">
+          <label for="riContractor">Contractor</label>
+          <select id="riContractor">
+            <option value="">Select a contractor</option>
+            <option>Carlos Mendez</option>
+            <option>Priya Sharma</option>
+            <option>Aisha Khan</option>
+            <option>John Lee</option>
+            <option>Maria Silva</option>
+          </select>
+        </div>
+        <div class="ri-row">
+          <div class="ri-field">
+            <label for="riAmount">Amount (USD)</label>
+            <div class="ri-amount-wrap">
+              <span class="ri-cur">$</span>
+              <input id="riAmount" type="text" inputmode="decimal" placeholder="0.00">
+            </div>
+          </div>
+          <div class="ri-field">
+            <label for="riDue">Due date</label>
+            <input id="riDue" type="date">
+          </div>
+        </div>
+        <div class="ri-field">
+          <label for="riDesc">Work description</label>
+          <textarea id="riDesc" placeholder="e.g. March cycle &mdash; frontend development"></textarea>
+        </div>
+        <div class="ri-note">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-info-circle"/></svg>
+          <span>The contractor receives a draft to review. The invoice is added to your list only after they confirm.</span>
+        </div>
+      </div>
+      <div class="ri-foot">
+        <button class="secondary-btn" type="button" onclick="closeReqInvoice()">Cancel</button>
+        <button class="primary-btn" type="button" onclick="sendReqInvoice()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-sms"/></svg>
+          Send request
+        </button>
+      </div>
+    </div>
+  </div>
+
   <script>
+    // ─── Request invoice modal ───
+    function openReqInvoice(e) { if (e) e.preventDefault(); const m = document.getElementById('reqInvoiceModal'); if (m) { m.classList.add('open'); document.body.style.overflow = 'hidden'; } }
+    function closeReqInvoice() { const m = document.getElementById('reqInvoiceModal'); if (m) { m.classList.remove('open'); document.body.style.overflow = ''; } }
+    function sendReqInvoice() {
+      const name = document.getElementById('riContractor').value;
+      const btn = document.querySelector('#reqInvoiceModal .ri-foot .primary-btn');
+      if (!name) { document.getElementById('riContractor').focus(); return; }
+      if (btn) { btn.textContent = 'Request sent'; btn.disabled = true; btn.style.opacity = '0.7'; }
+      setTimeout(closeReqInvoice, 900);
+    }
+    (function () {
+      const m = document.getElementById('reqInvoiceModal');
+      if (m) { m.addEventListener('click', function (ev) { if (ev.target === this) closeReqInvoice(); }); }
+      document.addEventListener('keydown', function (ev) { if (ev.key === 'Escape') closeReqInvoice(); });
+    })();
+
     // ─── Row state: read pay status from localStorage and update rows ───
     function getInvoiceNum(row) {
       const numEl = row.querySelector('.inv-num');
