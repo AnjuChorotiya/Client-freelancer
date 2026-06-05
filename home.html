@@ -770,6 +770,11 @@
     .row-action:hover { background: var(--neutral-100); color: var(--text-primary); }
     .row-action svg { width: 18px; height: 18px; }
     .leave-type-tag { display: inline-flex; padding: 4px 10px; border-radius: 8px; background: var(--neutral-100); color: var(--text-secondary); font-size: 12.5px; font-weight: 600; }
+    .inv-num { font-family: 'Satoshi', sans-serif; font-weight: 600; color: #222224; }
+    .table-card td.text-right { text-align: right; }
+    .table-card td.amount { font-family: 'Satoshi', sans-serif; font-weight: 700; color: #222224; }
+    .pay-btn { display: inline-flex; align-items: center; padding: 8px 14px; border-radius: 8px; background: var(--primary-500); color: #fff; font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer; border: none; text-decoration: none; }
+    .pay-btn:hover { background: var(--primary-600); }
     .stats-strip { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; padding: 4px 20px 16px; }
     .stats-strip .stat-card { border: 1px solid var(--border); }
     .section-h { padding: 4px 20px 12px; font-family: 'Satoshi', sans-serif; font-size: 15px; font-weight: 700; color: var(--text-primary); }
@@ -1208,10 +1213,10 @@
               <div class="step-desc">Legal entity name, registered address, country of incorporation and business type</div>
             </div>
             <div class="step-action">
-              <a href="client-onboarding.html" class="step-btn primary">
+              <button type="button" class="step-btn primary" id="startOnboardingBtn">
                 Start
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-arrow-right"/></svg>
-              </a>
+              </button>
             </div>
           </div>
 
@@ -1271,13 +1276,19 @@
              <table>
                <thead><tr><th>Name</th><th>Contract type</th><th>Rate</th><th>Status</th><th></th></tr></thead>
                <tbody>
-                 <tr><td colspan="5">
+                 <tr class="empty-only"><td colspan="5">
                    <div class="table-empty">
                      <div class="table-empty-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-profile-2user"/></svg></div>
                      <h3>No freelancers yet</h3>
                      <p>Add your first freelancer to start managing contracts, rates and payments in one place.</p>
                    </div>
                  </td></tr>
+                 <tr class="data-only" hidden><td><div class="cell-name"><div class="cell-avatar">PS</div><div class="cell-name-text"><strong>Priya Sharma</strong><small>Senior Designer</small></div></div></td><td>Freelancer · Monthly</td><td><strong>$3,400</strong>/mo</td><td><span class="pill active">Active</span></td><td><button class="row-action"><svg viewBox="0 0 24 24" fill="currentColor"><use href="#ic-more"/></svg></button></td></tr>
+                 <tr class="data-only" hidden><td><div class="cell-name"><div class="cell-avatar">CM</div><div class="cell-name-text"><strong>Carlos Mendez</strong><small>Backend Developer</small></div></div></td><td>Freelancer · Hourly</td><td><strong>$45</strong>/hr</td><td><span class="pill active">Active</span></td><td><button class="row-action"><svg viewBox="0 0 24 24" fill="currentColor"><use href="#ic-more"/></svg></button></td></tr>
+                 <tr class="data-only" hidden><td><div class="cell-name"><div class="cell-avatar">AK</div><div class="cell-name-text"><strong>Aisha Khan</strong><small>Growth Marketer</small></div></div></td><td>Freelancer · Monthly</td><td><strong>$2,800</strong>/mo</td><td><span class="pill paused">Inactive</span></td><td><button class="row-action"><svg viewBox="0 0 24 24" fill="currentColor"><use href="#ic-more"/></svg></button></td></tr>
+                 <tr class="data-only" hidden><td><div class="cell-name"><div class="cell-avatar">JL</div><div class="cell-name-text"><strong>John Lee</strong><small>Content Writer</small></div></div></td><td>Freelancer · Per project</td><td><strong>$120</strong>/post</td><td><span class="pill active">Active</span></td><td><button class="row-action"><svg viewBox="0 0 24 24" fill="currentColor"><use href="#ic-more"/></svg></button></td></tr>
+                 <tr class="data-only" hidden><td><div class="cell-name"><div class="cell-avatar">MS</div><div class="cell-name-text"><strong>Maria Silva</strong><small>Translator</small></div></div></td><td>Freelancer · Hourly</td><td><strong>$32</strong>/hr</td><td><span class="pill active">Active</span></td><td><button class="row-action"><svg viewBox="0 0 24 24" fill="currentColor"><use href="#ic-more"/></svg></button></td></tr>
+                 <tr class="data-only" hidden><td><div class="cell-name"><div class="cell-avatar">RS</div><div class="cell-name-text"><strong>Rajesh Singh</strong><small>Developer</small></div></div></td><td>Freelancer · Monthly</td><td><strong>$2,500</strong>/mo</td><td><span class="pill pending">Pending invite</span></td><td><button class="row-action"><svg viewBox="0 0 24 24" fill="currentColor"><use href="#ic-more"/></svg></button></td></tr>
                </tbody>
              </table>
            </div>
@@ -1309,13 +1320,17 @@
              <table>
                <thead><tr><th>Invoice</th><th>Freelancer</th><th>Submitted</th><th>Due</th><th class="text-right">Amount</th><th>Status</th><th></th></tr></thead>
                <tbody>
-                 <tr><td colspan="7">
+                 <tr class="empty-only"><td colspan="7">
                    <div class="table-empty">
                      <div class="table-empty-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-receipt-text"/></svg></div>
                      <h3>No invoices yet</h3>
                      <p>Invoices submitted by your freelancers will appear here. You can also request one to get started.</p>
                    </div>
                  </td></tr>
+                 <tr class="data-only" hidden><td><span class="inv-num">#INV-1042</span></td><td><div class="cell-name"><div class="cell-avatar">CM</div>Carlos Mendez</div></td><td>Feb 28, 2026</td><td>Mar 14, 2026</td><td class="text-right amount">$1,200</td><td><span class="pill pending">Due</span></td><td><a class="pay-btn">Pay now</a></td></tr>
+                 <tr class="data-only" hidden><td><span class="inv-num">#INV-1041</span></td><td><div class="cell-name"><div class="cell-avatar">PS</div>Priya Sharma</div></td><td>Feb 26, 2026</td><td>Mar 12, 2026</td><td class="text-right amount">$3,400</td><td><span class="pill pending">Due</span></td><td><a class="pay-btn">Pay now</a></td></tr>
+                 <tr class="data-only" hidden><td><span class="inv-num">#INV-1040</span></td><td><div class="cell-name"><div class="cell-avatar">AK</div>Aisha Khan</div></td><td>Feb 22, 2026</td><td>Feb 28, 2026</td><td class="text-right amount">$600</td><td><span class="pill overdue">Overdue</span></td><td><a class="pay-btn">Pay now</a></td></tr>
+                 <tr class="data-only" hidden><td><span class="inv-num">#INV-1039</span></td><td><div class="cell-name"><div class="cell-avatar">JL</div>John Lee</div></td><td>Feb 20, 2026</td><td>Mar 6, 2026</td><td class="text-right amount">$400</td><td><span class="pill paid">Paid</span></td><td><button class="row-action"><svg viewBox="0 0 24 24" fill="currentColor"><use href="#ic-more"/></svg></button></td></tr>
                </tbody>
              </table>
            </div>
@@ -1336,9 +1351,9 @@
              </button>
            </div>
            <div class="stats-strip">
-             <div class="stat-card"><div class="stat-title">Leaves taken this month</div><div class="stat-value">0</div><div class="stat-sub">freelancers on leave</div></div>
-             <div class="stat-card"><div class="stat-title">Upcoming leaves</div><div class="stat-value">0</div><div class="stat-sub">scheduled leaves</div></div>
-             <div class="stat-card"><div class="stat-title">Leaves pending for approval</div><div class="stat-value">0</div><div class="stat-sub">awaiting approval</div></div>
+             <div class="stat-card"><div class="stat-title">Leaves taken this month</div><div class="stat-value js-stat" data-empty="0" data-full="3">0</div><div class="stat-sub">freelancers on leave</div></div>
+             <div class="stat-card"><div class="stat-title">Upcoming leaves</div><div class="stat-value js-stat" data-empty="0" data-full="0">0</div><div class="stat-sub">scheduled leaves</div></div>
+             <div class="stat-card"><div class="stat-title">Leaves pending for approval</div><div class="stat-value js-stat" data-empty="0" data-full="1">0</div><div class="stat-sub">awaiting approval</div></div>
            </div>
            <div class="section-h">Leave requests</div>
            <div class="filter-bar">
@@ -1352,22 +1367,25 @@
              <table>
                <thead><tr><th>Dates</th><th>Leave type</th><th>Reason</th><th>Status</th><th>Actions</th></tr></thead>
                <tbody>
-                 <tr><td colspan="5">
+                 <tr class="empty-only"><td colspan="5">
                    <div class="table-empty">
                      <div class="table-empty-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-clock"/></svg></div>
                      <h3>No leave requests yet</h3>
                      <p>Time off and leave requests from your freelancers will show up here for review and approval.</p>
                    </div>
                  </td></tr>
+                 <tr class="data-only" hidden><td>Sep 30 (2nd half)</td><td><span class="leave-type-tag">Sick leave</span></td><td>Fever and rest</td><td><span class="pill pending">Pending</span></td><td><button class="row-action"><svg viewBox="0 0 24 24" fill="currentColor"><use href="#ic-more"/></svg></button></td></tr>
+                 <tr class="data-only" hidden><td>Sep 02 – Sep 05</td><td><span class="leave-type-tag">Casual leave</span></td><td>Medical appointment</td><td><span class="pill approved">Approved</span></td><td><button class="row-action"><svg viewBox="0 0 24 24" fill="currentColor"><use href="#ic-more"/></svg></button></td></tr>
+                 <tr class="data-only" hidden><td>Sep 15 – Sep 18</td><td><span class="leave-type-tag">Casual leave</span></td><td>Family emergency</td><td><span class="pill approved">Approved</span></td><td><button class="row-action"><svg viewBox="0 0 24 24" fill="currentColor"><use href="#ic-more"/></svg></button></td></tr>
                </tbody>
              </table>
            </div>
          </div>
        </div>
 
-       <!-- ── COMPLIANCE (empty) ── -->
+       <!-- ── COMPLIANCE ── -->
        <div id="complianceView" hidden>
-         <div class="wm-card">
+         <div class="wm-card empty-only">
            <div class="wm-card-heading">
              <div>
                <h1>Compliance</h1>
@@ -1387,6 +1405,15 @@
                  </td></tr>
                </tbody>
              </table>
+           </div>
+         </div>
+         <div class="data-only" hidden>
+           <div class="cmp-intro">
+             <h2>Compliance audit</h2>
+             <p>Check every contract, invoice and tax record for your contractor payments against local regulations &mdash; get a verdict in seconds.</p>
+           </div>
+           <div class="cmp-frame">
+             <iframe src="https://legal.wisemonk.io/" title="Wisemonk Compliance Audit" loading="lazy" referrerpolicy="no-referrer"></iframe>
            </div>
          </div>
        </div>
@@ -1817,41 +1844,58 @@
       const sectionViews = ['freelancersView', 'invoicesView', 'timeView', 'complianceView']
         .map(id => document.getElementById(id));
 
-      // Onboarding not yet complete: Home shows the setup checklist.
-      // After onboarding, set this to true to reveal the dashboard on Home.
-      const onboardingComplete = false;
+      // Onboarding state. Clicking "Start" on the checklist flips this to true,
+      // which reveals the dashboard on Home and fills every tab with data.
+      let onboardingComplete = false;
 
       function hideAllSections() {
         sectionViews.forEach(v => { if (v) v.hidden = true; });
       }
 
+      // Toggle each section between its empty state and its data state.
+      function applyDataState() {
+        document.querySelectorAll('.empty-only').forEach(el => { el.hidden = onboardingComplete; });
+        document.querySelectorAll('.data-only').forEach(el => { el.hidden = !onboardingComplete; });
+        document.querySelectorAll('.js-stat').forEach(el => {
+          el.textContent = onboardingComplete ? el.dataset.full : el.dataset.empty;
+        });
+      }
+
+      function showTab(key) {
+        const cfg = tabs[key] || tabs.home;
+        links.forEach(l => l.classList.toggle('active', l.dataset.tab === key));
+        hideAllSections();
+        if (key === 'home') {
+          homeView.hidden = onboardingComplete;
+          dashboardView.hidden = !onboardingComplete;
+        } else {
+          homeView.hidden = true;
+          dashboardView.hidden = true;
+          const v = document.getElementById(cfg.view);
+          if (v) v.hidden = false;
+        }
+        headerTitle.textContent = cfg.title;
+        window.scrollTo({ top: 0 });
+      }
+
       links.forEach(link => {
         link.addEventListener('click', e => {
           e.preventDefault();
-          const key = link.dataset.tab;
-          const cfg = tabs[key];
-          links.forEach(l => l.classList.remove('active'));
-          link.classList.add('active');
-
-          hideAllSections();
-          if (key === 'home') {
-            if (onboardingComplete) {
-              homeView.hidden = true;
-              dashboardView.hidden = false;
-            } else {
-              homeView.hidden = false;
-              dashboardView.hidden = true;
-            }
-          } else {
-            homeView.hidden = true;
-            dashboardView.hidden = true;
-            const v = document.getElementById(cfg.view);
-            if (v) v.hidden = false;
-          }
-          headerTitle.textContent = cfg.title;
-          window.scrollTo({ top: 0 });
+          showTab(link.dataset.tab);
         });
       });
+
+      // "Start" on the setup checklist completes onboarding in-place.
+      const startBtn = document.getElementById('startOnboardingBtn');
+      if (startBtn) {
+        startBtn.addEventListener('click', () => {
+          onboardingComplete = true;
+          applyDataState();
+          showTab('home');
+        });
+      }
+
+      applyDataState();
     })();
   </script>
 </body>
