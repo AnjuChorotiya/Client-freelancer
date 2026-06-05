@@ -331,6 +331,8 @@
     $all('.wm-selectbox-option', box).forEach(function (b) {
       b.setAttribute('aria-selected', b._opt.selected ? 'true' : 'false');
     });
+    var hasValue = Array.prototype.slice.call(sel.options).some(function (o) { return o.selected && !(o.value === '' && o.disabled); });
+    box.classList.toggle('has-value', hasValue);
     if (sel.multiple) {
       var chips = box.querySelector('.wm-selectbox-chips');
       var picked = $all('.wm-selectbox-option', box).filter(function (b) { return b._opt.selected; });
@@ -413,6 +415,7 @@
       input.value = fmtDate(d);
       input.dataset.value = toISO(d);
       if (hidden) hidden.value = toISO(d);
+      wrap.classList.add('has-value');
       wrap.classList.remove('is-open');
       input.dispatchEvent(new CustomEvent('wm:datechange', { bubbles: true, detail: { value: toISO(d), date: d } }));
     }
@@ -476,7 +479,7 @@
   /* ---- form validation (onboarding behavior) ----------------------------- */
   // Mark a field invalid/valid: <div class="wm-field" data-wm-field><input required>…
   //   <small class="wm-field-error">message</small></div>
-  function fieldOf(control) { return control.closest('.wm-field'); }
+  function fieldOf(control) { return control.closest('.wm-field, .wm-field-float'); }
 
   function setFieldError(field, msg) {
     if (!field) return;

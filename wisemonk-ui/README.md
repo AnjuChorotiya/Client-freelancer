@@ -81,6 +81,7 @@ automates this with an `inline_sprite.py` script.)
 | Filter dropdown | `.wm-dropdown` | `.wm-dd-trigger`/`.wm-dd-label`, `.wm-dd-menu`, `.wm-dd-item` |
 | Comparison | `.wm-compare` | `.wm-col-feat/-a/-b`, `.wm-compare-cell .yes/.no` |
 | Form field | `.wm-field` | `.wm-input .wm-select .wm-textarea`, `.wm-input-wrap`+`.wm-input-prefix`, `.wm-field-row`, `.wm-req`, `.wm-field-hint`, `.wm-field-error` (+`.wm-field--error`) |
+| Floating-label field | `.wm-field-float` | portal-style label that sits centered then lifts on focus/fill; control **first**, `<label>` after; `.wm-field-float-row`; works with select + datepicker |
 | Custom select | `.wm-selectbox` | built from a native `<select data-wm-select>`; `data-wm-select="search"` adds search; `multiple` → chips |
 | Date picker | `.wm-datepicker` / `.wm-cal` | built from `<input data-wm-datepicker>`; calendar popover, ISO value |
 | Toggle | `.wm-toggle` | child `button.active` |
@@ -132,6 +133,20 @@ Most things work declaratively — no JS to write.
   </div>
 </div>
 <table id="people"><tbody><tr data-status="active">…</tr></tbody></table>
+
+<!-- floating-label field (portal signature): control FIRST, then <label> -->
+<div class="wm-field-float">
+  <input class="wm-input" type="text" id="name" required placeholder=" ">
+  <label for="name">Legal full name <span class="wm-req">*</span></label>
+</div>
+<!-- floating label also works wrapping a custom select or datepicker -->
+<div class="wm-field-float">
+  <select data-wm-select name="country" required>
+    <option value="" disabled selected>Country of work</option>
+    <option value="in">India</option>
+  </select>
+  <label>Country of work <span class="wm-req">*</span></label>
+</div>
 
 <!-- custom select (enhances a native <select> — submits with forms) -->
 <select data-wm-select data-placeholder="Select a country" name="country">

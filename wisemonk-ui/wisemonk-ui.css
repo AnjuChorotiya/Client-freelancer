@@ -389,6 +389,67 @@
 .wm-cal-day.is-today { font-weight: 700; color: var(--wm-primary-600); }
 .wm-cal-day.is-selected, .wm-cal-day.is-selected:hover { background: var(--wm-primary-500); color: #fff; font-weight: 700; }
 
+/* ---- Floating-label field (portal signature form field) ------------------ */
+/* Structure: control FIRST, then the <label> sibling.
+   <div class="wm-field-float">
+     <input class="wm-input" type="text" placeholder=" " id="x"> <label for="x">Name</label>
+   </div>  */
+.wm-field-float { position: relative; margin-bottom: 14px; }
+.wm-field-float > .wm-input,
+.wm-field-float > .wm-textarea,
+.wm-field-float > .wm-select {
+  width: 100%; padding: 24px 14px 8px; font-size: 16px; font-weight: 500;
+  border: 1px solid var(--wm-border); border-radius: var(--wm-radius-sm); line-height: 1.2;
+}
+.wm-field-float > .wm-textarea { min-height: 100px; padding-top: 26px; }
+.wm-field-float > .wm-select { padding-right: 40px; background-position: right 14px center; }
+.wm-field-float > .wm-input::placeholder,
+.wm-field-float > .wm-textarea::placeholder { color: transparent; }
+.wm-field-float > .wm-input:focus::placeholder,
+.wm-field-float > .wm-textarea:focus::placeholder { color: var(--wm-text-muted); opacity: 0.6; }
+.wm-field-float > .wm-input:focus,
+.wm-field-float > .wm-textarea:focus,
+.wm-field-float > .wm-select:focus { border-color: var(--wm-primary-500); box-shadow: 0 0 0 1.5px var(--wm-primary-100); }
+/* the floating label */
+.wm-field-float > label {
+  position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+  font-size: 16px; font-weight: 500; color: var(--wm-text-muted); pointer-events: none;
+  line-height: 1; max-width: calc(100% - 28px); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  transition: top 0.15s ease, font-size 0.15s ease, transform 0.15s ease;
+}
+.wm-field-float > .wm-input:focus ~ label,
+.wm-field-float > .wm-input:not(:placeholder-shown) ~ label,
+.wm-field-float > .wm-textarea:focus ~ label,
+.wm-field-float > .wm-textarea:not(:placeholder-shown) ~ label,
+.wm-field-float > .wm-select:focus ~ label,
+.wm-field-float > .wm-selectbox.is-open ~ label,
+.wm-field-float > .wm-selectbox.has-value ~ label,
+.wm-field-float > .wm-datepicker.is-open ~ label,
+.wm-field-float > .wm-datepicker.has-value ~ label,
+.wm-field-float.is-float > label {
+  top: 8px; transform: none; font-size: 10px; font-weight: 500;
+}
+.wm-field-float > .wm-textarea ~ label { top: 24px; transform: none; }
+.wm-field-float > .wm-textarea:focus ~ label,
+.wm-field-float > .wm-textarea:not(:placeholder-shown) ~ label { top: 8px; }
+.wm-field-float .wm-req { color: var(--wm-text-muted); }
+/* selectbox + datepicker inside a float field — tall trigger, label as placeholder */
+.wm-field-float > .wm-selectbox .wm-selectbox-trigger { min-height: 56px; padding: 22px 40px 8px 14px; border-color: var(--wm-border); }
+.wm-field-float > .wm-selectbox .wm-selectbox-chevron { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); }
+.wm-field-float > .wm-selectbox.is-open .wm-selectbox-chevron { transform: translateY(-50%) rotate(180deg); }
+.wm-field-float > .wm-selectbox .wm-selectbox-value.is-placeholder,
+.wm-field-float > .wm-selectbox .wm-selectbox-chips .is-placeholder { visibility: hidden; }
+.wm-field-float > .wm-selectbox.is-open .wm-selectbox-trigger { border-color: var(--wm-primary-500); box-shadow: 0 0 0 1.5px var(--wm-primary-100); }
+.wm-field-float > .wm-selectbox--multi .wm-selectbox-trigger { min-height: 56px; padding-top: 24px; padding-bottom: 6px; align-items: flex-end; }
+.wm-field-float > .wm-datepicker .wm-input { padding: 24px 40px 8px 14px; }
+.wm-field-float .wm-field-hint, .wm-field-float .wm-field-error { margin-top: 6px; }
+.wm-field-float.wm-field--error > .wm-input,
+.wm-field-float.wm-field--error > .wm-select,
+.wm-field-float.wm-field--error > .wm-textarea,
+.wm-field-float.wm-field--error > .wm-selectbox .wm-selectbox-trigger,
+.wm-field-float.wm-field--error > .wm-datepicker .wm-input { border-color: var(--wm-danger-500); }
+.wm-field-float-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
 /* ---- Toggle pill --------------------------------------------------------- */
 .wm-toggle { display: inline-flex; gap: 4px; padding: 4px; background: var(--wm-neutral-100); border-radius: var(--wm-radius-sm); }
 .wm-toggle button {

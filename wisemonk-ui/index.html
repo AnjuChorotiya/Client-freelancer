@@ -302,57 +302,55 @@
     <section id="onboarding">
       <h2>Onboarding form</h2>
       <p class="sec-desc">
-        A full onboarding step combining every field type with validation behavior. Add
-        <code>data-wm-validate</code> to the <code>&lt;form&gt;</code>; required fields show inline errors on
-        submit and clear as the user fixes them. Listen for <code>wm:valid</code> / <code>wm:invalid</code>.
+        The portal's signature <strong>floating-label</strong> fields (<code>.wm-field-float</code>) combined with
+        custom selectors, the date picker and inline validation. The label sits centered as the placeholder, then
+        lifts on focus / once filled. Add <code>data-wm-validate</code> to the <code>&lt;form&gt;</code>; required
+        fields show inline errors on submit and clear as the user fixes them (<code>wm:valid</code> / <code>wm:invalid</code>).
       </p>
       <div class="demo" style="max-width:560px">
         <form id="obForm" data-wm-validate novalidate>
-          <div class="wm-field">
-            <label>Legal full name <span class="wm-req">*</span></label>
-            <input class="wm-input" type="text" name="name" required placeholder="Rahul Sharma">
+          <div class="wm-field-float">
+            <input class="wm-input" type="text" id="ob_name" name="name" required placeholder=" ">
+            <label for="ob_name">Legal full name <span class="wm-req">*</span></label>
             <small class="wm-field-error">Please enter your legal name</small>
           </div>
-          <div class="wm-field-row">
-            <div class="wm-field">
-              <label>Work email <span class="wm-req">*</span></label>
-              <input class="wm-input" type="email" name="email" required placeholder="rahul@company.com">
+          <div class="wm-field-float-row">
+            <div class="wm-field-float">
+              <input class="wm-input" type="email" id="ob_email" name="email" required placeholder=" ">
+              <label for="ob_email">Work email <span class="wm-req">*</span></label>
               <small class="wm-field-error">Enter a valid email address</small>
             </div>
-            <div class="wm-field">
-              <label>Country of work <span class="wm-req">*</span></label>
-              <select data-wm-select data-placeholder="Select country" name="ob_country" required>
-                <option value="" disabled selected>Select country</option>
+            <div class="wm-field-float">
+              <select data-wm-select data-placeholder="Country of work" name="ob_country" required>
+                <option value="" disabled selected>Country of work</option>
                 <option value="in">India</option>
                 <option value="us">United States</option>
                 <option value="gb">United Kingdom</option>
                 <option value="de">Germany</option>
               </select>
+              <label>Country of work <span class="wm-req">*</span></label>
               <small class="wm-field-error">Country is required</small>
             </div>
           </div>
-          <div class="wm-field-row">
-            <div class="wm-field">
+          <div class="wm-field-float-row">
+            <div class="wm-field-float">
+              <input class="wm-input" type="text" data-wm-datepicker name="ob_start" required placeholder=" ">
               <label>Start date <span class="wm-req">*</span></label>
-              <input class="wm-input" type="text" data-wm-datepicker name="ob_start" required placeholder="Pick a date">
               <small class="wm-field-error">Pick a start date</small>
             </div>
-            <div class="wm-field">
-              <label>Annual salary</label>
-              <div class="wm-input-wrap">
-                <span class="wm-input-prefix">$</span>
-                <input class="wm-input" type="number" name="salary" placeholder="85,000">
-              </div>
+            <div class="wm-field-float">
+              <input class="wm-input" type="number" id="ob_salary" name="salary" placeholder=" ">
+              <label for="ob_salary">Annual salary (USD)</label>
             </div>
           </div>
-          <div class="wm-field">
-            <label>Benefits</label>
-            <select multiple data-wm-select data-placeholder="Choose benefits" name="ob_benefits">
+          <div class="wm-field-float">
+            <select multiple data-wm-select data-placeholder="Benefits" name="ob_benefits">
               <option value="health">Health insurance</option>
               <option value="esop">ESOP / equity</option>
               <option value="laptop">Laptop &amp; equipment</option>
               <option value="learning">Learning budget</option>
             </select>
+            <label>Benefits</label>
             <small class="wm-field-hint">Pick all that apply — added to the offer letter.</small>
           </div>
           <div style="display:flex; gap:10px; margin-top:4px">
