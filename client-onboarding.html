@@ -896,9 +896,20 @@
               <label>Zip Code/Postal code<span class="req">*</span></label>
             </div>
             <div class="fl-field">
-              <input type="text" value="India" placeholder=" " readonly tabindex="-1">
-              <label>Country</label>
-            <p class="field-hint">Auto-filled from the country you selected at sign-up.</p></div>
+              <select data-must>
+                <option value="" disabled selected hidden></option>
+                <option>India</option>
+                <option>United States</option>
+                <option>United Kingdom</option>
+                <option>Singapore</option>
+                <option>UAE</option>
+                <option>Australia</option>
+                <option>Canada</option>
+                <option>Germany</option>
+                <option>Other</option>
+              </select>
+              <label>Country<span class="req">*</span></label>
+            <p class="field-hint">Select the country where your business is registered.</p></div>
           </div>
         </div>
       </div>
