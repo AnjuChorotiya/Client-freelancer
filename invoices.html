@@ -156,33 +156,52 @@
     .wm-head-actions { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
 
     /* Request invoice modal */
-    .ri-overlay { position: fixed; inset: 0; background: rgba(18,22,32,0.55); display: none; align-items: center; justify-content: center; padding: 24px; z-index: 2200; }
-    .ri-overlay.open { display: flex; animation: riFade 0.18s ease; }
+    .ri-overlay { position: fixed; inset: 0; background: rgba(18,22,32,0.5); display: none; align-items: stretch; justify-content: flex-end; z-index: 2200; }
+    .ri-overlay.open { display: flex; animation: riFade 0.2s ease; }
     @keyframes riFade { from { opacity: 0; } to { opacity: 1; } }
-    .ri-modal { background: #fff; border-radius: 16px; width: 100%; max-width: 480px; max-height: 90vh; overflow-y: auto; box-shadow: 0 30px 70px -20px rgba(0,0,0,0.45); }
-    .ri-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 24px 24px 0; }
+    .ri-modal { background: #fff; width: 100%; max-width: 460px; height: 100vh; display: flex; flex-direction: column; box-shadow: -24px 0 70px -24px rgba(0,0,0,0.45); transform: translateX(100%); transition: transform 0.32s cubic-bezier(0.22,0.61,0.36,1); }
+    .ri-overlay.show .ri-modal { transform: translateX(0); }
+    .ri-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 26px 28px 20px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
     .ri-head h2 { font-family: 'Satoshi', sans-serif; font-size: 19px; font-weight: 700; color: var(--text-primary); margin: 0 0 4px; letter-spacing: -0.2px; }
     .ri-head p { font-size: 13.5px; color: var(--text-muted); margin: 0; line-height: 1.5; }
     .ri-close { width: 32px; height: 32px; flex-shrink: 0; border: none; background: transparent; border-radius: 8px; color: var(--text-muted); cursor: pointer; display: flex; align-items: center; justify-content: center; }
     .ri-close:hover { background: var(--neutral-100); color: var(--text-primary); }
     .ri-close svg { width: 18px; height: 18px; }
-    .ri-body { padding: 18px 24px 4px; }
-    .ri-field { margin-bottom: 16px; }
-    .ri-field label { display: block; font-size: 12.5px; font-weight: 700; color: var(--text-secondary); margin-bottom: 6px; }
+    .ri-body { padding: 24px 28px 8px; flex: 1; overflow-y: auto; }
+    .ri-field { margin-bottom: 18px; }
+    .ri-field label { display: block; font-size: 12.5px; font-weight: 700; color: var(--text-secondary); margin-bottom: 7px; }
     .ri-field input, .ri-field select, .ri-field textarea {
       width: 100%; font-family: inherit; font-size: 14px; color: var(--text-primary);
-      border: 1px solid var(--border-strong); border-radius: 10px; padding: 11px 13px;
-      background: var(--neutral-0); outline: none; transition: border-color 0.15s;
+      border: 1px solid var(--border-strong); border-radius: 10px; padding: 12px 13px;
+      background: var(--neutral-0); outline: none; transition: border-color 0.15s, box-shadow 0.15s;
     }
-    .ri-field input:focus, .ri-field select:focus, .ri-field textarea:focus { border-color: var(--primary-500); }
-    .ri-field textarea { resize: vertical; min-height: 70px; }
+    .ri-field input::placeholder, .ri-field textarea::placeholder { color: var(--text-muted); }
+    .ri-field input:hover, .ri-field select:hover, .ri-field textarea:hover { border-color: #9AA2B2; }
+    .ri-field input:focus, .ri-field select:focus, .ri-field textarea:focus { border-color: var(--primary-500); box-shadow: 0 0 0 3px rgba(26,111,224,0.12); }
+    .ri-field textarea { resize: vertical; min-height: 84px; }
+    /* Custom dropdown */
+    .ri-field select {
+      appearance: none; -webkit-appearance: none; -moz-appearance: none; cursor: pointer;
+      padding-right: 40px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%236B7588' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 13px center; background-size: 18px;
+    }
+    /* Custom date field */
+    .ri-field input[type="date"] {
+      position: relative; cursor: pointer; padding-right: 40px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%236B7588' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='4' width='18' height='18' rx='2'/%3E%3Cline x1='3' y1='9' x2='21' y2='9'/%3E%3Cline x1='8' y1='2' x2='8' y2='6'/%3E%3Cline x1='16' y1='2' x2='16' y2='6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 13px center; background-size: 18px;
+    }
+    .ri-field input[type="date"]::-webkit-calendar-picker-indicator {
+      position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; padding: 0; cursor: pointer; opacity: 0;
+    }
     .ri-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
     .ri-amount-wrap { position: relative; }
-    .ri-amount-wrap .ri-cur { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); font-size: 14px; font-weight: 700; color: var(--text-muted); }
+    .ri-amount-wrap .ri-cur { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); font-size: 14px; font-weight: 700; color: var(--text-muted); pointer-events: none; }
     .ri-amount-wrap input { padding-left: 26px; }
     .ri-note { display: flex; gap: 10px; padding: 12px 14px; background: var(--primary-50); border-radius: 10px; font-size: 13px; color: var(--text-secondary); line-height: 1.5; margin-top: 4px; }
     .ri-note svg { width: 18px; height: 18px; color: var(--primary-600); flex-shrink: 0; margin-top: 1px; }
-    .ri-foot { display: flex; align-items: center; justify-content: flex-end; gap: 12px; padding: 18px 24px 24px; }
+    .ri-foot { display: flex; align-items: center; justify-content: flex-end; gap: 12px; padding: 18px 28px; border-top: 1px solid var(--border); flex-shrink: 0; }
 
     /* Stats strip */
     .stats-strip {
@@ -1061,8 +1080,8 @@
 
   <script>
     // ─── Request invoice modal ───
-    function openReqInvoice(e) { if (e) e.preventDefault(); const m = document.getElementById('reqInvoiceModal'); if (m) { m.classList.add('open'); document.body.style.overflow = 'hidden'; } }
-    function closeReqInvoice() { const m = document.getElementById('reqInvoiceModal'); if (m) { m.classList.remove('open'); document.body.style.overflow = ''; } }
+    function openReqInvoice(e) { if (e) e.preventDefault(); const m = document.getElementById('reqInvoiceModal'); if (m) { m.classList.add('open'); document.body.style.overflow = 'hidden'; void m.offsetWidth; m.classList.add('show'); } }
+    function closeReqInvoice() { const m = document.getElementById('reqInvoiceModal'); if (m) { m.classList.remove('show'); document.body.style.overflow = ''; setTimeout(function () { m.classList.remove('open'); }, 320); } }
     function sendReqInvoice() {
       const name = document.getElementById('riContractor').value;
       const btn = document.querySelector('#reqInvoiceModal .ri-foot .primary-btn');
