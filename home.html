@@ -712,6 +712,81 @@
     .pill.pending { background: var(--warning-50); color: var(--warning-700); }
     .pill.overdue { background: var(--danger-50); color: var(--danger-700); }
     .pill.scheduled { background: var(--primary-50); color: var(--primary-700); }
+    .pill.approved { background: var(--success-50); color: var(--success-700); }
+
+    /* ── Section screens (empty workspace tabs) ── */
+    .wm-card { background: #fff; border-radius: 8px; padding: 0 0 16px; max-width: 100%; min-width: 0; }
+    .wm-card-heading { padding: 16px 20px 12px; display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+    .wm-card-heading h1 { color: #222224; font-family: 'Satoshi', sans-serif; font-size: 1.437rem; font-weight: 700; line-height: 1.3; margin-bottom: 4px; }
+    .wm-card-heading p { color: #85878d; font-family: 'Satoshi', sans-serif; font-size: 14px; font-weight: 500; line-height: 1.4; }
+    .wm-card .filter-bar { margin: 0; padding: 16px 20px; background: #fff; }
+    .wm-card .table-card { margin: 0 20px; border: none; border-radius: 0; }
+    .wm-head-actions { display: flex; align-items: center; gap: 10px; }
+    .cmp-check-btn { display: inline-flex; align-items: center; gap: 8px; padding: 11px 16px; border-radius: 10px; background: #fff; color: #222224; border: 1px solid var(--border-strong); font-family: inherit; font-size: 14px; font-weight: 700; cursor: pointer; text-decoration: none; transition: all .15s; }
+    .cmp-check-btn:hover { border-color: #9AA2B2; background: #F7F8FA; }
+    .cmp-check-btn svg { width: 18px; height: 18px; }
+
+    .filter-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
+    .search { width: 500px; max-width: 100%; position: relative; }
+    .search input { width: 100%; padding: 11px 14px 11px 40px; border: 1px solid var(--border-strong); border-radius: 8px; font-family: inherit; font-size: 14px; background: var(--neutral-0) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239AA2B2' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='11' cy='11' r='8'/><path d='m21 21-4.3-4.3'/></svg>") no-repeat 14px center / 16px; outline: none; transition: border-color .15s, box-shadow .15s; }
+    .search input::placeholder { color: var(--text-muted); }
+    .search input:focus { border-color: var(--primary-500); box-shadow: 0 0 0 4px var(--primary-50); }
+
+    .filter-dd { position: relative; }
+    .dd-trigger { display: inline-flex; align-items: center; justify-content: space-between; gap: 12px; min-width: 160px; padding: 11px 14px; border: 1px solid var(--border-strong); background: var(--neutral-0); border-radius: 8px; font-family: inherit; font-size: 14px; font-weight: 600; color: var(--text-primary); cursor: pointer; transition: all .15s; }
+    .dd-trigger:hover { border-color: var(--neutral-400); }
+    .dd-trigger.open { border-color: var(--primary-500); box-shadow: 0 0 0 4px var(--primary-50); }
+    .dd-trigger .chev { width: 16px; height: 16px; color: var(--text-muted); transition: transform .2s; }
+    .dd-trigger.open .chev { transform: rotate(180deg); }
+    .dd-menu { position: absolute; top: calc(100% + 6px); right: 0; min-width: 220px; background: var(--neutral-0); border: 1px solid var(--border); border-radius: 10px; padding: 6px; box-shadow: 0 12px 28px -8px rgba(34,39,51,.15), 0 4px 8px -4px rgba(34,39,51,.08); display: none; z-index: 50; }
+    .dd-menu.open { display: block; }
+    .dd-item { display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 9px 12px; border: none; background: transparent; border-radius: 6px; font-family: inherit; font-size: 14px; font-weight: 500; color: var(--text-primary); cursor: pointer; text-align: left; transition: background .1s; }
+    .dd-item:hover { background: var(--neutral-50); }
+    .dd-item.active { background: var(--primary-50); color: var(--primary-700); font-weight: 700; }
+    .dd-item .check { width: 16px; height: 16px; color: var(--primary-600); opacity: 0; }
+    .dd-item.active .check { opacity: 1; }
+    .dd-item-label { display: flex; align-items: center; gap: 8px; }
+    .dd-count { color: var(--text-muted); font-weight: 500; font-size: 12.5px; margin-left: 6px; }
+    .dd-item.active .dd-count { color: var(--primary-600); }
+    .dropdown-btn { display: inline-flex; align-items: center; gap: 8px; padding: 11px 14px; border: 1px solid var(--border-strong); background: var(--neutral-0); border-radius: 8px; font-family: inherit; font-size: 14px; font-weight: 600; color: var(--text-primary); cursor: pointer; transition: all .15s; }
+    .dropdown-btn:hover { border-color: var(--neutral-400); }
+    .dropdown-btn svg { width: 16px; height: 16px; color: var(--text-muted); }
+    .filter-group { display: flex; align-items: center; gap: 10px; }
+
+    .table-card { background: #fff; border-radius: 8px; overflow: hidden; }
+    .table-card table { width: 100%; border-collapse: collapse; }
+    .table-card thead { background: #fafafa; border-bottom: 1px solid #f0f1f1; }
+    .table-card thead th { text-align: left; padding: 12px 24px; font-family: 'Satoshi', sans-serif; font-size: 12.5px; font-weight: 500; color: #85878d; }
+    .table-card thead th.text-right { text-align: right; }
+    .table-card tbody tr { border-bottom: 1px solid #f5f5f5; }
+    .table-card tbody tr:last-child { border-bottom: none; }
+    .table-card tbody td { padding: 22px 24px; font-family: 'Satoshi', sans-serif; font-size: 14px; font-weight: 500; color: #404145; vertical-align: middle; border: none; }
+    .cell-name { display: flex; align-items: center; gap: 12px; min-width: 0; }
+    .cell-avatar { width: 36px; height: 36px; background: #2684ff; border-radius: 50%; color: #fff; display: flex; align-items: center; justify-content: center; font-family: 'Satoshi', sans-serif; font-size: 14px; font-weight: 600; flex-shrink: 0; }
+    .cell-name-text { display: flex; flex-direction: column; }
+    .cell-name-text strong { font-family: 'Satoshi', sans-serif; font-size: 14px; font-weight: 700; color: #222224; }
+    .cell-name-text small { font-family: 'Satoshi', sans-serif; font-size: 12px; font-weight: 500; color: #85878d; margin-top: 1px; }
+    .row-action { width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center; border-radius: 8px; color: var(--text-muted); cursor: pointer; transition: all .15s; background: transparent; border: none; }
+    .row-action:hover { background: var(--neutral-100); color: var(--text-primary); }
+    .row-action svg { width: 18px; height: 18px; }
+    .leave-type-tag { display: inline-flex; padding: 4px 10px; border-radius: 8px; background: var(--neutral-100); color: var(--text-secondary); font-size: 12.5px; font-weight: 600; }
+    .stats-strip { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; padding: 4px 20px 16px; }
+    .stats-strip .stat-card { border: 1px solid var(--border); }
+    .section-h { padding: 4px 20px 12px; font-family: 'Satoshi', sans-serif; font-size: 15px; font-weight: 700; color: var(--text-primary); }
+
+    /* Empty state inside a section table */
+    .table-empty { padding: 56px 24px; text-align: center; }
+    .table-empty-icon { width: 56px; height: 56px; margin: 0 auto 16px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: var(--primary-50); color: var(--primary-600); }
+    .table-empty-icon svg { width: 26px; height: 26px; }
+    .table-empty h3 { font-family: 'Satoshi', sans-serif; font-size: 16px; font-weight: 700; color: var(--text-primary); margin-bottom: 6px; }
+    .table-empty p { font-size: 13.5px; color: var(--text-muted); max-width: 360px; margin: 0 auto 18px; line-height: 1.5; }
+
+    /* Compliance iframe section */
+    .cmp-intro { padding: 4px 0 18px; }
+    .cmp-intro h2 { font-family: 'Satoshi', sans-serif; font-size: 1.437rem; font-weight: 700; color: #222224; margin-bottom: 6px; }
+    .cmp-intro p { font-size: 14px; color: #85878d; line-height: 1.5; max-width: 720px; }
+    .cmp-frame { background: #fff; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; height: 560px; }
+    .cmp-frame iframe { width: 100%; height: 100%; border: 0; }
 
     /* Time bars */
     .time-bar {
@@ -1035,7 +1110,7 @@
 <path d="M7.75 12L10.58 14.83L16.25 9.17004" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-arrow-right" viewBox="0 0 24 24" fill="none"><path d="M14.4301 5.92993L20.5001 11.9999L14.4301 18.0699" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M3.5 12H20.33" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-info-circle" viewBox="0 0 24 24" fill="none"><path d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M12 8V13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M11.9945 16H12.0035" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-lock" viewBox="0 0 24 24" fill="none"><path d="M6 10V8c0-3.31 1-6 6-6s6 2.69 6 6v2M17 22H7c-4 0-5-1-5-5v-2c0-4 1-5 5-5h10c4 0 5 1 5 5v2c0 4-1 5-5 5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M15.996 16h.01M11.995 16h.01M7.995 16h.008" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol></svg><!-- /wm-icon-sprite -->
+<path d="M11.9945 16H12.0035" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-lock" viewBox="0 0 24 24" fill="none"><path d="M6 10V8c0-3.31 1-6 6-6s6 2.69 6 6v2M17 22H7c-4 0-5-1-5-5v-2c0-4 1-5 5-5h10c4 0 5 1 5 5v2c0 4-1 5-5 5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M15.996 16h.01M11.995 16h.01M7.995 16h.008" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-add" viewBox="0 0 24 24" fill="none"><path d="M6 12H18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 18V6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-more" viewBox="0 0 24 24" fill="none"><circle cx="5" cy="12" r="2" fill="currentColor"/><circle cx="12" cy="12" r="2" fill="currentColor"/><circle cx="19" cy="12" r="2" fill="currentColor"/></symbol><symbol id="ic-calendar" viewBox="0 0 24 24" fill="none"><path d="M8 2V5" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 2V5" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/><path d="M3.5 9.08997H20.5" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 8.5V17C21 20 19.5 22 16 22H8C4.5 22 3 20 3 17V8.5C3 5.5 4.5 3.5 8 3.5H16C19.5 3.5 21 5.5 21 8.5Z" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/><path d="M15.6947 13.7H15.7037" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M15.6947 16.7H15.7037" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M11.9955 13.7H12.0045" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M11.9955 16.7H12.0045" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.29431 13.7H8.30329" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.29431 16.7H8.30329" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol></svg><!-- /wm-icon-sprite -->
 
   <div class="app">
 
@@ -1053,25 +1128,25 @@
           </span>
           Home
         </a>
-        <a href="#" class="nav-link locked" data-tab="freelancers">
+        <a href="#" class="nav-link" data-tab="freelancers">
           <span class="nav-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-profile-2user"/></svg>
           </span>
           Freelancers
         </a>
-        <a href="#" class="nav-link locked" data-tab="invoices">
+        <a href="#" class="nav-link" data-tab="invoices">
           <span class="nav-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-receipt-text"/></svg>
           </span>
           Invoices
         </a>
-        <a href="#" class="nav-link locked" data-tab="time">
+        <a href="#" class="nav-link" data-tab="time">
           <span class="nav-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-clock"/></svg>
           </span>
           Time
         </a>
-        <a href="#" class="nav-link locked" data-tab="compliance">
+        <a href="#" class="nav-link" data-tab="compliance">
           <span class="nav-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-shield-tick"/></svg>
           </span>
@@ -1167,22 +1242,155 @@
        </div>
 
        <!-- ── Locked tab empty state ── -->
-       <div id="lockedView" hidden>
-         <div class="locked-state">
-           <div class="locked-state-icon">
-             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-lock"/></svg>
+       <!-- ── FREELANCERS (empty) ── -->
+       <div id="freelancersView" hidden>
+         <div class="wm-card">
+           <div class="wm-card-heading">
+             <div>
+               <h1>Freelancers</h1>
+               <p>Manage your team of freelancers and full-time employees.</p>
+             </div>
+             <div class="wm-head-actions">
+               <a href="compliance.html" class="cmp-check-btn">
+                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-shield-tick"/></svg>
+                 Run compliance check
+               </a>
+               <button class="primary-btn" onclick="location.href='add-freelancer.html'">
+                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-add"/></svg>
+                 Add freelancer
+               </button>
+             </div>
            </div>
-           <h2 id="lockedTitle">Finish onboarding to unlock this</h2>
-           <p id="lockedDesc">Complete your account setup to start using this section.</p>
-           <div class="locked-state-actions">
-             <button type="button" class="ls-btn blocked" id="lockedBlockedBtn" disabled>
-               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-lock"/></svg>
-               <span id="lockedBlockedLabel">Locked</span>
+           <div class="filter-bar">
+             <div class="search"><input type="text" placeholder="Search by name or role"></div>
+             <div class="filter-dd">
+               <button class="dd-trigger"><span>All status</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-arrow-down"/></svg></button>
+             </div>
+           </div>
+           <div class="table-card">
+             <table>
+               <thead><tr><th>Name</th><th>Contract type</th><th>Rate</th><th>Status</th><th></th></tr></thead>
+               <tbody>
+                 <tr><td colspan="5">
+                   <div class="table-empty">
+                     <div class="table-empty-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-profile-2user"/></svg></div>
+                     <h3>No freelancers yet</h3>
+                     <p>Add your first freelancer to start managing contracts, rates and payments in one place.</p>
+                     <button class="primary-btn" onclick="location.href='add-freelancer.html'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-add"/></svg> Add freelancer</button>
+                   </div>
+                 </td></tr>
+               </tbody>
+             </table>
+           </div>
+         </div>
+       </div>
+
+       <!-- ── INVOICES (empty) ── -->
+       <div id="invoicesView" hidden>
+         <div class="wm-card">
+           <div class="wm-card-heading">
+             <div>
+               <h1>Freelancer invoices</h1>
+               <p>Review and pay invoices submitted by your freelancers.</p>
+             </div>
+             <div class="wm-head-actions">
+               <button type="button" class="primary-btn">
+                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-add"/></svg>
+                 Request invoice
+               </button>
+             </div>
+           </div>
+           <div class="filter-bar">
+             <div class="search"><input type="text" placeholder="Search by freelancer name or invoice"></div>
+             <div class="filter-dd">
+               <button class="dd-trigger"><span>All status</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-arrow-down"/></svg></button>
+             </div>
+           </div>
+           <div class="table-card">
+             <table>
+               <thead><tr><th>Invoice</th><th>Freelancer</th><th>Submitted</th><th>Due</th><th class="text-right">Amount</th><th>Status</th><th></th></tr></thead>
+               <tbody>
+                 <tr><td colspan="7">
+                   <div class="table-empty">
+                     <div class="table-empty-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-receipt-text"/></svg></div>
+                     <h3>No invoices yet</h3>
+                     <p>Invoices submitted by your freelancers will appear here. You can also request one to get started.</p>
+                     <button type="button" class="primary-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-add"/></svg> Request invoice</button>
+                   </div>
+                 </td></tr>
+               </tbody>
+             </table>
+           </div>
+         </div>
+       </div>
+
+       <!-- ── TIME (empty) ── -->
+       <div id="timeView" hidden>
+         <div class="wm-card">
+           <div class="wm-card-heading">
+             <div>
+               <h1>Leaves</h1>
+               <p>Manage and track your team's time and leaves.</p>
+             </div>
+             <button class="primary-btn">
+               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-add"/></svg>
+               Request leave
              </button>
-             <a href="client-onboarding.html" class="ls-btn primary">
-               Complete onboarding
-               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-arrow-right"/></svg>
-             </a>
+           </div>
+           <div class="stats-strip">
+             <div class="stat-card"><div class="stat-title">Leaves taken this month</div><div class="stat-value">0</div><div class="stat-sub">freelancers on leave</div></div>
+             <div class="stat-card"><div class="stat-title">Upcoming leaves</div><div class="stat-value">0</div><div class="stat-sub">scheduled leaves</div></div>
+             <div class="stat-card"><div class="stat-title">Leaves pending for approval</div><div class="stat-value">0</div><div class="stat-sub">awaiting approval</div></div>
+           </div>
+           <div class="section-h">Leave requests</div>
+           <div class="filter-bar">
+             <div class="search"><input type="text" placeholder="Search"></div>
+             <div class="filter-group">
+               <button class="dropdown-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-calendar"/></svg> All time <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-arrow-down"/></svg></button>
+               <button class="dropdown-btn">All status <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-arrow-down"/></svg></button>
+             </div>
+           </div>
+           <div class="table-card">
+             <table>
+               <thead><tr><th>Dates</th><th>Leave type</th><th>Reason</th><th>Status</th><th>Actions</th></tr></thead>
+               <tbody>
+                 <tr><td colspan="5">
+                   <div class="table-empty">
+                     <div class="table-empty-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-clock"/></svg></div>
+                     <h3>No leave requests yet</h3>
+                     <p>Time off and leave requests from your freelancers will show up here for review and approval.</p>
+                     <button class="primary-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-add"/></svg> Request leave</button>
+                   </div>
+                 </td></tr>
+               </tbody>
+             </table>
+           </div>
+         </div>
+       </div>
+
+       <!-- ── COMPLIANCE (empty) ── -->
+       <div id="complianceView" hidden>
+         <div class="wm-card">
+           <div class="wm-card-heading">
+             <div>
+               <h1>Compliance</h1>
+               <p>Run compliance checks and keep your contractor base audit-ready.</p>
+             </div>
+           </div>
+           <div class="table-card">
+             <table>
+               <thead><tr><th>Document</th><th>Freelancer</th><th>Type</th><th>Status</th><th></th></tr></thead>
+               <tbody>
+                 <tr><td colspan="5">
+                   <div class="table-empty">
+                     <div class="table-empty-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-shield-tick"/></svg></div>
+                     <h3>Nothing to review yet</h3>
+                     <p>Once you add freelancers, their compliance documents and risk checks will appear here.</p>
+                     <button class="primary-btn" onclick="location.href='add-freelancer.html'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-add"/></svg> Add freelancer</button>
+                   </div>
+                 </td></tr>
+               </tbody>
+             </table>
            </div>
          </div>
        </div>
@@ -1599,45 +1807,27 @@
   <script>
     (function () {
       const tabs = {
-        home: { title: 'Good Morning, Aman!' },
-        freelancers: {
-          title: 'Freelancers',
-          heading: 'Freelancers are locked',
-          desc: 'Finish your account onboarding to invite freelancers, manage their profiles, and start sending contracts.',
-          blocked: 'Invite freelancer'
-        },
-        invoices: {
-          title: 'Invoices',
-          heading: 'Invoices are locked',
-          desc: 'Finish your account onboarding to raise invoices, track approvals, and keep a record of every payout.',
-          blocked: 'Create invoice'
-        },
-        time: {
-          title: 'Time',
-          heading: 'Time tracking is locked',
-          desc: 'Finish your account onboarding to log hours, review timesheets, and approve your freelancers’ time.',
-          blocked: 'Log time'
-        },
-        compliance: {
-          title: 'Compliance',
-          heading: 'Compliance is locked',
-          desc: 'Finish your account onboarding to manage tax documents, run compliance checks, and stay audit-ready.',
-          blocked: 'View compliance'
-        }
+        home:        { title: 'Good Morning, Aman!', view: null },
+        freelancers: { title: 'Freelancers',  view: 'freelancersView' },
+        invoices:    { title: 'Invoices',     view: 'invoicesView' },
+        time:        { title: 'Time',         view: 'timeView' },
+        compliance:  { title: 'Compliance',   view: 'complianceView' }
       };
 
       const links = document.querySelectorAll('.nav-link[data-tab]');
       const homeView = document.getElementById('homeView');
       const dashboardView = document.getElementById('dashboardView');
-      const lockedView = document.getElementById('lockedView');
       const headerTitle = document.querySelector('.header h1');
-      const lockedTitle = document.getElementById('lockedTitle');
-      const lockedDesc = document.getElementById('lockedDesc');
-      const lockedBlockedLabel = document.getElementById('lockedBlockedLabel');
+      const sectionViews = ['freelancersView', 'invoicesView', 'timeView', 'complianceView']
+        .map(id => document.getElementById(id));
 
       // Onboarding not yet complete: Home shows the setup checklist.
       // After onboarding, set this to true to reveal the dashboard on Home.
       const onboardingComplete = false;
+
+      function hideAllSections() {
+        sectionViews.forEach(v => { if (v) v.hidden = true; });
+      }
 
       links.forEach(link => {
         link.addEventListener('click', e => {
@@ -1647,8 +1837,8 @@
           links.forEach(l => l.classList.remove('active'));
           link.classList.add('active');
 
+          hideAllSections();
           if (key === 'home') {
-            lockedView.hidden = true;
             if (onboardingComplete) {
               homeView.hidden = true;
               dashboardView.hidden = false;
@@ -1656,16 +1846,13 @@
               homeView.hidden = false;
               dashboardView.hidden = true;
             }
-            headerTitle.textContent = cfg.title;
           } else {
             homeView.hidden = true;
             dashboardView.hidden = true;
-            lockedView.hidden = false;
-            headerTitle.textContent = cfg.title;
-            lockedTitle.textContent = cfg.heading;
-            lockedDesc.textContent = cfg.desc;
-            lockedBlockedLabel.textContent = cfg.blocked;
+            const v = document.getElementById(cfg.view);
+            if (v) v.hidden = false;
           }
+          headerTitle.textContent = cfg.title;
           window.scrollTo({ top: 0 });
         });
       });
