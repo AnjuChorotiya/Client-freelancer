@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wisemonk UI — Component Library</title>
+<link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,600,700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="wisemonk-ui.css">
+<style>
+  /* showcase chrome only — not part of the library */
+  body { margin: 0; font-family: var(--wm-font); color: var(--wm-text-primary); background: var(--wm-neutral-50); }
+  .doc-shell { display: flex; min-height: 100vh; }
+  .doc-nav { position: sticky; top: 0; align-self: flex-start; width: 232px; height: 100vh; overflow-y: auto; padding: 26px 18px; background: #fff; border-right: 1px solid var(--wm-border); flex-shrink: 0; }
+  .doc-brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 16px; margin-bottom: 4px; }
+  .doc-brand .dot { width: 26px; height: 26px; border-radius: 8px; background: var(--wm-primary-500); display: inline-flex; align-items: center; justify-content: center; color: #fff; }
+  .doc-brand .dot svg { width: 16px; height: 16px; }
+  .doc-ver { font-size: 12px; color: var(--wm-text-muted); margin: 0 0 22px 36px; }
+  .doc-nav a { display: block; padding: 7px 12px; border-radius: 8px; color: var(--wm-text-secondary); text-decoration: none; font-size: 13.5px; font-weight: 600; }
+  .doc-nav a:hover { background: var(--wm-neutral-100); color: var(--wm-text-primary); }
+  .doc-main { flex: 1; min-width: 0; padding: 36px 44px 120px; max-width: 1000px; }
+  .doc-hero h1 { font-size: 34px; letter-spacing: -0.6px; margin: 0 0 8px; }
+  .doc-hero p { font-size: 16px; color: var(--wm-text-secondary); max-width: 640px; line-height: 1.6; margin: 0 0 18px; }
+  section { padding: 38px 0 8px; border-top: 1px solid var(--wm-border); margin-top: 28px; }
+  section:first-of-type { border-top: none; }
+  section > h2 { font-size: 22px; letter-spacing: -0.3px; margin: 0 0 4px; }
+  section > .sec-desc { font-size: 14px; color: var(--wm-text-muted); margin: 0 0 22px; }
+  .demo { background: #fff; border: 1px solid var(--wm-border); border-radius: var(--wm-radius-lg); padding: 26px; margin-bottom: 16px; }
+  .demo-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+  .demo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; }
+  .demo-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--wm-text-muted); margin: 0 0 12px; }
+  .demo + .demo { margin-top: 0; }
+  .icon-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 4px; }
+  .icon-cell { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 16px 6px; border-radius: 10px; text-align: center; }
+  .icon-cell:hover { background: var(--wm-neutral-50); }
+  .icon-cell svg { width: 24px; height: 24px; color: var(--wm-text-secondary); }
+  .icon-cell code { font-size: 10.5px; color: var(--wm-text-muted); word-break: break-all; }
+  .swatch-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(108px, 1fr)); gap: 10px; }
+  .swatch { border: 1px solid var(--wm-border); border-radius: 10px; overflow: hidden; }
+  .swatch .chip { height: 56px; }
+  .swatch .meta { padding: 8px 10px; font-size: 11px; }
+  .swatch .meta b { display: block; font-size: 12px; }
+  .swatch .meta span { color: var(--wm-text-muted); }
+  @media (max-width: 860px) { .doc-nav { display: none; } .doc-main { padding: 28px 20px 100px; } }
+</style>
+</head>
+<body>
+
+<!-- inline sprite reference target: served externally; over file:// inline the symbols instead -->
+
+<div class="doc-shell">
+  <aside class="doc-nav">
+    <div class="doc-brand"><span class="dot"><svg><use href="iconsax-sprite.svg#ic-flash"/></svg></span> Wisemonk UI</div>
+    <p class="doc-ver">v1.0 · component library</p>
+    <a href="#colors">Colors</a>
+    <a href="#typography">Typography</a>
+    <a href="#icons">Icons</a>
+    <a href="#buttons">Buttons</a>
+    <a href="#pills">Pills &amp; avatars</a>
+    <a href="#cards">Cards &amp; stats</a>
+    <a href="#banner">Banner</a>
+    <a href="#forms">Form fields</a>
+    <a href="#options">Option cards</a>
+    <a href="#toggle">Toggle &amp; note</a>
+    <a href="#breakdown">Breakdown</a>
+    <a href="#table">Tables</a>
+    <a href="#compare">Comparison</a>
+    <a href="#modal">Modal &amp; drawer</a>
+    <a href="#cmdk">Command palette</a>
+    <a href="#toast">Toast</a>
+  </aside>
+
+  <main class="doc-main">
+    <div class="doc-hero">
+      <h1>Wisemonk UI</h1>
+      <p>A portable, framework-free component library extracted from the Wisemonk portal. Drop <code>wisemonk-ui.css</code> + <code>wisemonk-ui.js</code> + the icon sprite into any project. Everything is namespaced (<code>wm-</code> classes, <code>--wm-</code> tokens) so nothing collides.</p>
+      <div class="demo-row">
+        <button class="wm-btn wm-btn--primary" data-wm-open="#demoModal"><svg class="wm-ic"><use href="iconsax-sprite.svg#ic-flash"/></svg> Try a modal</button>
+        <button class="wm-btn wm-btn--outline" data-wm-cmdk><svg class="wm-ic"><use href="iconsax-sprite.svg#ic-search-normal"/></svg> Command palette <span class="wm-kbd" data-wm-kbd-meta>Ctrl K</span></button>
+        <button class="wm-btn wm-btn--secondary" onclick="WMUI.toast('Hello from Wisemonk UI', {type:'success'})">Fire a toast</button>
+      </div>
+    </div>
+
+    <!-- COLORS -->
+    <section id="colors">
+      <h2>Colors</h2>
+      <p class="sec-desc">Design tokens exposed as CSS custom properties on <code>:root</code>.</p>
+      <div class="demo">
+        <p class="demo-label">Primary</p>
+        <div class="swatch-grid" id="sw-primary"></div>
+      </div>
+      <div class="demo">
+        <p class="demo-label">Neutral</p>
+        <div class="swatch-grid" id="sw-neutral"></div>
+      </div>
+      <div class="demo">
+        <p class="demo-label">Semantic</p>
+        <div class="swatch-grid" id="sw-semantic"></div>
+      </div>
+    </section>
+
+    <!-- TYPOGRAPHY -->
+    <section id="typography">
+      <h2>Typography</h2>
+      <p class="sec-desc">Satoshi for UI, Open Sans Light for uppercase tags.</p>
+      <div class="demo">
+        <div class="wm-h1">Heading 1 — Satoshi Bold</div>
+        <div class="wm-h2" style="margin-top:14px">Heading 2 — Satoshi Bold</div>
+        <div class="wm-h3" style="margin-top:14px">Heading 3 — Satoshi Bold</div>
+        <div class="wm-h4" style="margin-top:14px">Heading 4 — Satoshi Bold</div>
+        <p class="wm-text" style="margin:16px 0 0">Body text uses <code>.wm-text</code> — Satoshi Medium at 14px for comfortable reading.</p>
+        <p class="wm-text wm-text-muted" style="margin:8px 0 0">Muted body text with <code>.wm-text-muted</code>.</p>
+        <div class="wm-label" style="margin-top:14px">Form label — .wm-label</div>
+        <div class="wm-tag" style="margin-top:14px">Uppercase tag — .wm-tag</div>
+      </div>
+    </section>
+
+    <!-- ICONS -->
+    <section id="icons">
+      <h2>Icons</h2>
+      <p class="sec-desc">Iconsax (Vuesax linear), one shared SVG sprite. Reference with <code>&lt;svg class="wm-ic"&gt;&lt;use href="#ic-NAME"/&gt;&lt;/svg&gt;</code>.</p>
+      <div class="demo">
+        <div class="icon-grid" id="icon-grid"></div>
+      </div>
+    </section>
+
+    <!-- BUTTONS -->
+    <section id="buttons">
+      <h2>Buttons</h2>
+      <p class="sec-desc"><code>.wm-btn</code> + a variant modifier. Add <code>--sm</code>/<code>--lg</code>/<code>--block</code> for size.</p>
+      <div class="demo">
+        <div class="demo-row">
+          <button class="wm-btn wm-btn--primary">Primary</button>
+          <button class="wm-btn wm-btn--secondary">Secondary</button>
+          <button class="wm-btn wm-btn--outline">Outline</button>
+          <button class="wm-btn wm-btn--ghost">Ghost</button>
+          <button class="wm-btn wm-btn--dark">Dark</button>
+          <button class="wm-btn wm-btn--success">Success</button>
+          <button class="wm-btn wm-btn--danger">Danger</button>
+        </div>
+        <div class="demo-row" style="margin-top:14px">
+          <button class="wm-btn wm-btn--primary"><svg class="wm-ic"><use href="iconsax-sprite.svg#ic-add"/></svg> With icon</button>
+          <button class="wm-btn wm-btn--primary wm-btn--sm">Small</button>
+          <button class="wm-btn wm-btn--primary wm-btn--lg">Large</button>
+          <button class="wm-btn wm-btn--primary" disabled>Disabled</button>
+          <button class="wm-icon-btn"><svg><use href="iconsax-sprite.svg#ic-more"/></svg></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- PILLS + AVATARS -->
+    <section id="pills">
+      <h2>Pills &amp; avatars</h2>
+      <p class="sec-desc">Status badges and identity avatars.</p>
+      <div class="demo">
+        <div class="demo-row">
+          <span class="wm-pill wm-pill--success wm-pill--dot">Active</span>
+          <span class="wm-pill wm-pill--warning wm-pill--dot">Pending</span>
+          <span class="wm-pill wm-pill--danger wm-pill--dot">Overdue</span>
+          <span class="wm-pill wm-pill--info">Draft</span>
+          <span class="wm-pill wm-pill--neutral">Archived</span>
+        </div>
+        <div class="demo-row" style="margin-top:16px">
+          <span class="wm-avatar wm-avatar--sm">RS</span>
+          <span class="wm-avatar">AK</span>
+          <span class="wm-avatar wm-avatar--lg">MJ</span>
+          <span class="wm-avatar wm-avatar--ink">WM</span>
+          <span class="wm-avatar wm-avatar--muted">??</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- CARDS -->
+    <section id="cards">
+      <h2>Cards &amp; stats</h2>
+      <p class="sec-desc">Container surfaces and KPI tiles.</p>
+      <div class="demo-grid">
+        <div class="wm-card">
+          <div class="wm-stat-title">Total contractors</div>
+          <div class="wm-stat-value">48</div>
+          <div class="wm-stat-sub">+6 added this month</div>
+        </div>
+        <div class="wm-card wm-card--raised">
+          <div class="wm-stat-title">Pending payouts</div>
+          <div class="wm-stat-value">$84,200</div>
+          <div class="wm-stat-sub">3 invoices awaiting approval</div>
+        </div>
+        <div class="wm-card">
+          <div class="wm-stat-title">Compliance</div>
+          <div class="wm-stat-value">100%</div>
+          <div class="wm-stat-sub">All documents verified</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BANNER -->
+    <section id="banner">
+      <h2>Banner</h2>
+      <p class="sec-desc">Promo / upsell strip with actions.</p>
+      <div class="demo" style="padding:0;border:none;background:transparent">
+        <div class="wm-banner">
+          <div class="wm-banner-body">
+            <div class="wm-banner-title">Hiring full-time in India?</div>
+            <div class="wm-banner-desc">Switch to our Employer of Record and we'll handle payroll, benefits and compliance end-to-end.</div>
+          </div>
+          <div class="wm-banner-actions">
+            <button class="wm-btn wm-btn--ghost">Learn more</button>
+            <button class="wm-btn wm-btn--dark">Switch to COR</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FORMS -->
+    <section id="forms">
+      <h2>Form fields</h2>
+      <p class="sec-desc">Inputs, selects (custom chevron), date (custom calendar icon), textarea and currency prefix.</p>
+      <div class="demo" style="max-width:520px">
+        <div class="wm-field">
+          <label>Full name</label>
+          <input class="wm-input" type="text" placeholder="Rahul Sharma">
+        </div>
+        <div class="wm-field-row">
+          <div class="wm-field">
+            <label>Country</label>
+            <select class="wm-select">
+              <option>India</option><option>United States</option><option>Germany</option>
+            </select>
+          </div>
+          <div class="wm-field">
+            <label>Start date</label>
+            <input class="wm-input" type="date">
+          </div>
+        </div>
+        <div class="wm-field">
+          <label>Amount</label>
+          <div class="wm-input-wrap">
+            <span class="wm-input-prefix">$</span>
+            <input class="wm-input" type="number" placeholder="12,450">
+          </div>
+        </div>
+        <div class="wm-field" style="margin-bottom:0">
+          <label>Notes</label>
+          <textarea class="wm-textarea" placeholder="Add a note for this payout…"></textarea>
+        </div>
+      </div>
+    </section>
+
+    <!-- OPTION CARDS -->
+    <section id="options">
+      <h2>Option cards</h2>
+      <p class="sec-desc">Selectable cards. Wrap in <code>[data-wm-option-group]</code> for single-select radio behavior.</p>
+      <div class="demo" style="max-width:560px">
+        <div class="wm-option-cards" data-wm-option-group>
+          <button class="wm-option-card selected" data-value="auto">
+            <span class="wm-option-card-icon"><svg><use href="iconsax-sprite.svg#ic-receipt-text"/></svg></span>
+            <span class="wm-option-card-body">
+              <span class="wm-option-card-title">Auto-generate each month</span>
+              <span class="wm-option-card-desc">We raise invoices on your behalf on the 1st of every month.</span>
+            </span>
+            <span class="wm-option-card-radio"></span>
+          </button>
+          <button class="wm-option-card" data-value="upload">
+            <span class="wm-option-card-icon"><svg><use href="iconsax-sprite.svg#ic-document-upload"/></svg></span>
+            <span class="wm-option-card-body">
+              <span class="wm-option-card-title">Contractors upload their own</span>
+              <span class="wm-option-card-desc">Each contractor submits an invoice you review before paying.</span>
+            </span>
+            <span class="wm-option-card-radio"></span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOGGLE + NOTE -->
+    <section id="toggle">
+      <h2>Toggle &amp; note</h2>
+      <p class="sec-desc">Segmented control and inline info notes.</p>
+      <div class="demo">
+        <div class="wm-toggle" data-wm-toggle>
+          <button class="active" data-value="monthly">Monthly</button>
+          <button data-value="yearly">Yearly</button>
+        </div>
+        <div style="height:18px"></div>
+        <div class="wm-note" style="margin-bottom:12px"><svg><use href="iconsax-sprite.svg#ic-info-circle"/></svg> Payouts settle in 1–2 business days once approved.</div>
+        <div class="wm-note wm-note--success" style="margin-bottom:12px"><svg><use href="iconsax-sprite.svg#ic-tick-circle"/></svg> All compliance documents are verified.</div>
+        <div class="wm-note wm-note--warning" style="margin-bottom:12px"><svg><use href="iconsax-sprite.svg#ic-warning-2"/></svg> One contractor is missing a tax form.</div>
+        <div class="wm-note wm-note--danger"><svg><use href="iconsax-sprite.svg#ic-danger"/></svg> This invoice is 14 days overdue.</div>
+      </div>
+    </section>
+
+    <!-- BREAKDOWN -->
+    <section id="breakdown">
+      <h2>Breakdown</h2>
+      <p class="sec-desc">Line items with a highlighted total.</p>
+      <div class="demo" style="max-width:420px">
+        <div class="wm-breakdown">
+          <div class="wm-breakdown-row"><span>Invoice amount</span><span>$12,450.00</span></div>
+          <div class="wm-breakdown-row"><span>Bank fee (0.5%)</span><span>−$62.25</span></div>
+          <div class="wm-breakdown-row wm-breakdown-total"><span>You receive</span><span>$12,387.75</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TABLE -->
+    <section id="table">
+      <h2>Tables</h2>
+      <p class="sec-desc">Standard data table with hover rows.</p>
+      <div class="wm-card" style="padding:0;overflow:hidden">
+        <table class="wm-table wm-table--rows-clickable">
+          <thead><tr><th>Contractor</th><th>Country</th><th>Status</th><th>Amount</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Rahul Sharma</strong></td><td>India</td><td><span class="wm-pill wm-pill--success wm-pill--dot">Active</span></td><td><strong>$4,200</strong></td></tr>
+            <tr><td><strong>Aisha Khan</strong></td><td>UAE</td><td><span class="wm-pill wm-pill--warning wm-pill--dot">Pending</span></td><td><strong>$3,800</strong></td></tr>
+            <tr><td><strong>Marco Jansen</strong></td><td>Germany</td><td><span class="wm-pill wm-pill--danger wm-pill--dot">Overdue</span></td><td><strong>$5,100</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- COMPARE -->
+    <section id="compare">
+      <h2>Comparison table</h2>
+      <p class="sec-desc">Two-column feature comparison with a highlighted recommended column.</p>
+      <div class="demo">
+        <table class="wm-compare">
+          <thead><tr><th class="wm-col-feat"></th><th class="wm-col-a">Contractor</th><th class="wm-col-b">Employer of Record</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="wm-col-feat">Payroll &amp; taxes</td>
+              <td class="wm-col-a"><span class="wm-compare-cell"><svg class="no"><use href="iconsax-sprite.svg#ic-close-circle"/></svg> Self-managed</span></td>
+              <td class="wm-col-b"><span class="wm-compare-cell"><svg class="yes"><use href="iconsax-sprite.svg#ic-tick-circle"/></svg> Fully handled</span></td>
+            </tr>
+            <tr>
+              <td class="wm-col-feat">Benefits</td>
+              <td class="wm-col-a"><span class="wm-compare-cell"><svg class="no"><use href="iconsax-sprite.svg#ic-close-circle"/></svg> Not included</span></td>
+              <td class="wm-col-b"><span class="wm-compare-cell"><svg class="yes"><use href="iconsax-sprite.svg#ic-tick-circle"/></svg> Health + PF</span></td>
+            </tr>
+            <tr>
+              <td class="wm-col-feat">Misclassification risk</td>
+              <td class="wm-col-a"><span class="wm-compare-cell"><svg class="no"><use href="iconsax-sprite.svg#ic-close-circle"/></svg> On you</span></td>
+              <td class="wm-col-b"><span class="wm-compare-cell"><svg class="yes"><use href="iconsax-sprite.svg#ic-shield-tick"/></svg> Covered</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- MODAL + DRAWER -->
+    <section id="modal">
+      <h2>Modal &amp; drawer</h2>
+      <p class="sec-desc">Open via <code>data-wm-open="#id"</code>. Close via <code>data-wm-close</code>, backdrop click, or Esc.</p>
+      <div class="demo">
+        <div class="demo-row">
+          <button class="wm-btn wm-btn--primary" data-wm-open="#demoModal">Open modal</button>
+          <button class="wm-btn wm-btn--outline" data-wm-open="#demoDrawer">Open drawer</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- CMDK -->
+    <section id="cmdk">
+      <h2>Command palette</h2>
+      <p class="sec-desc">Trigger with <span class="wm-kbd" data-wm-kbd-meta>Ctrl K</span> or any <code>[data-wm-cmdk]</code> element. Register items via <code>WMUI.cmdk.register()</code>.</p>
+      <div class="demo">
+        <button class="wm-cmdk-trigger" data-wm-cmdk>
+          <svg><use href="iconsax-sprite.svg#ic-search-normal"/></svg>
+          <span class="wm-cmdk-trigger-label">Search actions…</span>
+          <span class="wm-kbd" data-wm-kbd-meta>Ctrl K</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- TOAST -->
+    <section id="toast">
+      <h2>Toast</h2>
+      <p class="sec-desc"><code>WMUI.toast(message, { type })</code> — types: default, success, danger.</p>
+      <div class="demo">
+        <div class="demo-row">
+          <button class="wm-btn wm-btn--outline" onclick="WMUI.toast('Settings saved')">Default</button>
+          <button class="wm-btn wm-btn--success" onclick="WMUI.toast('Payout sent successfully', {type:'success'})">Success</button>
+          <button class="wm-btn wm-btn--danger" onclick="WMUI.toast('Could not process payment', {type:'danger'})">Danger</button>
+          <button class="wm-btn wm-btn--secondary" data-wm-copy="npm i wisemonk-ui" data-wm-copy-msg="Command copied">Copy to clipboard</button>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<!-- ===== Demo modal ===== -->
+<div class="wm-modal-overlay" id="demoModal">
+  <div class="wm-modal">
+    <div class="wm-modal-head">
+      <div>
+        <h2>Invite a contractor</h2>
+        <p>They'll receive an email to complete onboarding.</p>
+      </div>
+      <button class="wm-close" data-wm-close><svg><use href="iconsax-sprite.svg#ic-close"/></svg></button>
+    </div>
+    <div class="wm-modal-body">
+      <div class="wm-field">
+        <label>Full name</label>
+        <input class="wm-input" type="text" placeholder="Rahul Sharma">
+      </div>
+      <div class="wm-field" style="margin-bottom:0">
+        <label>Work email</label>
+        <input class="wm-input" type="email" placeholder="rahul@company.com">
+      </div>
+    </div>
+    <div class="wm-modal-foot">
+      <button class="wm-btn wm-btn--ghost" data-wm-close>Cancel</button>
+      <button class="wm-btn wm-btn--primary" onclick="WMUI.close('#demoModal');WMUI.toast('Invite sent',{type:'success'})">Send invite</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Demo drawer ===== -->
+<div class="wm-drawer-overlay" id="demoDrawer">
+  <div class="wm-drawer">
+    <div class="wm-drawer-head">
+      <div>
+        <h2>Request an invoice</h2>
+        <p>We'll bill your client and pay you once it clears.</p>
+      </div>
+      <button class="wm-close" data-wm-close><svg><use href="iconsax-sprite.svg#ic-close"/></svg></button>
+    </div>
+    <div class="wm-drawer-body">
+      <div class="wm-field">
+        <label>Client</label>
+        <select class="wm-select"><option>Acme Inc.</option><option>Globex</option></select>
+      </div>
+      <div class="wm-field">
+        <label>Amount</label>
+        <div class="wm-input-wrap">
+          <span class="wm-input-prefix">$</span>
+          <input class="wm-input" id="drawerAmt" type="number" placeholder="12,450">
+        </div>
+      </div>
+      <div class="wm-field">
+        <label>Due date</label>
+        <input class="wm-input" type="date">
+      </div>
+      <div class="wm-breakdown" id="drawerBd" style="display:none">
+        <div class="wm-breakdown-row"><span>Invoice amount</span><span id="bdAmt">$0.00</span></div>
+        <div class="wm-breakdown-row"><span>Bank fee (0.5%)</span><span id="bdFee">−$0.00</span></div>
+        <div class="wm-breakdown-row wm-breakdown-total"><span>You receive</span><span id="bdNet">$0.00</span></div>
+      </div>
+    </div>
+    <div class="wm-drawer-foot">
+      <button class="wm-btn wm-btn--ghost" data-wm-close>Cancel</button>
+      <button class="wm-btn wm-btn--primary wm-btn--block" onclick="WMUI.close('#demoDrawer');WMUI.toast('Invoice requested',{type:'success'})">Request invoice</button>
+    </div>
+  </div>
+</div>
+
+<script src="wisemonk-ui.js"></script>
+<script>
+  /* showcase wiring only */
+  // color swatches
+  function usd(n){ return '$'+n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+  var groups = {
+    'sw-primary': ['primary-50','primary-100','primary-200','primary-300','primary-400','primary-500','primary-600','primary-700','primary-800','primary-900'],
+    'sw-neutral': ['neutral-0','neutral-50','neutral-100','neutral-200','neutral-300','neutral-400','neutral-500','neutral-600','neutral-700','neutral-800','neutral-900','ink'],
+    'sw-semantic': ['bg-subtle','border','border-strong','text-primary','text-secondary','text-muted','success-500','warning-500','danger-500']
+  };
+  var cs = getComputedStyle(document.documentElement);
+  Object.keys(groups).forEach(function(id){
+    var host = document.getElementById(id);
+    groups[id].forEach(function(name){
+      var val = cs.getPropertyValue('--wm-'+name).trim();
+      var el = document.createElement('div');
+      el.className = 'swatch';
+      el.innerHTML = '<div class="chip" style="background:'+val+';border-bottom:1px solid var(--wm-border)"></div>'+
+                     '<div class="meta"><b>'+name+'</b><span>'+val+'</span></div>';
+      host.appendChild(el);
+    });
+  });
+
+  // icon gallery — fetch sprite, list symbol ids
+  fetch('iconsax-sprite.svg').then(function(r){return r.text();}).then(function(txt){
+    var ids = (txt.match(/id="(ic-[^"]+)"/g)||[]).map(function(m){return m.slice(4,-1);});
+    var grid = document.getElementById('icon-grid');
+    ids.forEach(function(id){
+      var cell = document.createElement('div');
+      cell.className = 'icon-cell';
+      cell.title = 'Click to copy #'+id;
+      cell.innerHTML = '<svg><use href="iconsax-sprite.svg#'+id+'"/></svg><code>'+id+'</code>';
+      cell.addEventListener('click', function(){ WMUI.copy('#'+id).then(function(){ WMUI.toast('Copied #'+id, {type:'success'}); }); });
+      grid.appendChild(cell);
+    });
+  });
+
+  // register command palette items
+  WMUI.cmdk.register([
+    { section:'Pages', label:'Dashboard', sub:'Overview', icon:'ic-home-2', href:'#colors' },
+    { section:'Pages', label:'Contractors', sub:'People', icon:'ic-profile-2user', href:'#table' },
+    { section:'Pages', label:'Invoices', sub:'Billing', icon:'ic-receipt-text', href:'#breakdown' },
+    { section:'Actions', label:'Invite a contractor', icon:'ic-user-add', action:function(){ WMUI.open('#demoModal'); } },
+    { section:'Actions', label:'Request an invoice', icon:'ic-receipt-2', action:function(){ WMUI.open('#demoDrawer'); } },
+    { section:'Actions', label:'Show a success toast', icon:'ic-flash', action:function(){ WMUI.toast('It works!', {type:'success'}); } }
+  ]);
+
+  // live breakdown in drawer
+  var amt = document.getElementById('drawerAmt');
+  amt.addEventListener('input', function(){
+    var v = parseFloat(amt.value) || 0;
+    var bd = document.getElementById('drawerBd');
+    if (v <= 0) { bd.style.display='none'; return; }
+    var fee = v*0.005;
+    bd.style.display='block';
+    document.getElementById('bdAmt').textContent = usd(v);
+    document.getElementById('bdFee').textContent = '−'+usd(fee);
+    document.getElementById('bdNet').textContent = usd(v-fee);
+  });
+</script>
+</body>
+</html>
