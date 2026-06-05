@@ -135,6 +135,76 @@
     card.addEventListener('click', function () { card.classList.toggle('selected'); });
   }
 
+  /* ---- table search + filter dropdowns ----------------------------------- */
+  // per-table state: { query: '', filters: { key: value } }
+  var tableState = new WeakMap();
+
+  function tableFor(selOrEl) {
+    var el = resolve(selOrEl);
+    if (!el) return null;
+    return el.tagName === 'TABLE' ? el : el.querySelector('table');
+  }
+  function stateFor(table) {
+    if (!tableState.has(table)) tableState.set(table, { query: '', filters: {} });
+    return tableState.get(table);
+  }
+  function applyTableFilters(table) {
+    if (!table) return;
+    var st = stateFor(table);
+    var q = st.query.toLowerCase();
+    var rows = $all('tbody tr', table);
+    var visible = 0;
+    rows.forEach(function (tr) {
+      var okText = !q || tr.textContent.toLowerCase().indexOf(q) !== -1;
+      var okFilters = Object.keys(st.filters).every(function (key) {
+        var v = st.filters[key];
+        if (!v || v === 'all') return true;
+        return (tr.dataset[key] || '') === v;
+      });
+      var show = okText && okFilters;
+      tr.style.display = show ? '' : 'none';
+      if (show) visible++;
+    });
+    // optional empty-state element inside the same table-card
+    var card = table.closest('.wm-table-card') || table.parentNode;
+    var empty = card && card.querySelector('.wm-table-empty');
+    if (empty) empty.classList.toggle('show', visible === 0);
+  }
+
+  function initTableSearch(input) {
+    var table = tableFor(input.getAttribute('data-wm-table-search'));
+    if (!table) return;
+    input.addEventListener('input', function () {
+      stateFor(table).query = input.value || '';
+      applyTableFilters(table);
+    });
+  }
+
+  function initDropdown(dd) {
+    var trigger = dd.querySelector('.wm-dd-trigger');
+    var label = trigger && trigger.querySelector('.wm-dd-label');
+    var table = tableFor(dd.getAttribute('data-wm-filter'));
+    var key = dd.getAttribute('data-wm-filter-key') || 'status';
+    if (trigger) {
+      trigger.addEventListener('click', function (e) {
+        e.stopPropagation();
+        var open = dd.classList.toggle('is-open');
+        // close sibling dropdowns
+        $all('.wm-dropdown.is-open').forEach(function (o) { if (o !== dd) o.classList.remove('is-open'); });
+        dd.classList.toggle('is-open', open);
+      });
+    }
+    $all('.wm-dd-item', dd).forEach(function (item) {
+      item.addEventListener('click', function () {
+        $all('.wm-dd-item', dd).forEach(function (i) { i.classList.toggle('selected', i === item); });
+        if (label) label.textContent = item.dataset.label || item.textContent.trim();
+        dd.classList.remove('is-open');
+        if (table) { stateFor(table).filters[key] = item.dataset.value || 'all'; applyTableFilters(table); }
+        dd.dispatchEvent(new CustomEvent('wm:filter', { bubbles: true, detail: { key: key, value: item.dataset.value || '' } }));
+      });
+    });
+  }
+
   /* ---- copy to clipboard ------------------------------------------------- */
   function copy(text) {
     if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -161,7 +231,7 @@
         overlay.innerHTML =
           '<div class="wm-cmdk" role="dialog" aria-label="Command palette">' +
             '<div class="wm-cmdk-search">' +
-              '<svg class="wm-ic"><use href="#ic-search-normal"/></svg>' +
+              '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>' +
               '<input type="text" placeholder="Search actions, pages…" autocomplete="off" spellcheck="false">' +
               '<span class="wm-kbd">Esc</span>' +
             '</div>' +
@@ -321,12 +391,25 @@
     $all('.wm-option-card').forEach(function (c) {
       if (!c.closest('[data-wm-option-group]')) initLoneOptionCard(c);
     });
+    $all('[data-wm-table-search]').forEach(initTableSearch);
+    $all('.wm-dropdown').forEach(initDropdown);
+
+    // close any open filter dropdown on outside click
+    document.addEventListener('click', function (e) {
+      if (!e.target.closest('.wm-dropdown')) {
+        $all('.wm-dropdown.is-open').forEach(function (o) { o.classList.remove('is-open'); });
+      }
+    });
 
     applyKbdHints();
 
     // global keys: Esc closes topmost, Cmd/Ctrl+K toggles palette
     document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape') { closeTopmost(); }
+      if (e.key === 'Escape') {
+        var openDd = $all('.wm-dropdown.is-open');
+        if (openDd.length) { openDd.forEach(function (o) { o.classList.remove('is-open'); }); }
+        else { closeTopmost(); }
+      }
       if ((e.metaKey || e.ctrlKey) && (e.key === 'k' || e.key === 'K')) {
         if ($('.wm-cmdk-overlay') || document.querySelector('[data-wm-cmdk]')) {
           e.preventDefault();

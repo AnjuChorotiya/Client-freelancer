@@ -76,7 +76,7 @@
       <p>A portable, framework-free component library extracted from the Wisemonk portal. Drop <code>wisemonk-ui.css</code> + <code>wisemonk-ui.js</code> + the icon sprite into any project. Everything is namespaced (<code>wm-</code> classes, <code>--wm-</code> tokens) so nothing collides.</p>
       <div class="demo-row">
         <button class="wm-btn wm-btn--primary" data-wm-open="#demoModal"><svg class="wm-ic"><use href="iconsax-sprite.svg#ic-flash"/></svg> Try a modal</button>
-        <button class="wm-btn wm-btn--outline" data-wm-cmdk><svg class="wm-ic"><use href="iconsax-sprite.svg#ic-search-normal"/></svg> Command palette <span class="wm-kbd" data-wm-kbd-meta>Ctrl K</span></button>
+        <button class="wm-btn wm-btn--outline" data-wm-cmdk><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg> Command palette <span class="wm-kbd" data-wm-kbd-meta>Ctrl K</span></button>
         <button class="wm-btn wm-btn--secondary" onclick="WMUI.toast('Hello from Wisemonk UI', {type:'success'})">Fire a toast</button>
       </div>
     </div>
@@ -303,17 +303,65 @@
 
     <!-- TABLE -->
     <section id="table">
-      <h2>Tables</h2>
-      <p class="sec-desc">Standard data table with hover rows.</p>
-      <div class="wm-card" style="padding:0;overflow:hidden">
-        <table class="wm-table wm-table--rows-clickable">
-          <thead><tr><th>Contractor</th><th>Country</th><th>Status</th><th>Amount</th></tr></thead>
+      <h2>Data table</h2>
+      <p class="sec-desc">Borderless card with a toolbar — live search + filter dropdown, name cells (avatar + sub), status pills and row actions. Wired with <code>data-wm-table-search</code> and <code>data-wm-filter</code>; try searching or filtering below.</p>
+      <div class="wm-table-card">
+        <div class="wm-toolbar">
+          <div class="wm-search">
+            <input type="text" placeholder="Search by name or role" data-wm-table-search="#contractorsTable">
+          </div>
+          <div class="wm-toolbar-actions">
+            <div class="wm-dropdown" data-wm-filter="#contractorsTable" data-wm-filter-key="status">
+              <button class="wm-dd-trigger">
+                <span class="wm-dd-label">All status</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+              <div class="wm-dd-menu" role="listbox">
+                <button class="wm-dd-item selected" data-value="all" data-label="All status"><span>All<span class="wm-dd-count">· 5</span></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
+                <button class="wm-dd-item" data-value="active" data-label="Active"><span>Active<span class="wm-dd-count">· 3</span></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
+                <button class="wm-dd-item" data-value="pending" data-label="Pending"><span>Pending<span class="wm-dd-count">· 1</span></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
+                <button class="wm-dd-item" data-value="inactive" data-label="Inactive"><span>Inactive<span class="wm-dd-count">· 1</span></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
+              </div>
+            </div>
+            <button class="wm-btn wm-btn--primary"><svg class="wm-ic"><use href="iconsax-sprite.svg#ic-add"/></svg> Add</button>
+          </div>
+        </div>
+        <table class="wm-table wm-table--rows-clickable" id="contractorsTable">
+          <thead><tr><th>Name</th><th>Contract</th><th>Rate</th><th>Status</th><th></th></tr></thead>
           <tbody>
-            <tr><td><strong>Rahul Sharma</strong></td><td>India</td><td><span class="wm-pill wm-pill--success">Active</span></td><td><strong>$4,200</strong></td></tr>
-            <tr><td><strong>Aisha Khan</strong></td><td>UAE</td><td><span class="wm-pill wm-pill--warning">Pending</span></td><td><strong>$3,800</strong></td></tr>
-            <tr><td><strong>Marco Jansen</strong></td><td>Germany</td><td><span class="wm-pill wm-pill--danger">Overdue</span></td><td><strong>$5,100</strong></td></tr>
+            <tr data-status="active">
+              <td><div class="wm-cell-name"><span class="wm-avatar wm-avatar--sm">PS</span><span class="wm-cell-text"><strong>Priya Sharma</strong><small>Senior Designer</small></span></div></td>
+              <td>Monthly</td><td><strong>$3,400</strong>/mo</td>
+              <td><span class="wm-pill wm-pill--success">Active</span></td>
+              <td><button class="wm-icon-btn"><svg><use href="iconsax-sprite.svg#ic-more"/></svg></button></td>
+            </tr>
+            <tr data-status="active">
+              <td><div class="wm-cell-name"><span class="wm-avatar wm-avatar--sm">CM</span><span class="wm-cell-text"><strong>Carlos Mendez</strong><small>Backend Developer</small></span></div></td>
+              <td>Hourly</td><td><strong>$45</strong>/hr</td>
+              <td><span class="wm-pill wm-pill--success">Active</span></td>
+              <td><button class="wm-icon-btn"><svg><use href="iconsax-sprite.svg#ic-more"/></svg></button></td>
+            </tr>
+            <tr data-status="inactive">
+              <td><div class="wm-cell-name"><span class="wm-avatar wm-avatar--sm wm-avatar--muted">AK</span><span class="wm-cell-text"><strong>Aisha Khan</strong><small>Growth Marketer</small></span></div></td>
+              <td>Monthly</td><td><strong>$2,800</strong>/mo</td>
+              <td><span class="wm-pill wm-pill--neutral">Inactive</span></td>
+              <td><button class="wm-icon-btn"><svg><use href="iconsax-sprite.svg#ic-more"/></svg></button></td>
+            </tr>
+            <tr data-status="pending">
+              <td><div class="wm-cell-name"><span class="wm-avatar wm-avatar--sm">JL</span><span class="wm-cell-text"><strong>John Lee</strong><small>Content Writer</small></span></div></td>
+              <td>Per project</td><td><strong>$120</strong>/post</td>
+              <td><span class="wm-pill wm-pill--warning">Pending</span></td>
+              <td><button class="wm-icon-btn"><svg><use href="iconsax-sprite.svg#ic-more"/></svg></button></td>
+            </tr>
+            <tr data-status="active">
+              <td><div class="wm-cell-name"><span class="wm-avatar wm-avatar--sm">MS</span><span class="wm-cell-text"><strong>Maria Silva</strong><small>Translator</small></span></div></td>
+              <td>Hourly</td><td><strong>$38</strong>/hr</td>
+              <td><span class="wm-pill wm-pill--success">Active</span></td>
+              <td><button class="wm-icon-btn"><svg><use href="iconsax-sprite.svg#ic-more"/></svg></button></td>
+            </tr>
           </tbody>
         </table>
+        <div class="wm-table-empty">No people match your search.</div>
       </div>
     </section>
 
@@ -363,7 +411,7 @@
       <p class="sec-desc">Trigger with <span class="wm-kbd" data-wm-kbd-meta>Ctrl K</span> or any <code>[data-wm-cmdk]</code> element. Register items via <code>WMUI.cmdk.register()</code>.</p>
       <div class="demo">
         <button class="wm-cmdk-trigger" data-wm-cmdk>
-          <svg><use href="iconsax-sprite.svg#ic-search-normal"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
           <span class="wm-cmdk-trigger-label">Search actions…</span>
           <span class="wm-kbd" data-wm-kbd-meta>Ctrl K</span>
         </button>

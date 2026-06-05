@@ -74,7 +74,11 @@ automates this with an `inline_sprite.py` script.)
 | Avatar | `.wm-avatar` | `--sm --lg --ink --muted` |
 | Card | `.wm-card` | `--flat --raised` (+ `.wm-stat-title/-value/-sub`) |
 | Banner | `.wm-banner` | `-body -title -desc -actions` |
-| Table | `.wm-table` | `--rows-clickable` |
+| Table card | `.wm-table-card` | borderless white surface wrapping toolbar + table |
+| Table | `.wm-table` | `--rows-clickable`; `.wm-cell-name`+`.wm-cell-text`, `.wm-table-empty` |
+| Toolbar | `.wm-toolbar` | `.wm-toolbar-actions` |
+| Search | `.wm-search` | `<input data-wm-table-search="#tbl">` |
+| Filter dropdown | `.wm-dropdown` | `.wm-dd-trigger`/`.wm-dd-label`, `.wm-dd-menu`, `.wm-dd-item` |
 | Comparison | `.wm-compare` | `.wm-col-feat/-a/-b`, `.wm-compare-cell .yes/.no` |
 | Form field | `.wm-field` | `.wm-input .wm-select .wm-textarea`, `.wm-input-wrap`+`.wm-input-prefix`, `.wm-field-row` |
 | Toggle | `.wm-toggle` | child `button.active` |
@@ -116,6 +120,17 @@ Most things work declaratively — no JS to write.
 <!-- command palette trigger -->
 <button data-wm-cmdk>Search…</button>
 
+<!-- table: live search + filter dropdown (rows need data-<key> to filter) -->
+<input data-wm-table-search="#people">
+<div class="wm-dropdown" data-wm-filter="#people" data-wm-filter-key="status">
+  <button class="wm-dd-trigger"><span class="wm-dd-label">All status</span> …</button>
+  <div class="wm-dd-menu">
+    <button class="wm-dd-item selected" data-value="all" data-label="All status">…</button>
+    <button class="wm-dd-item" data-value="active" data-label="Active">…</button>
+  </div>
+</div>
+<table id="people"><tbody><tr data-status="active">…</tr></tbody></table>
+
 <!-- copy to clipboard -->
 <button data-wm-copy="text to copy" data-wm-copy-msg="Copied!">Copy</button>
 
@@ -144,7 +159,8 @@ WMUI.cmdk.register([
 ```
 
 Each component dispatches a bubbling event you can listen for:
-`wm:open`, `wm:close`, `wm:toggle` (`detail.value`), `wm:select` (`detail.value`).
+`wm:open`, `wm:close`, `wm:toggle` (`detail.value`), `wm:select` (`detail.value`),
+`wm:filter` (`detail.key`, `detail.value`).
 
 ---
 
