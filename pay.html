@@ -507,18 +507,19 @@
           </div>
         </div>
         <div class="calc-breakdown">
+          <div class="calc-line"><span>Bank fee (0.5%)</span><span id="calcFee">−$62.25</span></div>
           <div class="calc-line"><span>Exchange rate</span><span id="calcRate">1 USD = ₹83.50</span></div>
         </div>
         <div class="calc-get">
           <div>
             <div class="calc-get-label">Rahul Sharma gets</div>
-            <div class="calc-get-value" id="calcGet">₹10,39,575.00</div>
+            <div class="calc-get-value" id="calcGet">₹10,34,377.13</div>
           </div>
         </div>
         <div class="calc-eta">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-clock"/></svg>
           <div>
-            <div class="calc-eta-label">Est. arrival</div>
+            <div class="calc-eta-label">If you pay now, arrives</div>
             <div class="calc-eta-value" id="calcEta">Today, by 5:30 PM</div>
           </div>
         </div>
@@ -563,13 +564,15 @@
 
     // ── Payout calculator + estimated arrival ──
     (function () {
-      const RATE = 83.50;
+      const RATE = 83.50, BANK_FEE = 0.005;
       const sendEl = document.getElementById('calcSend');
+      const feeEl = document.getElementById('calcFee');
       const rateEl = document.getElementById('calcRate');
       const getEl = document.getElementById('calcGet');
       const etaEl = document.getElementById('calcEta');
       if (!sendEl) return;
 
+      const usd = n => '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
       function inr(n) {
         const p = (Math.round(n * 100) / 100).toFixed(2).split('.');
         const x = p[0], last3 = x.slice(-3), other = x.slice(0, -3);
@@ -578,8 +581,10 @@
       }
       function recompute() {
         const v = parseFloat((sendEl.value || '').replace(/[^0-9.]/g, '')) || 0;
+        const fee = v * BANK_FEE;
+        feeEl.textContent = '−' + usd(fee);
         rateEl.textContent = '1 USD = ₹' + RATE.toFixed(2);
-        getEl.textContent = inr(v * RATE);
+        getEl.textContent = inr((v - fee) * RATE);
       }
       function setEta() {
         const now = new Date();
