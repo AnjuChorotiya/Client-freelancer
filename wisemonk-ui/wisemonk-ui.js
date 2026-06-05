@@ -205,6 +205,343 @@
     });
   }
 
+  /* ---- custom select / multi-select (enhances a native <select>) --------- */
+  var ICON_CHECK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>';
+  var ICON_CHEVRON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>';
+  var ICON_X = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+
+  function initSelectBox(sel) {
+    if (sel.dataset.wmEnhanced) return;
+    sel.dataset.wmEnhanced = '1';
+    var multi = sel.multiple;
+    var searchable = (sel.dataset.wmSelect === 'search') || sel.hasAttribute('data-searchable');
+    var placeholder = sel.getAttribute('data-placeholder') || 'Select…';
+
+    var box = document.createElement('div');
+    box.className = 'wm-selectbox' + (multi ? ' wm-selectbox--multi' : '');
+    sel.parentNode.insertBefore(box, sel);
+    box.appendChild(sel);
+    sel.classList.add('wm-selectbox-native');
+
+    var trigger = document.createElement('button');
+    trigger.type = 'button';
+    trigger.className = 'wm-selectbox-trigger';
+    trigger.innerHTML = (multi
+      ? '<span class="wm-selectbox-chips"></span>'
+      : '<span class="wm-selectbox-value"></span>') +
+      '<span class="wm-selectbox-chevron">' + ICON_CHEVRON + '</span>';
+    box.appendChild(trigger);
+
+    var menu = document.createElement('div');
+    menu.className = 'wm-selectbox-menu';
+    var searchInput = null;
+    if (searchable) {
+      var sw = document.createElement('div');
+      sw.className = 'wm-selectbox-search';
+      searchInput = document.createElement('input');
+      searchInput.type = 'text';
+      searchInput.placeholder = 'Search…';
+      searchInput.autocomplete = 'off';
+      sw.appendChild(searchInput);
+      menu.appendChild(sw);
+    }
+    var optWrap = document.createElement('div');
+    optWrap.className = 'wm-selectbox-options';
+    menu.appendChild(optWrap);
+    var emptyEl = document.createElement('div');
+    emptyEl.className = 'wm-selectbox-empty';
+    emptyEl.textContent = 'No matches';
+    menu.appendChild(emptyEl);
+    box.appendChild(menu);
+
+    var opts = Array.prototype.slice.call(sel.options).filter(function (o) {
+      // skip a leading empty/placeholder option, use it as placeholder text
+      if (o.value === '' && o.disabled) { placeholder = o.textContent.trim() || placeholder; return false; }
+      return true;
+    });
+
+    opts.forEach(function (o) {
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'wm-selectbox-option';
+      btn.setAttribute('role', 'option');
+      btn.dataset.value = o.value;
+      btn.setAttribute('aria-selected', o.selected ? 'true' : 'false');
+      btn.innerHTML = (multi
+          ? '<span class="wm-selectbox-option-box">' + ICON_CHECK + '</span>'
+          : '') +
+        '<span class="wm-selectbox-option-label">' + escapeHtml(o.textContent.trim()) + '</span>' +
+        (multi ? '' : '<span class="wm-selectbox-option-check">' + ICON_CHECK + '</span>');
+      btn._opt = o;
+      optWrap.appendChild(btn);
+      btn.addEventListener('click', function () {
+        if (multi) {
+          o.selected = !o.selected;
+        } else {
+          opts.forEach(function (x) { x.selected = false; });
+          o.selected = true;
+          box.classList.remove('is-open');
+        }
+        syncSelectBox(box);
+        sel.dispatchEvent(new Event('change', { bubbles: true }));
+        box.dispatchEvent(new CustomEvent('wm:select', { bubbles: true, detail: selectValue(sel) }));
+      });
+    });
+
+    trigger.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var willOpen = !box.classList.contains('is-open');
+      $all('.wm-selectbox.is-open, .wm-dropdown.is-open, .wm-datepicker.is-open').forEach(function (o) {
+        o.classList.remove('is-open');
+      });
+      box.classList.toggle('is-open', willOpen);
+      if (willOpen && searchInput) { searchInput.value = ''; filterOptions(''); setTimeout(function () { searchInput.focus(); }, 20); }
+    });
+
+    if (searchInput) {
+      searchInput.addEventListener('click', function (e) { e.stopPropagation(); });
+      searchInput.addEventListener('input', function () { filterOptions(searchInput.value); });
+    }
+
+    function filterOptions(q) {
+      q = (q || '').toLowerCase().trim();
+      var shown = 0;
+      $all('.wm-selectbox-option', optWrap).forEach(function (b) {
+        var ok = !q || b.textContent.toLowerCase().indexOf(q) !== -1;
+        b.style.display = ok ? '' : 'none';
+        if (ok) shown++;
+      });
+      emptyEl.style.display = shown ? 'none' : 'block';
+    }
+
+    syncSelectBox(box);
+  }
+
+  function selectValue(sel) {
+    var picked = Array.prototype.slice.call(sel.options).filter(function (o) { return o.selected; });
+    return sel.multiple
+      ? { value: picked.map(function (o) { return o.value; }), labels: picked.map(function (o) { return o.textContent.trim(); }) }
+      : { value: (picked[0] || {}).value || '', label: (picked[0] || {}).textContent.trim() || '' };
+  }
+
+  function syncSelectBox(box) {
+    var sel = box.querySelector('select');
+    var placeholder = sel.getAttribute('data-placeholder') || 'Select…';
+    // option aria-selected
+    $all('.wm-selectbox-option', box).forEach(function (b) {
+      b.setAttribute('aria-selected', b._opt.selected ? 'true' : 'false');
+    });
+    if (sel.multiple) {
+      var chips = box.querySelector('.wm-selectbox-chips');
+      var picked = $all('.wm-selectbox-option', box).filter(function (b) { return b._opt.selected; });
+      chips.innerHTML = '';
+      if (!picked.length) {
+        var ph = document.createElement('span');
+        ph.className = 'is-placeholder';
+        ph.textContent = placeholder;
+        chips.appendChild(ph);
+        return;
+      }
+      picked.forEach(function (b) {
+        var chip = document.createElement('span');
+        chip.className = 'wm-chip';
+        chip.appendChild(document.createTextNode(b._opt.textContent.trim()));
+        var x = document.createElement('button');
+        x.type = 'button'; x.className = 'wm-chip-x'; x.innerHTML = ICON_X; x.setAttribute('aria-label', 'Remove');
+        x.addEventListener('click', function (e) {
+          e.stopPropagation();
+          b._opt.selected = false;
+          syncSelectBox(box);
+          sel.dispatchEvent(new Event('change', { bubbles: true }));
+        });
+        chip.appendChild(x);
+        chips.appendChild(chip);
+      });
+    } else {
+      var val = box.querySelector('.wm-selectbox-value');
+      var picked2 = Array.prototype.slice.call(sel.options).filter(function (o) { return o.selected && !(o.value === '' && o.disabled); });
+      if (picked2.length) { val.textContent = picked2[0].textContent.trim(); val.classList.remove('is-placeholder'); }
+      else { val.textContent = placeholder; val.classList.add('is-placeholder'); }
+    }
+  }
+
+  /* ---- date picker (enhances a readonly text input) ---------------------- */
+  var DOW = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
+  var MONTHS = ['January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'];
+
+  function pad(n) { return (n < 10 ? '0' : '') + n; }
+  function toISO(d) { return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
+  function fmtDate(d) { return d.getDate() + ' ' + MONTHS[d.getMonth()].slice(0, 3) + ' ' + d.getFullYear(); }
+  function parseISO(s) {
+    var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s || '');
+    if (!m) return null;
+    var d = new Date(+m[1], +m[2] - 1, +m[3]);
+    return isNaN(d) ? null : d;
+  }
+
+  function initDatePicker(input) {
+    if (input.dataset.wmEnhanced) return;
+    input.dataset.wmEnhanced = '1';
+    input.readOnly = true;
+
+    var wrap = document.createElement('div');
+    wrap.className = 'wm-datepicker';
+    input.parentNode.insertBefore(wrap, input);
+    wrap.appendChild(input);
+
+    // hidden ISO value for form submission (if a name was provided)
+    var hidden = null;
+    if (input.dataset.name || input.name) {
+      hidden = document.createElement('input');
+      hidden.type = 'hidden';
+      hidden.name = input.dataset.name || input.name;
+      if (input.name) input.removeAttribute('name');
+      wrap.appendChild(hidden);
+    }
+
+    var selected = parseISO(input.dataset.value || input.value);
+    var view = selected ? new Date(selected.getFullYear(), selected.getMonth(), 1) : new Date();
+    view.setDate(1);
+
+    var cal = document.createElement('div');
+    cal.className = 'wm-cal';
+    wrap.appendChild(cal);
+
+    function setValue(d) {
+      selected = d;
+      input.value = fmtDate(d);
+      input.dataset.value = toISO(d);
+      if (hidden) hidden.value = toISO(d);
+      wrap.classList.remove('is-open');
+      input.dispatchEvent(new CustomEvent('wm:datechange', { bubbles: true, detail: { value: toISO(d), date: d } }));
+    }
+
+    function renderCal() {
+      var y = view.getFullYear(), mo = view.getMonth();
+      var first = new Date(y, mo, 1);
+      var startDow = first.getDay();
+      var daysInMonth = new Date(y, mo + 1, 0).getDate();
+      var prevDays = new Date(y, mo, 0).getDate();
+      var today = new Date(); var todayISO = toISO(today);
+      var selISO = selected ? toISO(selected) : null;
+
+      var html = '<div class="wm-cal-head">' +
+        '<span class="wm-cal-title">' + MONTHS[mo] + ' ' + y + '</span>' +
+        '<span class="wm-cal-nav">' +
+          '<button type="button" data-nav="-1" aria-label="Previous month"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>' +
+          '<button type="button" data-nav="1" aria-label="Next month"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></button>' +
+        '</span></div><div class="wm-cal-grid">';
+      DOW.forEach(function (d) { html += '<span class="wm-cal-dow">' + d + '</span>'; });
+      for (var i = 0; i < startDow; i++) {
+        html += '<button type="button" class="wm-cal-day is-muted" data-iso="' + toISO(new Date(y, mo - 1, prevDays - startDow + 1 + i)) + '">' + (prevDays - startDow + 1 + i) + '</button>';
+      }
+      for (var day = 1; day <= daysInMonth; day++) {
+        var iso = toISO(new Date(y, mo, day));
+        var cls = 'wm-cal-day';
+        if (iso === todayISO) cls += ' is-today';
+        if (iso === selISO) cls += ' is-selected';
+        html += '<button type="button" class="' + cls + '" data-iso="' + iso + '">' + day + '</button>';
+      }
+      var cells = startDow + daysInMonth;
+      var trail = (7 - (cells % 7)) % 7;
+      for (var t = 1; t <= trail; t++) {
+        html += '<button type="button" class="wm-cal-day is-muted" data-iso="' + toISO(new Date(y, mo + 1, t)) + '">' + t + '</button>';
+      }
+      html += '</div>';
+      cal.innerHTML = html;
+    }
+
+    cal.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var nav = e.target.closest('[data-nav]');
+      if (nav) { view.setMonth(view.getMonth() + parseInt(nav.getAttribute('data-nav'), 10)); renderCal(); return; }
+      var day = e.target.closest('.wm-cal-day');
+      if (day) { var d = parseISO(day.getAttribute('data-iso')); if (d) setValue(d); }
+    });
+
+    input.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var willOpen = !wrap.classList.contains('is-open');
+      $all('.wm-selectbox.is-open, .wm-dropdown.is-open, .wm-datepicker.is-open').forEach(function (o) {
+        o.classList.remove('is-open');
+      });
+      if (willOpen) { view = selected ? new Date(selected.getFullYear(), selected.getMonth(), 1) : new Date(); view.setDate(1); renderCal(); }
+      wrap.classList.toggle('is-open', willOpen);
+    });
+
+    if (selected) setValue(selected); // normalize display from a preset ISO value
+  }
+
+  /* ---- form validation (onboarding behavior) ----------------------------- */
+  // Mark a field invalid/valid: <div class="wm-field" data-wm-field><input required>…
+  //   <small class="wm-field-error">message</small></div>
+  function fieldOf(control) { return control.closest('.wm-field'); }
+
+  function setFieldError(field, msg) {
+    if (!field) return;
+    field.classList.add('wm-field--error');
+    var err = field.querySelector('.wm-field-error');
+    if (err && msg) err.textContent = msg;
+  }
+  function clearFieldError(field) { if (field) field.classList.remove('wm-field--error'); }
+
+  function validateField(control) {
+    var field = fieldOf(control);
+    if (!field) return true;
+    var required = control.required || control.hasAttribute('required');
+    var val;
+    if (control.tagName === 'SELECT' && control.multiple) {
+      val = Array.prototype.slice.call(control.selectedOptions).filter(function (o) { return o.value; }).length ? 'x' : '';
+    } else if (control.dataset && control.dataset.wmEnhanced && control.classList.contains('wm-input')) {
+      val = (control.dataset.value || '').trim();   // datepicker stores ISO here
+    } else {
+      val = (control.value || '').trim();
+    }
+    if (required && !val) { setFieldError(field, field.dataset.wmRequiredMsg || 'This field is required'); return false; }
+    if (val && control.type === 'email' && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(val)) {
+      setFieldError(field, 'Enter a valid email address'); return false;
+    }
+    clearFieldError(field);
+    return true;
+  }
+
+  function validateForm(form) {
+    form = resolve(form);
+    if (!form) return true;
+    var controls = $all('input, select, textarea', form).filter(function (c) {
+      return c.type !== 'hidden' && (c.required || c.hasAttribute('required'));
+    });
+    var ok = true, firstBad = null;
+    controls.forEach(function (c) {
+      if (!validateField(c) && !firstBad) firstBad = c;
+      if (!validateField(c)) ok = false;
+    });
+    if (firstBad) {
+      var f = firstBad.closest('.wm-selectbox') || firstBad.closest('.wm-datepicker') || firstBad;
+      if (f.scrollIntoView) f.scrollIntoView({ block: 'center', behavior: 'smooth' });
+      var focusable = f.querySelector ? (f.querySelector('input, button, .wm-selectbox-trigger') || f) : f;
+      try { focusable.focus({ preventScroll: true }); } catch (e) {}
+    }
+    return ok;
+  }
+
+  function initFormValidate(form) {
+    form.addEventListener('submit', function (e) {
+      if (!validateForm(form)) { e.preventDefault(); form.dispatchEvent(new CustomEvent('wm:invalid', { bubbles: true })); }
+      else { form.dispatchEvent(new CustomEvent('wm:valid', { bubbles: true })); }
+    });
+    // clear errors as the user fixes them
+    form.addEventListener('input', function (e) {
+      var f = fieldOf(e.target);
+      if (f && f.classList.contains('wm-field--error')) validateField(e.target);
+    });
+    form.addEventListener('change', function (e) {
+      var f = fieldOf(e.target);
+      if (f && f.classList.contains('wm-field--error')) validateField(e.target);
+    });
+  }
+
   /* ---- copy to clipboard ------------------------------------------------- */
   function copy(text) {
     if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -393,11 +730,22 @@
     });
     $all('[data-wm-table-search]').forEach(initTableSearch);
     $all('.wm-dropdown').forEach(initDropdown);
+    $all('select[data-wm-select]').forEach(initSelectBox);
+    $all('[data-wm-datepicker]').forEach(initDatePicker);
+    $all('form[data-wm-validate]').forEach(function (f) {
+      if (f.dataset.wmEnhanced) return; f.dataset.wmEnhanced = '1'; initFormValidate(f);
+    });
 
-    // close any open filter dropdown on outside click
+    // close any open dropdown / select / datepicker on outside click
     document.addEventListener('click', function (e) {
       if (!e.target.closest('.wm-dropdown')) {
         $all('.wm-dropdown.is-open').forEach(function (o) { o.classList.remove('is-open'); });
+      }
+      if (!e.target.closest('.wm-selectbox')) {
+        $all('.wm-selectbox.is-open').forEach(function (o) { o.classList.remove('is-open'); });
+      }
+      if (!e.target.closest('.wm-datepicker')) {
+        $all('.wm-datepicker.is-open').forEach(function (o) { o.classList.remove('is-open'); });
       }
     });
 
@@ -406,8 +754,8 @@
     // global keys: Esc closes topmost, Cmd/Ctrl+K toggles palette
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape') {
-        var openDd = $all('.wm-dropdown.is-open');
-        if (openDd.length) { openDd.forEach(function (o) { o.classList.remove('is-open'); }); }
+        var openPop = $all('.wm-dropdown.is-open, .wm-selectbox.is-open, .wm-datepicker.is-open');
+        if (openPop.length) { openPop.forEach(function (o) { o.classList.remove('is-open'); }); }
         else { closeTopmost(); }
       }
       if ((e.metaKey || e.ctrlKey) && (e.key === 'k' || e.key === 'K')) {
@@ -432,6 +780,8 @@
     toast: toast,
     copy: copy,
     cmdk: cmdk,
+    select: { value: function (selOrEl) { var el = resolve(selOrEl); var s = el && (el.tagName === 'SELECT' ? el : el.querySelector('select')); return s ? selectValue(s) : null; } },
+    validate: validateForm,
     refresh: init
   };
 })(window);

@@ -80,7 +80,9 @@ automates this with an `inline_sprite.py` script.)
 | Search | `.wm-search` | `<input data-wm-table-search="#tbl">` |
 | Filter dropdown | `.wm-dropdown` | `.wm-dd-trigger`/`.wm-dd-label`, `.wm-dd-menu`, `.wm-dd-item` |
 | Comparison | `.wm-compare` | `.wm-col-feat/-a/-b`, `.wm-compare-cell .yes/.no` |
-| Form field | `.wm-field` | `.wm-input .wm-select .wm-textarea`, `.wm-input-wrap`+`.wm-input-prefix`, `.wm-field-row` |
+| Form field | `.wm-field` | `.wm-input .wm-select .wm-textarea`, `.wm-input-wrap`+`.wm-input-prefix`, `.wm-field-row`, `.wm-req`, `.wm-field-hint`, `.wm-field-error` (+`.wm-field--error`) |
+| Custom select | `.wm-selectbox` | built from a native `<select data-wm-select>`; `data-wm-select="search"` adds search; `multiple` → chips |
+| Date picker | `.wm-datepicker` / `.wm-cal` | built from `<input data-wm-datepicker>`; calendar popover, ISO value |
 | Toggle | `.wm-toggle` | child `button.active` |
 | Note | `.wm-note` | `--success --warning --danger` |
 | Breakdown | `.wm-breakdown` | `-row -total` |
@@ -131,6 +133,28 @@ Most things work declaratively — no JS to write.
 </div>
 <table id="people"><tbody><tr data-status="active">…</tr></tbody></table>
 
+<!-- custom select (enhances a native <select> — submits with forms) -->
+<select data-wm-select data-placeholder="Select a country" name="country">
+  <option value="" disabled selected>Select a country</option>
+  <option value="in">India</option>
+  <option value="us">United States</option>
+</select>
+<select data-wm-select="search" name="currency">…</select>     <!-- searchable -->
+<select multiple data-wm-select name="benefits">…</select>     <!-- multi-select chips -->
+
+<!-- date picker (enhances a readonly text input; stores ISO in data-value / hidden input) -->
+<input class="wm-input" type="text" data-wm-datepicker name="start_date" placeholder="Pick a date">
+
+<!-- onboarding form with inline validation -->
+<form data-wm-validate novalidate>
+  <div class="wm-field">
+    <label>Work email <span class="wm-req">*</span></label>
+    <input class="wm-input" type="email" name="email" required>
+    <small class="wm-field-error">Enter a valid email address</small>
+  </div>
+  <button type="submit" class="wm-btn wm-btn--primary">Submit</button>
+</form>
+
 <!-- copy to clipboard -->
 <button data-wm-copy="text to copy" data-wm-copy-msg="Copied!">Copy</button>
 
@@ -148,7 +172,9 @@ WMUI.open('#myDrawer');            // open a modal or drawer
 WMUI.close('#myDrawer');           // close it
 WMUI.toast('Saved', { type: 'success' });   // type: 'success' | 'danger' | (default)
 WMUI.copy('text');                 // returns a Promise
-WMUI.refresh();                    // re-wire after injecting new DOM
+WMUI.select.value('#mySelect');    // { value, label } — or { value:[], labels:[] } for multi
+WMUI.validate('#myForm');          // returns true/false, marks invalid fields
+WMUI.refresh();                    // re-wire after injecting new DOM (idempotent)
 
 // command palette
 WMUI.cmdk.open();
@@ -159,8 +185,9 @@ WMUI.cmdk.register([
 ```
 
 Each component dispatches a bubbling event you can listen for:
-`wm:open`, `wm:close`, `wm:toggle` (`detail.value`), `wm:select` (`detail.value`),
-`wm:filter` (`detail.key`, `detail.value`).
+`wm:open`, `wm:close`, `wm:toggle` (`detail.value`), `wm:select` (`detail.value`,
+`detail.label`/`labels`), `wm:filter` (`detail.key`, `detail.value`),
+`wm:datechange` (`detail.value` ISO, `detail.date`), `wm:valid` / `wm:invalid` (forms).
 
 ---
 
