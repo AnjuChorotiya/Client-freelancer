@@ -81,9 +81,9 @@ automates this with an `inline_sprite.py` script.)
 | Filter dropdown | `.wm-dropdown` | `.wm-dd-trigger`/`.wm-dd-label`, `.wm-dd-menu`, `.wm-dd-item` |
 | Comparison | `.wm-compare` | `.wm-col-feat/-a/-b`, `.wm-compare-cell .yes/.no` |
 | Form field | `.wm-field` | `.wm-input .wm-select .wm-textarea`, `.wm-input-wrap`+`.wm-input-prefix`, `.wm-field-row`, `.wm-req`, `.wm-field-hint`, `.wm-field-error` (+`.wm-field--error`) |
-| Floating-label field | `.wm-field-float` | portal-style label that sits centered then lifts on focus/fill; control **first**, `<label>` after; `.wm-field-float-row`; works with select + datepicker |
-| Custom select | `.wm-selectbox` | built from a native `<select data-wm-select>`; `data-wm-select="search"` adds search; `multiple` → chips |
-| Date picker | `.wm-datepicker` / `.wm-cal` | built from `<input data-wm-datepicker>`; calendar popover, ISO value |
+| Floating-label field | `.wm-field-float` | portal-style label that sits centered then lifts on focus/fill; control **first**, `<label>` after; `.wm-field-float-row`; wraps inputs, selects + date pickers |
+| Custom select | `.wm-select-menu` / `.wm-select-item` | native `<select class="wm-select">` inside a `.wm-field-float` stays the trigger; overlay menu with a CSS tick. `multiple` reuses the **same** menu (ticks several, stays open) |
+| Date picker | `.wm-calendar` / `.wm-cal-*` | native `<input class="wm-input" type="date">` inside a `.wm-field-float`; calendar popover, native ISO value |
 | Toggle | `.wm-toggle` | child `button.active` |
 | Note | `.wm-note` | `--success --warning --danger` |
 | Breakdown | `.wm-breakdown` | `-row -total` |
@@ -139,26 +139,35 @@ Most things work declaratively — no JS to write.
   <input class="wm-input" type="text" id="name" required placeholder=" ">
   <label for="name">Legal full name <span class="wm-req">*</span></label>
 </div>
-<!-- floating label also works wrapping a custom select or datepicker -->
+
+<!-- custom select — native <select class="wm-select"> stays the trigger and
+     submits with forms; the menu is auto-enhanced. Use an empty hidden first
+     option so the floating label acts as the placeholder. -->
 <div class="wm-field-float">
-  <select data-wm-select name="country" required>
-    <option value="" disabled selected>Country of work</option>
+  <select class="wm-select" name="country" required>
+    <option value="" disabled selected hidden></option>
     <option value="in">India</option>
+    <option value="us">United States</option>
   </select>
   <label>Country of work <span class="wm-req">*</span></label>
 </div>
 
-<!-- custom select (enhances a native <select> — submits with forms) -->
-<select data-wm-select data-placeholder="Select a country" name="country">
-  <option value="" disabled selected>Select a country</option>
-  <option value="in">India</option>
-  <option value="us">United States</option>
-</select>
-<select data-wm-select="search" name="currency">…</select>     <!-- searchable -->
-<select multiple data-wm-select name="benefits">…</select>     <!-- multi-select chips -->
+<!-- multi-select: add `multiple`. Reuses the IDENTICAL menu — ticks several
+     options, menu stays open, trigger shows a comma summary. -->
+<div class="wm-field-float">
+  <select class="wm-select" multiple name="benefits">
+    <option value="health">Health insurance</option>
+    <option value="esop">ESOP / equity</option>
+  </select>
+  <label>Benefits</label>
+</div>
 
-<!-- date picker (enhances a readonly text input; stores ISO in data-value / hidden input) -->
-<input class="wm-input" type="text" data-wm-datepicker name="start_date" placeholder="Pick a date">
+<!-- date picker — native <input type="date"> is set readonly and gets a
+     calendar popover; keeps its native ISO (YYYY-MM-DD) value. -->
+<div class="wm-field-float">
+  <input class="wm-input" type="date" name="start_date" required>
+  <label>Start date <span class="wm-req">*</span></label>
+</div>
 
 <!-- onboarding form with inline validation -->
 <form data-wm-validate novalidate>

@@ -205,275 +205,257 @@
     });
   }
 
-  /* ---- custom select / multi-select (enhances a native <select>) --------- */
-  var ICON_CHECK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>';
-  var ICON_CHEVRON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>';
-  var ICON_X = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+  /* ---- popovers: close any open select menu / calendar ------------------- */
+  // Faithful port of the portal's closeAllPopovers().
+  function closeAllPopovers() {
+    $all('.wm-select-menu.open, .wm-calendar.open').forEach(function (m) { m.classList.remove('open'); });
+    $all('.wm-field-float.open').forEach(function (f) { f.classList.remove('open'); });
+  }
 
-  function initSelectBox(sel) {
-    if (sel.dataset.wmEnhanced) return;
-    sel.dataset.wmEnhanced = '1';
-    var multi = sel.multiple;
-    var searchable = (sel.dataset.wmSelect === 'search') || sel.hasAttribute('data-searchable');
-    var placeholder = sel.getAttribute('data-placeholder') || 'Select…';
+  /* ---- custom select (port of the portal's enhanceSelect) ---------------- */
+  // Keeps the NATIVE <select> as the visible trigger; overlays a .wm-select-menu
+  // built from its <option>s. mousedown + preventDefault suppresses the browser's
+  // native dropdown. A <select multiple> reuses the SAME menu/markup, ticking
+  // several items (menu stays open) — no new visual component, just multi-select.
+  function enhanceSelect(selectEl) {
+    var wrap = selectEl.closest('.wm-field-float');
+    if (!wrap || wrap.dataset.wmSelectEnhanced) return;
+    wrap.dataset.wmSelectEnhanced = '1';
 
-    var box = document.createElement('div');
-    box.className = 'wm-selectbox' + (multi ? ' wm-selectbox--multi' : '');
-    sel.parentNode.insertBefore(box, sel);
-    box.appendChild(sel);
-    sel.classList.add('wm-selectbox-native');
-
-    var trigger = document.createElement('button');
-    trigger.type = 'button';
-    trigger.className = 'wm-selectbox-trigger';
-    trigger.innerHTML = (multi
-      ? '<span class="wm-selectbox-chips"></span>'
-      : '<span class="wm-selectbox-value"></span>') +
-      '<span class="wm-selectbox-chevron">' + ICON_CHEVRON + '</span>';
-    box.appendChild(trigger);
+    if (selectEl.multiple) { enhanceMultiSelect(selectEl, wrap); return; }
 
     var menu = document.createElement('div');
-    menu.className = 'wm-selectbox-menu';
-    var searchInput = null;
-    if (searchable) {
-      var sw = document.createElement('div');
-      sw.className = 'wm-selectbox-search';
-      searchInput = document.createElement('input');
-      searchInput.type = 'text';
-      searchInput.placeholder = 'Search…';
-      searchInput.autocomplete = 'off';
-      sw.appendChild(searchInput);
-      menu.appendChild(sw);
-    }
-    var optWrap = document.createElement('div');
-    optWrap.className = 'wm-selectbox-options';
-    menu.appendChild(optWrap);
-    var emptyEl = document.createElement('div');
-    emptyEl.className = 'wm-selectbox-empty';
-    emptyEl.textContent = 'No matches';
-    menu.appendChild(emptyEl);
-    box.appendChild(menu);
+    menu.className = 'wm-select-menu';
 
-    var opts = Array.prototype.slice.call(sel.options).filter(function (o) {
-      // skip a leading empty/placeholder option, use it as placeholder text
-      if (o.value === '' && o.disabled) { placeholder = o.textContent.trim() || placeholder; return false; }
-      return true;
+    function buildItems() {
+      menu.innerHTML = '';
+      Array.prototype.slice.call(selectEl.options).forEach(function (opt) {
+        if (opt.disabled || opt.hidden) return;
+        var item = document.createElement('button');
+        item.type = 'button';
+        item.className = 'wm-select-item';
+        var label = document.createElement('span');
+        label.className = 'wm-select-item-label';
+        label.textContent = opt.textContent;
+        item.appendChild(label);
+        if ((opt.value || opt.textContent) === selectEl.value) item.classList.add('selected');
+        item.addEventListener('click', function (e) {
+          e.stopPropagation();
+          selectEl.value = opt.value || opt.textContent;
+          selectEl.classList.add('touched');
+          selectEl.dispatchEvent(new Event('change', { bubbles: true }));
+          $all('.wm-select-item', menu).forEach(function (c) { c.classList.remove('selected'); });
+          item.classList.add('selected');
+          wrap.dispatchEvent(new CustomEvent('wm:select', { bubbles: true, detail: selectValue(selectEl) }));
+          closeMenu();
+        });
+        menu.appendChild(item);
+      });
+    }
+    buildItems();
+    selectEl._wmRebuildMenu = buildItems;
+    wrap.appendChild(menu);
+
+    function openMenu() { closeAllPopovers(); menu.classList.add('open'); wrap.classList.add('open'); }
+    function closeMenu() { menu.classList.remove('open'); wrap.classList.remove('open'); }
+
+    selectEl.addEventListener('mousedown', function (e) {
+      e.preventDefault();
+      if (selectEl.disabled) return;
+      if (menu.classList.contains('open')) closeMenu(); else openMenu();
+    });
+    selectEl.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowDown') { e.preventDefault(); openMenu(); }
+      else if (e.key === 'Escape') closeMenu();
     });
 
-    opts.forEach(function (o) {
-      var btn = document.createElement('button');
-      btn.type = 'button';
-      btn.className = 'wm-selectbox-option';
-      btn.setAttribute('role', 'option');
-      btn.dataset.value = o.value;
-      btn.setAttribute('aria-selected', o.selected ? 'true' : 'false');
-      btn.innerHTML = (multi
-          ? '<span class="wm-selectbox-option-box">' + ICON_CHECK + '</span>'
-          : '') +
-        '<span class="wm-selectbox-option-label">' + escapeHtml(o.textContent.trim()) + '</span>' +
-        (multi ? '' : '<span class="wm-selectbox-option-check">' + ICON_CHECK + '</span>');
-      btn._opt = o;
-      optWrap.appendChild(btn);
-      btn.addEventListener('click', function () {
-        if (multi) {
-          o.selected = !o.selected;
-        } else {
-          opts.forEach(function (x) { x.selected = false; });
-          o.selected = true;
-          box.classList.remove('is-open');
-        }
-        syncSelectBox(box);
-        sel.dispatchEvent(new Event('change', { bubbles: true }));
-        box.dispatchEvent(new CustomEvent('wm:select', { bubbles: true, detail: selectValue(sel) }));
-      });
-    });
+    // initial floating-label state
+    selectEl.classList.toggle('touched', !!selectEl.value);
+  }
 
-    trigger.addEventListener('click', function (e) {
-      e.stopPropagation();
-      var willOpen = !box.classList.contains('is-open');
-      $all('.wm-selectbox.is-open, .wm-dropdown.is-open, .wm-datepicker.is-open').forEach(function (o) {
-        o.classList.remove('is-open');
-      });
-      box.classList.toggle('is-open', willOpen);
-      if (willOpen && searchInput) { searchInput.value = ''; filterOptions(''); setTimeout(function () { searchInput.focus(); }, 20); }
-    });
+  // Multi-select: the native <select multiple> stays in the DOM (and submits with
+  // the form) but is visually hidden; a single-line trigger reusing the .wm-select
+  // class shows a comma summary, and the SAME .wm-select-menu / .wm-select-item
+  // markup ticks multiple options while the menu stays open.
+  function enhanceMultiSelect(selectEl, wrap) {
+    selectEl.style.display = 'none';
 
-    if (searchInput) {
-      searchInput.addEventListener('click', function (e) { e.stopPropagation(); });
-      searchInput.addEventListener('input', function () { filterOptions(searchInput.value); });
+    var trigger = document.createElement('div');
+    trigger.className = 'wm-select';
+    trigger.tabIndex = 0;
+    trigger.setAttribute('role', 'listbox');
+    trigger.setAttribute('aria-multiselectable', 'true');
+    selectEl.parentNode.insertBefore(trigger, selectEl.nextSibling);
+
+    var menu = document.createElement('div');
+    menu.className = 'wm-select-menu';
+    wrap.appendChild(menu);
+
+    function picked() {
+      return Array.prototype.slice.call(selectEl.options).filter(function (o) { return o.selected && o.value !== ''; });
+    }
+    function syncTrigger() {
+      var sel = picked();
+      //   keeps a line box (so the empty trigger matches a native select's height)
+      trigger.textContent = sel.length ? sel.map(function (o) { return o.textContent.trim(); }).join(', ') : ' ';
+      trigger.classList.toggle('touched', sel.length > 0);
     }
 
-    function filterOptions(q) {
-      q = (q || '').toLowerCase().trim();
-      var shown = 0;
-      $all('.wm-selectbox-option', optWrap).forEach(function (b) {
-        var ok = !q || b.textContent.toLowerCase().indexOf(q) !== -1;
-        b.style.display = ok ? '' : 'none';
-        if (ok) shown++;
+    function buildItems() {
+      menu.innerHTML = '';
+      Array.prototype.slice.call(selectEl.options).forEach(function (opt) {
+        if (opt.disabled || opt.hidden || opt.value === '') return;
+        var item = document.createElement('button');
+        item.type = 'button';
+        item.className = 'wm-select-item';
+        var label = document.createElement('span');
+        label.className = 'wm-select-item-label';
+        label.textContent = opt.textContent;
+        item.appendChild(label);
+        if (opt.selected) item.classList.add('selected');
+        item.addEventListener('click', function (e) {
+          e.stopPropagation();
+          opt.selected = !opt.selected;
+          item.classList.toggle('selected', opt.selected);
+          syncTrigger();
+          selectEl.dispatchEvent(new Event('change', { bubbles: true }));
+          wrap.dispatchEvent(new CustomEvent('wm:select', { bubbles: true, detail: selectValue(selectEl) }));
+          // menu deliberately stays open for multi-select
+        });
+        menu.appendChild(item);
       });
-      emptyEl.style.display = shown ? 'none' : 'block';
     }
+    buildItems();
+    selectEl._wmRebuildMenu = buildItems;
+    syncTrigger();
 
-    syncSelectBox(box);
+    function openMenu() { closeAllPopovers(); menu.classList.add('open'); wrap.classList.add('open'); }
+    function closeMenu() { menu.classList.remove('open'); wrap.classList.remove('open'); }
+
+    trigger.addEventListener('mousedown', function (e) {
+      e.preventDefault();
+      if (menu.classList.contains('open')) closeMenu(); else openMenu();
+    });
+    trigger.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowDown') { e.preventDefault(); openMenu(); }
+      else if (e.key === 'Escape') closeMenu();
+    });
   }
 
   function selectValue(sel) {
-    var picked = Array.prototype.slice.call(sel.options).filter(function (o) { return o.selected; });
+    var picked = Array.prototype.slice.call(sel.options).filter(function (o) { return o.selected && o.value !== ''; });
     return sel.multiple
       ? { value: picked.map(function (o) { return o.value; }), labels: picked.map(function (o) { return o.textContent.trim(); }) }
-      : { value: (picked[0] || {}).value || '', label: (picked[0] || {}).textContent.trim() || '' };
+      : { value: (picked[0] || {}).value || '', label: (picked[0] || { textContent: '' }).textContent.trim() };
   }
 
-  function syncSelectBox(box) {
-    var sel = box.querySelector('select');
-    var placeholder = sel.getAttribute('data-placeholder') || 'Select…';
-    // option aria-selected
-    $all('.wm-selectbox-option', box).forEach(function (b) {
-      b.setAttribute('aria-selected', b._opt.selected ? 'true' : 'false');
-    });
-    var hasValue = Array.prototype.slice.call(sel.options).some(function (o) { return o.selected && !(o.value === '' && o.disabled); });
-    box.classList.toggle('has-value', hasValue);
-    if (sel.multiple) {
-      var chips = box.querySelector('.wm-selectbox-chips');
-      var picked = $all('.wm-selectbox-option', box).filter(function (b) { return b._opt.selected; });
-      chips.innerHTML = '';
-      if (!picked.length) {
-        var ph = document.createElement('span');
-        ph.className = 'is-placeholder';
-        ph.textContent = placeholder;
-        chips.appendChild(ph);
-        return;
-      }
-      picked.forEach(function (b) {
-        var chip = document.createElement('span');
-        chip.className = 'wm-chip';
-        chip.appendChild(document.createTextNode(b._opt.textContent.trim()));
-        var x = document.createElement('button');
-        x.type = 'button'; x.className = 'wm-chip-x'; x.innerHTML = ICON_X; x.setAttribute('aria-label', 'Remove');
-        x.addEventListener('click', function (e) {
-          e.stopPropagation();
-          b._opt.selected = false;
-          syncSelectBox(box);
-          sel.dispatchEvent(new Event('change', { bubbles: true }));
-        });
-        chip.appendChild(x);
-        chips.appendChild(chip);
-      });
-    } else {
-      var val = box.querySelector('.wm-selectbox-value');
-      var picked2 = Array.prototype.slice.call(sel.options).filter(function (o) { return o.selected && !(o.value === '' && o.disabled); });
-      if (picked2.length) { val.textContent = picked2[0].textContent.trim(); val.classList.remove('is-placeholder'); }
-      else { val.textContent = placeholder; val.classList.add('is-placeholder'); }
-    }
-  }
-
-  /* ---- date picker (enhances a readonly text input) ---------------------- */
-  var DOW = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
+  /* ---- custom calendar (port of the portal's enhanceDate) ---------------- */
+  // Enhances a native <input type="date">: it is set readonly and a .wm-calendar
+  // popover replaces the native picker. The input keeps its ISO (YYYY-MM-DD) value
+  // so it submits normally; .has-value drives the floating label.
   var MONTHS = ['January', 'February', 'March', 'April', 'May', 'June',
     'July', 'August', 'September', 'October', 'November', 'December'];
-
-  function pad(n) { return (n < 10 ? '0' : '') + n; }
-  function toISO(d) { return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
-  function fmtDate(d) { return d.getDate() + ' ' + MONTHS[d.getMonth()].slice(0, 3) + ' ' + d.getFullYear(); }
-  function parseISO(s) {
-    var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s || '');
-    if (!m) return null;
-    var d = new Date(+m[1], +m[2] - 1, +m[3]);
-    return isNaN(d) ? null : d;
+  function pad(n) { return n < 10 ? '0' + n : '' + n; }
+  function isSameDay(a, b) {
+    return a && b && a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
   }
 
-  function initDatePicker(input) {
-    if (input.dataset.wmEnhanced) return;
-    input.dataset.wmEnhanced = '1';
-    input.readOnly = true;
-
-    var wrap = document.createElement('div');
-    wrap.className = 'wm-datepicker';
-    input.parentNode.insertBefore(wrap, input);
-    wrap.appendChild(input);
-
-    // hidden ISO value for form submission (if a name was provided)
-    var hidden = null;
-    if (input.dataset.name || input.name) {
-      hidden = document.createElement('input');
-      hidden.type = 'hidden';
-      hidden.name = input.dataset.name || input.name;
-      if (input.name) input.removeAttribute('name');
-      wrap.appendChild(hidden);
-    }
-
-    var selected = parseISO(input.dataset.value || input.value);
-    var view = selected ? new Date(selected.getFullYear(), selected.getMonth(), 1) : new Date();
-    view.setDate(1);
+  function enhanceDate(inputEl) {
+    var wrap = inputEl.closest('.wm-field-float');
+    if (!wrap || wrap.dataset.wmDateEnhanced) return;
+    wrap.dataset.wmDateEnhanced = '1';
 
     var cal = document.createElement('div');
-    cal.className = 'wm-cal';
+    cal.className = 'wm-calendar';
+    cal.innerHTML =
+      '<div class="wm-cal-header">' +
+        '<span class="wm-cal-title"></span>' +
+        '<div class="wm-cal-nav">' +
+          '<button type="button" class="wm-cal-prev" aria-label="Previous month"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>' +
+          '<button type="button" class="wm-cal-next" aria-label="Next month"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></button>' +
+        '</div>' +
+      '</div>' +
+      '<div class="wm-cal-weekdays"><span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span></div>' +
+      '<div class="wm-cal-days"></div>' +
+      '<div class="wm-cal-footer">' +
+        '<button type="button" class="wm-cal-clear">Clear</button>' +
+        '<button type="button" class="wm-cal-today">Today</button>' +
+      '</div>';
     wrap.appendChild(cal);
 
-    function setValue(d) {
-      selected = d;
-      input.value = fmtDate(d);
-      input.dataset.value = toISO(d);
-      if (hidden) hidden.value = toISO(d);
-      wrap.classList.add('has-value');
-      wrap.classList.remove('is-open');
-      input.dispatchEvent(new CustomEvent('wm:datechange', { bubbles: true, detail: { value: toISO(d), date: d } }));
+    var today = new Date();
+    var view = new Date();
+
+    function render() {
+      var selected = inputEl.value ? new Date(inputEl.value + 'T00:00') : null;
+      cal.querySelector('.wm-cal-title').textContent = MONTHS[view.getMonth()] + ' ' + view.getFullYear();
+      var grid = cal.querySelector('.wm-cal-days');
+      grid.innerHTML = '';
+      var firstDay = new Date(view.getFullYear(), view.getMonth(), 1);
+      var lastDay = new Date(view.getFullYear(), view.getMonth() + 1, 0);
+      var startDow = firstDay.getDay();
+      var prevLast = new Date(view.getFullYear(), view.getMonth(), 0).getDate();
+      function addCell(label, date, muted) {
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'wm-cal-day' + (muted ? ' muted' : '') +
+          (isSameDay(date, today) ? ' today' : '') + (isSameDay(date, selected) ? ' selected' : '');
+        b.textContent = label;
+        b.addEventListener('click', function (e) { e.stopPropagation(); select(date); });
+        grid.appendChild(b);
+      }
+      for (var i = startDow - 1; i >= 0; i--) {
+        addCell(prevLast - i, new Date(view.getFullYear(), view.getMonth() - 1, prevLast - i), true);
+      }
+      for (var d = 1; d <= lastDay.getDate(); d++) {
+        addCell(d, new Date(view.getFullYear(), view.getMonth(), d), false);
+      }
+      var cells = grid.children.length;
+      var remaining = (cells <= 35) ? 35 - cells : 42 - cells;
+      for (var n = 1; n <= remaining; n++) {
+        addCell(n, new Date(view.getFullYear(), view.getMonth() + 1, n), true);
+      }
     }
-
-    function renderCal() {
-      var y = view.getFullYear(), mo = view.getMonth();
-      var first = new Date(y, mo, 1);
-      var startDow = first.getDay();
-      var daysInMonth = new Date(y, mo + 1, 0).getDate();
-      var prevDays = new Date(y, mo, 0).getDate();
-      var today = new Date(); var todayISO = toISO(today);
-      var selISO = selected ? toISO(selected) : null;
-
-      var html = '<div class="wm-cal-head">' +
-        '<span class="wm-cal-title">' + MONTHS[mo] + ' ' + y + '</span>' +
-        '<span class="wm-cal-nav">' +
-          '<button type="button" data-nav="-1" aria-label="Previous month"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>' +
-          '<button type="button" data-nav="1" aria-label="Next month"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></button>' +
-        '</span></div><div class="wm-cal-grid">';
-      DOW.forEach(function (d) { html += '<span class="wm-cal-dow">' + d + '</span>'; });
-      for (var i = 0; i < startDow; i++) {
-        html += '<button type="button" class="wm-cal-day is-muted" data-iso="' + toISO(new Date(y, mo - 1, prevDays - startDow + 1 + i)) + '">' + (prevDays - startDow + 1 + i) + '</button>';
-      }
-      for (var day = 1; day <= daysInMonth; day++) {
-        var iso = toISO(new Date(y, mo, day));
-        var cls = 'wm-cal-day';
-        if (iso === todayISO) cls += ' is-today';
-        if (iso === selISO) cls += ' is-selected';
-        html += '<button type="button" class="' + cls + '" data-iso="' + iso + '">' + day + '</button>';
-      }
-      var cells = startDow + daysInMonth;
-      var trail = (7 - (cells % 7)) % 7;
-      for (var t = 1; t <= trail; t++) {
-        html += '<button type="button" class="wm-cal-day is-muted" data-iso="' + toISO(new Date(y, mo + 1, t)) + '">' + t + '</button>';
-      }
-      html += '</div>';
-      cal.innerHTML = html;
+    function select(d) {
+      inputEl.value = d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
+      inputEl.classList.add('has-value');
+      inputEl.dispatchEvent(new Event('change', { bubbles: true }));
+      inputEl.dispatchEvent(new Event('input', { bubbles: true }));
+      inputEl.dispatchEvent(new CustomEvent('wm:datechange', { bubbles: true, detail: { value: inputEl.value, date: d } }));
+      closeCal();
     }
+    function openCal() {
+      closeAllPopovers();
+      view = inputEl.value ? new Date(inputEl.value + 'T00:00') : new Date();
+      render();
+      cal.classList.add('open');
+      wrap.classList.add('open');
+    }
+    function closeCal() { cal.classList.remove('open'); wrap.classList.remove('open'); }
 
-    cal.addEventListener('click', function (e) {
-      e.stopPropagation();
-      var nav = e.target.closest('[data-nav]');
-      if (nav) { view.setMonth(view.getMonth() + parseInt(nav.getAttribute('data-nav'), 10)); renderCal(); return; }
-      var day = e.target.closest('.wm-cal-day');
-      if (day) { var d = parseISO(day.getAttribute('data-iso')); if (d) setValue(d); }
+    inputEl.setAttribute('readonly', 'readonly');
+    inputEl.style.cursor = 'pointer';
+    inputEl.classList.toggle('has-value', !!inputEl.value);
+    inputEl.addEventListener('mousedown', function (e) {
+      e.preventDefault();
+      inputEl.focus();
+      if (cal.classList.contains('open')) closeCal(); else openCal();
+    });
+    inputEl.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowDown') { e.preventDefault(); openCal(); }
+      else if (e.key === 'Escape') closeCal();
     });
 
-    input.addEventListener('click', function (e) {
+    cal.querySelector('.wm-cal-prev').addEventListener('click', function (e) { e.stopPropagation(); view.setMonth(view.getMonth() - 1); render(); });
+    cal.querySelector('.wm-cal-next').addEventListener('click', function (e) { e.stopPropagation(); view.setMonth(view.getMonth() + 1); render(); });
+    cal.querySelector('.wm-cal-clear').addEventListener('click', function (e) {
       e.stopPropagation();
-      var willOpen = !wrap.classList.contains('is-open');
-      $all('.wm-selectbox.is-open, .wm-dropdown.is-open, .wm-datepicker.is-open').forEach(function (o) {
-        o.classList.remove('is-open');
-      });
-      if (willOpen) { view = selected ? new Date(selected.getFullYear(), selected.getMonth(), 1) : new Date(); view.setDate(1); renderCal(); }
-      wrap.classList.toggle('is-open', willOpen);
+      inputEl.value = '';
+      inputEl.classList.remove('has-value');
+      inputEl.dispatchEvent(new Event('change', { bubbles: true }));
+      closeCal();
     });
-
-    if (selected) setValue(selected); // normalize display from a preset ISO value
+    cal.querySelector('.wm-cal-today').addEventListener('click', function (e) { e.stopPropagation(); select(new Date()); });
   }
 
   /* ---- form validation (onboarding behavior) ----------------------------- */
@@ -496,10 +478,8 @@
     var val;
     if (control.tagName === 'SELECT' && control.multiple) {
       val = Array.prototype.slice.call(control.selectedOptions).filter(function (o) { return o.value; }).length ? 'x' : '';
-    } else if (control.dataset && control.dataset.wmEnhanced && control.classList.contains('wm-input')) {
-      val = (control.dataset.value || '').trim();   // datepicker stores ISO here
     } else {
-      val = (control.value || '').trim();
+      val = (control.value || '').trim();   // native <select> + native <input type="date"> both expose .value
     }
     if (required && !val) { setFieldError(field, field.dataset.wmRequiredMsg || 'This field is required'); return false; }
     if (val && control.type === 'email' && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(val)) {
@@ -521,9 +501,11 @@
       if (!validateField(c)) ok = false;
     });
     if (firstBad) {
-      var f = firstBad.closest('.wm-selectbox') || firstBad.closest('.wm-datepicker') || firstBad;
-      if (f.scrollIntoView) f.scrollIntoView({ block: 'center', behavior: 'smooth' });
-      var focusable = f.querySelector ? (f.querySelector('input, button, .wm-selectbox-trigger') || f) : f;
+      var field = fieldOf(firstBad) || firstBad;
+      if (field.scrollIntoView) field.scrollIntoView({ block: 'center', behavior: 'smooth' });
+      // multi-select hides the native control; focus its visible trigger instead
+      var focusable = (firstBad.tagName === 'SELECT' && firstBad.multiple && field.querySelector)
+        ? (field.querySelector('.wm-select') || firstBad) : firstBad;
       try { focusable.focus({ preventScroll: true }); } catch (e) {}
     }
     return ok;
@@ -733,23 +715,21 @@
     });
     $all('[data-wm-table-search]').forEach(initTableSearch);
     $all('.wm-dropdown').forEach(initDropdown);
-    $all('select[data-wm-select]').forEach(initSelectBox);
-    $all('[data-wm-datepicker]').forEach(initDatePicker);
+    $all('.wm-field-float select').forEach(enhanceSelect);
+    $all('.wm-field-float input[type="date"]').forEach(enhanceDate);
     $all('form[data-wm-validate]').forEach(function (f) {
       if (f.dataset.wmEnhanced) return; f.dataset.wmEnhanced = '1'; initFormValidate(f);
     });
 
-    // close any open dropdown / select / datepicker on outside click
+    // close any open filter dropdown on outside click
     document.addEventListener('click', function (e) {
       if (!e.target.closest('.wm-dropdown')) {
         $all('.wm-dropdown.is-open').forEach(function (o) { o.classList.remove('is-open'); });
       }
-      if (!e.target.closest('.wm-selectbox')) {
-        $all('.wm-selectbox.is-open').forEach(function (o) { o.classList.remove('is-open'); });
-      }
-      if (!e.target.closest('.wm-datepicker')) {
-        $all('.wm-datepicker.is-open').forEach(function (o) { o.classList.remove('is-open'); });
-      }
+    });
+    // close any open select menu / calendar on outside click (port of portal handler)
+    document.addEventListener('mousedown', function (e) {
+      if (!e.target.closest('.wm-field-float.open')) closeAllPopovers();
     });
 
     applyKbdHints();
@@ -757,9 +737,12 @@
     // global keys: Esc closes topmost, Cmd/Ctrl+K toggles palette
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape') {
-        var openPop = $all('.wm-dropdown.is-open, .wm-selectbox.is-open, .wm-datepicker.is-open');
-        if (openPop.length) { openPop.forEach(function (o) { o.classList.remove('is-open'); }); }
-        else { closeTopmost(); }
+        var openDd = $all('.wm-dropdown.is-open');
+        var openPop = $all('.wm-select-menu.open, .wm-calendar.open, .wm-field-float.open');
+        if (openDd.length || openPop.length) {
+          openDd.forEach(function (o) { o.classList.remove('is-open'); });
+          closeAllPopovers();
+        } else { closeTopmost(); }
       }
       if ((e.metaKey || e.ctrlKey) && (e.key === 'k' || e.key === 'K')) {
         if ($('.wm-cmdk-overlay') || document.querySelector('[data-wm-cmdk]')) {

@@ -291,163 +291,131 @@
 .wm-field--error .wm-field-error { display: block; }
 .wm-field--error .wm-input,
 .wm-field--error .wm-select,
-.wm-field--error .wm-textarea,
-.wm-field--error .wm-selectbox-trigger { border-color: var(--wm-danger-500); }
+.wm-field--error .wm-textarea { border-color: var(--wm-danger-500); }
 .wm-field--error .wm-input:focus,
 .wm-field--error .wm-select:focus,
-.wm-field--error .wm-textarea:focus,
-.wm-field--error .wm-selectbox.is-open .wm-selectbox-trigger { box-shadow: 0 0 0 3px rgba(240,68,56,0.14); }
+.wm-field--error .wm-textarea:focus { box-shadow: 0 0 0 3px rgba(240,68,56,0.14); }
 
-/* ---- Custom select / multi-select (enhances a native <select>) ---------- */
-.wm-selectbox { position: relative; font-family: var(--wm-font); }
-.wm-selectbox-native { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
-.wm-selectbox-trigger {
-  display: flex; align-items: center; gap: 10px; width: 100%; min-height: 46px;
-  padding: 8px 13px; border: 1px solid var(--wm-border-strong); border-radius: var(--wm-radius-md);
-  background: var(--wm-neutral-0); cursor: pointer; text-align: left;
-  font-family: var(--wm-font); font-size: 14px; color: var(--wm-text-primary); outline: none;
-  transition: border-color var(--wm-transition), box-shadow var(--wm-transition);
+/* ---- Custom select dropdown (port of the portal's enhanceSelect) -------- */
+/* The native <select> stays the visible trigger; this menu replaces the
+   browser's native dropdown. Lives inside a .wm-field-float (position:relative). */
+.wm-select-menu {
+  display: none; position: absolute; top: calc(100% + 6px); left: 0; right: 0; z-index: 50;
+  background: var(--wm-neutral-0); border: 1px solid var(--wm-border); border-radius: var(--wm-radius-sm);
+  padding: 6px; max-height: 280px; overflow-y: auto; box-shadow: var(--wm-shadow-md);
 }
-.wm-selectbox-trigger:hover { border-color: var(--wm-neutral-400); }
-.wm-selectbox.is-open .wm-selectbox-trigger { border-color: var(--wm-primary-500); box-shadow: 0 0 0 3px rgba(38,132,255,0.14); }
-.wm-selectbox-value { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.wm-selectbox-value.is-placeholder { color: var(--wm-text-muted); }
-.wm-selectbox-chevron { width: 18px; height: 18px; color: var(--wm-text-muted); flex-shrink: 0; transition: transform 0.2s; }
-.wm-selectbox.is-open .wm-selectbox-chevron { transform: rotate(180deg); }
-/* chips (multi-select) */
-.wm-selectbox-chips { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; flex: 1; min-width: 0; }
-.wm-selectbox-chips .is-placeholder { color: var(--wm-text-muted); }
-.wm-chip {
-  display: inline-flex; align-items: center; gap: 5px; padding: 3px 4px 3px 10px;
-  background: var(--wm-primary-50); color: var(--wm-primary-700); border-radius: var(--wm-radius-sm);
-  font-size: 13px; font-weight: 600; line-height: 1.4;
+.wm-select-menu.open { display: block; }
+.wm-select-item {
+  display: flex; align-items: center; width: 100%; padding: 10px 12px; background: transparent;
+  border: none; text-align: left; font-family: var(--wm-font); font-size: 14px; font-weight: 500;
+  color: var(--wm-text-primary); border-radius: 6px; cursor: pointer; transition: background 0.1s;
 }
-.wm-chip-x { display: inline-flex; align-items: center; justify-content: center; width: 16px; height: 16px; border: none; background: transparent; color: var(--wm-primary-600); cursor: pointer; padding: 0; border-radius: 4px; }
-.wm-chip-x:hover { background: rgba(26,111,224,0.14); }
-.wm-chip-x svg { width: 13px; height: 13px; }
-/* menu */
-.wm-selectbox-menu {
-  position: absolute; top: calc(100% + 6px); left: 0; right: 0; z-index: 60;
-  background: var(--wm-neutral-0); border: 1px solid var(--wm-border); border-radius: var(--wm-radius-md);
-  box-shadow: var(--wm-shadow-md); padding: 6px; display: none;
+.wm-select-item-label { flex: 1; min-width: 0; }
+.wm-select-item:hover { background: var(--wm-primary-50); }
+.wm-select-item.selected { background: var(--wm-primary-50); color: var(--wm-primary-500); font-weight: 700; }
+/* CSS checkmark (identical to portal) — used for single AND multi select */
+.wm-select-item.selected::after {
+  content: ''; width: 6px; height: 11px; margin-left: auto; margin-bottom: 3px;
+  border: solid var(--wm-primary-500); border-width: 0 2px 2px 0; transform: rotate(45deg);
 }
-.wm-selectbox.is-open .wm-selectbox-menu { display: block; animation: wmDdIn 0.12s ease-out; }
-.wm-selectbox-search { padding: 4px 4px 8px; }
-.wm-selectbox-search input {
-  width: 100%; box-sizing: border-box; font-family: var(--wm-font); font-size: 13.5px; color: var(--wm-text-primary);
-  padding: 9px 12px 9px 36px; border: 1px solid var(--wm-border-strong); border-radius: var(--wm-radius-sm);
-  background: var(--wm-neutral-0) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239AA2B2' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.3-4.3'/%3E%3C/svg%3E") no-repeat 11px center / 15px;
-  outline: none;
-}
-.wm-selectbox-search input:focus { border-color: var(--wm-primary-500); box-shadow: 0 0 0 3px rgba(38,132,255,0.14); }
-.wm-selectbox-options { max-height: 240px; overflow: auto; }
-.wm-selectbox-option {
-  display: flex; align-items: center; gap: 10px; width: 100%; padding: 9px 12px;
-  border: none; background: transparent; border-radius: 6px; font-family: var(--wm-font);
-  font-size: 14px; font-weight: 500; color: var(--wm-text-primary); cursor: pointer; text-align: left;
-  transition: background 0.1s;
-}
-.wm-selectbox-option:hover, .wm-selectbox-option.is-active { background: var(--wm-neutral-50); }
-.wm-selectbox-option[aria-selected="true"] { color: var(--wm-primary-700); font-weight: 700; }
-.wm-selectbox-option-label { flex: 1; min-width: 0; }
-/* single-select check */
-.wm-selectbox-option-check { width: 18px; height: 18px; color: var(--wm-primary-600); opacity: 0; flex-shrink: 0; }
-.wm-selectbox-option[aria-selected="true"] .wm-selectbox-option-check { opacity: 1; }
-/* multi-select checkbox */
-.wm-selectbox-option-box {
-  width: 18px; height: 18px; border: 1.5px solid var(--wm-border-strong); border-radius: 5px;
-  flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: background var(--wm-transition), border-color var(--wm-transition);
-}
-.wm-selectbox-option[aria-selected="true"] .wm-selectbox-option-box { background: var(--wm-primary-500); border-color: var(--wm-primary-500); }
-.wm-selectbox-option-box svg { width: 12px; height: 12px; color: #fff; opacity: 0; }
-.wm-selectbox-option[aria-selected="true"] .wm-selectbox-option-box svg { opacity: 1; }
-.wm-selectbox-empty { padding: 16px 12px; text-align: center; color: var(--wm-text-muted); font-size: 13px; display: none; }
 
-/* ---- Date picker (enhances a readonly text input) ----------------------- */
-.wm-datepicker { position: relative; }
-.wm-datepicker .wm-input { cursor: pointer; }
-.wm-cal {
-  position: absolute; top: calc(100% + 6px); left: 0; z-index: 60; width: 288px;
+/* ---- Custom calendar date picker (port of the portal's enhanceDate) ----- */
+.wm-calendar {
+  display: none; position: absolute; top: calc(100% + 6px); left: 0; z-index: 50; width: 300px;
   background: var(--wm-neutral-0); border: 1px solid var(--wm-border); border-radius: var(--wm-radius-md);
-  box-shadow: var(--wm-shadow-md); padding: 14px; display: none;
+  padding: 16px; box-shadow: var(--wm-shadow-md); font-family: var(--wm-font);
 }
-.wm-datepicker.is-open .wm-cal { display: block; animation: wmDdIn 0.12s ease-out; }
-.wm-cal-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
-.wm-cal-title { font-size: 14px; font-weight: 700; color: var(--wm-text-primary); }
-.wm-cal-nav { display: inline-flex; gap: 4px; }
-.wm-cal-nav button { width: 30px; height: 30px; border: none; background: transparent; border-radius: 8px; cursor: pointer; color: var(--wm-text-secondary); display: flex; align-items: center; justify-content: center; transition: background 0.1s; }
-.wm-cal-nav button:hover { background: var(--wm-neutral-100); }
-.wm-cal-nav svg { width: 18px; height: 18px; }
-.wm-cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
-.wm-cal-dow { font-size: 11px; font-weight: 700; color: var(--wm-text-muted); text-align: center; padding: 4px 0 8px; }
+.wm-calendar.open { display: block; }
+.wm-cal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.wm-cal-title { font-size: 14.5px; font-weight: 700; color: var(--wm-text-primary); }
+.wm-cal-nav { display: flex; gap: 4px; }
+.wm-cal-prev, .wm-cal-next {
+  width: 28px; height: 28px; background: transparent; border: none; border-radius: 6px;
+  color: var(--wm-text-secondary); cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: background 0.1s, color 0.1s;
+}
+.wm-cal-prev:hover, .wm-cal-next:hover { background: var(--wm-neutral-100); color: var(--wm-text-primary); }
+.wm-cal-prev svg, .wm-cal-next svg { width: 16px; height: 16px; }
+.wm-cal-weekdays { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; margin-bottom: 6px; }
+.wm-cal-weekdays span { font-size: 11px; font-weight: 700; color: var(--wm-text-muted); text-align: center; padding: 6px 0; text-transform: uppercase; letter-spacing: 0.3px; }
+.wm-cal-days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
 .wm-cal-day {
-  aspect-ratio: 1; border: none; background: transparent; border-radius: 8px; cursor: pointer;
-  font-family: var(--wm-font); font-size: 13px; font-weight: 500; color: var(--wm-text-primary); transition: background 0.1s;
+  height: 36px; background: transparent; border: none; border-radius: 8px; font-family: var(--wm-font);
+  font-size: 13.5px; font-weight: 500; color: var(--wm-text-primary); cursor: pointer; transition: background 0.1s, color 0.1s;
 }
-.wm-cal-day:hover { background: var(--wm-neutral-100); }
-.wm-cal-day.is-muted { color: var(--wm-neutral-300); }
-.wm-cal-day.is-today { font-weight: 700; color: var(--wm-primary-600); }
-.wm-cal-day.is-selected, .wm-cal-day.is-selected:hover { background: var(--wm-primary-500); color: #fff; font-weight: 700; }
+.wm-cal-day:hover:not(.muted) { background: var(--wm-primary-50); color: var(--wm-primary-500); }
+.wm-cal-day.muted { color: var(--wm-text-muted); opacity: 0.45; }
+.wm-cal-day.muted:hover { background: var(--wm-neutral-100); opacity: 0.7; }
+.wm-cal-day.today { color: var(--wm-primary-500); font-weight: 700; }
+.wm-cal-day.selected, .wm-cal-day.selected:hover { background: var(--wm-primary-500); color: #fff; font-weight: 700; }
+.wm-cal-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--wm-border); }
+.wm-cal-footer button { background: transparent; border: none; font-family: var(--wm-font); font-size: 13px; font-weight: 700; color: var(--wm-primary-500); cursor: pointer; padding: 6px 10px; border-radius: 6px; transition: background 0.1s; }
+.wm-cal-footer button:hover { background: var(--wm-primary-50); }
 
-/* ---- Floating-label field (portal signature form field) ------------------ */
+/* ---- Floating-label field (port of the portal's .fl-field) -------------- */
 /* Structure: control FIRST, then the <label> sibling.
    <div class="wm-field-float">
      <input class="wm-input" type="text" placeholder=" " id="x"> <label for="x">Name</label>
-   </div>  */
+   </div>
+   Custom select / calendar enhance the NATIVE <select> / <input type="date">. */
 .wm-field-float { position: relative; margin-bottom: 14px; }
 .wm-field-float > .wm-input,
-.wm-field-float > .wm-textarea,
-.wm-field-float > .wm-select {
-  width: 100%; padding: 24px 14px 8px; font-size: 16px; font-weight: 500;
-  border: 1px solid var(--wm-border); border-radius: var(--wm-radius-sm); line-height: 1.2;
+.wm-field-float > .wm-select,
+.wm-field-float > .wm-textarea {
+  width: 100%; padding: 24px 14px 8px; border: 1px solid var(--wm-border); border-radius: var(--wm-radius-sm);
+  font-family: var(--wm-font); font-size: 16px; font-weight: 500; color: var(--wm-text-primary);
+  background-color: var(--wm-neutral-0); outline: none; appearance: none; -webkit-appearance: none; line-height: 1.2;
+  transition: border-color 0.15s, box-shadow 0.15s;
 }
-.wm-field-float > .wm-textarea { min-height: 100px; padding-top: 26px; }
-.wm-field-float > .wm-select { padding-right: 40px; background-position: right 14px center; }
-.wm-field-float > .wm-input::placeholder,
-.wm-field-float > .wm-textarea::placeholder { color: transparent; }
-.wm-field-float > .wm-input:focus::placeholder,
-.wm-field-float > .wm-textarea:focus::placeholder { color: var(--wm-text-muted); opacity: 0.6; }
-.wm-field-float > .wm-input:focus,
-.wm-field-float > .wm-textarea:focus,
-.wm-field-float > .wm-select:focus { border-color: var(--wm-primary-500); box-shadow: 0 0 0 1.5px var(--wm-primary-100); }
+.wm-field-float > .wm-textarea { min-height: 100px; resize: vertical; padding-top: 18px; }
+.wm-field-float > .wm-select {
+  padding-right: 40px; cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236B7588' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 14px center; background-size: 18px;
+}
+.wm-field-float > .wm-input::placeholder, .wm-field-float > .wm-textarea::placeholder { color: transparent; }
+.wm-field-float > .wm-input:focus::placeholder, .wm-field-float > .wm-textarea:focus::placeholder { color: var(--wm-text-muted); opacity: 0.6; }
+.wm-field-float > .wm-input:hover, .wm-field-float > .wm-select:hover, .wm-field-float > .wm-textarea:hover { border-color: var(--wm-border-strong); }
+.wm-field-float > .wm-input:focus, .wm-field-float > .wm-select:focus, .wm-field-float > .wm-textarea:focus {
+  border-color: var(--wm-primary-500); box-shadow: 0 0 0 1.5px var(--wm-primary-100);
+}
 /* the floating label */
 .wm-field-float > label {
   position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
-  font-size: 16px; font-weight: 500; color: var(--wm-text-muted); pointer-events: none;
-  line-height: 1; max-width: calc(100% - 28px); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  font-size: 16px; font-weight: 500; color: var(--wm-text-muted); pointer-events: none; line-height: 1;
+  max-width: calc(100% - 28px); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   transition: top 0.15s ease, font-size 0.15s ease, transform 0.15s ease;
 }
-.wm-field-float > .wm-input:focus ~ label,
-.wm-field-float > .wm-input:not(:placeholder-shown) ~ label,
+.wm-field-float > .wm-input:not([type="date"]):focus ~ label,
+.wm-field-float > .wm-input:not([type="date"]):not(:placeholder-shown) ~ label,
 .wm-field-float > .wm-textarea:focus ~ label,
 .wm-field-float > .wm-textarea:not(:placeholder-shown) ~ label,
-.wm-field-float > .wm-select:focus ~ label,
-.wm-field-float > .wm-selectbox.is-open ~ label,
-.wm-field-float > .wm-selectbox.has-value ~ label,
-.wm-field-float > .wm-datepicker.is-open ~ label,
-.wm-field-float > .wm-datepicker.has-value ~ label,
-.wm-field-float.is-float > label {
+.wm-field-float > .wm-select.touched ~ label,
+.wm-field-float > .wm-input[type="date"].has-value ~ label,
+.wm-field-float > .wm-input[type="date"]:focus ~ label {
   top: 8px; transform: none; font-size: 10px; font-weight: 500;
 }
-.wm-field-float > .wm-textarea ~ label { top: 24px; transform: none; }
+/* hide native dd-mm-yyyy format string while a date field is empty + unfocused */
+.wm-field-float > .wm-input[type="date"]:not(.has-value):not(:focus)::-webkit-datetime-edit { color: transparent; }
+.wm-field-float > .wm-input[type="date"]:not(.has-value):not(:focus) { color: transparent; }
+.wm-field-float > .wm-textarea ~ label { top: 18px; transform: none; }
 .wm-field-float > .wm-textarea:focus ~ label,
-.wm-field-float > .wm-textarea:not(:placeholder-shown) ~ label { top: 8px; }
-.wm-field-float .wm-req { color: var(--wm-text-muted); }
-/* selectbox + datepicker inside a float field — tall trigger, label as placeholder */
-.wm-field-float > .wm-selectbox .wm-selectbox-trigger { min-height: 56px; padding: 22px 40px 8px 14px; border-color: var(--wm-border); }
-.wm-field-float > .wm-selectbox .wm-selectbox-chevron { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); }
-.wm-field-float > .wm-selectbox.is-open .wm-selectbox-chevron { transform: translateY(-50%) rotate(180deg); }
-.wm-field-float > .wm-selectbox .wm-selectbox-value.is-placeholder,
-.wm-field-float > .wm-selectbox .wm-selectbox-chips .is-placeholder { visibility: hidden; }
-.wm-field-float > .wm-selectbox.is-open .wm-selectbox-trigger { border-color: var(--wm-primary-500); box-shadow: 0 0 0 1.5px var(--wm-primary-100); }
-.wm-field-float > .wm-selectbox--multi .wm-selectbox-trigger { min-height: 56px; padding-top: 24px; padding-bottom: 6px; align-items: flex-end; }
-.wm-field-float > .wm-datepicker .wm-input { padding: 24px 40px 8px 14px; }
+.wm-field-float > .wm-textarea:not(:placeholder-shown) ~ label { top: 6px; }
+.wm-field-float .wm-req { color: var(--wm-text-muted); margin-left: 2px; font-weight: 500; }
+/* select shows muted placeholder colour until a value is chosen (.touched) */
+.wm-field-float > .wm-select:not(.touched) { color: var(--wm-text-muted); }
+.wm-field-float > .wm-select.touched { color: var(--wm-text-primary); }
+/* field with its popover open (port of .fl-field.open) */
+.wm-field-float.open { z-index: 51; }
+.wm-field-float.open > .wm-select {
+  border-color: var(--wm-primary-500); box-shadow: 0 0 0 1.5px var(--wm-primary-100);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232684FF' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='18 15 12 9 6 15'/%3E%3C/svg%3E");
+}
+.wm-field-float.open > .wm-input[type="date"] { border-color: var(--wm-primary-500); box-shadow: 0 0 0 1.5px var(--wm-primary-100); }
 .wm-field-float .wm-field-hint, .wm-field-float .wm-field-error { margin-top: 6px; }
 .wm-field-float.wm-field--error > .wm-input,
 .wm-field-float.wm-field--error > .wm-select,
-.wm-field-float.wm-field--error > .wm-textarea,
-.wm-field-float.wm-field--error > .wm-selectbox .wm-selectbox-trigger,
-.wm-field-float.wm-field--error > .wm-datepicker .wm-input { border-color: var(--wm-danger-500); }
+.wm-field-float.wm-field--error > .wm-textarea { border-color: var(--wm-danger-500); }
 .wm-field-float-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 
 /* ---- Toggle pill --------------------------------------------------------- */
