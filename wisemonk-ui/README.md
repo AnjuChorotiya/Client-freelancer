@@ -68,9 +68,9 @@ automates this with an `inline_sprite.py` script.)
 
 | Component | Base class | Modifiers |
 |---|---|---|
-| Button | `.wm-btn` | `--primary --secondary --outline --ghost --dark --success --danger --sm --lg --block` |
+| Button | `.wm-btn` | `--primary --secondary --outline --ghost --dark --danger --sm --lg --block` |
 | Icon button | `.wm-icon-btn` | — |
-| Pill / badge | `.wm-pill` | `--success --warning --danger --info --neutral --dot` |
+| Pill / badge | `.wm-pill` | `--success --warning --danger --info --neutral` |
 | Avatar | `.wm-avatar` | `--sm --lg --ink --muted` |
 | Card | `.wm-card` | `--flat --raised` (+ `.wm-stat-title/-value/-sub`) |
 | Banner | `.wm-banner` | `-body -title -desc -actions` |

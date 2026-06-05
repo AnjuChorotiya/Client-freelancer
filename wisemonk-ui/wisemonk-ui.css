@@ -109,8 +109,6 @@
 .wm-btn--ghost:hover { color: var(--wm-text-primary); background: var(--wm-neutral-100); }
 .wm-btn--dark { background: var(--wm-ink); color: #fff; }
 .wm-btn--dark:hover { background: var(--wm-ink-strong); }
-.wm-btn--success { background: var(--wm-success-500); color: #fff; }
-.wm-btn--success:hover { background: var(--wm-success-700); }
 .wm-btn--danger { background: var(--wm-danger-500); color: #fff; }
 .wm-btn--danger:hover { background: var(--wm-danger-700); }
 .wm-btn--sm { padding: 7px 14px; font-size: 13px; border-radius: var(--wm-radius-sm); }
@@ -137,7 +135,6 @@
 .wm-pill--danger  { background: var(--wm-danger-50);  color: var(--wm-danger-700); }
 .wm-pill--info    { background: var(--wm-primary-50); color: var(--wm-primary-700); }
 .wm-pill--neutral { background: var(--wm-neutral-100); color: var(--wm-text-muted); }
-.wm-pill--dot::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
 
 /* ---- Avatar -------------------------------------------------------------- */
 .wm-avatar {
