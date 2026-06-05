@@ -199,6 +199,13 @@
     .ri-amount-wrap { position: relative; }
     .ri-amount-wrap .ri-cur { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); font-size: 14px; font-weight: 700; color: var(--text-muted); pointer-events: none; }
     .ri-amount-wrap input { padding-left: 26px; }
+    .ri-breakdown { display: none; margin-bottom: 18px; padding: 14px 16px; border: 1px solid var(--border); border-radius: 12px; background: #F7F8FA; }
+    .ri-breakdown.show { display: block; }
+    .ri-bd-row { display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: var(--text-muted); padding: 4px 0; }
+    .ri-bd-row span:last-child { font-weight: 600; color: var(--text-secondary); }
+    .ri-bd-total { margin-top: 8px; padding-top: 10px; border-top: 1px solid var(--border-strong); }
+    .ri-bd-total span:first-child { font-size: 13px; font-weight: 700; color: var(--text-primary); }
+    .ri-bd-total span:last-child { font-size: 16px; font-weight: 700; color: var(--primary-600); }
     .ri-note { display: flex; gap: 10px; padding: 12px 14px; background: var(--primary-50); border-radius: 10px; font-size: 13px; color: var(--text-secondary); line-height: 1.5; margin-top: 4px; }
     .ri-note svg { width: 18px; height: 18px; color: var(--primary-600); flex-shrink: 0; margin-top: 1px; }
     .ri-foot { display: flex; align-items: center; justify-content: flex-end; gap: 12px; padding: 18px 28px; border-top: 1px solid var(--border); flex-shrink: 0; }
@@ -1063,6 +1070,11 @@
           <label for="riDesc">Work description</label>
           <textarea id="riDesc" placeholder="e.g. March cycle &mdash; frontend development"></textarea>
         </div>
+        <div class="ri-breakdown" id="riBreakdown">
+          <div class="ri-bd-row"><span>Invoice amount</span><span id="riBdAmount">$0.00</span></div>
+          <div class="ri-bd-row"><span>Bank fee (0.5%)</span><span id="riBdFee">−$0.00</span></div>
+          <div class="ri-bd-row ri-bd-total"><span>Contractor receives</span><span id="riBdNet">$0.00</span></div>
+        </div>
         <div class="ri-note">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-info-circle"/></svg>
           <span>The contractor receives a draft to review. The invoice is added to your list only after they confirm.</span>
@@ -1093,6 +1105,21 @@
       const m = document.getElementById('reqInvoiceModal');
       if (m) { m.addEventListener('click', function (ev) { if (ev.target === this) closeReqInvoice(); }); }
       document.addEventListener('keydown', function (ev) { if (ev.key === 'Escape') closeReqInvoice(); });
+      // Live invoice breakdown
+      const amt = document.getElementById('riAmount');
+      const bd = document.getElementById('riBreakdown');
+      const usd = n => '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      if (amt && bd) {
+        amt.addEventListener('input', function () {
+          const v = parseFloat((amt.value || '').replace(/[^0-9.]/g, '')) || 0;
+          if (v <= 0) { bd.classList.remove('show'); return; }
+          const fee = v * 0.005;
+          document.getElementById('riBdAmount').textContent = usd(v);
+          document.getElementById('riBdFee').textContent = '−' + usd(fee);
+          document.getElementById('riBdNet').textContent = usd(v - fee);
+          bd.classList.add('show');
+        });
+      }
     })();
 
     // ─── Row state: read pay status from localStorage and update rows ───
