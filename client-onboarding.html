@@ -619,7 +619,7 @@
 <path d="M9.5 12.5H14.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-document-upload" viewBox="0 0 24 24" fill="none"><path d="M9 17V11L7 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M9 11L11 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M22 10V15C22 20 20 22 15 22H9C4 22 2 20 2 15V9C2 4 4 2 9 2H14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M22 10H18C15 10 14 9 14 6V2L22 10Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-clock" viewBox="0 0 24 24" fill="none"><path d="M22 12C22 17.52 17.52 22 12 22C6.48 22 2 17.52 2 12C2 6.48 6.48 2 12 2C17.52 2 22 6.48 22 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 7V12.5L15.5 14.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-calendar" viewBox="0 0 24 24" fill="none"><path d="M8 2V5" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M22 10H18C15 10 14 9 14 6V2L22 10Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-edit-2" viewBox="0 0 24 24" fill="none"><path d="M13.26 3.59997L5.04997 12.29C4.73997 12.62 4.43997 13.27 4.37997 13.72L4.00997 16.96C3.87997 18.13 4.71997 18.93 5.87997 18.73L9.09997 18.18C9.54997 18.1 10.18 17.77 10.49 17.43L18.7 8.73997C20.12 7.23997 20.76 5.52997 18.55 3.43997C16.35 1.36997 14.68 2.09997 13.26 3.59997Z" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/><path d="M11.89 5.05005C12.32 7.81005 14.56 9.92005 17.34 10.2" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 22H21" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-clock" viewBox="0 0 24 24" fill="none"><path d="M22 12C22 17.52 17.52 22 12 22C6.48 22 2 17.52 2 12C2 6.48 6.48 2 12 2C17.52 2 22 6.48 22 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 7V12.5L15.5 14.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-calendar" viewBox="0 0 24 24" fill="none"><path d="M8 2V5" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M16 2V5" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M3.5 9.08997H20.5" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M21 8.5V17C21 20 19.5 22 16 22H8C4.5 22 3 20 3 17V8.5C3 5.5 4.5 3.5 8 3.5H16C19.5 3.5 21 5.5 21 8.5Z" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
@@ -762,23 +762,38 @@
         <p>We use these documents to complete verification and activate your account.</p>
       </div>
 
-      <div class="section-card">
+      <div class="section-card" id="bizIdentityCard">
         <div class="section-title">Business registration &amp; tax details</div>
-        <div class="fields">
+
+        <!-- Manual entry (default) -->
+        <div class="fields" id="bizManualFields">
           <div class="fl-field">
-            <input type="text" placeholder=" " data-must>
+            <input type="text" placeholder=" " data-must data-biz-manual>
             <label>Business Registration Number<span class="req">*</span></label>
           <p class="field-hint">CIN, EIN, UEN, ABN, Company Number, etc. — whichever applies in your country.</p></div>
           <div class="fl-field">
-            <input type="text" placeholder=" " data-must>
+            <input type="text" placeholder=" " data-must data-biz-manual>
             <label>Tax ID<span class="req">*</span></label>
           <p class="field-hint">PAN, EIN, VAT ID, UTR, etc. — your business tax identifier.</p></div>
         </div>
-        <label class="upload-link">
+        <button type="button" class="upload-link" id="bizUploadToggle">
           Or upload a registration document instead
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-document-upload"/></svg>
-          <input type="file" hidden>
+        </button>
+
+        <!-- Upload instead (hidden until toggled) -->
+        <label class="upload-tile" id="bizUploadTile" style="display:none;">
+          <span class="ut-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-document-upload"/></svg></span>
+          <span class="ut-body">
+            <span class="ut-title" id="bizUploadTitle">Upload registration document</span>
+            <span class="ut-sub">Business registration or tax certificate · PDF or image, max 5 MB</span>
+          </span>
+          <input type="file" id="bizUploadInput" accept=".pdf,image/*" hidden>
         </label>
+        <button type="button" class="upload-link" id="bizManualToggle" style="display:none;">
+          Or enter the details manually instead
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-edit-2"/></svg>
+        </button>
       </div>
 
       <div class="section-card">
@@ -1249,6 +1264,38 @@
         });
       });
     });
+
+    // Business identity: toggle between manual entry and document upload
+    const bizManualFields = document.getElementById('bizManualFields');
+    const bizUploadToggle = document.getElementById('bizUploadToggle');
+    const bizUploadTile = document.getElementById('bizUploadTile');
+    const bizManualToggle = document.getElementById('bizManualToggle');
+    const bizUploadInput = document.getElementById('bizUploadInput');
+    const bizUploadTitle = document.getElementById('bizUploadTitle');
+    if (bizManualFields && bizUploadToggle && bizUploadTile && bizManualToggle) {
+      const bizManualInputs = bizManualFields.querySelectorAll('[data-biz-manual]');
+      function setBizMode(mode) {
+        const upload = mode === 'upload';
+        bizManualFields.style.display = upload ? 'none' : '';
+        bizUploadToggle.style.display = upload ? 'none' : '';
+        bizUploadTile.style.display = upload ? '' : 'none';
+        bizManualToggle.style.display = upload ? '' : 'none';
+        // only the active mode's controls count toward the step's required check
+        bizManualInputs.forEach(i => { upload ? i.removeAttribute('data-must') : i.setAttribute('data-must', ''); });
+        if (bizUploadInput) { upload ? bizUploadInput.setAttribute('data-must', '') : bizUploadInput.removeAttribute('data-must'); }
+        updateSaveBtn();
+      }
+      bizUploadToggle.addEventListener('click', () => setBizMode('upload'));
+      bizManualToggle.addEventListener('click', () => setBizMode('manual'));
+      if (bizUploadInput) {
+        bizUploadInput.addEventListener('change', () => {
+          const file = bizUploadInput.files && bizUploadInput.files[0];
+          bizUploadTile.classList.toggle('uploaded', !!file);
+          if (bizUploadTitle) bizUploadTitle.textContent = file ? file.name : 'Upload registration document';
+          updateSaveBtn();
+        });
+      }
+    }
 
     // Prohibited list collapse
     const probTog = document.getElementById('probTog');
