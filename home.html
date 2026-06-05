@@ -93,6 +93,126 @@
     .nav-link.active { background: var(--accent-tint); color: var(--accent-500); }
     .nav-link.active .nav-icon { color: var(--accent-500); }
     .nav-icon { width: 20px; height: 20px; flex-shrink: 0; color: var(--grey-700); }
+    .nav-link.locked { color: var(--text-muted); }
+    .nav-link.locked .nav-icon { color: var(--neutral-400); }
+    .nav-link.locked:hover { background: var(--neutral-50); }
+
+    /* ─── ONBOARDING (HOME) ──────────────────────────────── */
+    .welcome { margin-bottom: 28px; padding-left: 0; max-width: 700px; }
+    .welcome p { font-size: 15.5px; color: var(--text-secondary); }
+    .progress-card, .checklist { max-width: 700px; }
+    .progress-card {
+      background: var(--neutral-0);
+      color: var(--text-primary);
+      border-radius: var(--radius-xl);
+      padding: 28px 32px;
+      margin-bottom: 20px;
+      position: relative; overflow: hidden;
+    }
+    .progress-eyebrow {
+      font-family: 'Satoshi', sans-serif; font-weight: 300;
+      font-size: 12px; color: var(--primary-600);
+      letter-spacing: 0.6px; text-transform: uppercase;
+      margin-bottom: 6px; position: relative; z-index: 1;
+    }
+    .progress-card h2 {
+      font-size: 22px; font-weight: 700; letter-spacing: -0.2px;
+      margin-bottom: 4px; color: var(--text-primary);
+      position: relative; z-index: 1;
+    }
+    .progress-card p {
+      font-size: 14px; color: var(--text-secondary);
+      margin-bottom: 18px; position: relative; z-index: 1;
+    }
+    .progress-track {
+      height: 8px; background: rgba(38, 132, 255, 0.10);
+      border-radius: 100px; overflow: hidden;
+      position: relative; z-index: 1;
+    }
+    .progress-fill {
+      height: 100%; width: 40%;
+      background: linear-gradient(90deg, #0026FF, #2684FF);
+      border-radius: 100px;
+    }
+    .progress-meta {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-top: 12px; font-size: 13.5px; color: var(--text-muted);
+      position: relative; z-index: 1;
+    }
+    .progress-meta strong { color: var(--text-primary); font-weight: 700; }
+    .time-tag {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 4px 10px; background: var(--primary-50);
+      color: var(--primary-700); border-radius: var(--radius-full);
+      font-family: 'Satoshi', sans-serif; font-weight: 300;
+      font-size: 12px; letter-spacing: 0.2px;
+    }
+    .time-tag svg { width: 12px; height: 12px; stroke: var(--primary-600); }
+    .checklist {
+      background: var(--neutral-0); border: 1px solid var(--border);
+      border-radius: var(--radius-xl); padding: 8px;
+    }
+    .checklist-item {
+      display: flex; align-items: center; gap: 16px;
+      padding: 18px 20px; border-radius: var(--radius-md);
+    }
+    .checklist-item + .checklist-item { border-top: 1px solid var(--border); }
+    .checklist-item.active { background: var(--primary-50); }
+    .checklist-item.active + .checklist-item { border-top-color: transparent; }
+    .step-circle {
+      flex-shrink: 0; width: 36px; height: 36px;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 50%; font-size: 14px; font-weight: 700;
+    }
+    .step-circle.done { background: var(--success-50); color: var(--success-700); }
+    .step-circle.done svg { width: 18px; height: 18px; stroke: var(--success-700); }
+    .step-circle.active { background: var(--primary-500); color: #fff; }
+    .step-circle.locked { background: var(--neutral-100); color: var(--text-muted); }
+    .step-body { flex: 1; min-width: 0; }
+    .step-title { font-size: 15.5px; font-weight: 700; color: var(--text-primary); margin-bottom: 2px; }
+    .checklist-item.locked .step-title { color: var(--text-muted); }
+    .step-desc { font-size: 13.5px; color: var(--text-secondary); line-height: 1.45; }
+    .checklist-item.locked .step-desc { color: var(--text-muted); }
+    .step-action { flex-shrink: 0; }
+    .step-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 10px 18px; border-radius: var(--radius-full);
+      font-family: inherit; font-size: 14px; font-weight: 700;
+      cursor: pointer; transition: all 0.15s ease; border: none;
+    }
+    .step-btn.primary { background: var(--primary-500); color: #fff; box-shadow: 0 6px 14px -6px rgba(38,132,255,0.5); }
+    .step-btn.primary:hover { background: var(--primary-600); transform: translateY(-1px); }
+    .step-btn svg { width: 14px; height: 14px; stroke-width: 2.2; }
+
+    /* ─── LOCKED EMPTY STATE ─────────────────────────────── */
+    .locked-state {
+      max-width: 700px; background: var(--neutral-0);
+      border-radius: var(--radius-xl); padding: 56px 40px;
+      text-align: center; display: flex; flex-direction: column; align-items: center;
+    }
+    .locked-state-icon {
+      width: 64px; height: 64px; border-radius: 50%;
+      background: var(--primary-50); color: var(--primary-600);
+      display: flex; align-items: center; justify-content: center; margin-bottom: 20px;
+    }
+    .locked-state-icon svg { width: 30px; height: 30px; }
+    .locked-state h2 { font-size: 20px; font-weight: 700; color: var(--text-primary); margin-bottom: 8px; }
+    .locked-state p {
+      font-size: 14.5px; color: var(--text-secondary);
+      max-width: 420px; line-height: 1.5; margin-bottom: 24px;
+    }
+    .locked-state-actions { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; justify-content: center; }
+    .ls-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      height: 44px; padding: 0 22px; border-radius: var(--radius-full);
+      font-family: 'Satoshi', sans-serif; font-weight: 500; font-size: 15px;
+      cursor: pointer; border: none; transition: background 0.15s, opacity 0.15s;
+    }
+    .ls-btn svg { width: 18px; height: 18px; }
+    .ls-btn.primary { background: var(--primary-500); color: #fff; }
+    .ls-btn.primary:hover { background: var(--primary-600); }
+    .ls-btn.blocked { background: var(--neutral-100); color: var(--neutral-400); cursor: not-allowed; }
+    .ls-btn.blocked svg { color: var(--neutral-400); }
 
     /* ─── MAIN ───────────────────────────────────────────── */
     .main-col { flex: 1; display: flex; flex-direction: column; min-width: 0; }
@@ -915,7 +1035,7 @@
 <path d="M7.75 12L10.58 14.83L16.25 9.17004" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-arrow-right" viewBox="0 0 24 24" fill="none"><path d="M14.4301 5.92993L20.5001 11.9999L14.4301 18.0699" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M3.5 12H20.33" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-info-circle" viewBox="0 0 24 24" fill="none"><path d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M12 8V13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M11.9945 16H12.0035" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol></svg><!-- /wm-icon-sprite -->
+<path d="M11.9945 16H12.0035" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-lock" viewBox="0 0 24 24" fill="none"><path d="M6 10V8c0-3.31 1-6 6-6s6 2.69 6 6v2M17 22H7c-4 0-5-1-5-5v-2c0-4 1-5 5-5h10c4 0 5 1 5 5v2c0 4-1 5-5 5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M15.996 16h.01M11.995 16h.01M7.995 16h.008" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol></svg><!-- /wm-icon-sprite -->
 
   <div class="app">
 
@@ -927,31 +1047,31 @@
 
       <nav class="nav-section">
         <div class="nav-title">WORKSPACE</div>
-        <a href="home.html" class="nav-link active">
+        <a href="#" class="nav-link active" data-tab="home">
           <span class="nav-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-home-2"/></svg>
           </span>
           Home
         </a>
-        <a href="freelancers.html" class="nav-link">
+        <a href="#" class="nav-link locked" data-tab="freelancers">
           <span class="nav-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-profile-2user"/></svg>
           </span>
           Freelancers
         </a>
-        <a href="invoices.html" class="nav-link">
+        <a href="#" class="nav-link locked" data-tab="invoices">
           <span class="nav-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-receipt-text"/></svg>
           </span>
           Invoices
         </a>
-        <a href="time-leaves.html" class="nav-link">
+        <a href="#" class="nav-link locked" data-tab="time">
           <span class="nav-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-clock"/></svg>
           </span>
           Time
         </a>
-        <a href="compliance.html" class="nav-link">
+        <a href="#" class="nav-link locked" data-tab="compliance">
           <span class="nav-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-shield-tick"/></svg>
           </span>
@@ -977,6 +1097,98 @@
       </header>
 
       <div class="content">
+
+       <!-- ── ONBOARDING (shown until account setup is complete) ── -->
+       <div id="homeView">
+        <div class="welcome">
+          <p>Let's finish setting up your account so you can start getting paid.</p>
+        </div>
+
+        <div class="progress-card">
+          <div class="progress-eyebrow">Account setup</div>
+          <h2>You're 20% there</h2>
+          <p>A few quick steps before you can start paying freelancers.</p>
+          <div class="progress-track"><div class="progress-fill" style="width:20%"></div></div>
+          <div class="progress-meta">
+            <span><strong>1</strong> of 5 steps complete</span>
+            <span class="time-tag">10 mins to finish</span>
+          </div>
+        </div>
+
+        <div class="checklist">
+          <div class="checklist-item">
+            <div class="step-circle done">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-tick-circle"/></svg>
+            </div>
+            <div class="step-body">
+              <div class="step-title">Verify your email</div>
+              <div class="step-desc">aman@example.com</div>
+            </div>
+          </div>
+
+          <div class="checklist-item active">
+            <div class="step-circle active">2</div>
+            <div class="step-body">
+              <div class="step-title">Business details</div>
+              <div class="step-desc">Legal entity name, registered address, country of incorporation and business type</div>
+            </div>
+            <div class="step-action">
+              <a href="client-onboarding.html" class="step-btn primary">
+                Start
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-arrow-right"/></svg>
+              </a>
+            </div>
+          </div>
+
+          <div class="checklist-item locked">
+            <div class="step-circle locked">3</div>
+            <div class="step-body">
+              <div class="step-title">Verify your business</div>
+              <div class="step-desc">Upload your business registration, tax ID and incorporation documents</div>
+            </div>
+          </div>
+
+          <div class="checklist-item locked">
+            <div class="step-circle locked">4</div>
+            <div class="step-body">
+              <div class="step-title">Verify your identity</div>
+              <div class="step-desc">Government-issued ID, plus a quick selfie check</div>
+            </div>
+          </div>
+
+          <div class="checklist-item locked">
+            <div class="step-circle locked">5</div>
+            <div class="step-body">
+              <div class="step-title">Tax &amp; compliance setup</div>
+              <div class="step-desc">Withholding-tax rate, sales-tax handling and compliance preferences</div>
+            </div>
+          </div>
+        </div>
+       </div>
+
+       <!-- ── Locked tab empty state ── -->
+       <div id="lockedView" hidden>
+         <div class="locked-state">
+           <div class="locked-state-icon">
+             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-lock"/></svg>
+           </div>
+           <h2 id="lockedTitle">Finish onboarding to unlock this</h2>
+           <p id="lockedDesc">Complete your account setup to start using this section.</p>
+           <div class="locked-state-actions">
+             <button type="button" class="ls-btn blocked" id="lockedBlockedBtn" disabled>
+               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-lock"/></svg>
+               <span id="lockedBlockedLabel">Locked</span>
+             </button>
+             <a href="client-onboarding.html" class="ls-btn primary">
+               Complete onboarding
+               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-arrow-right"/></svg>
+             </a>
+           </div>
+         </div>
+       </div>
+
+       <!-- ── DASHBOARD (shown after onboarding is complete) ── -->
+       <div id="dashboardView" hidden>
 
         <div class="cor-banner">
           <div class="cor-banner-body">
@@ -1106,6 +1318,7 @@
           </div>
         </div>
 
+       </div><!-- /#dashboardView -->
 
       </div>
     </div>
@@ -1381,5 +1594,82 @@
     })();
   </script>
   <!-- /wm-cor -->
+
+  <!-- Workspace tab gating (onboarding-first) -->
+  <script>
+    (function () {
+      const tabs = {
+        home: { title: 'Good Morning, Aman!' },
+        freelancers: {
+          title: 'Freelancers',
+          heading: 'Freelancers are locked',
+          desc: 'Finish your account onboarding to invite freelancers, manage their profiles, and start sending contracts.',
+          blocked: 'Invite freelancer'
+        },
+        invoices: {
+          title: 'Invoices',
+          heading: 'Invoices are locked',
+          desc: 'Finish your account onboarding to raise invoices, track approvals, and keep a record of every payout.',
+          blocked: 'Create invoice'
+        },
+        time: {
+          title: 'Time',
+          heading: 'Time tracking is locked',
+          desc: 'Finish your account onboarding to log hours, review timesheets, and approve your freelancers’ time.',
+          blocked: 'Log time'
+        },
+        compliance: {
+          title: 'Compliance',
+          heading: 'Compliance is locked',
+          desc: 'Finish your account onboarding to manage tax documents, run compliance checks, and stay audit-ready.',
+          blocked: 'View compliance'
+        }
+      };
+
+      const links = document.querySelectorAll('.nav-link[data-tab]');
+      const homeView = document.getElementById('homeView');
+      const dashboardView = document.getElementById('dashboardView');
+      const lockedView = document.getElementById('lockedView');
+      const headerTitle = document.querySelector('.header h1');
+      const lockedTitle = document.getElementById('lockedTitle');
+      const lockedDesc = document.getElementById('lockedDesc');
+      const lockedBlockedLabel = document.getElementById('lockedBlockedLabel');
+
+      // Onboarding not yet complete: Home shows the setup checklist.
+      // After onboarding, set this to true to reveal the dashboard on Home.
+      const onboardingComplete = false;
+
+      links.forEach(link => {
+        link.addEventListener('click', e => {
+          e.preventDefault();
+          const key = link.dataset.tab;
+          const cfg = tabs[key];
+          links.forEach(l => l.classList.remove('active'));
+          link.classList.add('active');
+
+          if (key === 'home') {
+            lockedView.hidden = true;
+            if (onboardingComplete) {
+              homeView.hidden = true;
+              dashboardView.hidden = false;
+            } else {
+              homeView.hidden = false;
+              dashboardView.hidden = true;
+            }
+            headerTitle.textContent = cfg.title;
+          } else {
+            homeView.hidden = true;
+            dashboardView.hidden = true;
+            lockedView.hidden = false;
+            headerTitle.textContent = cfg.title;
+            lockedTitle.textContent = cfg.heading;
+            lockedDesc.textContent = cfg.desc;
+            lockedBlockedLabel.textContent = cfg.blocked;
+          }
+          window.scrollTo({ top: 0 });
+        });
+      });
+    })();
+  </script>
 </body>
 </html>
