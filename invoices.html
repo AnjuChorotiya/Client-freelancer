@@ -793,7 +793,7 @@
             <div class="wm-head-actions">
               <button type="button" class="primary-btn" onclick="openReqInvoice(event)">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-add"/></svg>
-                Request invoice
+                Generate invoice
               </button>
             </div>
           </div>
@@ -1060,8 +1060,8 @@
     <div class="ri-modal">
       <div class="ri-head">
         <div>
-          <h2 id="riTitle">Request an invoice</h2>
-          <p>Raise an invoice on behalf of a contractor &mdash; they&rsquo;ll be notified to review and confirm.</p>
+          <h2 id="riTitle">Generate invoice</h2>
+          <p>Generate an invoice on behalf of a contractor &mdash; they&rsquo;ll be notified to review and confirm.</p>
         </div>
         <button class="ri-close" type="button" onclick="closeReqInvoice()" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-close"/></svg></button>
       </div>
@@ -1107,8 +1107,8 @@
       <div class="ri-foot">
         <button class="secondary-btn" type="button" onclick="closeReqInvoice()">Cancel</button>
         <button class="primary-btn" type="button" onclick="sendReqInvoice()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-sms"/></svg>
-          Send request
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-receipt-text"/></svg>
+          Generate invoice
         </button>
       </div>
     </div>
@@ -1122,7 +1122,7 @@
       const name = document.getElementById('riContractor').value;
       const btn = document.querySelector('#reqInvoiceModal .ri-foot .primary-btn');
       if (!name) { document.getElementById('riContractor').focus(); return; }
-      if (btn) { btn.textContent = 'Request sent'; btn.disabled = true; btn.style.opacity = '0.7'; }
+      if (btn) { btn.textContent = 'Invoice generated'; btn.disabled = true; btn.style.opacity = '0.7'; }
       setTimeout(closeReqInvoice, 900);
     }
     (function () {
