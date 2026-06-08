@@ -321,6 +321,37 @@
     .info-banner svg { width: 18px; height: 18px; color: var(--brand-500); flex-shrink: 0; margin-top: 1px; }
     .info-banner span { font-size: 13px; font-weight: 500; color: var(--text-secondary); line-height: 1.5; }
 
+    /* Onboarding overview (steps checklist) */
+    .overview { max-width: 632px; margin: 0 auto; }
+    .ov-head { margin-bottom: 24px; padding: 0 4px; }
+    .ov-head h1 { font-size: 32px; font-weight: 700; letter-spacing: -0.4px; color: var(--text-primary); margin-bottom: 8px; line-height: 1.2; }
+    .ov-head p { font-size: 14px; color: var(--text-muted); line-height: 1.55; }
+    .progress-card { background: var(--card); border-radius: 12px; padding: 24px; margin-bottom: 20px; }
+    .progress-card .pc-eyebrow { font-size: 12px; font-weight: 700; letter-spacing: 0.4px; text-transform: uppercase; color: var(--brand-500); margin-bottom: 8px; }
+    .progress-card h2 { font-size: 22px; font-weight: 700; color: var(--text-primary); margin-bottom: 6px; }
+    .progress-card .pc-sub { font-size: 14px; color: var(--text-muted); margin-bottom: 16px; line-height: 1.5; }
+    .progress-track { height: 6px; background: var(--brand-100); border-radius: 999px; overflow: hidden; margin-bottom: 12px; }
+    .progress-track > i { display: block; height: 100%; background: var(--brand-500); border-radius: 999px; transition: width 0.3s; }
+    .pc-meta { display: flex; align-items: center; justify-content: space-between; font-size: 13px; color: var(--text-muted); }
+    .pc-meta strong { color: var(--text-primary); }
+    .time-tag { background: var(--muted-bg); padding: 3px 10px; border-radius: 999px; font-weight: 600; color: var(--text-secondary); }
+
+    .checklist { background: var(--card); border-radius: 12px; overflow: hidden; margin-bottom: 24px; }
+    .checklist-item { display: flex; align-items: center; gap: 16px; padding: 18px 20px; }
+    .checklist-item + .checklist-item { border-top: 1px solid var(--border); }
+    .checklist-item.active { background: var(--brand-50); }
+    .checklist-item.active + .checklist-item { border-top-color: transparent; }
+    .step-circle { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; flex-shrink: 0; }
+    .step-circle.active { background: var(--brand-500); color: #fff; }
+    .step-circle.upcoming { background: var(--muted-bg); color: var(--text-muted); }
+    .cl-body { flex: 1; min-width: 0; }
+    .cl-title { font-size: 15px; font-weight: 700; color: var(--text-primary); margin-bottom: 2px; }
+    .cl-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.45; }
+    .ov-actions { display: flex; justify-content: flex-end; }
+    .ov-start { display: inline-flex; align-items: center; gap: 8px; height: 48px; padding: 0 28px; background: var(--brand-500); color: #fff; border: none; border-radius: 8px; font-family: inherit; font-size: 16px; font-weight: 700; cursor: pointer; transition: background 0.15s; }
+    .ov-start:hover { background: var(--brand-600); }
+    .ov-start svg { width: 16px; height: 16px; }
+
     /* Step panels */
     .step { display: none; }
     .step.active { display: block; }
@@ -374,6 +405,65 @@
   </header>
 
   <main>
+
+    <!-- OVERVIEW: onboarding steps checklist -->
+    <div class="overview" id="overviewView">
+      <div class="ov-head">
+        <h1>Let's get you set up to get paid</h1>
+        <p>Complete these quick steps so we can verify your details and send payments to your account. You can save and come back anytime.</p>
+      </div>
+
+      <div class="progress-card">
+        <div class="pc-eyebrow">Freelancer onboarding</div>
+        <h2>4 steps to finish</h2>
+        <p class="pc-sub">A few details about you, your business and where you'd like to be paid.</p>
+        <div class="progress-track"><i style="width:0%"></i></div>
+        <div class="pc-meta">
+          <span><strong>0</strong> of 4 steps complete</span>
+          <span class="time-tag">~8 mins to finish</span>
+        </div>
+      </div>
+
+      <div class="checklist">
+        <div class="checklist-item active">
+          <div class="step-circle active">1</div>
+          <div class="cl-body">
+            <div class="cl-title">Basic details</div>
+            <div class="cl-desc">Personal information, your online presence and the kind of work you deliver</div>
+          </div>
+        </div>
+        <div class="checklist-item">
+          <div class="step-circle upcoming">2</div>
+          <div class="cl-body">
+            <div class="cl-title">Business identifiers</div>
+            <div class="cl-desc">PAN details, document upload and your registered address</div>
+          </div>
+        </div>
+        <div class="checklist-item">
+          <div class="step-circle upcoming">3</div>
+          <div class="cl-body">
+            <div class="cl-title">Bank account details</div>
+            <div class="cl-desc">The INR account where you'd like to receive your payments</div>
+          </div>
+        </div>
+        <div class="checklist-item">
+          <div class="step-circle upcoming">4</div>
+          <div class="cl-body">
+            <div class="cl-title">Tax &amp; compliance</div>
+            <div class="cl-desc">GST registration status and your tax profile</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ov-actions">
+        <button type="button" class="ov-start" id="ovStartBtn">
+          Get started
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-arrow-right"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div id="stepForm" hidden>
 
     <!-- STEP 1: BASIC DETAILS -->
     <div class="step active" data-step="1">
@@ -627,9 +717,11 @@
       </div>
     </div>
 
+    </div><!-- /#stepForm -->
+
   </main>
 
-  <footer class="footer-bar">
+  <footer class="footer-bar" id="footerBar" hidden>
     <div class="progress-row"><div class="progress-fill" id="progressFill"></div></div>
     <div class="footer-inner">
       <button class="back-link" id="backBtn">
@@ -657,12 +749,31 @@
     function render() {
       steps.forEach(s => s.classList.toggle('active', +s.dataset.step === current));
       document.getElementById('progressFill').style.width = (current / total * 100) + '%';
-      document.getElementById('backBtn').disabled = current === 1;
+      document.getElementById('backBtn').disabled = false;
       const isLast = current === total;
       document.getElementById('saveBtn').textContent = isLast ? 'Submit' : 'Save & continue';
       document.getElementById('nextLabel').innerHTML = isLast ? '' : 'Next: <strong>' + nextLabels[current - 1] + '</strong>';
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
+
+    // Overview <-> form toggle
+    const overviewView = document.getElementById('overviewView');
+    const stepForm = document.getElementById('stepForm');
+    const footerBar = document.getElementById('footerBar');
+
+    function showForm() {
+      overviewView.hidden = true;
+      stepForm.hidden = false;
+      footerBar.hidden = false;
+      render();
+    }
+    function showOverview() {
+      overviewView.hidden = false;
+      stepForm.hidden = true;
+      footerBar.hidden = true;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    document.getElementById('ovStartBtn').addEventListener('click', () => { current = 1; showForm(); });
 
     document.getElementById('saveBtn').addEventListener('click', () => {
       if (current === total) { location.href = 'dashboard.html?role=freelancer'; return; }
@@ -671,6 +782,7 @@
     });
     document.getElementById('backBtn').addEventListener('click', () => {
       if (current > 1) { current--; render(); }
+      else showOverview();
     });
 
     // Floating-label state for selects
