@@ -411,7 +411,11 @@
     });
 
     document.getElementById('continueBtn').addEventListener('click', () => {
-      location.href = `dashboard.html?role=${role}&country=${selected.code}`;
+      if (role === 'freelancer') {
+        location.href = `freelancer-onboarding.html?country=${selected.code}`;
+      } else {
+        location.href = `dashboard.html?role=${role}&country=${selected.code}`;
+      }
     });
   </script>
 
