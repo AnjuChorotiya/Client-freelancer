@@ -903,10 +903,14 @@
     /* Reimbursement receipt attachment */
     .sp-attach {
       display: flex; align-items: center; gap: 12px;
+      width: 100%;
       padding: 12px 14px;
       border: 1px solid #f0f1f1;
       border-radius: 10px;
-      text-decoration: none;
+      background: #fff;
+      text-align: left;
+      cursor: pointer;
+      font-family: inherit;
       transition: background .15s ease, border-color .15s ease;
     }
     .sp-attach:hover { background: #f9fafb; border-color: #e3e5e8; }
@@ -919,9 +923,65 @@
     .sp-attach-meta { flex: 1; min-width: 0; }
     .sp-attach-name { font-size: 14px; font-weight: 600; color: #222224; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .sp-attach-size { font-size: 12.5px; color: #85878d; margin-top: 2px; }
-    .sp-attach-dl { color: #85878d; flex-shrink: 0; display: flex; }
-    .sp-attach-dl svg { width: 18px; height: 18px; }
-    .sp-attach:hover .sp-attach-dl { color: var(--primary-600); }
+
+    /* Attachment viewer modal */
+    .att-overlay {
+      position: fixed; inset: 0; background: rgba(17,22,32,0.55);
+      opacity: 0; visibility: hidden; transition: opacity .2s ease, visibility .2s ease;
+      z-index: 2300;
+    }
+    .att-overlay.open { opacity: 1; visibility: visible; }
+    .att-modal {
+      position: fixed; top: 50%; left: 50%; transform: translate(-50%, -46%);
+      width: min(620px, 94vw); max-height: 90vh;
+      background: #fff; border-radius: 16px;
+      display: flex; flex-direction: column; overflow: hidden;
+      box-shadow: 0 24px 60px rgba(0,0,0,.28);
+      opacity: 0; visibility: hidden; transition: opacity .2s ease, visibility .2s ease, transform .2s ease;
+      z-index: 2301;
+    }
+    .att-modal.open { opacity: 1; visibility: visible; transform: translate(-50%, -50%); }
+    .att-modal-head {
+      display: flex; align-items: center; gap: 12px;
+      padding: 16px 20px; border-bottom: 1px solid #f0f1f1; flex-shrink: 0;
+    }
+    .att-modal-ic {
+      width: 40px; height: 40px; border-radius: 9px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      background: var(--primary-50); color: var(--primary-600);
+    }
+    .att-modal-ic svg { width: 21px; height: 21px; }
+    .att-modal-titles { flex: 1; min-width: 0; }
+    .att-modal-name { font-family: 'Satoshi', sans-serif; font-size: 15px; font-weight: 600; color: #222224; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .att-modal-sub { font-size: 12.5px; color: #85878d; margin-top: 2px; }
+    .att-modal-close {
+      width: 34px; height: 34px; flex-shrink: 0; border: none; background: transparent;
+      border-radius: 8px; color: #85878d; cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: background .15s ease, color .15s ease;
+    }
+    .att-modal-close:hover { background: #f3f4f6; color: #222224; }
+    .att-modal-close svg { width: 20px; height: 20px; }
+    .att-modal-body {
+      padding: 20px; overflow-y: auto; background: #f4f5f7; flex: 1;
+      display: flex; flex-direction: column; gap: 14px;
+    }
+    /* faux receipt page preview */
+    .att-doc {
+      background: #fff; border: 1px solid #e8eaed; border-radius: 10px;
+      padding: 26px 28px; box-shadow: 0 1px 2px rgba(0,0,0,.04);
+    }
+    .att-doc-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 22px; }
+    .att-doc-brand { font-family: 'Satoshi', sans-serif; font-size: 17px; font-weight: 700; color: #222224; }
+    .att-doc-meta { text-align: right; font-size: 12px; color: #85878d; line-height: 1.5; }
+    .att-line { height: 9px; border-radius: 4px; background: #eceef1; margin-bottom: 10px; }
+    .att-doc-rows { margin: 18px 0; border-top: 1px solid #eceef1; }
+    .att-doc-row { display: flex; justify-content: space-between; padding: 11px 0; border-bottom: 1px solid #f3f4f6; font-size: 13.5px; color: #404145; }
+    .att-doc-row .att-amt { font-family: 'Satoshi', sans-serif; font-weight: 600; color: #222224; }
+    .att-doc-total { display: flex; justify-content: space-between; padding-top: 14px; font-family: 'Satoshi', sans-serif; font-weight: 700; font-size: 15px; color: #222224; }
+    .att-modal-foot {
+      display: flex; gap: 12px; justify-content: flex-end;
+      padding: 14px 20px; border-top: 1px solid #f0f1f1; flex-shrink: 0;
+    }
 
     .sp-footer {
       display: flex; gap: 12px;
@@ -1675,14 +1735,13 @@
 
       <div class="sp-section" id="spAttachSection" hidden>
         <div class="sp-section-label">Attachment</div>
-        <a href="#" class="sp-attach" onclick="return false;">
+        <button type="button" class="sp-attach" id="spAttachBtn">
           <span class="sp-attach-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-document-text"/></svg></span>
           <span class="sp-attach-meta">
             <span class="sp-attach-name" id="spAttachName">receipt.pdf</span>
             <span class="sp-attach-size" id="spAttachSize">PDF</span>
           </span>
-          <span class="sp-attach-dl" aria-label="Download"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-arrow-down"/></svg></span>
-        </a>
+        </button>
       </div>
 
       <div class="sp-section">
@@ -1696,6 +1755,49 @@
       <button class="approve-btn" id="approveBtn">Approve</button>
     </div>
   </aside>
+
+  <!-- ─── Attachment viewer modal ─── -->
+  <div class="att-overlay" id="attOverlay"></div>
+  <div class="att-modal" id="attModal" role="dialog" aria-modal="true" aria-labelledby="attModalName">
+    <div class="att-modal-head">
+      <span class="att-modal-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-document-text"/></svg></span>
+      <div class="att-modal-titles">
+        <div class="att-modal-name" id="attModalName">receipt.pdf</div>
+        <div class="att-modal-sub" id="attModalSub">PDF</div>
+      </div>
+      <button class="att-modal-close" id="attModalClose" aria-label="Close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-close"/></svg>
+      </button>
+    </div>
+    <div class="att-modal-body">
+      <div class="att-doc">
+        <div class="att-doc-top">
+          <div>
+            <div class="att-doc-brand">Expense receipt</div>
+            <div class="att-line" style="width:120px; margin-top:10px;"></div>
+          </div>
+          <div class="att-doc-meta">
+            Aisha Khan<br>Amsterdam, NL<br>Mar 07, 2026
+          </div>
+        </div>
+        <div class="att-line" style="width:70%;"></div>
+        <div class="att-line" style="width:48%;"></div>
+        <div class="att-doc-rows">
+          <div class="att-doc-row"><span>Flight BLR → AMS</span><span class="att-amt">€320.00</span></div>
+          <div class="att-doc-row"><span>Airport transfers</span><span class="att-amt">€60.00</span></div>
+          <div class="att-doc-row"><span>Client dinner</span><span class="att-amt">€100.00</span></div>
+        </div>
+        <div class="att-doc-total"><span>Total</span><span>€480.00</span></div>
+      </div>
+    </div>
+    <div class="att-modal-foot">
+      <button class="secondary-btn" id="attModalCloseBtn">Close</button>
+      <button class="primary-btn" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-arrow-down"/></svg>
+        Download
+      </button>
+    </div>
+  </div>
 
   <script>
     // Approvals tabs
@@ -1770,7 +1872,27 @@
     document.getElementById('spClose').addEventListener('click', closePanel);
     document.getElementById('denyBtn').addEventListener('click', closePanel);
     document.getElementById('approveBtn').addEventListener('click', closePanel);
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') closePanel(); });
+
+    // Attachment viewer modal
+    const attOverlay = document.getElementById('attOverlay');
+    const attModal = document.getElementById('attModal');
+    function openAtt() {
+      document.getElementById('attModalName').textContent = document.getElementById('spAttachName').textContent;
+      document.getElementById('attModalSub').textContent = document.getElementById('spAttachSize').textContent;
+      attOverlay.classList.add('open');
+      attModal.classList.add('open');
+    }
+    function closeAtt() { attOverlay.classList.remove('open'); attModal.classList.remove('open'); }
+    document.getElementById('spAttachBtn').addEventListener('click', openAtt);
+    attOverlay.addEventListener('click', closeAtt);
+    document.getElementById('attModalClose').addEventListener('click', closeAtt);
+    document.getElementById('attModalCloseBtn').addEventListener('click', closeAtt);
+
+    document.addEventListener('keydown', e => {
+      if (e.key !== 'Escape') return;
+      if (attModal.classList.contains('open')) { closeAtt(); return; }
+      closePanel();
+    });
   </script>
 
 
