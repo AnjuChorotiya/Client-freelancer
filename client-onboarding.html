@@ -106,11 +106,13 @@
       border-width: 1px;
       box-shadow: 0 0 0 1.5px var(--brand-100);
     }
-    /* Label — sits vertically centered when empty, lifts to top when filled or focused */
+    /* Label — sits vertically centered on the INPUT when empty, lifts to top when filled
+       or focused. Anchored to a fixed top (≈ half the input height) rather than 50% of the
+       wrapper, so an inline error/hint appended inside .fl-field doesn't drag it downward. */
     .fl-field label {
       position: absolute;
       left: 14px;
-      top: 50%; transform: translateY(-50%);
+      top: 28px; transform: translateY(-50%);
       font-size: 16px;
       font-weight: 500;
       color: var(--text-muted);
