@@ -430,6 +430,16 @@
     /* Free-standing field hint (used outside .fl-field, e.g. under a checkbox) */
     .field-hint { font-size: 12px; font-weight: 500; color: var(--text-muted); margin-top: 2px; padding: 0 4px; }
 
+    /* Inline validation errors */
+    .field-error { font-size: 12px; font-weight: 600; color: var(--danger); margin-top: 6px; padding: 0 4px; line-height: 1.45; }
+    .fl-field.has-error input, .fl-field.has-error select, .fl-field.has-error textarea { border-color: var(--danger); }
+    .fl-field.has-error input:focus, .fl-field.has-error select:focus, .fl-field.has-error textarea:focus { border-color: var(--danger); box-shadow: 0 0 0 1.5px rgba(228,0,20,0.15); }
+    .fl-field.has-error label { color: var(--danger); }
+    .fl-phone.has-error .num, .fl-phone.has-error .cc { border-color: var(--danger); }
+    .upload-tile.has-error { border-color: var(--danger); }
+    .check-row.has-error label { color: var(--danger); }
+    #directorList.has-error { display: block; }
+
     /* Upload tile (single line, dashed) */
     .upload-tile {
       display: flex; align-items: center; gap: 12px;
@@ -813,13 +823,13 @@
             <label for="pow-tax">Tax registration document (VAT / EIN / Tax ID)</label>
           </div>
         </div>
-        <label class="upload-tile" style="margin-top:8px;">
+        <label class="upload-tile" id="powUploadTile" style="margin-top:8px;">
           <span class="ut-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-document-upload"/></svg></span>
           <span class="ut-body">
-            <span class="ut-title">Upload business document</span>
+            <span class="ut-title" id="powUploadTitle">Upload business document</span>
             <span class="ut-sub">Helps verify the registration of the company · PDF or image, max 5 MB</span>
           </span>
-          <input type="file" hidden>
+          <input type="file" id="powUploadInput" accept=".pdf,image/*" data-must hidden>
         </label>
       </div>
     </div>
@@ -1070,17 +1080,177 @@
       'Finish'
     ];
 
-    function validateStep() {
-      const activeStep = document.querySelector('.step.active');
-      if (!activeStep) return true;
-      const mustFill = activeStep.querySelectorAll('input[data-must], textarea[data-must], select[data-must]');
-      for (const f of mustFill) { if (!f.value.trim()) return false; }
-      const reqChecks = activeStep.querySelectorAll('input[type="checkbox"][data-must]');
-      for (const c of reqChecks) { if (!c.checked) return false; }
-      return true;
+    // ---------- Inline validation ----------
+    const attempted = new Set();
+    const PHONE_MIN = { '+1': 10, '+44': 10, '+61': 9, '+65': 8, '+971': 9, '+49': 10, '+33': 9, '+31': 9, '+81': 10, '+86': 11, '+852': 8, '+353': 9, '+64': 8, '+91': 10 };
+
+    const val = el => ((el && el.value) || '').trim();
+    function wrapOf(el) {
+      return el.closest('.fl-field') || el.closest('.fl-phone') || el.closest('.upload-tile') || el.closest('.check-row') || el.closest('.q-block') || el;
     }
+    function labelOf(el) {
+      const w = el.closest('.fl-field');
+      const l = w && w.querySelector('label');
+      return l ? l.textContent.replace('*', '').trim() : '';
+    }
+    function afterWrap(wrap) {
+      return wrap.classList.contains('fl-phone') || wrap.classList.contains('check-row') || wrap.classList.contains('upload-tile');
+    }
+    function setError(wrap, msg) {
+      if (!wrap) return;
+      wrap.classList.add('has-error');
+      if (!msg) return;
+      if (afterWrap(wrap)) {
+        let e = wrap.nextElementSibling;
+        if (!e || !e.classList.contains('field-error')) {
+          e = document.createElement('p'); e.className = 'field-error';
+          wrap.parentNode.insertBefore(e, wrap.nextSibling);
+        }
+        e.textContent = msg;
+      } else {
+        let e = wrap.querySelector(':scope > .field-error');
+        if (!e) { e = document.createElement('p'); e.className = 'field-error'; wrap.appendChild(e); }
+        e.textContent = msg;
+      }
+    }
+    function clearAllErrors(step) {
+      step.querySelectorAll('.field-error').forEach(e => e.remove());
+      step.querySelectorAll('.has-error').forEach(w => w.classList.remove('has-error'));
+    }
+
+    function ageOf(dobStr) {
+      const d = new Date(dobStr + 'T00:00');
+      if (isNaN(d.getTime())) return null;
+      const now = new Date();
+      let age = now.getFullYear() - d.getFullYear();
+      const m = now.getMonth() - d.getMonth();
+      if (m < 0 || (m === 0 && now.getDate() < d.getDate())) age--;
+      return { date: d, age: age };
+    }
+
+    function collectStepErrors(step, sn) {
+      const errs = [];
+      const push = (wrap, msg) => errs.push({ wrap: wrap, msg: msg || '' });
+
+      if (sn === 1) {
+        const name = step.querySelector('.fl-field input[type="text"]');
+        const nv = val(name);
+        if (!nv) push(wrapOf(name), 'Please enter your legal name.');
+        else if (nv.length < 2) push(wrapOf(name), 'Name must be at least 2 characters.');
+        else if (!/^[\p{L}][\p{L} .'-]*$/u.test(nv)) push(wrapOf(name), 'Name can only contain letters.');
+
+        const cc = step.querySelector('.fl-phone .cc');
+        const num = step.querySelector('.fl-phone .num');
+        const phoneWrap = step.querySelector('.fl-phone');
+        const digits = val(num).replace(/[\s-]/g, '');
+        if (!digits) push(phoneWrap, 'Please enter your phone number.');
+        else if (!/^\d+$/.test(digits)) push(phoneWrap, 'Phone number can only contain digits.');
+        else if (digits.length < (PHONE_MIN[cc && cc.value] || 7)) push(phoneWrap, 'That number looks too short for ' + (cc ? cc.value : '') + '.');
+      }
+
+      else if (sn === 2) {
+        const blocks = directorList ? Array.from(directorList.querySelectorAll('.director-block')) : [];
+        let total = 0; const ownWraps = [];
+        blocks.forEach(b => {
+          const nm = b.querySelector('.dir-name');
+          const dob = b.querySelector('input[type="date"]');
+          const ctry = b.querySelector('select');
+          const own = b.querySelector('input[type="number"]');
+          if (!val(nm)) push(wrapOf(nm), "Enter the director's name.");
+          if (!val(dob)) push(wrapOf(dob), 'Enter the date of birth.');
+          else {
+            const a = ageOf(val(dob));
+            if (!a || a.date >= new Date()) push(wrapOf(dob), 'Date of birth must be in the past.');
+            else if (a.age < 18) push(wrapOf(dob), 'Director must be at least 18 years old.');
+          }
+          if (!val(ctry)) push(wrapOf(ctry), 'Select the country of residence.');
+          const ov = val(own);
+          if (!ov) push(wrapOf(own), 'Enter the % ownership.');
+          else {
+            const n = parseFloat(ov);
+            if (isNaN(n) || n < 0 || n > 100) push(wrapOf(own), 'Ownership must be between 0 and 100.');
+            else { total += n; ownWraps.push(wrapOf(own)); }
+          }
+        });
+        if (total > 100) {
+          ownWraps.forEach(w => push(w, ''));
+          push(directorList, 'Combined ownership across directors can’t exceed 100% (currently ' + (Math.round(total * 100) / 100) + '%).');
+        }
+        if (uboSelect) {
+          if (!blocks.length) push(wrapOf(uboSelect), 'Add at least one director, then choose the UBO.');
+          else if (!val(uboSelect)) push(wrapOf(uboSelect), 'Select the ultimate beneficial owner.');
+        }
+      }
+
+      else if (sn === 3) {
+        const manualVisible = bizManualFields && bizManualFields.style.display !== 'none';
+        if (manualVisible) {
+          const ins = bizManualFields.querySelectorAll('[data-biz-manual]');
+          if (ins[0] && !val(ins[0])) push(wrapOf(ins[0]), 'Enter your business registration number.');
+          if (ins[1] && !val(ins[1])) push(wrapOf(ins[1]), 'Enter your tax ID.');
+        } else if (bizUploadInput && !val(bizUploadInput)) {
+          push(bizUploadTile, 'Upload your registration document.');
+        }
+        const pow = document.getElementById('powUploadInput');
+        if (pow && !val(pow)) push(document.getElementById('powUploadTile'), 'Upload a business document to verify your registration.');
+      }
+
+      else if (sn === 4) {
+        const brand = step.querySelector('.fl-field input[type="text"]');
+        const desc = document.getElementById('workDesc');
+        const url = step.querySelector('input[type="url"]');
+        const handled = new Set([brand, desc, url]);
+        if (brand && !val(brand)) push(wrapOf(brand), 'Enter your brand or business name.');
+        const dv = val(desc);
+        if (!dv) push(wrapOf(desc), 'Please describe your work.');
+        else if (dv.length < 20) push(wrapOf(desc), 'Please add a bit more detail (at least 20 characters).');
+        const uv = val(url);
+        if (!uv) push(wrapOf(url), 'Enter your online presence link.');
+        else if (!/^https?:\/\/[^\s]+\.[^\s]{2,}$/i.test(uv)) push(wrapOf(url), 'Enter a valid URL starting with https://.');
+        step.querySelectorAll('input[data-must], textarea[data-must], select[data-must]').forEach(el => {
+          if (handled.has(el)) return;
+          if (!val(el)) {
+            const lbl = labelOf(el);
+            const verb = el.tagName === 'SELECT' ? 'Please select ' : 'Please enter ';
+            push(wrapOf(el), lbl ? verb + lbl.toLowerCase() + '.' : 'This field is required.');
+          }
+        });
+      }
+
+      else if (sn === 5) {
+        ['c1', 'c2', 'c3', 'c4', 'c5'].forEach(id => {
+          const c = document.getElementById(id);
+          if (c && !c.checked) push(c.closest('.check-row'), 'Please confirm this declaration to continue.');
+        });
+      }
+
+      else if (sn === 6) {
+        const rc = document.getElementById('reviewConfirm');
+        if (rc && !rc.checked) push(rc.closest('.check-row'), 'Please confirm before submitting.');
+      }
+
+      return errs;
+    }
+
+    function runValidation(focus) {
+      const step = document.querySelector('.step.active');
+      if (!step) return true;
+      const errs = collectStepErrors(step, +step.dataset.step);
+      clearAllErrors(step);
+      errs.forEach(e => setError(e.wrap, e.msg));
+      if (focus && errs.length) {
+        const w = errs[0].wrap;
+        w.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        const c = w.querySelector('input, textarea, select');
+        if (c && !c.disabled) { try { c.focus({ preventScroll: true }); } catch (e) {} }
+      }
+      return errs.length === 0;
+    }
+
+    // Re-validate live (without scrolling) once the user has attempted the step.
     function updateSaveBtn() {
-      document.getElementById('saveBtn').disabled = !validateStep();
+      const step = document.querySelector('.step.active');
+      if (step && attempted.has(+step.dataset.step)) runValidation(false);
     }
     function render() {
       steps.forEach(s => s.classList.toggle('active', +s.dataset.step === current));
@@ -1235,6 +1405,8 @@
     }
 
     document.getElementById('saveBtn').addEventListener('click', () => {
+      attempted.add(current);
+      if (!runValidation(true)) return;
       if (current === total) {
         try { localStorage.removeItem(SAVE_KEY); } catch (e) {}
         location.href = 'home.html';
@@ -1317,6 +1489,19 @@
           updateSaveBtn();
         });
       }
+    }
+
+    // Proof-of-business document upload — required; reflect chosen filename
+    const powUploadInput = document.getElementById('powUploadInput');
+    const powUploadTile = document.getElementById('powUploadTile');
+    const powUploadTitle = document.getElementById('powUploadTitle');
+    if (powUploadInput) {
+      powUploadInput.addEventListener('change', () => {
+        const f = powUploadInput.files && powUploadInput.files[0];
+        if (powUploadTile) powUploadTile.classList.toggle('uploaded', !!f);
+        if (powUploadTitle) powUploadTitle.textContent = f ? f.name : 'Upload business document';
+        updateSaveBtn();
+      });
     }
 
     // Prohibited list collapse
@@ -1609,6 +1794,7 @@
         let idx = 0;
         step.querySelectorAll('input, textarea, select').forEach(el => {
           if (el.closest('#directorList')) return;
+          if (el.type === 'file') return;
           if (el.id === 'uboSelect') { state.ubo = el.value; return; }
           const key = 's' + sn + '_' + (idx++);
           if (el.type === 'radio') { if (el.checked) state.radios[el.name] = el.id; }
@@ -1662,6 +1848,7 @@
         let idx = 0;
         step.querySelectorAll('input, textarea, select').forEach(el => {
           if (el.closest('#directorList')) return;
+          if (el.type === 'file') return;
           if (el.id === 'uboSelect') return;
           const key = 's' + sn + '_' + (idx++);
           if (el.type === 'radio') return;
