@@ -1110,7 +1110,6 @@
       <div class="ri-foot">
         <button class="secondary-btn" type="button" onclick="closeReqInvoice()">Cancel</button>
         <button class="primary-btn" type="button" onclick="sendReqInvoice()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-receipt-text"/></svg>
           Generate invoice
         </button>
       </div>
@@ -1123,10 +1122,12 @@
     function closeReqInvoice() { const m = document.getElementById('reqInvoiceModal'); if (m) { m.classList.remove('show'); document.body.style.overflow = ''; setTimeout(function () { m.classList.remove('open'); }, 320); } }
     function sendReqInvoice() {
       const name = document.getElementById('riContractor').value;
-      const btn = document.querySelector('#reqInvoiceModal .ri-foot .primary-btn');
       if (!name) { document.getElementById('riContractor').focus(); return; }
-      if (btn) { btn.textContent = 'Invoice generated'; btn.disabled = true; btn.style.opacity = '0.7'; }
-      setTimeout(closeReqInvoice, 900);
+      const amount = (document.getElementById('riAmount').value || '').replace(/[^0-9.]/g, '');
+      const invNum = '#INV-' + (1100 + Math.floor(Math.random() * 899));
+      const qs = new URLSearchParams({ inv: invNum, to: name });
+      if (amount) qs.set('amt', amount);
+      location.href = 'pay.html?' + qs.toString();
     }
     (function () {
       const m = document.getElementById('reqInvoiceModal');

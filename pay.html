@@ -371,7 +371,7 @@
           </div>
           <div>
             <div class="kv-cell-label">Beneficiary name</div>
-            <div class="kv-cell-value">Rahul Sharma</div>
+            <div class="kv-cell-value" id="payBeneficiary">Rahul Sharma</div>
           </div>
 
           <div>
@@ -395,7 +395,7 @@
           </div>
           <div>
             <div class="kv-cell-label">Amount to transfer</div>
-            <div class="kv-cell-value">$12,450.00</div>
+            <div class="kv-cell-value" id="payAmount">$12,450.00</div>
           </div>
 
           <div class="ref-block">
@@ -445,8 +445,8 @@
         <div>
           <div class="kv-cell-label">Amount</div>
           <div class="kv-cell-value dual">
-            <span>$12,450.00</span>
-            <span class="alt">₹12,49,920.00</span>
+            <span id="payAmt2">$12,450.00</span>
+            <span class="alt" id="payInr2">₹12,49,920.00</span>
           </div>
         </div>
       </div>
@@ -475,8 +475,8 @@
         <div>
           <div class="kv-cell-label">Amount</div>
           <div class="kv-cell-value dual">
-            <span>$12,450.00</span>
-            <span class="alt">₹12,49,920.00</span>
+            <span id="payAmt3">$12,450.00</span>
+            <span class="alt" id="payInr3">₹12,49,920.00</span>
           </div>
         </div>
       </div>
@@ -527,6 +527,29 @@
     // Pick up the invoice number from ?inv=
     const params = new URLSearchParams(location.search);
     const invNum = params.get('inv') || '#INV-1042';
+
+    // When arriving from "Generate invoice", reflect the contractor + amount
+    (function () {
+      const RATE = 83.50;
+      const payTo = params.get('to');
+      const payAmt = parseFloat((params.get('amt') || '').replace(/[^0-9.]/g, ''));
+      const usd = n => '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      function inr(n) {
+        const p = (Math.round(n * 100) / 100).toFixed(2).split('.');
+        const x = p[0], last3 = x.slice(-3), other = x.slice(0, -3);
+        const head = other.replace(/\B(?=(\d{2})+(?!\d))/g, ',');
+        return '₹' + (other ? head + ',' : '') + last3 + '.' + p[1];
+      }
+      if (payTo) {
+        const b = document.getElementById('payBeneficiary');
+        if (b) b.textContent = payTo;
+      }
+      if (payAmt && payAmt > 0) {
+        const u = usd(payAmt), i = inr(payAmt * RATE);
+        ['payAmount', 'payAmt2', 'payAmt3'].forEach(id => { const el = document.getElementById(id); if (el) el.textContent = u; });
+        ['payInr2', 'payInr3'].forEach(id => { const el = document.getElementById(id); if (el) el.textContent = i; });
+      }
+    })();
 
     function showStep(n) {
       ['step1', 'step2', 'step3'].forEach((id, i) => {
