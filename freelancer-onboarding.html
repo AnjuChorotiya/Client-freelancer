@@ -368,7 +368,7 @@
     .checklist { background: var(--card); padding: 8px; margin-bottom: 24px; border-radius: 8px; }
     .checklist-item { display: flex; align-items: center; gap: 16px; padding: 18px 20px; border-radius: 0; }
     .checklist-item + .checklist-item { border-top: 1px solid var(--border); }
-    .checklist-item.active { background: var(--brand-50); }
+    .checklist-item.active { background: var(--brand-50); border-radius: 8px; }
     .checklist-item.active + .checklist-item { border-top-color: transparent; }
     .step-circle { flex-shrink: 0; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; }
     .step-circle.done { background: #ECFDF3; color: var(--success); }
@@ -427,7 +427,7 @@
 <path d="M22 10V15C22 20 20 22 15 22H9C4 22 2 20 2 15V9C2 4 4 2 9 2H14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M22 10H18C15 10 14 9 14 6V2L22 10Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-arrow-left" viewBox="0 0 24 24" fill="none"><path d="M9.57 5.92993L3.5 11.9999L9.57 18.0699" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M20.5 12H3.67004" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-arrow-right" viewBox="0 0 24 24" fill="none"><path d="M14.4301 5.92993L20.5001 11.9999L14.4301 18.0699" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M3.5 12H20.33" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-arrow-down" viewBox="0 0 24 24" fill="none"><path d="M19.9201 8.94995L13.4001 15.47C12.6301 16.24 11.3701 16.24 10.6001 15.47L4.08008 8.94995" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-home-2" viewBox="0 0 24 24" fill="none"><path d="M9.02 2.84004L3.63 7.04004C2.73 7.74004 2 9.23004 2 10.36V17.77C2 20.09 3.89 21.99 6.21 21.99H17.79C20.11 21.99 22 20.09 22 17.78V10.5C22 9.29004 21.19 7.74004 20.2 7.05004L14.02 2.72004C12.62 1.74004 10.37 1.79004 9.02 2.84004Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 17.99V14.99" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-user" viewBox="0 0 24 24" fill="none"><path d="M12 12C14.7614 12 17 9.76142 17 7C17 4.23858 14.7614 2 12 2C9.23858 2 7 4.23858 7 7C7 9.76142 9.23858 12 12 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M20.5899 22C20.5899 18.13 16.7399 15 11.9999 15C7.25991 15 3.40991 18.13 3.40991 22" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-receipt-text" viewBox="0 0 24 24" fill="none"><path d="M22 6V8.42C22 10 21 11 19.42 11H16V4.01C16 2.9 16.91 2 18.02 2C19.11 2.01 20.11 2.45 20.83 3.17C21.55 3.9 22 4.9 22 6Z" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 7V21C2 21.83 2.93998 22.3 3.59998 21.8L5.31 20.52C5.71 20.22 6.27 20.26 6.63 20.62L8.28998 22.29C8.67998 22.68 9.32002 22.68 9.71002 22.29L11.39 20.61C11.74 20.26 12.3 20.22 12.69 20.52L14.4 21.8C15.06 22.29 16 21.82 16 21V4C16 2.9 16.9 2 18 2H7H6C3 2 2 3.79 2 6V7Z" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 9H12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M6.75 13H11.25" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-dollar-square" viewBox="0 0 24 24" fill="none"><path d="M8.67188 14.3298C8.67188 15.6198 9.66188 16.6598 10.8919 16.6598H13.4019C14.4719 16.6598 15.3419 15.7498 15.3419 14.6298C15.3419 13.4098 14.8119 12.9798 14.0219 12.6998L9.99187 11.2998C9.20187 11.0198 8.67188 10.5898 8.67188 9.36984C8.67188 8.24984 9.54187 7.33984 10.6119 7.33984H13.1219C14.3519 7.33984 15.3419 8.37984 15.3419 9.66984" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 6V18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M15 22H9C4 22 2 20 2 15V9C2 4 4 2 9 2H15C20 2 22 4 22 9V15C22 20 20 22 15 22Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-notification" viewBox="0 0 24 24" fill="none"><path d="M12.02 2.90991C8.70997 2.90991 6.01997 5.59991 6.01997 8.90991V11.7999C6.01997 12.4099 5.75997 13.3399 5.44997 13.8599L4.29997 15.7699C3.58997 16.9499 4.07997 18.2599 5.37997 18.6999C9.68997 20.1399 14.34 20.1399 18.65 18.6999C19.86 18.2999 20.39 16.8699 19.73 15.7699L18.58 13.8599C18.28 13.3399 18.02 12.4099 18.02 11.7999V8.90991C18.02 5.60991 15.32 2.90991 12.02 2.90991Z" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"/><path d="M15.02 19.0601C15.02 20.7101 13.67 22.0601 12.02 22.0601C11.2 22.0601 10.44 21.7201 9.90002 21.1801C9.36002 20.6401 9.02002 19.8801 9.02002 19.0601" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10"/></symbol></svg><!-- /wm-icon-sprite -->
+<path d="M3.5 12H20.33" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-arrow-down" viewBox="0 0 24 24" fill="none"><path d="M19.9201 8.94995L13.4001 15.47C12.6301 16.24 11.3701 16.24 10.6001 15.47L4.08008 8.94995" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-home-2" viewBox="0 0 24 24" fill="none"><path d="M9.02 2.84004L3.63 7.04004C2.73 7.74004 2 9.23004 2 10.36V17.77C2 20.09 3.89 21.99 6.21 21.99H17.79C20.11 21.99 22 20.09 22 17.78V10.5C22 9.29004 21.19 7.74004 20.2 7.05004L14.02 2.72004C12.62 1.74004 10.37 1.79004 9.02 2.84004Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 17.99V14.99" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-user" viewBox="0 0 24 24" fill="none"><path d="M12 12C14.7614 12 17 9.76142 17 7C17 4.23858 14.7614 2 12 2C9.23858 2 7 4.23858 7 7C7 9.76142 9.23858 12 12 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M20.5899 22C20.5899 18.13 16.7399 15 11.9999 15C7.25991 15 3.40991 18.13 3.40991 22" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-receipt-text" viewBox="0 0 24 24" fill="none"><path d="M22 6V8.42C22 10 21 11 19.42 11H16V4.01C16 2.9 16.91 2 18.02 2C19.11 2.01 20.11 2.45 20.83 3.17C21.55 3.9 22 4.9 22 6Z" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 7V21C2 21.83 2.93998 22.3 3.59998 21.8L5.31 20.52C5.71 20.22 6.27 20.26 6.63 20.62L8.28998 22.29C8.67998 22.68 9.32002 22.68 9.71002 22.29L11.39 20.61C11.74 20.26 12.3 20.22 12.69 20.52L14.4 21.8C15.06 22.29 16 21.82 16 21V4C16 2.9 16.9 2 18 2H7H6C3 2 2 3.79 2 6V7Z" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 9H12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M6.75 13H11.25" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-dollar-square" viewBox="0 0 24 24" fill="none"><path d="M8.67188 14.3298C8.67188 15.6198 9.66188 16.6598 10.8919 16.6598H13.4019C14.4719 16.6598 15.3419 15.7498 15.3419 14.6298C15.3419 13.4098 14.8119 12.9798 14.0219 12.6998L9.99187 11.2998C9.20187 11.0198 8.67188 10.5898 8.67188 9.36984C8.67188 8.24984 9.54187 7.33984 10.6119 7.33984H13.1219C14.3519 7.33984 15.3419 8.37984 15.3419 9.66984" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 6V18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M15 22H9C4 22 2 20 2 15V9C2 4 4 2 9 2H15C20 2 22 4 22 9V15C22 20 20 22 15 22Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-notification" viewBox="0 0 24 24" fill="none"><path d="M12.02 2.90991C8.70997 2.90991 6.01997 5.59991 6.01997 8.90991V11.7999C6.01997 12.4099 5.75997 13.3399 5.44997 13.8599L4.29997 15.7699C3.58997 16.9499 4.07997 18.2599 5.37997 18.6999C9.68997 20.1399 14.34 20.1399 18.65 18.6999C19.86 18.2999 20.39 16.8699 19.73 15.7699L18.58 13.8599C18.28 13.3399 18.02 12.4099 18.02 11.7999V8.90991C18.02 5.60991 15.32 2.90991 12.02 2.90991Z" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"/><path d="M15.02 19.0601C15.02 20.7101 13.67 22.0601 12.02 22.0601C11.2 22.0601 10.44 21.7201 9.90002 21.1801C9.36002 20.6401 9.02002 19.8801 9.02002 19.0601" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10"/></symbol><symbol id="ic-tick-circle" viewBox="0 0 24 24" fill="none"><path d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M7.75 12L10.58 14.83L16.25 9.17004" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol></svg><!-- /wm-icon-sprite -->
 
   <!-- Portal shell (sidebar + header) — shown during the overview -->
   <div class="app" id="appShell">
@@ -466,34 +466,34 @@
 
       <div class="progress-card">
         <div class="progress-eyebrow">Account setup</div>
-        <h2>You're 0% there</h2>
+        <h2>You're 20% there</h2>
         <p class="pc-sub">A few details about you, your business and where you'd like to be paid.</p>
-        <div class="progress-track"><i style="width:0%"></i></div>
+        <div class="progress-track"><i style="width:20%"></i></div>
         <div class="pc-meta">
-          <span><strong>0</strong> of 5 steps complete</span>
-          <span class="time-tag">~8 mins to finish</span>
+          <span><strong>1</strong> of 5 steps complete</span>
+          <span class="time-tag">~6 mins to finish</span>
         </div>
       </div>
 
       <div class="checklist">
-        <div class="checklist-item active">
-          <div class="step-circle active">1</div>
+        <div class="checklist-item">
+          <div class="step-circle done"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-tick-circle"/></svg></div>
           <div class="step-body">
             <div class="step-title">Email verification</div>
-            <div class="step-desc">Confirm the email address where we'll send updates and payment confirmations</div>
+            <div class="step-desc">Verified at sign up — we'll send updates and payment confirmations to your email</div>
+          </div>
+        </div>
+        <div class="checklist-item active">
+          <div class="step-circle active">2</div>
+          <div class="step-body">
+            <div class="step-title">Basic details</div>
+            <div class="step-desc">Personal information, your online presence and the kind of work you deliver</div>
           </div>
           <div class="step-action">
             <button type="button" class="step-btn primary" id="ovStartBtn">
               Start
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-arrow-right"/></svg>
             </button>
-          </div>
-        </div>
-        <div class="checklist-item locked">
-          <div class="step-circle locked">2</div>
-          <div class="step-body">
-            <div class="step-title">Basic details</div>
-            <div class="step-desc">Personal information, your online presence and the kind of work you deliver</div>
           </div>
         </div>
         <div class="checklist-item locked">
@@ -541,39 +541,8 @@
 
     <div id="stepForm">
 
-    <!-- STEP 1: EMAIL VERIFICATION -->
+    <!-- STEP 1: BASIC DETAILS -->
     <div class="step active" data-step="1">
-      <div class="page-heading">
-        <h1>Verify your email</h1>
-        <p>We'll send contract updates and payment confirmations here. Confirm your email address to continue.</p>
-      </div>
-
-      <div class="section-card">
-        <div class="section-title">Email address</div>
-        <div class="fields">
-          <div class="fl-field">
-            <input type="email" placeholder=" " id="verifyEmail">
-            <label>Work email <span class="req">*</span></label>
-          </div>
-        </div>
-        <button type="button" class="step-btn primary" id="sendCodeBtn" style="margin-top:4px;">Send verification code</button>
-
-        <div id="codeBlock" class="hidden" style="margin-top:24px;">
-          <div class="section-title">Enter the code</div>
-          <p class="reveal-help" style="margin:2px 0 14px;">We sent a 6-digit code to <strong id="codeEmailEcho"></strong>. It expires in 10 minutes.</p>
-          <div class="fields">
-            <div class="fl-field">
-              <input type="text" inputmode="numeric" maxlength="6" placeholder=" " id="verifyCode">
-              <label>6-digit code <span class="req">*</span></label>
-            </div>
-          </div>
-          <button type="button" class="step-btn ghost" id="resendCodeBtn" style="margin-top:4px;">Resend code</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- STEP 2: BASIC DETAILS -->
-    <div class="step" data-step="2">
       <div class="page-heading">
         <h1>Basic details</h1>
         <p>Let's start with the basics. This information will be used to create your profile and manage your contracts.</p>
@@ -652,7 +621,7 @@
     </div>
 
     <!-- STEP 2: BUSINESS IDENTIFIERS -->
-    <div class="step" data-step="3">
+    <div class="step" data-step="2">
       <div class="page-heading">
         <h1>Business identifiers</h1>
         <p>Add details about the individual/freelancer and help us understand the business.</p>
@@ -738,7 +707,7 @@
     </div>
 
     <!-- STEP 3: BANK ACCOUNT DETAILS -->
-    <div class="step" data-step="4">
+    <div class="step" data-step="3">
       <div class="page-heading">
         <h1>Bank account details</h1>
         <p>Provide your bank account details to receive payouts.</p>
@@ -779,7 +748,7 @@
     </div>
 
     <!-- STEP 4: TAX & COMPLIANCE -->
-    <div class="step" data-step="5">
+    <div class="step" data-step="4">
       <div class="page-heading">
         <h1>Tax &amp; Compliance</h1>
         <p>Complete your tax profile to ensure seamless payments and regulatory compliance.</p>
@@ -848,7 +817,6 @@
     let current = 1;
 
     const nextLabels = [
-      'Basic details',
       'Business identifiers',
       'Bank account details',
       'Tax & Compliance'
@@ -885,24 +853,6 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
     document.getElementById('ovStartBtn').addEventListener('click', () => { current = 1; showForm(); });
-
-    // Email verification — reveal the code entry after sending
-    const sendCodeBtn = document.getElementById('sendCodeBtn');
-    if (sendCodeBtn) {
-      const codeBlock = document.getElementById('codeBlock');
-      const emailEcho = document.getElementById('codeEmailEcho');
-      const emailInput = document.getElementById('verifyEmail');
-      const sendCode = () => {
-        const email = (emailInput.value || '').trim();
-        if (!email) { emailInput.focus(); return; }
-        emailEcho.textContent = email;
-        codeBlock.classList.remove('hidden');
-        document.getElementById('verifyCode').focus();
-      };
-      sendCodeBtn.addEventListener('click', sendCode);
-      const resend = document.getElementById('resendCodeBtn');
-      if (resend) resend.addEventListener('click', sendCode);
-    }
 
     document.getElementById('saveBtn').addEventListener('click', () => {
       if (current === total) { location.href = 'dashboard.html?role=freelancer'; return; }
