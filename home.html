@@ -889,6 +889,13 @@
     .kv-label { font-size: 12.5px; color: #85878d; margin-bottom: 2px; }
     .kv-value { font-size: 14px; font-weight: 700; color: #222224; }
 
+    .exp-detail { display: flex; flex-direction: column; gap: 14px; }
+    .exp-row { display: flex; align-items: baseline; gap: 16px; }
+    .exp-label { flex: 0 0 140px; font-size: 13.5px; color: #85878d; }
+    .exp-value { font-size: 14px; font-weight: 600; color: #222224; }
+    .exp-link { background: none; border: none; padding: 0; font-family: inherit; font-size: 14px; font-weight: 600; color: var(--primary-500); cursor: pointer; }
+    .exp-link:hover { text-decoration: underline; }
+
     .sp-freelancer {
       display: flex; align-items: center; gap: 12px;
       padding: 14px 16px;
@@ -1592,6 +1599,7 @@
                  data-period="Mar 2026" data-typelabel="Reimbursement" data-currency="EUR"
                  data-items="Flight BLR → AMS|€320;;Airport transfers|€60;;Client dinner|€100"
                  data-note="Travel and meals for the on-site design workshop in Amsterdam."
+                 data-exp-type="Travel" data-exp-date="Mar 07, 2026"
                  data-attach-name="receipts-amsterdam-trip.pdf" data-attach-size="PDF · 3 files · 1.2 MB">
               <div class="req-user">
                 <div class="req-avatar">AK</div>
@@ -1700,7 +1708,7 @@
       <div class="sp-amount" id="spAmount">$2,500.00</div>
       <div class="sp-date" id="spDate">Submitted Mar 05, 2026 · due Mar 19, 2026</div>
 
-      <div class="sp-section">
+      <div class="sp-section" id="spDetailsSection">
         <div class="sp-section-label">Details</div>
         <div class="kv-grid">
           <div>
@@ -1722,7 +1730,19 @@
         </div>
       </div>
 
-      <div class="sp-section">
+      <!-- Reimbursement: individual expense details -->
+      <div class="sp-section" id="spExpenseSection" hidden>
+        <div class="sp-section-label">Expense details</div>
+        <div class="exp-detail">
+          <div class="exp-row"><span class="exp-label">Expense Type</span><span class="exp-value" id="spExpType">Travel</span></div>
+          <div class="exp-row"><span class="exp-label">Claimed Amount</span><span class="exp-value" id="spExpAmount">€480.00</span></div>
+          <div class="exp-row"><span class="exp-label">Date of Expense</span><span class="exp-value" id="spExpDate">Mar 07, 2026</span></div>
+          <div class="exp-row"><span class="exp-label">Description</span><span class="exp-value" id="spExpDesc">Travel and meals</span></div>
+          <div class="exp-row"><span class="exp-label">Receipt</span><button type="button" class="exp-link" id="spViewReceipt">View Receipt</button></div>
+        </div>
+      </div>
+
+      <div class="sp-section" id="spLineItemsSection">
         <div class="sp-section-label" id="spItemsLabel">Line items</div>
         <div style="border:1px solid #f0f1f1; border-radius:10px; overflow:hidden;">
           <div style="display:flex; justify-content:space-between; padding:12px 16px; border-bottom:1px solid #f0f1f1; background:#f9fafb;">
@@ -1744,7 +1764,7 @@
         </button>
       </div>
 
-      <div class="sp-section">
+      <div class="sp-section" id="spNoteSection">
         <div class="sp-section-label">Note</div>
         <p style="font-size:14px; color:#626368; line-height:1.55;" id="spNote">February retainer for backend sprint work plus async code-review hours.</p>
       </div>
@@ -1846,15 +1866,24 @@
                '<span style="font-family:\'Satoshi\',sans-serif; font-weight:500; color:#222224;">' + amt + '</span></div>';
       }).join('');
 
-      // Receipt attachment (reimbursements only)
-      const att = document.getElementById('spAttachSection');
-      if (isReimb && d.attachName) {
-        document.getElementById('spAttachName').textContent = d.attachName;
-        document.getElementById('spAttachSize').textContent = d.attachSize || '';
-        att.hidden = false;
-      } else {
-        att.hidden = true;
+      // Keep attachment data ready for the receipt viewer modal
+      document.getElementById('spAttachName').textContent = d.attachName || '';
+      document.getElementById('spAttachSize').textContent = d.attachSize || '';
+
+      // Reimbursement: show individual expense details (Expense Type,
+      // Claimed Amount, Date of Expense, Description, Receipt link) and
+      // hide the invoice-style Details / Line items / Note / attachment chip.
+      if (isReimb) {
+        document.getElementById('spExpType').textContent = d.expType || d.typelabel || '';
+        document.getElementById('spExpAmount').textContent = d.amount || '';
+        document.getElementById('spExpDate').textContent = d.expDate || '';
+        document.getElementById('spExpDesc').textContent = d.note || '';
       }
+      document.getElementById('spExpenseSection').hidden = !isReimb;
+      document.getElementById('spDetailsSection').hidden = isReimb;
+      document.getElementById('spLineItemsSection').hidden = isReimb;
+      document.getElementById('spNoteSection').hidden = isReimb;
+      document.getElementById('spAttachSection').hidden = true;
     }
 
     // Make the whole approval request row clickable to view details
@@ -1883,6 +1912,7 @@
     }
     function closeAtt() { attOverlay.classList.remove('open'); attModal.classList.remove('open'); }
     document.getElementById('spAttachBtn').addEventListener('click', openAtt);
+    document.getElementById('spViewReceipt').addEventListener('click', openAtt);
     attOverlay.addEventListener('click', closeAtt);
     document.getElementById('attModalClose').addEventListener('click', closeAtt);
     document.getElementById('attModalCloseBtn').addEventListener('click', closeAtt);
