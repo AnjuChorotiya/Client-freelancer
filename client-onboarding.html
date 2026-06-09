@@ -49,10 +49,8 @@
     .top-close:hover { background: var(--muted-bg); color: var(--text-primary); }
     .top-close svg { width: 20px; height: 20px; }
     /* Draft autosave indicator + reset control */
-    .draft-saved { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: var(--success); margin-right: 4px; white-space: nowrap; }
-    .draft-saved::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--success); flex-shrink: 0; }
-    .draft-reset { display: inline-flex; align-items: center; height: 40px; padding: 0 14px; background: transparent; color: var(--text-muted); border: 1px solid var(--border); border-radius: 8px; font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer; transition: background 0.15s, color 0.15s, border-color 0.15s; }
-    .draft-reset:hover { background: var(--muted-bg); color: var(--text-primary); border-color: var(--border-strong); }
+    .draft-saved { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: var(--text-muted); margin-right: 4px; white-space: nowrap; }
+    .draft-saved::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--text-muted); flex-shrink: 0; }
     @media (max-width: 640px) { .draft-saved { display: none; } }
 
     main { flex: 1; max-width: 1130px; margin: 0 auto; width: 100%; padding: 48px 24px 160px; }
@@ -671,7 +669,6 @@
       <a href="dashboard.html" class="topbar-logo"><img src="wisemonk_logo_final.png" alt="Wisemonk"></a>
       <div class="topbar-right">
         <span class="draft-saved" id="draftSaved" hidden>Draft saved</span>
-        <button type="button" class="draft-reset" id="startFresh" hidden>Start fresh</button>
         <button class="need-help">Need help?</button>
         <a href="dashboard.html" class="top-close" aria-label="Close and exit">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-close"/></svg>
@@ -1913,24 +1910,15 @@
       return state;
     }
 
-    // Draft autosave indicator + "start fresh" reset
+    // Draft autosave indicator
     const draftSavedEl = document.getElementById('draftSaved');
-    const startFreshEl = document.getElementById('startFresh');
     let draftHideTimer = null;
     function showDraftSaved() {
-      if (startFreshEl) startFreshEl.hidden = false;
       if (!draftSavedEl) return;
       draftSavedEl.hidden = false;
       draftSavedEl.textContent = 'Draft saved';
       clearTimeout(draftHideTimer);
       draftHideTimer = setTimeout(() => { draftSavedEl.textContent = 'Draft auto-saved'; }, 2000);
-    }
-    if (startFreshEl) {
-      startFreshEl.addEventListener('click', () => {
-        if (!confirm('Start fresh? This clears all the details you’ve entered so far and cannot be undone.')) return;
-        try { localStorage.removeItem(SAVE_KEY); } catch (e) {}
-        location.reload();
-      });
     }
 
     function saveState() {
@@ -1946,7 +1934,6 @@
       try { raw = JSON.parse(localStorage.getItem(SAVE_KEY) || 'null'); } catch (e) { raw = null; }
       if (!raw) return;
       restoring = true;
-      if (startFreshEl) startFreshEl.hidden = false;
       if (draftSavedEl) { draftSavedEl.hidden = false; draftSavedEl.textContent = 'Draft restored'; }
 
       // Recreate saved directors first (clicking re-uses the normal add + wire path)
