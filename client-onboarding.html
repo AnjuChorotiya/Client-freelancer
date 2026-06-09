@@ -522,7 +522,6 @@
     .option-card-body { flex: 1; }
     .option-card-title { display: block; font-size: 16px; font-weight: 700; color: var(--text-primary); line-height: 1.3; }
     .option-card-desc { display: block; font-size: 14px; color: var(--text-muted); margin-top: 4px; line-height: 1.55; }
-    .feature-rec { display: inline-block; vertical-align: middle; margin-left: 6px; padding: 2px 8px; font-size: 11px; font-weight: 700; letter-spacing: 0.02em; color: var(--brand-600); background: var(--brand-50); border-radius: 999px; }
     .option-card-radio { width: 20px; height: 20px; flex-shrink: 0; margin-top: 2px; border: 2px solid var(--border-strong); border-radius: 50%; position: relative; transition: border-color 0.15s; }
     .option-card.selected .option-card-radio { border-color: var(--brand-500); }
     .option-card.selected .option-card-radio::after { content: ''; position: absolute; inset: 3px; border-radius: 50%; background: var(--brand-500); }
@@ -966,7 +965,7 @@
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-clock"/></svg>
             </span>
             <span class="option-card-body">
-              <span class="option-card-title">Attendance tracking <span class="feature-rec">Recommended</span></span>
+              <span class="option-card-title">Attendance tracking</span>
               <span class="option-card-desc">Track working hours, clock-in/out, and timesheets for your team.</span>
             </span>
             <span class="feature-card-check"></span>
@@ -976,7 +975,7 @@
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-calendar"/></svg>
             </span>
             <span class="option-card-body">
-              <span class="option-card-title">Leave management <span class="feature-rec">Recommended</span></span>
+              <span class="option-card-title">Leave management</span>
               <span class="option-card-desc">Let your team request time off and approve leaves with a clear balance view.</span>
             </span>
             <span class="feature-card-check"></span>
@@ -1378,7 +1377,7 @@
 
       // Features summary
       const feats = Array.from(document.querySelectorAll('.feature-card.selected'))
-        .map(c => { const t = c.querySelector('.option-card-title'); return t && t.firstChild ? t.firstChild.textContent.trim() : ''; })
+        .map(c => c.querySelector('.option-card-title')?.textContent.trim())
         .filter(Boolean);
       if (feats.length) {
         html += '<div class="review-group"><div class="review-group-head"><div class="review-group-title">Features enabled</div><button type="button" class="review-edit" data-edit-step="5">Edit</button></div>';
