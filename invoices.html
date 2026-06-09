@@ -199,6 +199,11 @@
     .ri-amount-wrap { position: relative; }
     .ri-amount-wrap .ri-cur { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); font-size: 14px; font-weight: 700; color: var(--text-muted); pointer-events: none; }
     .ri-amount-wrap input { padding-left: 26px; }
+    .ri-contractor-meta { display: none; grid-template-columns: 1fr 1fr; gap: 10px; margin: -6px 0 18px; }
+    .ri-contractor-meta.show { display: grid; }
+    .ri-cm-item { padding: 10px 14px; border: 1px solid var(--border); border-radius: 10px; background: #F7F8FA; }
+    .ri-cm-label { display: block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; color: var(--text-muted); margin-bottom: 3px; }
+    .ri-cm-value { font-size: 14px; font-weight: 700; color: var(--text-primary); }
     .ri-breakdown { display: none; margin-bottom: 18px; padding: 14px 16px; border: 1px solid var(--border); border-radius: 12px; background: #F7F8FA; }
     .ri-breakdown.show { display: block; }
     .ri-bd-row { display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: var(--text-muted); padding: 4px 0; }
@@ -1064,12 +1069,16 @@
           <label for="riContractor">Contractor</label>
           <select id="riContractor">
             <option value="">Select a contractor</option>
-            <option>Carlos Mendez</option>
-            <option>Priya Sharma</option>
-            <option>Aisha Khan</option>
-            <option>John Lee</option>
-            <option>Maria Silva</option>
+            <option data-rate="$45 / hr" data-freq="Hourly">Carlos Mendez</option>
+            <option data-rate="$3,400 / mo" data-freq="Monthly">Priya Sharma</option>
+            <option data-rate="$2,800 / mo" data-freq="Monthly">Aisha Khan</option>
+            <option data-rate="$120 / post" data-freq="Per project">John Lee</option>
+            <option data-rate="$32 / hr" data-freq="Hourly">Maria Silva</option>
           </select>
+          <div class="ri-contractor-meta" id="riContractorMeta">
+            <div class="ri-cm-item"><span class="ri-cm-label">Rate</span><span class="ri-cm-value" id="riCmRate">—</span></div>
+            <div class="ri-cm-item"><span class="ri-cm-label">Frequency</span><span class="ri-cm-value" id="riCmFreq">—</span></div>
+          </div>
         </div>
         <div class="ri-row">
           <div class="ri-field">
@@ -1123,6 +1132,23 @@
       const m = document.getElementById('reqInvoiceModal');
       if (m) { m.addEventListener('click', function (ev) { if (ev.target === this) closeReqInvoice(); }); }
       document.addEventListener('keydown', function (ev) { if (ev.key === 'Escape') closeReqInvoice(); });
+      // Show the selected contractor's rate + frequency
+      const contractor = document.getElementById('riContractor');
+      const cMeta = document.getElementById('riContractorMeta');
+      if (contractor && cMeta) {
+        contractor.addEventListener('change', function () {
+          const opt = contractor.options[contractor.selectedIndex];
+          const rate = opt && opt.dataset ? opt.dataset.rate : '';
+          const freq = opt && opt.dataset ? opt.dataset.freq : '';
+          if (rate && freq) {
+            document.getElementById('riCmRate').textContent = rate;
+            document.getElementById('riCmFreq').textContent = freq;
+            cMeta.classList.add('show');
+          } else {
+            cMeta.classList.remove('show');
+          }
+        });
+      }
       // Live invoice breakdown
       const amt = document.getElementById('riAmount');
       const bd = document.getElementById('riBreakdown');
