@@ -48,6 +48,12 @@
     .top-close { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 8px; color: var(--text-muted); cursor: pointer; transition: background 0.15s, color 0.15s; }
     .top-close:hover { background: var(--muted-bg); color: var(--text-primary); }
     .top-close svg { width: 20px; height: 20px; }
+    /* Draft autosave indicator + reset control */
+    .draft-saved { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: var(--success); margin-right: 4px; white-space: nowrap; }
+    .draft-saved::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--success); flex-shrink: 0; }
+    .draft-reset { display: inline-flex; align-items: center; height: 40px; padding: 0 14px; background: transparent; color: var(--text-muted); border: 1px solid var(--border); border-radius: 8px; font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer; transition: background 0.15s, color 0.15s, border-color 0.15s; }
+    .draft-reset:hover { background: var(--muted-bg); color: var(--text-primary); border-color: var(--border-strong); }
+    @media (max-width: 640px) { .draft-saved { display: none; } }
 
     main { flex: 1; max-width: 1130px; margin: 0 auto; width: 100%; padding: 48px 24px 160px; }
 
@@ -127,10 +133,20 @@
       font-size: 10px;
       font-weight: 500;
     }
-    /* Hide the browser's dd-mm-yyyy format string when the date input is empty + unfocused,
-       so the centred floating label can sit on top without clashing. */
-    .fl-field input[type="date"]:not(.has-value):not(:focus)::-webkit-datetime-edit { color: transparent; }
-    .fl-field input[type="date"]:not(.has-value):not(:focus) { color: transparent; }
+    /* The native date input never shows its own text — we render a readable
+       "15 May 1990" string in .date-display instead, so the format is consistent. */
+    .fl-field input[type="date"]::-webkit-datetime-edit { color: transparent; }
+    .fl-field input[type="date"] { color: transparent; }
+    .fl-field .date-display {
+      position: absolute;
+      left: 15px; right: 40px;
+      top: 24px;
+      font-size: 16px; font-weight: 500;
+      color: var(--text-primary);
+      pointer-events: none;
+      line-height: 1.2;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
     .fl-field textarea ~ label { top: 18px; transform: none; }
     .fl-field textarea:focus ~ label,
     .fl-field textarea:not(:placeholder-shown) ~ label { top: 6px; }
@@ -506,6 +522,7 @@
     .option-card-body { flex: 1; }
     .option-card-title { display: block; font-size: 16px; font-weight: 700; color: var(--text-primary); line-height: 1.3; }
     .option-card-desc { display: block; font-size: 14px; color: var(--text-muted); margin-top: 4px; line-height: 1.55; }
+    .feature-rec { display: inline-block; vertical-align: middle; margin-left: 6px; padding: 2px 8px; font-size: 11px; font-weight: 700; letter-spacing: 0.02em; color: var(--brand-600); background: var(--brand-50); border-radius: 999px; }
     .option-card-radio { width: 20px; height: 20px; flex-shrink: 0; margin-top: 2px; border: 2px solid var(--border-strong); border-radius: 50%; position: relative; transition: border-color 0.15s; }
     .option-card.selected .option-card-radio { border-color: var(--brand-500); }
     .option-card.selected .option-card-radio::after { content: ''; position: absolute; inset: 3px; border-radius: 50%; background: var(--brand-500); }
@@ -589,7 +606,11 @@
     .review-group { padding: 16px 0; border-bottom: 1px solid var(--border); }
     .review-group:first-child { padding-top: 0; }
     .review-group:last-child { border-bottom: none; padding-bottom: 0; }
+    .review-group-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+    .review-group-head .review-group-title { margin-bottom: 0; }
     .review-group-title { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-muted); margin-bottom: 12px; }
+    .review-edit { display: inline-flex; align-items: center; gap: 4px; background: transparent; border: none; padding: 2px 4px; font-family: inherit; font-size: 13px; font-weight: 700; color: var(--brand-600); cursor: pointer; border-radius: 6px; transition: background 0.1s, color 0.1s; }
+    .review-edit:hover { background: var(--brand-50); color: var(--brand-700); }
     .review-row { display: flex; justify-content: space-between; gap: 24px; padding: 6px 0; }
     .review-key { font-size: 15px; color: var(--text-secondary); flex: 0 0 auto; }
     .review-val { font-size: 15px; font-weight: 600; color: var(--text-primary); text-align: right; word-break: break-word; }
@@ -649,6 +670,8 @@
     <div class="topbar-inner">
       <a href="dashboard.html" class="topbar-logo"><img src="wisemonk_logo_final.png" alt="Wisemonk"></a>
       <div class="topbar-right">
+        <span class="draft-saved" id="draftSaved" hidden>Draft saved</span>
+        <button type="button" class="draft-reset" id="startFresh" hidden>Start fresh</button>
         <button class="need-help">Need help?</button>
         <a href="dashboard.html" class="top-close" aria-label="Close and exit">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-close"/></svg>
@@ -760,7 +783,7 @@
             </select>
             <label>Ultimate beneficial owner<span class="req">*</span></label>
           </div>
-          <p class="field-hint" id="uboHint">Add at least one director above to choose a UBO.</p>
+          <p class="field-hint" id="uboHint">Enter at least one director's name above to choose a UBO.</p>
         </div>
       </div>
     </div>
@@ -809,7 +832,7 @@
       <div class="section-card">
         <div class="section-title">Proof of business</div>
         <div class="q-block">
-          <div class="q-label">Proof of work<span class="req">*</span></div>
+          <div class="q-label">Type of business document<span class="req">*</span></div>
           <div class="check-row">
             <input type="radio" name="proofOfWork" id="pow-coi" checked>
             <label for="pow-coi">Certificate of incorporation</label>
@@ -852,7 +875,7 @@
             <textarea id="workDesc" maxlength="400" placeholder=" " data-must></textarea>
             <label>Work description<span class="req">*</span></label>
             <div class="char-count"><span id="workDescCount">0</span>/400</div>
-          <p class="field-hint">Helps us understand the kind of work you do.</p></div>
+          <p class="field-hint">Helps us understand the kind of work you do. Please write at least 50 characters.</p></div>
         </div>
 
         <div class="q-block">
@@ -873,9 +896,9 @@
 
         <div class="fields" style="margin-top:12px;">
           <div class="fl-field">
-            <input type="url" placeholder=" " data-must>
-            <label>Please provide your LinkedIn profile link<span class="req">*</span></label>
-          <p class="field-hint">e.g. https://www.linkedin.com/in/example</p></div>
+            <input type="url" id="presenceUrl" placeholder=" " data-must>
+            <label id="presenceUrlLabel">Please provide your LinkedIn profile link<span class="req">*</span></label>
+          <p class="field-hint" id="presenceUrlHint">e.g. https://www.linkedin.com/in/example</p></div>
         </div>
       </div>
 
@@ -930,27 +953,31 @@
 
     <!-- STEP 5: COMPLIANCE DECLARATION -->
     <div class="step" data-step="5">
+      <div class="page-heading">
+        <h1>Features &amp; compliance</h1>
+        <p>Pick the modules you'd like to use, then confirm the declarations to finish setting up your account.</p>
+      </div>
 
       <div class="section-card">
         <div class="section-title">Features you'd like to use</div>
         <p class="section-desc">Choose the Wisemonk modules you want to enable for your team. You can change these any time.</p>
         <div class="feature-cards" id="featureCards">
-          <button type="button" class="feature-card" data-feature="attendance">
+          <button type="button" class="feature-card selected" data-feature="attendance">
             <span class="feature-card-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-clock"/></svg>
             </span>
             <span class="option-card-body">
-              <span class="option-card-title">Attendance tracking</span>
+              <span class="option-card-title">Attendance tracking <span class="feature-rec">Recommended</span></span>
               <span class="option-card-desc">Track working hours, clock-in/out, and timesheets for your team.</span>
             </span>
             <span class="feature-card-check"></span>
           </button>
-          <button type="button" class="feature-card" data-feature="leaves">
+          <button type="button" class="feature-card selected" data-feature="leaves">
             <span class="feature-card-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-calendar"/></svg>
             </span>
             <span class="option-card-body">
-              <span class="option-card-title">Leave management</span>
+              <span class="option-card-title">Leave management <span class="feature-rec">Recommended</span></span>
               <span class="option-card-desc">Let your team request time off and approve leaves with a clear balance view.</span>
             </span>
             <span class="feature-card-check"></span>
@@ -1084,6 +1111,15 @@
     const attempted = new Set();
     const PHONE_MIN = { '+1': 10, '+44': 10, '+61': 9, '+65': 8, '+971': 9, '+49': 10, '+33': 9, '+31': 9, '+81': 10, '+86': 11, '+852': 8, '+353': 9, '+64': 8, '+91': 10 };
 
+    // Render an ISO date (YYYY-MM-DD) as a readable, locale-independent "15 May 1990".
+    const MONTHS_FULL = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    function fmtDateISO(iso) {
+      if (!iso) return '';
+      const d = new Date(iso + 'T00:00');
+      if (isNaN(d.getTime())) return iso;
+      return d.getDate() + ' ' + MONTHS_FULL[d.getMonth()] + ' ' + d.getFullYear();
+    }
+
     const val = el => ((el && el.value) || '').trim();
     function wrapOf(el) {
       return el.closest('.fl-field') || el.closest('.fl-phone') || el.closest('.upload-tile') || el.closest('.check-row') || el.closest('.q-block') || el;
@@ -1203,7 +1239,7 @@
         if (brand && !val(brand)) push(wrapOf(brand), 'Enter your brand or business name.');
         const dv = val(desc);
         if (!dv) push(wrapOf(desc), 'Please describe your work.');
-        else if (dv.length < 20) push(wrapOf(desc), 'Please add a bit more detail (at least 20 characters).');
+        else if (dv.length < 50) push(wrapOf(desc), 'Please add a bit more detail (at least 50 characters).');
         const uv = val(url);
         if (!uv) push(wrapOf(url), 'Enter your online presence link.');
         else if (!/^https?:\/\/[^\s]+\.[^\s]{2,}$/i.test(uv)) push(wrapOf(url), 'Enter a valid URL starting with https://.');
@@ -1255,7 +1291,9 @@
     function render() {
       steps.forEach(s => s.classList.toggle('active', +s.dataset.step === current));
       document.getElementById('progressFill').style.width = (current / total * 100) + '%';
-      document.getElementById('backBtn').disabled = current === 1;
+      const backBtn = document.getElementById('backBtn');
+      backBtn.disabled = current === 1;
+      backBtn.style.visibility = current === 1 ? 'hidden' : 'visible';
       const isLast = current === total;
       document.getElementById('saveBtn').textContent = isLast ? 'Finish setup' : 'Save & continue';
       document.getElementById('saveBtn').classList.toggle('success', isLast);
@@ -1288,9 +1326,11 @@
           const labelEl = f.querySelector('label');
           if (!ctrl || !labelEl) return;
           if (ctrl.id === 'uboSelect') return;
-          const label = labelEl.textContent.replace('*', '').trim();
-          const val = (ctrl.value || '').trim();
-          if (val) rows.push([label, val]);
+          if (ctrl.closest('#directorList')) return; // directors are summarised separately
+          let value = (ctrl.value || '').trim();
+          if (!value) return;
+          if (ctrl.type === 'date') value = fmtDateISO(value);
+          rows.push([cleanReviewLabel(ctrl, labelEl), value]);
         });
 
         // International phone (legal step)
@@ -1307,22 +1347,29 @@
         if (sn === 2 && directorList) {
           directorList.querySelectorAll('.director-block').forEach((b, i) => {
             const nm = (b.querySelector('.dir-name')?.value || '').trim();
+            const dob = (b.querySelector('input[type="date"]')?.value || '').trim();
+            const ctry = (b.querySelector('select')?.value || '').trim();
             const own = (b.querySelector('input[type="number"]')?.value || '').trim();
             const label = 'Director ' + (i + 1);
-            const v = nm + (own ? ' — ' + own + '% ownership' : '');
+            const parts = [];
+            if (dob) parts.push('born ' + fmtDateISO(dob));
+            if (ctry) parts.push(ctry);
+            if (own) parts.push(own + '% ownership');
+            const v = nm + (parts.length ? ' — ' + parts.join(' · ') : '');
             if (nm) rows.push([label, v]);
           });
-          if (uboSelect && uboSelect.value) rows.push(['Ultimate Beneficial Owner', uboSelect.value]);
+          if (uboSelect && uboSelect.value) rows.push(['Ultimate beneficial owner', uboSelect.value]);
         }
 
-        // Selected radios in this step
+        // Selected radios in this step — labelled by what the group asks
+        const RADIO_GROUP_LABELS = { proofOfWork: 'Proof of business type', onlinePresence: 'Proof of presence type' };
         step.querySelectorAll('input[type="radio"]:checked').forEach(r => {
           const lbl = step.querySelector('label[for="' + r.id + '"]');
-          if (lbl) rows.push(['Selection', lbl.textContent.trim()]);
+          if (lbl) rows.push([RADIO_GROUP_LABELS[r.name] || 'Selection', lbl.textContent.replace(/\s*\(Recommended\)\s*/i, '').trim()]);
         });
 
         if (rows.length) {
-          html += '<div class="review-group"><div class="review-group-title">' + stepTitles[sn] + '</div>';
+          html += '<div class="review-group"><div class="review-group-head"><div class="review-group-title">' + stepTitles[sn] + '</div><button type="button" class="review-edit" data-edit-step="' + sn + '">Edit</button></div>';
           rows.forEach(([k, v]) => {
             html += '<div class="review-row"><span class="review-key">' + escapeHtml(k) + '</span><span class="review-val">' + escapeHtml(v) + '</span></div>';
           });
@@ -1332,10 +1379,10 @@
 
       // Features summary
       const feats = Array.from(document.querySelectorAll('.feature-card.selected'))
-        .map(c => c.querySelector('.option-card-title')?.textContent.trim())
+        .map(c => { const t = c.querySelector('.option-card-title'); return t && t.firstChild ? t.firstChild.textContent.trim() : ''; })
         .filter(Boolean);
       if (feats.length) {
-        html += '<div class="review-group"><div class="review-group-title">Features enabled</div>';
+        html += '<div class="review-group"><div class="review-group-head"><div class="review-group-title">Features enabled</div><button type="button" class="review-edit" data-edit-step="5">Edit</button></div>';
         html += '<div class="review-row"><span class="review-key">Selected modules</span><span class="review-val">' + escapeHtml(feats.join(', ')) + '</span></div></div>';
       }
 
@@ -1344,7 +1391,7 @@
       if (step5) {
         const boxes = step5.querySelectorAll('input[type="checkbox"]');
         const checked = Array.from(boxes).filter(b => b.checked).length;
-        html += '<div class="review-group"><div class="review-group-title">Compliance declaration</div>';
+        html += '<div class="review-group"><div class="review-group-head"><div class="review-group-title">Compliance declaration</div><button type="button" class="review-edit" data-edit-step="5">Edit</button></div>';
         html += '<div class="review-row"><span class="review-key">Declarations confirmed</span><span class="review-val">' + checked + ' of ' + boxes.length + '</span></div></div>';
       }
 
@@ -1353,6 +1400,26 @@
 
     function escapeHtml(s) {
       return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    }
+
+    // Turn a verbose field label into a concise review-page key.
+    function cleanReviewLabel(ctrl, labelEl) {
+      if (ctrl.type === 'url') return 'Online presence URL';
+      let s = labelEl.textContent.replace('*', '').trim();
+      s = s.replace(/^please\s+(provide|enter)\s+your\s+/i, '')
+           .replace(/^please\s+select\s+(your\s+)?/i, '');
+      return s.charAt(0).toUpperCase() + s.slice(1);
+    }
+
+    // Edit links on the review page jump back to the relevant step
+    const reviewBodyEl = document.getElementById('reviewBody');
+    if (reviewBodyEl) {
+      reviewBodyEl.addEventListener('click', e => {
+        const btn = e.target.closest('.review-edit');
+        if (!btn) return;
+        const sn = parseInt(btn.dataset.editStep, 10);
+        if (sn >= 1 && sn <= total) { current = sn; render(); }
+      });
     }
 
     // Wire up input listeners to update Save button state
@@ -1518,6 +1585,24 @@
       syncCount();
     }
 
+    // Online-presence URL field — label + hint follow the selected presence type
+    const presenceUrlLabel = document.getElementById('presenceUrlLabel');
+    const presenceUrlHint = document.getElementById('presenceUrlHint');
+    const PRESENCE_COPY = {
+      'op-linkedin': { label: 'Please provide your LinkedIn profile link', hint: 'e.g. https://www.linkedin.com/in/example' },
+      'op-social':   { label: 'Please provide your social media profile link', hint: 'e.g. https://www.upwork.com/freelancers/example' },
+      'op-website':  { label: 'Please provide your website link', hint: 'e.g. https://www.yourbusiness.com' }
+    };
+    function syncPresenceUrl() {
+      if (!presenceUrlLabel) return;
+      const sel = document.querySelector('input[name="onlinePresence"]:checked');
+      const copy = (sel && PRESENCE_COPY[sel.id]) || PRESENCE_COPY['op-linkedin'];
+      presenceUrlLabel.innerHTML = copy.label + '<span class="req">*</span>';
+      if (presenceUrlHint) presenceUrlHint.textContent = copy.hint;
+    }
+    document.querySelectorAll('input[name="onlinePresence"]').forEach(r => r.addEventListener('change', syncPresenceUrl));
+    syncPresenceUrl();
+
     // ----- Custom select dropdowns -----
     function closeAllPopovers() {
       document.querySelectorAll('.custom-select-menu.open, .custom-calendar.open').forEach(m => m.classList.remove('open'));
@@ -1599,6 +1684,16 @@
         </div>
       `;
       wrap.appendChild(cal);
+
+      // Readable display overlay (the native date text is hidden via CSS)
+      const disp = document.createElement('span');
+      disp.className = 'date-display';
+      wrap.appendChild(disp);
+      function syncDisplay() { disp.textContent = fmtDateISO(inputEl.value); }
+      inputEl._syncDateDisplay = syncDisplay;
+      inputEl.addEventListener('change', syncDisplay);
+      inputEl.addEventListener('input', syncDisplay);
+      syncDisplay();
 
       const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
       const today = new Date();
@@ -1695,11 +1790,12 @@
     function syncUBO() {
       if (!uboSelect) return;
       const prev = uboSelect.value;
+      // Only directors who actually have a name can be chosen as the UBO.
       const names = Array.from(directorList.querySelectorAll('.dir-name'))
-        .map((inp, i) => inp.value.trim() || ('Director ' + (i + 1)));
+        .map(inp => inp.value.trim()).filter(Boolean);
       uboSelect.innerHTML = '<option value="" disabled selected hidden></option>';
       if (names.length === 0) {
-        // No directors yet — UBO cannot be selected.
+        // No named directors yet — UBO cannot be selected.
         uboSelect.disabled = true;
         uboSelect.value = '';
         uboSelect.selectedIndex = 0;
@@ -1817,11 +1913,31 @@
       return state;
     }
 
+    // Draft autosave indicator + "start fresh" reset
+    const draftSavedEl = document.getElementById('draftSaved');
+    const startFreshEl = document.getElementById('startFresh');
+    let draftHideTimer = null;
+    function showDraftSaved() {
+      if (startFreshEl) startFreshEl.hidden = false;
+      if (!draftSavedEl) return;
+      draftSavedEl.hidden = false;
+      draftSavedEl.textContent = 'Draft saved';
+      clearTimeout(draftHideTimer);
+      draftHideTimer = setTimeout(() => { draftSavedEl.textContent = 'Draft auto-saved'; }, 2000);
+    }
+    if (startFreshEl) {
+      startFreshEl.addEventListener('click', () => {
+        if (!confirm('Start fresh? This clears all the details you’ve entered so far and cannot be undone.')) return;
+        try { localStorage.removeItem(SAVE_KEY); } catch (e) {}
+        location.reload();
+      });
+    }
+
     function saveState() {
       if (restoring) return;
       clearTimeout(saveTimer);
       saveTimer = setTimeout(() => {
-        try { localStorage.setItem(SAVE_KEY, JSON.stringify(collectState())); } catch (e) {}
+        try { localStorage.setItem(SAVE_KEY, JSON.stringify(collectState())); showDraftSaved(); } catch (e) {}
       }, 250);
     }
 
@@ -1830,6 +1946,8 @@
       try { raw = JSON.parse(localStorage.getItem(SAVE_KEY) || 'null'); } catch (e) { raw = null; }
       if (!raw) return;
       restoring = true;
+      if (startFreshEl) startFreshEl.hidden = false;
+      if (draftSavedEl) { draftSavedEl.hidden = false; draftSavedEl.textContent = 'Draft restored'; }
 
       // Recreate saved directors first (clicking re-uses the normal add + wire path)
       (raw.directors || []).forEach((d, i) => {
@@ -1837,7 +1955,7 @@
         const b = directorList.querySelectorAll('.director-block')[i];
         if (!b) return;
         const nm = b.querySelector('.dir-name'); if (nm) nm.value = d.name || '';
-        const dob = b.querySelector('input[type="date"]'); if (dob) { dob.value = d.dob || ''; dob.classList.toggle('has-value', !!dob.value); }
+        const dob = b.querySelector('input[type="date"]'); if (dob) { dob.value = d.dob || ''; dob.classList.toggle('has-value', !!dob.value); if (dob._syncDateDisplay) dob._syncDateDisplay(); }
         const sel = b.querySelector('select'); if (sel) { sel.value = d.country || ''; sel.classList.toggle('touched', !!sel.value); if (sel._rebuildMenu) sel._rebuildMenu(); }
         const own = b.querySelector('input[type="number"]'); if (own) own.value = d.ownership || '';
       });
@@ -1856,7 +1974,7 @@
           if (raw.fields && key in raw.fields) {
             el.value = raw.fields[key];
             if (el.tagName === 'SELECT') { el.classList.toggle('touched', !!el.value); if (el._rebuildMenu) el._rebuildMenu(); }
-            if (el.type === 'date') el.classList.toggle('has-value', !!el.value);
+            if (el.type === 'date') { el.classList.toggle('has-value', !!el.value); if (el._syncDateDisplay) el._syncDateDisplay(); }
           }
         });
       });
@@ -1886,6 +2004,9 @@
 
       // Work-description counter
       if (workDesc && workDescCount) workDescCount.textContent = workDesc.value.length;
+
+      // Online-presence URL label follows the restored radio choice
+      if (typeof syncPresenceUrl === 'function') syncPresenceUrl();
 
       current = Math.min(Math.max(raw.step || 1, 1), total);
       restoring = false;
