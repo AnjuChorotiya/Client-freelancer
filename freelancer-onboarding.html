@@ -38,6 +38,35 @@
     a { text-decoration: none; color: inherit; }
     .hidden { display: none !important; }
 
+    /* ─── Portal shell (sidebar + header) ─── */
+    .app { flex: 1; display: flex; min-height: 100vh; }
+    .sidebar { width: 240px; flex-shrink: 0; background: var(--card); border-right: 1px solid var(--border); padding: 30px 20px; display: flex; flex-direction: column; gap: 32px; }
+    .sidebar-logo { display: flex; align-items: center; height: 26px; overflow: hidden; }
+    .sidebar-logo img { height: 56px; width: auto; margin-top: -30px; display: block; }
+    .nav-section { display: flex; flex-direction: column; }
+    .nav-title { font-weight: 500; font-size: 12px; letter-spacing: 0.5px; color: var(--text-muted); padding: 8px; margin-bottom: 2px; }
+    .nav-link { display: flex; align-items: center; gap: 10px; height: 38px; padding: 0 10px; border-radius: 8px; font-weight: 500; font-size: 15px; color: var(--text-secondary); transition: background 0.15s, color 0.15s; }
+    .nav-link:hover { background: var(--muted-bg); }
+    .nav-link.active { background: var(--brand-50); color: var(--brand-600); }
+    .nav-link.active .nav-icon { color: var(--brand-600); }
+    .nav-icon { width: 20px; height: 20px; flex-shrink: 0; color: var(--text-muted); display: flex; }
+    .nav-icon svg { width: 20px; height: 20px; }
+
+    .main-col { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+    .app-header { display: flex; align-items: center; justify-content: space-between; height: 80px; padding: 0 40px; background: var(--bg); }
+    .app-header h1 { font-size: 23px; font-weight: 700; color: var(--text-primary); margin: 0; }
+    .header-right { display: flex; align-items: center; gap: 16px; }
+    .bell-btn { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 8px; background: transparent; border: none; color: var(--text-secondary); cursor: pointer; }
+    .bell-btn:hover { background: rgba(0,0,0,0.04); }
+    .bell-btn svg { width: 22px; height: 22px; }
+    .user-chip { display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 4px 8px 4px 4px; border-radius: 100px; flex-shrink: 0; }
+    .user-chip:hover { background: rgba(0,0,0,0.04); }
+    .user-avatar { width: 32px; height: 32px; min-width: 32px; border-radius: 50%; background: var(--brand-500); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; }
+    .user-name { font-weight: 500; font-size: 15px; color: var(--text-primary); white-space: nowrap; }
+    .user-chev { width: 16px; height: 16px; color: var(--text-muted); flex-shrink: 0; }
+    .shell-content { flex: 1; padding: 24px 40px 64px; overflow-y: auto; }
+    @media (max-width: 860px) { .sidebar { display: none; } .app-header, .shell-content { padding-left: 16px; padding-right: 16px; } }
+
     /* Topbar */
     .topbar { position: sticky; top: 0; z-index: 30; background: var(--card); }
     .topbar-inner { height: 80px; max-width: 1440px; margin: 0 auto; padding: 0 40px; display: flex; align-items: center; justify-content: space-between; }
@@ -390,21 +419,35 @@
 <path d="M22 10V15C22 20 20 22 15 22H9C4 22 2 20 2 15V9C2 4 4 2 9 2H14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M22 10H18C15 10 14 9 14 6V2L22 10Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-arrow-left" viewBox="0 0 24 24" fill="none"><path d="M9.57 5.92993L3.5 11.9999L9.57 18.0699" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M20.5 12H3.67004" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-arrow-right" viewBox="0 0 24 24" fill="none"><path d="M14.4301 5.92993L20.5001 11.9999L14.4301 18.0699" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M3.5 12H20.33" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/></symbol></svg><!-- /wm-icon-sprite -->
+<path d="M3.5 12H20.33" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-arrow-down" viewBox="0 0 24 24" fill="none"><path d="M19.9201 8.94995L13.4001 15.47C12.6301 16.24 11.3701 16.24 10.6001 15.47L4.08008 8.94995" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-home-2" viewBox="0 0 24 24" fill="none"><path d="M9.02 2.84004L3.63 7.04004C2.73 7.74004 2 9.23004 2 10.36V17.77C2 20.09 3.89 21.99 6.21 21.99H17.79C20.11 21.99 22 20.09 22 17.78V10.5C22 9.29004 21.19 7.74004 20.2 7.05004L14.02 2.72004C12.62 1.74004 10.37 1.79004 9.02 2.84004Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 17.99V14.99" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-user" viewBox="0 0 24 24" fill="none"><path d="M12 12C14.7614 12 17 9.76142 17 7C17 4.23858 14.7614 2 12 2C9.23858 2 7 4.23858 7 7C7 9.76142 9.23858 12 12 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M20.5899 22C20.5899 18.13 16.7399 15 11.9999 15C7.25991 15 3.40991 18.13 3.40991 22" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-receipt-text" viewBox="0 0 24 24" fill="none"><path d="M22 6V8.42C22 10 21 11 19.42 11H16V4.01C16 2.9 16.91 2 18.02 2C19.11 2.01 20.11 2.45 20.83 3.17C21.55 3.9 22 4.9 22 6Z" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 7V21C2 21.83 2.93998 22.3 3.59998 21.8L5.31 20.52C5.71 20.22 6.27 20.26 6.63 20.62L8.28998 22.29C8.67998 22.68 9.32002 22.68 9.71002 22.29L11.39 20.61C11.74 20.26 12.3 20.22 12.69 20.52L14.4 21.8C15.06 22.29 16 21.82 16 21V4C16 2.9 16.9 2 18 2H7H6C3 2 2 3.79 2 6V7Z" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 9H12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M6.75 13H11.25" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-dollar-square" viewBox="0 0 24 24" fill="none"><path d="M8.67188 14.3298C8.67188 15.6198 9.66188 16.6598 10.8919 16.6598H13.4019C14.4719 16.6598 15.3419 15.7498 15.3419 14.6298C15.3419 13.4098 14.8119 12.9798 14.0219 12.6998L9.99187 11.2998C9.20187 11.0198 8.67188 10.5898 8.67188 9.36984C8.67188 8.24984 9.54187 7.33984 10.6119 7.33984H13.1219C14.3519 7.33984 15.3419 8.37984 15.3419 9.66984" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 6V18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M15 22H9C4 22 2 20 2 15V9C2 4 4 2 9 2H15C20 2 22 4 22 9V15C22 20 20 22 15 22Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-notification" viewBox="0 0 24 24" fill="none"><path d="M12.02 2.90991C8.70997 2.90991 6.01997 5.59991 6.01997 8.90991V11.7999C6.01997 12.4099 5.75997 13.3399 5.44997 13.8599L4.29997 15.7699C3.58997 16.9499 4.07997 18.2599 5.37997 18.6999C9.68997 20.1399 14.34 20.1399 18.65 18.6999C19.86 18.2999 20.39 16.8699 19.73 15.7699L18.58 13.8599C18.28 13.3399 18.02 12.4099 18.02 11.7999V8.90991C18.02 5.60991 15.32 2.90991 12.02 2.90991Z" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"/><path d="M15.02 19.0601C15.02 20.7101 13.67 22.0601 12.02 22.0601C11.2 22.0601 10.44 21.7201 9.90002 21.1801C9.36002 20.6401 9.02002 19.8801 9.02002 19.0601" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10"/></symbol></svg><!-- /wm-icon-sprite -->
 
-  <header class="topbar">
-    <div class="topbar-inner">
-      <a href="#" class="topbar-logo"><img src="wisemonk_logo_final.png" alt="Wisemonk"></a>
-      <div class="topbar-right">
-        <button class="need-help">Need help?</button>
-        <a href="signup-role.html" class="top-close" aria-label="Close and exit">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-close"/></svg>
-        </a>
-      </div>
-    </div>
-  </header>
+  <!-- Portal shell (sidebar + header) — shown during the overview -->
+  <div class="app" id="appShell">
+    <aside class="sidebar">
+      <a href="#" class="sidebar-logo"><img src="wisemonk_logo_final.png" alt="Wisemonk"></a>
+      <nav class="nav-section">
+        <div class="nav-title">WORKSPACE</div>
+        <a href="#" class="nav-link active"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-home-2"/></svg></span>Home</a>
+        <a href="#" class="nav-link"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-user"/></svg></span>Clients</a>
+        <a href="#" class="nav-link"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-receipt-text"/></svg></span>Invoices</a>
+        <a href="#" class="nav-link"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-dollar-square"/></svg></span>Payments</a>
+      </nav>
+    </aside>
 
-  <main>
+    <div class="main-col">
+      <header class="app-header">
+        <h1>Welcome back!</h1>
+        <div class="header-right">
+          <button class="bell-btn" aria-label="Notifications"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-notification"/></svg></button>
+          <div class="user-chip">
+            <span class="user-avatar">SJ</span>
+            <span class="user-name">Rahul</span>
+            <svg class="user-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-arrow-down"/></svg>
+          </div>
+        </div>
+      </header>
+
+      <div class="shell-content">
 
     <!-- OVERVIEW: onboarding steps checklist -->
     <div class="overview" id="overviewView">
@@ -463,7 +506,26 @@
       </div>
     </div>
 
-    <div id="stepForm" hidden>
+      </div><!-- /.shell-content -->
+    </div><!-- /.main-col -->
+  </div><!-- /#appShell -->
+
+  <!-- Focused onboarding form — shown after Get started -->
+  <header class="topbar" id="formTopbar" hidden>
+    <div class="topbar-inner">
+      <a href="#" class="topbar-logo"><img src="wisemonk_logo_final.png" alt="Wisemonk"></a>
+      <div class="topbar-right">
+        <button class="need-help">Need help?</button>
+        <a href="signup-role.html" class="top-close" aria-label="Close and exit">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-close"/></svg>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main id="formMain" hidden>
+
+    <div id="stepForm">
 
     <!-- STEP 1: BASIC DETAILS -->
     <div class="step active" data-step="1">
@@ -756,20 +818,23 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // Overview <-> form toggle
-    const overviewView = document.getElementById('overviewView');
-    const stepForm = document.getElementById('stepForm');
+    // Overview (portal shell) <-> focused form toggle
+    const appShell = document.getElementById('appShell');
+    const formTopbar = document.getElementById('formTopbar');
+    const formMain = document.getElementById('formMain');
     const footerBar = document.getElementById('footerBar');
 
     function showForm() {
-      overviewView.hidden = true;
-      stepForm.hidden = false;
+      appShell.hidden = true;
+      formTopbar.hidden = false;
+      formMain.hidden = false;
       footerBar.hidden = false;
       render();
     }
     function showOverview() {
-      overviewView.hidden = false;
-      stepForm.hidden = true;
+      appShell.hidden = false;
+      formTopbar.hidden = true;
+      formMain.hidden = true;
       footerBar.hidden = true;
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
