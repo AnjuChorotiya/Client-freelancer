@@ -354,6 +354,46 @@
     }
     .status-pill.done { background: var(--success-50); color: var(--success-700); }
 
+    /* ─── COMPLETED HOME ("You're all set") ─────────────── */
+    .done-card { padding-top: 30px; }
+    .done-badge {
+      width: 48px; height: 48px; border-radius: 50%;
+      background: var(--success-50); color: var(--success-700);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 14px;
+      position: relative; z-index: 1;
+    }
+    .done-badge svg { width: 26px; height: 26px; stroke: var(--success-700); }
+    .next-heading {
+      max-width: 700px;
+      font-size: 15px; font-weight: 700; color: var(--text-primary);
+      margin: 24px 0 14px;
+    }
+    .next-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+      max-width: 700px;
+    }
+    .next-card {
+      background: var(--neutral-0);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 22px;
+      display: flex; flex-direction: column;
+      transition: box-shadow .15s ease, transform .15s ease;
+    }
+    .next-card:hover { box-shadow: 0 10px 24px -14px rgba(20,28,46,0.28); transform: translateY(-2px); }
+    .next-card-icon {
+      width: 42px; height: 42px; border-radius: 12px;
+      background: var(--primary-50); color: var(--primary-600);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 14px;
+    }
+    .next-card-icon svg { width: 22px; height: 22px; }
+    .next-card h3 { font-size: 15.5px; font-weight: 700; color: var(--text-primary); margin-bottom: 4px; letter-spacing: -0.1px; }
+    .next-card p { font-size: 13.5px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 16px; flex: 1; }
+    .next-card .step-btn { align-self: flex-start; }
+    @media (max-width: 640px) { .next-grid { grid-template-columns: 1fr; } }
+
     /* Sidebar cards */
     .side-stack { display: flex; flex-direction: column; gap: 20px; }
     .side-card { background: var(--neutral-0); border-radius: var(--radius-xl); padding: 22px; }
@@ -643,6 +683,8 @@
       <div class="content">
 
        <div id="homeView">
+        <!-- Onboarding-in-progress state -->
+        <div id="setupPending">
         <div class="welcome">
           <p>Let's finish setting up your account so you can start getting paid.</p>
         </div>
@@ -717,6 +759,57 @@
           </div>
 
         </div>
+        </div><!-- /#setupPending -->
+
+        <!-- Onboarding-complete state ("You're all set") -->
+        <div id="setupDone" hidden>
+          <div class="welcome">
+            <p>Your account is verified and ready — here's what you can do next.</p>
+          </div>
+
+          <div class="progress-card done-card">
+            <div class="done-badge">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-tick-circle"/></svg>
+            </div>
+            <div class="progress-eyebrow">Account setup</div>
+            <h2>You're all set, Aman!</h2>
+            <p>Your account is verified and ready. You can start adding freelancers and paying them right away.</p>
+            <div class="progress-track"><div class="progress-fill" style="width:100%"></div></div>
+            <div class="progress-meta">
+              <span><strong>6</strong> of 6 steps complete</span>
+              <span class="status-pill done">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-tick-circle"/></svg>
+                Setup complete
+              </span>
+            </div>
+          </div>
+
+          <div class="next-heading">What's next</div>
+          <div class="next-grid">
+            <div class="next-card">
+              <div class="next-card-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-profile-2user"/></svg>
+              </div>
+              <h3>Add your first freelancer</h3>
+              <p>Invite a freelancer, set up their contract and rate, and get them ready to be paid.</p>
+              <a href="add-freelancer.html" class="step-btn primary">
+                Add freelancer
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-arrow-right"/></svg>
+              </a>
+            </div>
+            <div class="next-card">
+              <div class="next-card-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-shield-tick"/></svg>
+              </div>
+              <h3>Run a compliance check</h3>
+              <p>Make sure your contractor classifications are compliant before you start paying.</p>
+              <a href="compliance.html" class="step-btn ghost">
+                Run check
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-arrow-right"/></svg>
+              </a>
+            </div>
+          </div>
+        </div><!-- /#setupDone -->
        </div>
 
        <!-- ── FREELANCERS (empty) ── -->
@@ -886,6 +979,17 @@
           window.scrollTo({ top: 0 });
         });
       });
+    })();
+
+    /* Show the "You're all set" home once onboarding is finished */
+    (function () {
+      var done = false;
+      try { done = localStorage.getItem('wm_onboarding_complete') === '1'; } catch (e) {}
+      if (!done) return;
+      var pending = document.getElementById('setupPending');
+      var doneView = document.getElementById('setupDone');
+      if (pending) pending.hidden = true;
+      if (doneView) doneView.hidden = false;
     })();
   </script>
 
