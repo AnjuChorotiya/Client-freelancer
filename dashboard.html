@@ -620,12 +620,6 @@
           </span>
           Time
         </a>
-        <a href="#" class="nav-link" data-tab="compliance">
-          <span class="nav-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-shield-tick"/></svg>
-          </span>
-          Compliance
-        </a>
       </nav>
     </aside>
 
@@ -840,31 +834,6 @@
          </div>
        </div>
 
-       <!-- ── COMPLIANCE (empty) ── -->
-       <div id="complianceView" hidden>
-         <div class="wm-card">
-           <div class="wm-card-heading">
-             <div>
-               <h1>Compliance</h1>
-               <p>Run compliance checks and keep your contractor base audit-ready.</p>
-             </div>
-           </div>
-           <div class="table-card">
-             <table>
-               <thead><tr><th>Document</th><th>Freelancer</th><th>Type</th><th>Status</th><th></th></tr></thead>
-               <tbody>
-                 <tr><td colspan="5">
-                   <div class="table-empty">
-                     <div class="table-empty-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-shield-tick"/></svg></div>
-                     <h3>Nothing to review yet</h3>
-                     <p>Once you add freelancers, their compliance documents and risk checks will appear here.</p>
-                   </div>
-                 </td></tr>
-               </tbody>
-             </table>
-           </div>
-         </div>
-       </div>
 
       </div>
     </div>
@@ -876,14 +845,13 @@
         home:        { title: 'Good Morning, Aman!', view: null },
         freelancers: { title: 'Freelancers',  view: 'freelancersView' },
         invoices:    { title: 'Invoices',     view: 'invoicesView' },
-        time:        { title: 'Time',         view: 'timeView' },
-        compliance:  { title: 'Compliance',   view: 'complianceView' }
+        time:        { title: 'Time',         view: 'timeView' }
       };
 
       const links = document.querySelectorAll('.nav-link[data-tab]');
       const homeView = document.getElementById('homeView');
       const headerTitle = document.querySelector('.header h1');
-      const sectionViews = ['freelancersView', 'invoicesView', 'timeView', 'complianceView']
+      const sectionViews = ['freelancersView', 'invoicesView', 'timeView']
         .map(id => document.getElementById(id));
 
       function hideAllSections() {
