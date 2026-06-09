@@ -1,5 +1,7 @@
 # Wisemonk UI
 
+**Version 1.0.0** · see [CHANGELOG.md](CHANGELOG.md) for version history.
+
 A portable, framework-free component library extracted from the Wisemonk portal.
 Plain HTML + CSS + vanilla JS — no build step, no dependencies. Drop it into any
 project and reuse the same look, tokens, and behaviors.

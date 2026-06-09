@@ -1,0 +1,35 @@
+# Wisemonk UI — Changelog
+
+All notable changes to the Wisemonk UI design system are documented here.
+This project follows [Semantic Versioning](https://semver.org/) (`MAJOR.MINOR.PATCH`):
+
+- **MAJOR** — breaking changes to class names, tokens, markup contracts, or the `WMUI` API.
+- **MINOR** — new components, tokens, or behaviors added in a backward-compatible way.
+- **PATCH** — backward-compatible bug fixes, style tweaks, and docs.
+
+---
+
+## [1.0.0] — 2026-06-09
+
+First stable release of the portable, framework-free component library extracted
+from the Wisemonk portal. Everything is namespaced (`wm-` classes, `--wm-` tokens,
+`WMUI` global) so it never collides with a host app.
+
+### Added
+- **Design tokens** — full official Wisemonk palette (primary, neutral, semantic,
+  success, warning, danger), spacing, radii, and shadows as `--wm-*` CSS variables.
+- **Typography** — Satoshi (Bold/Medium) + Open Sans Light tags; `.wm-h1`–`.wm-h4`,
+  `.wm-text`, `.wm-label`, `.wm-tag`.
+- **Icons** — Iconsax (Vuesax linear) SVG sprite (`iconsax-sprite.svg`) referenced
+  via `<svg class="wm-ic"><use href="#ic-…"/></svg>`.
+- **Components** — Button, Icon button, Pill/badge, Avatar, Card (+ stat), Banner,
+  Table card, Table, Toolbar, Search, Filter dropdown, Comparison, Form field,
+  Floating-label field, Custom select (single + multi), Date picker, Toggle, Note,
+  Breakdown, Option cards, Modal, Drawer, Command palette, Toast.
+- **Behaviors (JS)** — declarative `data-wm-*` wiring plus the `WMUI` API
+  (`open`/`close`/`toast`/`copy`/`select`/`validate`/`refresh`/`cmdk`); bubbling
+  `wm:*` events; modal/drawer with backdrop + `Esc` close; `⌘/Ctrl+K` palette.
+- **Docs** — `README.md` setup guide and component/behavior reference, plus a live
+  `index.html` showcase / storybook.
+
+[1.0.0]: https://github.com/AnjuChorotiya/Client-freelancer/tree/main/wisemonk-ui
