@@ -213,6 +213,8 @@
       font-family: inherit;
     }
     .custom-calendar.open { display: block; }
+    /* [hidden] must beat the display:grid rules below when switching views */
+    .cal-weekdays[hidden], .cal-days[hidden], .cal-grid[hidden] { display: none; }
     .cal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
     .cal-title {
       font-size: 14.5px; font-weight: 700; color: var(--text-primary);

@@ -238,6 +238,8 @@
       font-family: inherit;
     }
     .custom-calendar.open { display: block; }
+    /* [hidden] must beat the display:grid rules below when switching views */
+    .cal-weekdays[hidden], .cal-days[hidden], .cal-grid[hidden] { display: none; }
     .cal-header {
       display: flex; align-items: center; justify-content: space-between;
       margin-bottom: 14px;
@@ -273,6 +275,8 @@
     .cal-cell.selected { background: var(--brand-500); color: #fff; font-weight: 700; }
     .cal-cell.selected:hover { background: var(--brand-600); color: #fff; }
     .cal-cell.muted { color: var(--text-muted); opacity: 0.45; }
+    .cal-cell:disabled { cursor: default; }
+    .cal-cell:disabled:hover { background: transparent; color: var(--text-muted); }
     .cal-nav { display: flex; gap: 4px; }
     .cal-prev, .cal-next {
       width: 28px; height: 28px;
@@ -1727,6 +1731,9 @@
       const today = new Date();
       let view = new Date();
       let mode = 'days'; // 'days' | 'months' | 'years'
+      // Date of birth: only allow years 1960 .. current year (no future years)
+      const MAX_YEAR = today.getFullYear();
+      const MIN_YEAR = 1960;
 
       const weekdaysPanel = cal.querySelector('.cal-weekdays');
       const daysPanel = cal.querySelector('.cal-days');
@@ -1798,14 +1805,16 @@
         const sel = inputEl.value ? new Date(inputEl.value + 'T00:00') : null;
         for (let i = 0; i < 12; i++) {
           const y = base + i;
+          const outOfRange = y < MIN_YEAR || y > MAX_YEAR;
           const b = document.createElement('button');
           b.type = 'button';
           b.className = 'cal-cell'
-            + (y > today.getFullYear() ? ' muted' : '')
+            + (outOfRange ? ' muted' : '')
             + (y === today.getFullYear() ? ' current' : '')
             + (sel && sel.getFullYear() === y ? ' selected' : '');
           b.textContent = String(y);
-          b.addEventListener('click', e => { e.stopPropagation(); view = new Date(y, view.getMonth(), 1); mode = 'months'; render(); });
+          b.disabled = outOfRange;
+          if (!outOfRange) b.addEventListener('click', e => { e.stopPropagation(); view = new Date(y, view.getMonth(), 1); mode = 'months'; render(); });
           gridPanel.appendChild(b);
         }
       }
@@ -1850,7 +1859,13 @@
       function step(dir) {
         if (mode === 'days') view.setMonth(view.getMonth() + dir);
         else if (mode === 'months') view.setFullYear(view.getFullYear() + dir);
-        else view.setFullYear(view.getFullYear() + dir * 12);
+        else {
+          // Year view: stay within the 1960..current-year window
+          const nextYear = view.getFullYear() + dir * 12;
+          if (dir < 0 && Math.floor(view.getFullYear() / 12) * 12 <= Math.floor(MIN_YEAR / 12) * 12) return;
+          if (dir > 0 && Math.floor(view.getFullYear() / 12) * 12 >= Math.floor(MAX_YEAR / 12) * 12) return;
+          view.setFullYear(nextYear);
+        }
         render();
       }
       cal.querySelector('.cal-prev').addEventListener('click', e => { e.stopPropagation(); step(-1); });
