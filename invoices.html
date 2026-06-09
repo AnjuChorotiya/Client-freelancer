@@ -195,6 +195,59 @@
     .ri-field input[type="date"]::-webkit-calendar-picker-indicator {
       position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; padding: 0; cursor: pointer; opacity: 0;
     }
+    /* Custom calendar popover (matches the onboarding date picker) */
+    .ri-date { position: relative; }
+    .ri-date input[type="date"] { color: transparent; cursor: pointer; }
+    .ri-date input[type="date"]::-webkit-datetime-edit { color: transparent; }
+    .ri-date input[type="date"]::-webkit-calendar-picker-indicator { display: none; }
+    .ri-date-display {
+      position: absolute; left: 13px; top: 50%; transform: translateY(-50%);
+      font-size: 14px; color: var(--text-primary); pointer-events: none;
+    }
+    .ri-date-display.placeholder { color: var(--text-muted); }
+    .custom-calendar {
+      display: none; position: absolute; top: calc(100% + 6px); left: 0;
+      background: var(--neutral-0); border: 1px solid var(--border);
+      border-radius: 12px; padding: 16px; width: 300px; z-index: 60;
+      box-shadow: 0 12px 32px rgba(0,0,0,0.10), 0 4px 8px rgba(0,0,0,0.04);
+      font-family: inherit;
+    }
+    .custom-calendar.open { display: block; }
+    .cal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+    .cal-title {
+      font-size: 14.5px; font-weight: 700; color: var(--text-primary);
+      background: transparent; border: none; font-family: inherit; cursor: pointer;
+      padding: 4px 8px; border-radius: 6px; display: inline-flex; align-items: center; gap: 5px;
+      transition: background 0.1s, color 0.1s;
+    }
+    .cal-title:hover { background: var(--primary-50); color: var(--primary-600); }
+    .cal-title-chev { width: 13px; height: 13px; }
+    .cal-nav { display: flex; gap: 4px; }
+    .cal-prev, .cal-next {
+      width: 28px; height: 28px; background: transparent; border: none; border-radius: 6px;
+      color: var(--text-secondary); cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: background 0.1s, color 0.1s;
+    }
+    .cal-prev:hover, .cal-next:hover { background: #F2F4F8; color: var(--text-primary); }
+    .cal-prev svg, .cal-next svg { width: 16px; height: 16px; }
+    .cal-weekdays { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; margin-bottom: 6px; }
+    .cal-weekdays span { font-size: 11px; font-weight: 700; color: var(--text-muted); text-align: center; padding: 6px 0; text-transform: uppercase; letter-spacing: 0.3px; }
+    .cal-days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
+    .cal-day { height: 36px; background: transparent; border: none; border-radius: 8px; font-family: inherit; font-size: 13.5px; font-weight: 500; color: var(--text-primary); cursor: pointer; transition: background 0.1s, color 0.1s; }
+    .cal-day:hover:not(.muted) { background: var(--primary-50); color: var(--primary-500); }
+    .cal-day.muted { color: var(--text-muted); opacity: 0.45; }
+    .cal-day.today { color: var(--primary-500); font-weight: 700; }
+    .cal-day.selected { background: var(--primary-500); color: #fff; font-weight: 700; }
+    .cal-day.selected:hover { background: var(--primary-600); color: #fff; }
+    .cal-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+    .cal-cell { height: 46px; background: transparent; border: none; border-radius: 8px; font-family: inherit; font-size: 13.5px; font-weight: 500; color: var(--text-primary); cursor: pointer; transition: background 0.1s, color 0.1s; }
+    .cal-cell:hover { background: var(--primary-50); color: var(--primary-500); }
+    .cal-cell.current { color: var(--primary-500); font-weight: 700; }
+    .cal-cell.selected { background: var(--primary-500); color: #fff; font-weight: 700; }
+    .cal-cell.muted { color: var(--text-muted); opacity: 0.45; }
+    .cal-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); }
+    .cal-footer button { background: transparent; border: none; font-family: inherit; font-size: 13px; font-weight: 700; color: var(--primary-500); cursor: pointer; padding: 6px 10px; border-radius: 6px; transition: background 0.1s; }
+    .cal-footer button:hover { background: var(--primary-50); }
     .ri-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
     .ri-amount-wrap { position: relative; }
     .ri-amount-wrap .ri-cur { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); font-size: 14px; font-weight: 700; color: var(--text-muted); pointer-events: none; }
@@ -1090,7 +1143,10 @@
           </div>
           <div class="ri-field">
             <label for="riDue">Due date</label>
-            <input id="riDue" type="date">
+            <div class="ri-date">
+              <input id="riDue" type="date" readonly>
+              <span class="ri-date-display placeholder" id="riDueDisplay">dd-mm-yyyy</span>
+            </div>
           </div>
         </div>
         <div class="ri-field">
@@ -1165,6 +1221,150 @@
           bd.classList.add('show');
         });
       }
+
+      // ─── Custom calendar for the Due date field ───
+      (function () {
+        const inputEl = document.getElementById('riDue');
+        const disp = document.getElementById('riDueDisplay');
+        if (!inputEl || !disp) return;
+        const wrap = inputEl.closest('.ri-date');
+        const MONTHS_FULL = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+        const monthsShort = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+        const pad = n => String(n).padStart(2, '0');
+        const isSameDay = (a, b) => a && b && a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
+        function fmtDateISO(iso) {
+          if (!iso) return '';
+          const d = new Date(iso + 'T00:00');
+          if (isNaN(d.getTime())) return iso;
+          return d.getDate() + ' ' + MONTHS_FULL[d.getMonth()] + ' ' + d.getFullYear();
+        }
+
+        const cal = document.createElement('div');
+        cal.className = 'custom-calendar';
+        cal.innerHTML = `
+          <div class="cal-header">
+            <button type="button" class="cal-title" aria-label="Switch month or year view"><span class="cal-title-text"></span><svg class="cal-title-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+            <div class="cal-nav">
+              <button type="button" class="cal-prev" aria-label="Previous"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>
+              <button type="button" class="cal-next" aria-label="Next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></button>
+            </div>
+          </div>
+          <div class="cal-weekdays"><span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span></div>
+          <div class="cal-days"></div>
+          <div class="cal-grid" hidden></div>
+          <div class="cal-footer">
+            <button type="button" class="cal-clear">Clear</button>
+            <button type="button" class="cal-today">Today</button>
+          </div>`;
+        wrap.appendChild(cal);
+
+        const weekdaysPanel = cal.querySelector('.cal-weekdays');
+        const daysPanel = cal.querySelector('.cal-days');
+        const gridPanel = cal.querySelector('.cal-grid');
+        const titleText = cal.querySelector('.cal-title-text');
+        const today = new Date();
+        let view = new Date();
+        let mode = 'days';
+
+        function syncDisplay() {
+          if (inputEl.value) { disp.textContent = fmtDateISO(inputEl.value); disp.classList.remove('placeholder'); }
+          else { disp.textContent = 'dd-mm-yyyy'; disp.classList.add('placeholder'); }
+        }
+        syncDisplay();
+
+        function render() {
+          if (mode === 'months') return renderMonths();
+          if (mode === 'years') return renderYears();
+          renderDays();
+        }
+        function renderDays() {
+          weekdaysPanel.hidden = false; daysPanel.hidden = false; gridPanel.hidden = true;
+          const selected = inputEl.value ? new Date(inputEl.value + 'T00:00') : null;
+          titleText.textContent = MONTHS_FULL[view.getMonth()] + ' ' + view.getFullYear();
+          daysPanel.innerHTML = '';
+          const lastDay = new Date(view.getFullYear(), view.getMonth() + 1, 0);
+          const startDow = new Date(view.getFullYear(), view.getMonth(), 1).getDay();
+          const prevLast = new Date(view.getFullYear(), view.getMonth(), 0).getDate();
+          for (let i = startDow - 1; i >= 0; i--) addCell(prevLast - i, new Date(view.getFullYear(), view.getMonth() - 1, prevLast - i), true);
+          for (let d = 1; d <= lastDay.getDate(); d++) addCell(d, new Date(view.getFullYear(), view.getMonth(), d), false);
+          const cells = daysPanel.children.length;
+          const remaining = (cells <= 35) ? 35 - cells : 42 - cells;
+          for (let d = 1; d <= remaining; d++) addCell(d, new Date(view.getFullYear(), view.getMonth() + 1, d), true);
+          function addCell(label, date, muted) {
+            const b = document.createElement('button');
+            b.type = 'button';
+            b.className = 'cal-day' + (muted ? ' muted' : '') + (isSameDay(date, today) ? ' today' : '') + (isSameDay(date, selected) ? ' selected' : '');
+            b.textContent = label;
+            b.addEventListener('click', e => { e.stopPropagation(); select(date); });
+            daysPanel.appendChild(b);
+          }
+        }
+        function renderMonths() {
+          weekdaysPanel.hidden = true; daysPanel.hidden = true; gridPanel.hidden = false;
+          titleText.textContent = String(view.getFullYear());
+          gridPanel.innerHTML = '';
+          const sel = inputEl.value ? new Date(inputEl.value + 'T00:00') : null;
+          for (let m = 0; m < 12; m++) {
+            const b = document.createElement('button');
+            b.type = 'button';
+            b.className = 'cal-cell'
+              + (today.getFullYear() === view.getFullYear() && today.getMonth() === m ? ' current' : '')
+              + (sel && sel.getFullYear() === view.getFullYear() && sel.getMonth() === m ? ' selected' : '');
+            b.textContent = monthsShort[m];
+            b.addEventListener('click', e => { e.stopPropagation(); view = new Date(view.getFullYear(), m, 1); mode = 'days'; render(); });
+            gridPanel.appendChild(b);
+          }
+        }
+        function renderYears() {
+          weekdaysPanel.hidden = true; daysPanel.hidden = true; gridPanel.hidden = false;
+          gridPanel.innerHTML = '';
+          const base = Math.floor(view.getFullYear() / 12) * 12;
+          titleText.textContent = base + ' – ' + (base + 11);
+          const sel = inputEl.value ? new Date(inputEl.value + 'T00:00') : null;
+          for (let i = 0; i < 12; i++) {
+            const y = base + i;
+            const b = document.createElement('button');
+            b.type = 'button';
+            b.className = 'cal-cell'
+              + (y === today.getFullYear() ? ' current' : '')
+              + (sel && sel.getFullYear() === y ? ' selected' : '');
+            b.textContent = String(y);
+            b.addEventListener('click', e => { e.stopPropagation(); view = new Date(y, view.getMonth(), 1); mode = 'months'; render(); });
+            gridPanel.appendChild(b);
+          }
+        }
+        function select(d) {
+          inputEl.value = d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
+          syncDisplay();
+          inputEl.dispatchEvent(new Event('change', { bubbles: true }));
+          closeCal();
+        }
+        function openCal() { view = inputEl.value ? new Date(inputEl.value + 'T00:00') : new Date(); mode = 'days'; render(); cal.classList.add('open'); }
+        function closeCal() { cal.classList.remove('open'); }
+
+        inputEl.addEventListener('mousedown', e => { e.preventDefault(); if (cal.classList.contains('open')) closeCal(); else openCal(); });
+        inputEl.addEventListener('keydown', e => {
+          if (e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowDown') { e.preventDefault(); openCal(); }
+          else if (e.key === 'Escape') closeCal();
+        });
+        document.addEventListener('mousedown', e => { if (!wrap.contains(e.target)) closeCal(); });
+
+        cal.querySelector('.cal-title').addEventListener('click', e => {
+          e.stopPropagation();
+          mode = (mode === 'days') ? 'months' : 'years';
+          render();
+        });
+        function step(dir) {
+          if (mode === 'days') view.setMonth(view.getMonth() + dir);
+          else if (mode === 'months') view.setFullYear(view.getFullYear() + dir);
+          else view.setFullYear(view.getFullYear() + dir * 12);
+          render();
+        }
+        cal.querySelector('.cal-prev').addEventListener('click', e => { e.stopPropagation(); step(-1); });
+        cal.querySelector('.cal-next').addEventListener('click', e => { e.stopPropagation(); step(1); });
+        cal.querySelector('.cal-clear').addEventListener('click', e => { e.stopPropagation(); inputEl.value = ''; syncDisplay(); inputEl.dispatchEvent(new Event('change', { bubbles: true })); closeCal(); });
+        cal.querySelector('.cal-today').addEventListener('click', e => { e.stopPropagation(); select(new Date()); });
+      })();
     })();
 
     // ─── Row state: read pay status from localStorage and update rows ───
