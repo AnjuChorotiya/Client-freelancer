@@ -365,8 +365,8 @@
     .pc-meta strong { color: var(--text-primary); font-weight: 700; }
     .time-tag { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; background: var(--brand-50); color: var(--brand-700); border-radius: 999px; font-size: 12px; font-weight: 600; letter-spacing: 0.2px; }
 
-    .checklist { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 8px; margin-bottom: 24px; }
-    .checklist-item { display: flex; align-items: center; gap: 16px; padding: 18px 20px; border-radius: 10px; }
+    .checklist { margin-bottom: 24px; }
+    .checklist-item { display: flex; align-items: center; gap: 16px; padding: 18px 20px; border-radius: 0; }
     .checklist-item + .checklist-item { border-top: 1px solid var(--border); }
     .checklist-item.active { background: var(--brand-50); }
     .checklist-item.active + .checklist-item { border-top-color: transparent; }
@@ -384,6 +384,9 @@
     .step-btn { display: inline-flex; align-items: center; gap: 6px; padding: 10px 18px; border-radius: 999px; font-family: inherit; font-size: 14px; font-weight: 700; cursor: pointer; transition: all 0.15s ease; border: none; }
     .step-btn.primary { background: var(--brand-500); color: #fff; box-shadow: 0 6px 14px -6px rgba(48,128,255,0.5); }
     .step-btn.primary:hover { background: var(--brand-600); transform: translateY(-1px); }
+    .step-btn.ghost { background: transparent; color: var(--brand-600); padding-left: 0; padding-right: 0; }
+    .step-btn.ghost:hover { color: var(--brand-500); }
+    .step-btn[disabled] { opacity: 0.55; cursor: not-allowed; box-shadow: none; transform: none; }
     .step-btn svg { width: 14px; height: 14px; stroke-width: 2.2; }
 
     /* Step panels */
@@ -467,7 +470,7 @@
         <p class="pc-sub">A few details about you, your business and where you'd like to be paid.</p>
         <div class="progress-track"><i style="width:0%"></i></div>
         <div class="pc-meta">
-          <span><strong>0</strong> of 4 steps complete</span>
+          <span><strong>0</strong> of 5 steps complete</span>
           <span class="time-tag">~8 mins to finish</span>
         </div>
       </div>
@@ -476,8 +479,8 @@
         <div class="checklist-item active">
           <div class="step-circle active">1</div>
           <div class="step-body">
-            <div class="step-title">Basic details</div>
-            <div class="step-desc">Personal information, your online presence and the kind of work you deliver</div>
+            <div class="step-title">Email verification</div>
+            <div class="step-desc">Confirm the email address where we'll send updates and payment confirmations</div>
           </div>
           <div class="step-action">
             <button type="button" class="step-btn primary" id="ovStartBtn">
@@ -489,19 +492,26 @@
         <div class="checklist-item locked">
           <div class="step-circle locked">2</div>
           <div class="step-body">
+            <div class="step-title">Basic details</div>
+            <div class="step-desc">Personal information, your online presence and the kind of work you deliver</div>
+          </div>
+        </div>
+        <div class="checklist-item locked">
+          <div class="step-circle locked">3</div>
+          <div class="step-body">
             <div class="step-title">Business identifiers</div>
             <div class="step-desc">PAN details, document upload and your registered address</div>
           </div>
         </div>
         <div class="checklist-item locked">
-          <div class="step-circle locked">3</div>
+          <div class="step-circle locked">4</div>
           <div class="step-body">
             <div class="step-title">Bank account details</div>
             <div class="step-desc">The INR account where you'd like to receive your payments</div>
           </div>
         </div>
         <div class="checklist-item locked">
-          <div class="step-circle locked">4</div>
+          <div class="step-circle locked">5</div>
           <div class="step-body">
             <div class="step-title">Tax &amp; compliance</div>
             <div class="step-desc">GST registration status and your tax profile</div>
@@ -531,8 +541,39 @@
 
     <div id="stepForm">
 
-    <!-- STEP 1: BASIC DETAILS -->
+    <!-- STEP 1: EMAIL VERIFICATION -->
     <div class="step active" data-step="1">
+      <div class="page-heading">
+        <h1>Verify your email</h1>
+        <p>We'll send contract updates and payment confirmations here. Confirm your email address to continue.</p>
+      </div>
+
+      <div class="section-card">
+        <div class="section-title">Email address</div>
+        <div class="fields">
+          <div class="fl-field">
+            <input type="email" placeholder=" " id="verifyEmail">
+            <label>Work email <span class="req">*</span></label>
+          </div>
+        </div>
+        <button type="button" class="step-btn primary" id="sendCodeBtn" style="margin-top:4px;">Send verification code</button>
+
+        <div id="codeBlock" class="hidden" style="margin-top:24px;">
+          <div class="section-title">Enter the code</div>
+          <p class="reveal-help" style="margin:2px 0 14px;">We sent a 6-digit code to <strong id="codeEmailEcho"></strong>. It expires in 10 minutes.</p>
+          <div class="fields">
+            <div class="fl-field">
+              <input type="text" inputmode="numeric" maxlength="6" placeholder=" " id="verifyCode">
+              <label>6-digit code <span class="req">*</span></label>
+            </div>
+          </div>
+          <button type="button" class="step-btn ghost" id="resendCodeBtn" style="margin-top:4px;">Resend code</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 2: BASIC DETAILS -->
+    <div class="step" data-step="2">
       <div class="page-heading">
         <h1>Basic details</h1>
         <p>Let's start with the basics. This information will be used to create your profile and manage your contracts.</p>
@@ -611,7 +652,7 @@
     </div>
 
     <!-- STEP 2: BUSINESS IDENTIFIERS -->
-    <div class="step" data-step="2">
+    <div class="step" data-step="3">
       <div class="page-heading">
         <h1>Business identifiers</h1>
         <p>Add details about the individual/freelancer and help us understand the business.</p>
@@ -697,7 +738,7 @@
     </div>
 
     <!-- STEP 3: BANK ACCOUNT DETAILS -->
-    <div class="step" data-step="3">
+    <div class="step" data-step="4">
       <div class="page-heading">
         <h1>Bank account details</h1>
         <p>Provide your bank account details to receive payouts.</p>
@@ -738,7 +779,7 @@
     </div>
 
     <!-- STEP 4: TAX & COMPLIANCE -->
-    <div class="step" data-step="4">
+    <div class="step" data-step="5">
       <div class="page-heading">
         <h1>Tax &amp; Compliance</h1>
         <p>Complete your tax profile to ensure seamless payments and regulatory compliance.</p>
@@ -807,6 +848,7 @@
     let current = 1;
 
     const nextLabels = [
+      'Basic details',
       'Business identifiers',
       'Bank account details',
       'Tax & Compliance'
@@ -843,6 +885,24 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
     document.getElementById('ovStartBtn').addEventListener('click', () => { current = 1; showForm(); });
+
+    // Email verification — reveal the code entry after sending
+    const sendCodeBtn = document.getElementById('sendCodeBtn');
+    if (sendCodeBtn) {
+      const codeBlock = document.getElementById('codeBlock');
+      const emailEcho = document.getElementById('codeEmailEcho');
+      const emailInput = document.getElementById('verifyEmail');
+      const sendCode = () => {
+        const email = (emailInput.value || '').trim();
+        if (!email) { emailInput.focus(); return; }
+        emailEcho.textContent = email;
+        codeBlock.classList.remove('hidden');
+        document.getElementById('verifyCode').focus();
+      };
+      sendCodeBtn.addEventListener('click', sendCode);
+      const resend = document.getElementById('resendCodeBtn');
+      if (resend) resend.addEventListener('click', sendCode);
+    }
 
     document.getElementById('saveBtn').addEventListener('click', () => {
       if (current === total) { location.href = 'dashboard.html?role=freelancer'; return; }
