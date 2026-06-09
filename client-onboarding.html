@@ -1475,7 +1475,7 @@
       if (!runValidation(true)) return;
       if (current === total) {
         try { localStorage.removeItem(SAVE_KEY); } catch (e) {}
-        location.href = 'home.html';
+        location.href = 'dashboard.html';
         return;
       }
       current++;
