@@ -245,7 +245,34 @@
     .cal-title {
       font-size: 14.5px; font-weight: 700;
       color: var(--text-primary);
+      background: transparent; border: none;
+      font-family: inherit; cursor: pointer;
+      padding: 4px 8px; border-radius: 6px;
+      display: inline-flex; align-items: center; gap: 5px;
+      transition: background 0.1s, color 0.1s;
     }
+    .cal-title:hover { background: var(--brand-50); color: var(--brand-600); }
+    .cal-title-chev { width: 13px; height: 13px; }
+    /* Month / year selection grids */
+    .cal-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+    }
+    .cal-cell {
+      height: 46px;
+      background: transparent; border: none;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 13.5px; font-weight: 500;
+      color: var(--text-primary);
+      cursor: pointer;
+      transition: background 0.1s, color 0.1s;
+    }
+    .cal-cell:hover { background: var(--brand-50); color: var(--brand-500); }
+    .cal-cell.current { color: var(--brand-500); font-weight: 700; }
+    .cal-cell.selected { background: var(--brand-500); color: #fff; font-weight: 700; }
+    .cal-cell.selected:hover { background: var(--brand-600); color: #fff; }
+    .cal-cell.muted { color: var(--text-muted); opacity: 0.45; }
     .cal-nav { display: flex; gap: 4px; }
     .cal-prev, .cal-next {
       width: 28px; height: 28px;
@@ -1669,14 +1696,15 @@
       cal.className = 'custom-calendar';
       cal.innerHTML = `
         <div class="cal-header">
-          <span class="cal-title"></span>
+          <button type="button" class="cal-title" aria-label="Switch month or year view"><span class="cal-title-text"></span><svg class="cal-title-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-arrow-down"/></svg></button>
           <div class="cal-nav">
-            <button type="button" class="cal-prev" aria-label="Previous month"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-arrow-left"/></svg></button>
-            <button type="button" class="cal-next" aria-label="Next month"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-arrow-right"/></svg></button>
+            <button type="button" class="cal-prev" aria-label="Previous"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-arrow-left"/></svg></button>
+            <button type="button" class="cal-next" aria-label="Next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-arrow-right"/></svg></button>
           </div>
         </div>
         <div class="cal-weekdays"><span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span></div>
         <div class="cal-days"></div>
+        <div class="cal-grid" hidden></div>
         <div class="cal-footer">
           <button type="button" class="cal-clear">Clear</button>
           <button type="button" class="cal-today">Today</button>
@@ -1695,13 +1723,27 @@
       syncDisplay();
 
       const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+      const monthsShort = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
       const today = new Date();
       let view = new Date();
+      let mode = 'days'; // 'days' | 'months' | 'years'
+
+      const weekdaysPanel = cal.querySelector('.cal-weekdays');
+      const daysPanel = cal.querySelector('.cal-days');
+      const gridPanel = cal.querySelector('.cal-grid');
+      const titleText = cal.querySelector('.cal-title-text');
 
       function render() {
+        if (mode === 'months') return renderMonths();
+        if (mode === 'years') return renderYears();
+        renderDays();
+      }
+
+      function renderDays() {
+        weekdaysPanel.hidden = false; daysPanel.hidden = false; gridPanel.hidden = true;
         const selected = inputEl.value ? new Date(inputEl.value + 'T00:00') : null;
-        cal.querySelector('.cal-title').textContent = months[view.getMonth()] + ' ' + view.getFullYear();
-        const grid = cal.querySelector('.cal-days');
+        titleText.textContent = months[view.getMonth()] + ' ' + view.getFullYear();
+        const grid = daysPanel;
         grid.innerHTML = '';
         const firstDay = new Date(view.getFullYear(), view.getMonth(), 1);
         const lastDay = new Date(view.getFullYear(), view.getMonth() + 1, 0);
@@ -1730,6 +1772,43 @@
           grid.appendChild(b);
         }
       }
+
+      function renderMonths() {
+        weekdaysPanel.hidden = true; daysPanel.hidden = true; gridPanel.hidden = false;
+        titleText.textContent = String(view.getFullYear());
+        gridPanel.innerHTML = '';
+        const sel = inputEl.value ? new Date(inputEl.value + 'T00:00') : null;
+        for (let m = 0; m < 12; m++) {
+          const b = document.createElement('button');
+          b.type = 'button';
+          b.className = 'cal-cell'
+            + (today.getFullYear() === view.getFullYear() && today.getMonth() === m ? ' current' : '')
+            + (sel && sel.getFullYear() === view.getFullYear() && sel.getMonth() === m ? ' selected' : '');
+          b.textContent = monthsShort[m];
+          b.addEventListener('click', e => { e.stopPropagation(); view = new Date(view.getFullYear(), m, 1); mode = 'days'; render(); });
+          gridPanel.appendChild(b);
+        }
+      }
+
+      function renderYears() {
+        weekdaysPanel.hidden = true; daysPanel.hidden = true; gridPanel.hidden = false;
+        gridPanel.innerHTML = '';
+        const base = Math.floor(view.getFullYear() / 12) * 12; // 12-year page
+        titleText.textContent = base + ' – ' + (base + 11);
+        const sel = inputEl.value ? new Date(inputEl.value + 'T00:00') : null;
+        for (let i = 0; i < 12; i++) {
+          const y = base + i;
+          const b = document.createElement('button');
+          b.type = 'button';
+          b.className = 'cal-cell'
+            + (y > today.getFullYear() ? ' muted' : '')
+            + (y === today.getFullYear() ? ' current' : '')
+            + (sel && sel.getFullYear() === y ? ' selected' : '');
+          b.textContent = String(y);
+          b.addEventListener('click', e => { e.stopPropagation(); view = new Date(y, view.getMonth(), 1); mode = 'months'; render(); });
+          gridPanel.appendChild(b);
+        }
+      }
       function select(d) {
         inputEl.value = d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
         inputEl.classList.add('has-value');
@@ -1740,6 +1819,7 @@
       function openCal() {
         closeAllPopovers();
         view = inputEl.value ? new Date(inputEl.value + 'T00:00') : new Date();
+        mode = 'days';
         render();
         cal.classList.add('open');
         wrap.classList.add('open');
@@ -1760,8 +1840,21 @@
         else if (e.key === 'Escape') closeCal();
       });
 
-      cal.querySelector('.cal-prev').addEventListener('click', e => { e.stopPropagation(); view.setMonth(view.getMonth() - 1); render(); });
-      cal.querySelector('.cal-next').addEventListener('click', e => { e.stopPropagation(); view.setMonth(view.getMonth() + 1); render(); });
+      // Title cycles the view: days -> months -> years
+      cal.querySelector('.cal-title').addEventListener('click', e => {
+        e.stopPropagation();
+        mode = (mode === 'days') ? 'months' : (mode === 'months') ? 'years' : 'years';
+        render();
+      });
+      // Nav steps by month / year / decade-page depending on current view
+      function step(dir) {
+        if (mode === 'days') view.setMonth(view.getMonth() + dir);
+        else if (mode === 'months') view.setFullYear(view.getFullYear() + dir);
+        else view.setFullYear(view.getFullYear() + dir * 12);
+        render();
+      }
+      cal.querySelector('.cal-prev').addEventListener('click', e => { e.stopPropagation(); step(-1); });
+      cal.querySelector('.cal-next').addEventListener('click', e => { e.stopPropagation(); step(1); });
       cal.querySelector('.cal-clear').addEventListener('click', e => {
         e.stopPropagation();
         inputEl.value = '';
