@@ -563,7 +563,8 @@
     .feature-card-icon svg { width: 20px; height: 20px; }
     .feature-card-check { width: 22px; height: 22px; flex-shrink: 0; margin-top: 2px; border: 2px solid var(--border-strong); border-radius: 6px; position: relative; transition: border-color 0.15s, background 0.15s; }
     .feature-card.selected .feature-card-check { border-color: var(--brand-500); background: var(--brand-500); }
-    .feature-card.selected .feature-card-check::after { content: ''; position: absolute; left: 6px; top: 2px; width: 6px; height: 11px; border: solid #fff; border-width: 0 2px 2px 0; transform: rotate(45deg); }
+    .feature-card-check { box-sizing: border-box; }
+    .feature-card.selected .feature-card-check::after { content: ''; position: absolute; left: 50%; top: 47%; width: 5px; height: 10px; border: solid #fff; border-width: 0 2px 2px 0; transform: translate(-50%, -50%) rotate(45deg); }
 
     .choice-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
     .choice-card { text-align: left; padding: 14px 16px; border: 1px solid var(--border); border-radius: 10px; background: var(--card); font-family: inherit; cursor: pointer; transition: border-color 0.15s, background 0.15s, box-shadow 0.15s; }
