@@ -27,6 +27,9 @@ Purpose and flow for each screen in this repo. Live pages:
 1. User can "Continue with Google" or enter a work email.
 2. Submitting the email form forwards to `check-inbox.html` (passing the email as a query param).
 
+**Validations:**
+- Email: input is `type="email" required` with a "Please enter a valid email address" field-error message, but the form is marked `novalidate` and the submit handler does not re-check — it forwards whether or not an email is entered (falls back to `check-inbox.html` with no param), so nothing is actually enforced.
+
 **Notes:** A "Use a different email / Log in" link sits in the top bar. This is the first step of the auth journey: login → check-inbox → signup-role → signup-country.
 
 ---
@@ -81,6 +84,17 @@ Purpose and flow for each screen in this repo. Live pages:
 5. Step 5 — Features & compliance (module selection plus AML/CFT, sanctions, PEP and prohibited-activity confirmation checkboxes).
 6. Step 6 — Review and confirm (final accuracy/authorization confirmation).
 
+**Validations:** Each step is validated by `collectStepErrors()` before advancing; per-field inline error messages are shown and the active step scrolls to the first error.
+- Step 1 legal name: required; min 2 characters; letters/spaces/`.'-` only (`/^[\p{L}][\p{L} .'-]*$/u`).
+- Step 1 phone: required; digits only; min length per dial code (`PHONE_MIN`, default 7).
+- Step 2 directors (each): name required; date of birth required and must be in the past, director must be ≥ 18 (computed age); country of residence required; % ownership required and 0–100.
+- Step 2 combined ownership: total across directors cannot exceed 100%.
+- Step 2 UBO: must add ≥ 1 director, then select an ultimate beneficial owner.
+- Step 3 documents: in manual mode, business registration number and tax ID required; in upload mode, registration document required; a proof-of-business document upload is always required.
+- Step 4: brand/business name required; work description required and ≥ 50 characters; online-presence URL required and must match `https?://…` with a TLD; any remaining `data-must` fields required.
+- Step 5: all five declaration checkboxes (c1–c5: AML/CFT, sanctions, PEP, prohibited-activity) must be checked.
+- Step 6: the review-confirm checkbox must be checked before submitting.
+
 **Notes:** A progress footer advances through the 6 steps; reached from the home/dashboard setup checklist.
 
 ---
@@ -96,6 +110,8 @@ Purpose and flow for each screen in this repo. Live pages:
 4. Step 4 — Set up your contractor agreement (view/sign the template or upload a signed agreement; accuracy + terms checkboxes).
 5. Step 5 — How should invoices be raised? (auto-generate monthly vs. on contractor request).
 
+**Validations:** A `validateStep()` gate exists that disables "Save & continue" when any `input/textarea/select[data-must]` is empty or any `checkbox[data-must]` is unchecked, but in this page no inputs and neither agreement checkbox (`agree1`/`agree2`) carry `data-must` — so `validateStep()` always passes and no field is actually enforced.
+
 **Notes:** Closely related to `add-freelancer.html`; this variant folds the invoicing-method choice in as a final wizard step rather than a separate page.
 
 ---
@@ -109,6 +125,13 @@ Purpose and flow for each screen in this repo. Live pages:
 2. Step 2 — Contract & payment terms (start/end date, notice period, role and description, currency, payment rate, frequency, special clauses).
 3. Step 3 — GST & Tax applicability (state of jurisdiction, signatory full legal name, email, designation).
 4. Step 4 — Set up your contractor agreement (view/sign template or upload signed agreement; accuracy + Wisemonk-terms checkboxes).
+
+**Validations:** `validateStep()` disables "Save & continue" until every `data-must` field in the active step is filled (non-empty `.value.trim()`) and every `data-must` checkbox is checked; re-checked live on input/change. Required (`data-must`, marked with `*`) fields per step:
+- Step 1: contractor's full name, email (`type="email"`), phone (`type="tel"`), start date (`type="date"`), role, scope-of-work description. (Contractor company, end date and notice period are optional.)
+- Step 2: currency, payment rate (`type="number"`), frequency. (Special clauses optional.)
+- Step 3: state of jurisdiction, signatory full legal name, signatory email (`type="email"`), designation. (Service-location/property choice cards are pre-selected, not gated.)
+- Step 4: both agreement checkboxes (`agree1` accuracy/authorization, `agree2` Wisemonk terms) must be checked.
+- A "no company website" toggle adds/removes `required` on the website field, but `validateStep()` only checks `data-must` (not `required`), so the website field is never gated.
 
 **Notes:** Launched from the Freelancers view / command palette ("Add freelancer"). A progress footer drives the 4 steps. The invoicing-method step appears separately as `raise-invoices.html`.
 
