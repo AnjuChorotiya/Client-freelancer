@@ -355,31 +355,36 @@
     .ov-head { margin-bottom: 24px; padding: 0 4px; }
     .ov-head h1 { font-size: 32px; font-weight: 700; letter-spacing: -0.4px; color: var(--text-primary); margin-bottom: 8px; line-height: 1.2; }
     .ov-head p { font-size: 14px; color: var(--text-muted); line-height: 1.55; }
-    .progress-card { background: var(--card); border-radius: 12px; padding: 24px; margin-bottom: 20px; }
-    .progress-card .pc-eyebrow { font-size: 12px; font-weight: 700; letter-spacing: 0.4px; text-transform: uppercase; color: var(--brand-500); margin-bottom: 8px; }
-    .progress-card h2 { font-size: 22px; font-weight: 700; color: var(--text-primary); margin-bottom: 6px; }
-    .progress-card .pc-sub { font-size: 14px; color: var(--text-muted); margin-bottom: 16px; line-height: 1.5; }
-    .progress-track { height: 6px; background: var(--brand-100); border-radius: 999px; overflow: hidden; margin-bottom: 12px; }
-    .progress-track > i { display: block; height: 100%; background: var(--brand-500); border-radius: 999px; transition: width 0.3s; }
-    .pc-meta { display: flex; align-items: center; justify-content: space-between; font-size: 13px; color: var(--text-muted); }
-    .pc-meta strong { color: var(--text-primary); }
-    .time-tag { background: var(--muted-bg); padding: 3px 10px; border-radius: 999px; font-weight: 600; color: var(--text-secondary); }
+    .progress-card { background: var(--card); border-radius: 16px; padding: 28px 32px; margin-bottom: 20px; position: relative; overflow: hidden; }
+    .progress-eyebrow { font-size: 12px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; color: var(--brand-600); margin-bottom: 6px; }
+    .progress-card h2 { font-size: 22px; font-weight: 700; letter-spacing: -0.2px; color: var(--text-primary); margin-bottom: 4px; }
+    .progress-card .pc-sub { font-size: 14px; color: var(--text-secondary); margin-bottom: 18px; line-height: 1.5; }
+    .progress-track { height: 8px; background: rgba(48,128,255,0.10); border-radius: 100px; overflow: hidden; }
+    .progress-track > i { display: block; height: 100%; background: linear-gradient(90deg, #0026FF, #3080FF); border-radius: 100px; transition: width 0.3s; }
+    .pc-meta { display: flex; align-items: center; justify-content: space-between; font-size: 13.5px; color: var(--text-muted); margin-top: 12px; }
+    .pc-meta strong { color: var(--text-primary); font-weight: 700; }
+    .time-tag { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; background: var(--brand-50); color: var(--brand-700); border-radius: 999px; font-size: 12px; font-weight: 600; letter-spacing: 0.2px; }
 
-    .checklist { background: var(--card); border-radius: 12px; overflow: hidden; margin-bottom: 24px; }
-    .checklist-item { display: flex; align-items: center; gap: 16px; padding: 18px 20px; }
+    .checklist { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 8px; margin-bottom: 24px; }
+    .checklist-item { display: flex; align-items: center; gap: 16px; padding: 18px 20px; border-radius: 10px; }
     .checklist-item + .checklist-item { border-top: 1px solid var(--border); }
     .checklist-item.active { background: var(--brand-50); }
     .checklist-item.active + .checklist-item { border-top-color: transparent; }
-    .step-circle { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; flex-shrink: 0; }
+    .step-circle { flex-shrink: 0; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; }
+    .step-circle.done { background: #ECFDF3; color: var(--success); }
+    .step-circle.done svg { width: 18px; height: 18px; stroke: var(--success); }
     .step-circle.active { background: var(--brand-500); color: #fff; }
-    .step-circle.upcoming { background: var(--muted-bg); color: var(--text-muted); }
-    .cl-body { flex: 1; min-width: 0; }
-    .cl-title { font-size: 15px; font-weight: 700; color: var(--text-primary); margin-bottom: 2px; }
-    .cl-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.45; }
-    .ov-actions { display: flex; justify-content: flex-end; }
-    .ov-start { display: inline-flex; align-items: center; gap: 8px; height: 48px; padding: 0 28px; background: var(--brand-500); color: #fff; border: none; border-radius: 8px; font-family: inherit; font-size: 16px; font-weight: 700; cursor: pointer; transition: background 0.15s; }
-    .ov-start:hover { background: var(--brand-600); }
-    .ov-start svg { width: 16px; height: 16px; }
+    .step-circle.locked { background: var(--muted-bg); color: var(--text-muted); }
+    .step-body { flex: 1; min-width: 0; }
+    .step-title { font-size: 15.5px; font-weight: 700; color: var(--text-primary); margin-bottom: 2px; }
+    .checklist-item.locked .step-title { color: var(--text-muted); }
+    .step-desc { font-size: 13.5px; color: var(--text-secondary); line-height: 1.45; }
+    .checklist-item.locked .step-desc { color: var(--text-muted); }
+    .step-action { flex-shrink: 0; }
+    .step-btn { display: inline-flex; align-items: center; gap: 6px; padding: 10px 18px; border-radius: 999px; font-family: inherit; font-size: 14px; font-weight: 700; cursor: pointer; transition: all 0.15s ease; border: none; }
+    .step-btn.primary { background: var(--brand-500); color: #fff; box-shadow: 0 6px 14px -6px rgba(48,128,255,0.5); }
+    .step-btn.primary:hover { background: var(--brand-600); transform: translateY(-1px); }
+    .step-btn svg { width: 14px; height: 14px; stroke-width: 2.2; }
 
     /* Step panels */
     .step { display: none; }
@@ -457,7 +462,8 @@
       </div>
 
       <div class="progress-card">
-        <h2>4 steps to finish</h2>
+        <div class="progress-eyebrow">Account setup</div>
+        <h2>You're 0% there</h2>
         <p class="pc-sub">A few details about you, your business and where you'd like to be paid.</p>
         <div class="progress-track"><i style="width:0%"></i></div>
         <div class="pc-meta">
@@ -469,39 +475,38 @@
       <div class="checklist">
         <div class="checklist-item active">
           <div class="step-circle active">1</div>
-          <div class="cl-body">
-            <div class="cl-title">Basic details</div>
-            <div class="cl-desc">Personal information, your online presence and the kind of work you deliver</div>
+          <div class="step-body">
+            <div class="step-title">Basic details</div>
+            <div class="step-desc">Personal information, your online presence and the kind of work you deliver</div>
+          </div>
+          <div class="step-action">
+            <button type="button" class="step-btn primary" id="ovStartBtn">
+              Start
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-arrow-right"/></svg>
+            </button>
           </div>
         </div>
-        <div class="checklist-item">
-          <div class="step-circle upcoming">2</div>
-          <div class="cl-body">
-            <div class="cl-title">Business identifiers</div>
-            <div class="cl-desc">PAN details, document upload and your registered address</div>
+        <div class="checklist-item locked">
+          <div class="step-circle locked">2</div>
+          <div class="step-body">
+            <div class="step-title">Business identifiers</div>
+            <div class="step-desc">PAN details, document upload and your registered address</div>
           </div>
         </div>
-        <div class="checklist-item">
-          <div class="step-circle upcoming">3</div>
-          <div class="cl-body">
-            <div class="cl-title">Bank account details</div>
-            <div class="cl-desc">The INR account where you'd like to receive your payments</div>
+        <div class="checklist-item locked">
+          <div class="step-circle locked">3</div>
+          <div class="step-body">
+            <div class="step-title">Bank account details</div>
+            <div class="step-desc">The INR account where you'd like to receive your payments</div>
           </div>
         </div>
-        <div class="checklist-item">
-          <div class="step-circle upcoming">4</div>
-          <div class="cl-body">
-            <div class="cl-title">Tax &amp; compliance</div>
-            <div class="cl-desc">GST registration status and your tax profile</div>
+        <div class="checklist-item locked">
+          <div class="step-circle locked">4</div>
+          <div class="step-body">
+            <div class="step-title">Tax &amp; compliance</div>
+            <div class="step-desc">GST registration status and your tax profile</div>
           </div>
         </div>
-      </div>
-
-      <div class="ov-actions">
-        <button type="button" class="ov-start" id="ovStartBtn">
-          Get started
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-arrow-right"/></svg>
-        </button>
       </div>
     </div>
 
