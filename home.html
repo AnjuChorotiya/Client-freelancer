@@ -2004,13 +2004,35 @@
       document.getElementById('spAttachSection').hidden = true;
     }
 
-    // Make the whole approval request row clickable to view details
-    // (ignore clicks on the Deny / Approve action buttons)
+    // Keep the "Payment requests" tab badge in sync with the visible rows
+    function refreshApprovalCount() {
+      const n = document.querySelectorAll('.apr-pane[data-apr="payment"] .request-row').length;
+      const badge = document.querySelector('.apr-count');
+      if (badge) badge.textContent = n;
+    }
+
+    // Make the whole approval request row clickable to view details, and
+    // wire the inline Deny / Approve quick-action buttons.
     document.querySelectorAll('.request-row').forEach(row => {
       row.addEventListener('click', e => {
         if (e.target.closest('.req-actions')) return;
         fillPanel(row);
         openPanel();
+      });
+      // Inline Approve → open the Pay now screen for this request
+      const approve = row.querySelector('.req-actions .approve-btn');
+      if (approve) approve.addEventListener('click', e => {
+        e.stopPropagation();
+        currentReq = row.dataset;
+        openPay();
+      });
+      // Inline Deny → dismiss this request from the list
+      const deny = row.querySelector('.req-actions .deny-btn');
+      if (deny) deny.addEventListener('click', e => {
+        e.stopPropagation();
+        row.style.transition = 'opacity .18s ease';
+        row.style.opacity = '0';
+        setTimeout(() => { row.remove(); refreshApprovalCount(); }, 180);
       });
     });
 
