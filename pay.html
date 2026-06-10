@@ -159,13 +159,11 @@
     /* Receiving account details */
     .account-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 6px; }
     .account-head .section-label { margin-bottom: 0; }
-    .detail-list { display: flex; flex-direction: column; }
-    .detail-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 18px; padding: 13px 0; }
-    .detail-row + .detail-row { border-top: 1px solid var(--border); }
-    .detail-label { font-size: 13.5px; font-weight: 500; color: var(--text-muted); flex-shrink: 0; }
-    .detail-value { font-size: 14px; font-weight: 700; color: var(--text-primary); text-align: right; }
+    .detail-list { display: flex; flex-direction: column; margin-top: 6px; }
+    .detail-row { display: grid; grid-template-columns: 210px 1fr; align-items: start; gap: 18px; padding: 13px 0; }
+    .detail-label { font-size: 14px; font-weight: 500; color: var(--text-muted); }
+    .detail-value { font-size: 14.5px; font-weight: 700; color: var(--text-primary); text-align: left; line-height: 1.4; }
     .detail-value.blue { color: var(--primary-500); letter-spacing: 0.3px; }
-    .detail-value.addr { font-weight: 600; font-size: 13.5px; line-height: 1.45; max-width: 320px; }
 
     /* Estimated arrival line */
     .eta-line { display: inline-flex; align-items: center; gap: 7px; margin: 20px 0 4px; font-size: 13px; color: var(--text-secondary); }
@@ -396,15 +394,15 @@
     <!-- ─── STEP 1 — Ready to Pay ─── -->
     <div class="step" id="step1">
       <h1>Send this payment</h1>
-      <p class="sub" id="paySub">Send using the bank details below. Once you've completed the payment, please return here to confirm.</p>
+      <p class="sub" id="paySub">Ananya requested ₹18,500 INR. Send using the bank details below. Once you've completed the payment, please return here to confirm.</p>
 
       <div class="pay-amount">
         <div class="pay-amount-cap">Payment amount</div>
-        <div class="pay-amount-big" id="sumPay">$221.56</div>
+        <div class="pay-amount-big" id="sumPay">$2,450.00</div>
         <div class="pay-amount-meta" id="metaConvert">
-          ₹18,500.00 requested
+          ₹18,500 requested
           <span class="meta-div"></span>
-          Rate locked at <span class="rate">1 USD = ₹83.50</span> for 1 hour
+          Rate locked at <span class="rate">1 USD = 94.56</span> INR for 16 hours
         </div>
       </div>
 
@@ -417,7 +415,7 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-copy"/></svg>
         </button>
       </div>
-      <p class="ref-hint">Include the payment reference in your transfer notes so we can match it automatically.</p>
+      <p class="ref-hint">Include the payment reference in your transfer notes</p>
 
       <div class="account-card">
         <div class="account-head">
@@ -430,39 +428,39 @@
 
         <div class="detail-list">
           <div class="detail-row">
-            <span class="detail-label">Bank</span>
+            <span class="detail-label">Beneficiary address</span>
             <span class="detail-value">JPMorgan Chase Bank, N.A.</span>
           </div>
           <div class="detail-row">
-            <span class="detail-label">Beneficiary name</span>
-            <span class="detail-value" id="payBeneficiary">Ananya Iyer</span>
+            <span class="detail-label">Bank</span>
+            <span class="detail-value">JPMORGAN CHASE BANK</span>
           </div>
           <div class="detail-row">
             <span class="detail-label">Account number</span>
-            <span class="detail-value blue">9253 8835 3752 9</span>
+            <span class="detail-value">9253883537529</span>
           </div>
           <div class="detail-row">
-            <span class="detail-label" id="routingLabel">Routing number (ACH)</span>
-            <span class="detail-value" id="routingValue">021000021</span>
+            <span class="detail-label">Beneficiary name</span>
+            <span class="detail-value" id="payBeneficiary">Anju</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Receiving currency</span>
+            <span class="detail-value">INR</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label" id="routingLabel">Routing number</span>
+            <span class="detail-value" id="routingValue">000000007</span>
           </div>
           <div class="detail-row">
             <span class="detail-label">Account type</span>
             <span class="detail-value">Business</span>
-          </div>
-          <div class="detail-row">
-            <span class="detail-label">Receiving currency</span>
-            <span class="detail-value">USD</span>
-          </div>
-          <div class="detail-row">
-            <span class="detail-label">Beneficiary address</span>
-            <span class="detail-value addr" id="payBenAddress">42 MG Road, Indiranagar, Bengaluru, Karnataka 560038, India</span>
           </div>
         </div>
       </div>
 
       <div class="eta-line">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-clock"/></svg>
-        Estimated arrival: <b>1–2 business days</b>
+        Estimated arrival: <b>1-2 business days</b>
       </div>
 
       <button class="primary-btn" id="madePaymentBtn">I've made the payment</button>
@@ -570,57 +568,16 @@
     const params = new URLSearchParams(location.search);
     const invNum = params.get('inv') || '#INV-1042';
 
-    // When arriving from an approval, reflect the contractor + amount + currency.
-    // For INR reimbursements the USD⇄INR rate is locked for this payment (no live ticking).
+    // When arriving from an approval, reflect the beneficiary name if one is passed.
+    // The payment amount + locked FX rate shown here are fixed for this transfer.
     (function () {
-      const RATE = 83.50;
-      const payTo = params.get('to');
-      const cur = (params.get('cur') || 'USD').toUpperCase();
-      const rawAmt = parseFloat((params.get('amt') || '').replace(/[^0-9.]/g, ''));
-      const usd = n => '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-      function inr(n) {
-        const p = (Math.round(n * 100) / 100).toFixed(2).split('.');
-        const x = p[0], last3 = x.slice(-3), other = x.slice(0, -3);
-        const head = other.replace(/\B(?=(\d{2})+(?!\d))/g, ',');
-        return '₹' + (other ? head + ',' : '') + last3 + '.' + p[1];
-      }
-
       const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
-      const html = (id, v) => { const el = document.getElementById(id); if (el) el.innerHTML = v; };
-      const hide = id => { const el = document.getElementById(id); if (el) el.style.display = 'none'; };
-      const first = (payTo || 'Your freelancer').split(' ')[0];
+      const payTo = params.get('to');
+      if (payTo) set('payBeneficiary', payTo);
 
-      if (payTo) {
-        set('payBeneficiary', payTo);
-        const gl = document.querySelector('.calc-get-label');
-        if (gl) gl.textContent = payTo + ' receives';
-        const ct = document.querySelector('.calc-modal-head p');
-        if (ct) ct.textContent = 'See what ' + first + ' receives after fees and conversion.';
-      }
-
-      if (!(rawAmt && rawAmt > 0)) return;
-
-      if (cur === 'INR') {
-        // Freelancer requested INR — the client transfers the USD equivalent at the locked FX rate.
-        const inrAmount = rawAmt;
-        const usdVal = inrAmount / RATE;
-        const u = usd(usdVal);
-        set('sumPay', u);
-        html('paySub', '<strong>' + first + '</strong> requested <strong>' + inr(inrAmount) + '</strong> in INR. Send the amount below using the bank details, then return here to confirm once you\'ve paid.');
-        html('metaConvert', inr(inrAmount) + ' requested <span class="meta-div"></span> Rate locked at <span class="rate">1 USD = ₹' + RATE.toFixed(2) + '</span> for 1 hour');
-        ['payAmt2', 'payAmt3'].forEach(id => set(id, u));
-        ['payInr2', 'payInr3'].forEach(id => set(id, inr(inrAmount)));
-        const cs = document.getElementById('calcSend');
-        if (cs) { cs.value = usdVal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); cs.dispatchEvent(new Event('input')); }
-      } else {
-        // USD request — no FX conversion; what's requested is what you transfer.
-        const u = usd(rawAmt);
-        set('sumPay', u);
-        html('paySub', '<strong>' + first + '</strong> requested <strong>' + u + '</strong>. Send the amount below using the bank details, then return here to confirm once you\'ve paid.');
-        hide('metaConvert');
-        ['payAmt2', 'payAmt3'].forEach(id => set(id, u));
-        ['payInr2', 'payInr3'].forEach(id => set(id, inr(rawAmt * RATE)));
-      }
+      // Keep the confirmation steps in sync with the amount on Step 1.
+      ['payAmt2', 'payAmt3'].forEach(id => set(id, '$2,450.00'));
+      ['payInr2', 'payInr3'].forEach(id => set(id, '₹18,500'));
     })();
 
     function showStep(n) {
@@ -694,7 +651,7 @@
     // Toggle Swift / Wire pill — swaps the routing number + label
     (function () {
       const ROUTING = {
-        swift: { label: 'Routing number (ACH)', value: '021000021' },
+        swift: { label: 'Routing number', value: '000000007' },
         wire:  { label: 'Routing number (Wire)', value: '021000089' }
       };
       const labelEl = document.getElementById('routingLabel');
