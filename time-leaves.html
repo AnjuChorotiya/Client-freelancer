@@ -231,6 +231,16 @@
       background: #F0F1F1; color: #404145; font-size: 12.5px; font-weight: 500;
     }
 
+    .fr-cell { display: flex; align-items: center; gap: 10px; }
+    .fr-avatar {
+      width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0;
+      background: #2684FF; color: #fff;
+      font-family: 'Satoshi', sans-serif; font-size: 12px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .fr-name { font-size: 14px; font-weight: 600; color: #222224; }
+    .fr-sub { font-size: 12px; font-weight: 500; color: #85878d; margin-top: 1px; }
+
     .row-action {
       width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center;
       border-radius: 8px; color: var(--text-muted); background: transparent; border: none; cursor: pointer;
@@ -484,6 +494,7 @@
             <table>
               <thead>
                 <tr>
+                  <th>Freelancer</th>
                   <th>Dates</th>
                   <th>Leave type</th>
                   <th>Reason</th>
@@ -493,6 +504,15 @@
               </thead>
               <tbody>
                 <tr>
+                  <td>
+                    <div class="fr-cell">
+                      <span class="fr-avatar">RS</span>
+                      <div>
+                        <div class="fr-name">Rajesh Singh</div>
+                        <div class="fr-sub">Developer · India</div>
+                      </div>
+                    </div>
+                  </td>
                   <td>Sep 30 (2nd half)</td>
                   <td><span class="leave-type-tag">Sick leave</span></td>
                   <td>Fever and rest</td>
@@ -500,6 +520,15 @@
                   <td><button class="row-action"><svg viewBox="0 0 24 24" fill="currentColor"><use href="#ic-more"/></svg></button></td>
                 </tr>
                 <tr>
+                  <td>
+                    <div class="fr-cell">
+                      <span class="fr-avatar">PS</span>
+                      <div>
+                        <div class="fr-name">Priya Sharma</div>
+                        <div class="fr-sub">Designer · India</div>
+                      </div>
+                    </div>
+                  </td>
                   <td>Sep 02 – Sep 05</td>
                   <td><span class="leave-type-tag">Casual leave</span></td>
                   <td>Medical appointment</td>
@@ -507,6 +536,15 @@
                   <td><button class="row-action"><svg viewBox="0 0 24 24" fill="currentColor"><use href="#ic-more"/></svg></button></td>
                 </tr>
                 <tr>
+                  <td>
+                    <div class="fr-cell">
+                      <span class="fr-avatar">CM</span>
+                      <div>
+                        <div class="fr-name">Carlos Mendez</div>
+                        <div class="fr-sub">Developer · Brazil</div>
+                      </div>
+                    </div>
+                  </td>
                   <td>Sep 15 – Sep 18</td>
                   <td><span class="leave-type-tag">Casual leave</span></td>
                   <td>Family emergency</td>

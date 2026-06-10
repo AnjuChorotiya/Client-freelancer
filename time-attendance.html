@@ -226,6 +226,16 @@
       margin-left: 8px;
     }
 
+    .fr-cell { display: flex; align-items: center; gap: 10px; }
+    .fr-avatar {
+      width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0;
+      background: #2684FF; color: #fff;
+      font-family: 'Satoshi', sans-serif; font-size: 12px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .fr-name { font-size: 14px; font-weight: 600; color: #222224; }
+    .fr-sub { font-size: 12px; font-weight: 500; color: #85878d; margin-top: 1px; }
+
     .row-action {
       width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center;
       border-radius: 8px; color: var(--text-muted); background: transparent; border: none; cursor: pointer;
@@ -501,6 +511,7 @@
               <table>
                 <thead>
                   <tr>
+                    <th>Freelancer</th>
                     <th>Dates</th>
                     <th>Reason</th>
                     <th>Status</th>
@@ -509,18 +520,45 @@
                 </thead>
                 <tbody>
                   <tr>
+                    <td>
+                      <div class="fr-cell">
+                        <span class="fr-avatar">RS</span>
+                        <div>
+                          <div class="fr-name">Rajesh Singh</div>
+                          <div class="fr-sub">Developer · India</div>
+                        </div>
+                      </div>
+                    </td>
                     <td>Sep 30 (2nd half)</td>
                     <td>Fever and rest</td>
                     <td><span class="pill pending">Pending</span></td>
                     <td><button class="row-action"><svg viewBox="0 0 24 24" fill="currentColor"><use href="#ic-more"/></svg></button></td>
                   </tr>
                   <tr>
+                    <td>
+                      <div class="fr-cell">
+                        <span class="fr-avatar">PS</span>
+                        <div>
+                          <div class="fr-name">Priya Sharma</div>
+                          <div class="fr-sub">Designer · India</div>
+                        </div>
+                      </div>
+                    </td>
                     <td>Sep 02 – Sep 05</td>
                     <td>Medical appointment</td>
                     <td><span class="pill approved">Approved</span></td>
                     <td></td>
                   </tr>
                   <tr>
+                    <td>
+                      <div class="fr-cell">
+                        <span class="fr-avatar">CM</span>
+                        <div>
+                          <div class="fr-name">Carlos Mendez</div>
+                          <div class="fr-sub">Developer · Brazil</div>
+                        </div>
+                      </div>
+                    </td>
                     <td>Sep 15 – Sep 18</td>
                     <td>Family emergency</td>
                     <td><span class="pill approved">Approved</span></td>
