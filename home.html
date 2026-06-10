@@ -2070,9 +2070,10 @@
       const sectionViews = ['freelancersView', 'invoicesView', 'timeView']
         .map(id => document.getElementById(id));
 
-      // Onboarding state. Clicking "Start" on the checklist flips this to true,
-      // which reveals the dashboard on Home and fills every tab with data.
+      // Onboarding state. Set to true once the wizard's Finish step persists the
+      // completion flag; this reveals the dashboard on Home and fills every tab.
       let onboardingComplete = false;
+      try { onboardingComplete = localStorage.getItem('wm_onboarding_complete') === '1'; } catch (e) {}
 
       function hideAllSections() {
         sectionViews.forEach(v => { if (v) v.hidden = true; });
@@ -2120,6 +2121,7 @@
       }
 
       applyDataState();
+      showTab('home');
     })();
   </script>
 </body>
