@@ -135,16 +135,32 @@
     .kv-cell-value.blue { color: var(--primary-500); }
     .routing-row .kv-cell-value { justify-content: space-between; }
 
-    /* Dual amount + live FX rate (INR reimbursements) */
-    .amt-stack { display: flex; flex-direction: column; align-items: flex-start; gap: 3px; }
-    .amt-stack .amt-main { font-size: 15px; font-weight: 700; color: var(--text-primary); }
-    .amt-sub { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; font-size: 12px; font-weight: 500; color: var(--text-secondary); }
-    .amt-sub .alt { color: var(--primary-600); font-weight: 700; }
-    .live-badge { display: inline-flex; align-items: center; gap: 5px; padding: 1px 9px 1px 7px; border-radius: 100px; background: #E8F8EF; color: #1A8245; font-size: 10px; font-weight: 700; letter-spacing: 0.4px; text-transform: uppercase; }
-    .live-badge .live-dot { width: 6px; height: 6px; border-radius: 50%; background: #23A55A; animation: livePulse 1.4s infinite; }
-    @keyframes livePulse { 0% { box-shadow: 0 0 0 0 rgba(35,165,90,0.5); } 70% { box-shadow: 0 0 0 5px rgba(35,165,90,0); } 100% { box-shadow: 0 0 0 0 rgba(35,165,90,0); } }
-    .live-badge.locked { background: var(--neutral-100); color: var(--text-secondary); }
-    .live-badge.locked .live-dot { background: var(--text-muted); animation: none; }
+    /* Highlighted "Amount to transfer" hero panel (below the heading) */
+    .amount-hero {
+      background: var(--primary-50);
+      border: 1px solid var(--primary-100);
+      border-radius: 14px;
+      padding: 22px 26px;
+      margin-bottom: 24px;
+      text-align: left;
+    }
+    .amount-hero-label {
+      font-family: 'Satoshi', sans-serif;
+      font-weight: 300;
+      font-size: 11.5px;
+      letter-spacing: 0.6px;
+      color: var(--primary-700);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .amount-hero-value { font-size: 30px; font-weight: 700; color: var(--text-primary); letter-spacing: -0.6px; line-height: 1.1; }
+    .amount-hero-sub { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-top: 8px; font-size: 13.5px; font-weight: 500; color: var(--text-secondary); }
+    .amount-hero-sub .dot-sep { color: var(--primary-100); }
+    .amount-hero-sub .rate { color: var(--primary-600); font-weight: 700; }
+    .lock-badge { display: inline-flex; align-items: center; gap: 5px; padding: 2px 10px 2px 8px; border-radius: 100px; background: var(--neutral-0); border: 1px solid var(--border-strong); color: var(--text-secondary); font-size: 10.5px; font-weight: 700; letter-spacing: 0.4px; text-transform: uppercase; }
+    .lock-badge svg { width: 12px; height: 12px; color: var(--primary-600); }
+    .amount-hero-info { display: flex; gap: 9px; margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--primary-100); font-size: 12.5px; line-height: 1.5; color: var(--text-secondary); }
+    .amount-hero-info svg { width: 16px; height: 16px; flex-shrink: 0; color: var(--primary-600); margin-top: 1px; }
     .toggle-pill {
       display: inline-flex;
       background: var(--neutral-100);
@@ -354,7 +370,7 @@
 <path d="M12 8V13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M11.9945 16H12.0035" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-message-question" viewBox="0 0 24 24" fill="none"><path d="M17 18.4301H13L8.54999 21.39C7.88999 21.83 7 21.3601 7 20.5601V18.4301C4 18.4301 2 16.4301 2 13.4301V7.42999C2 4.42999 4 2.42999 7 2.42999H17C20 2.42999 22 4.42999 22 7.42999V13.4301C22 16.4301 20 18.4301 17 18.4301Z" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M12.0001 11.36V11.15C12.0001 10.47 12.4201 10.11 12.8401 9.82001C13.2501 9.54001 13.66 9.18002 13.66 8.52002C13.66 7.60002 12.9201 6.85999 12.0001 6.85999C11.0801 6.85999 10.3401 7.60002 10.3401 8.52002" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M11.9955 13.75H12.0045" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-close" viewBox="0 0 24 24" fill="none"><path d="M6 6L18 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M18 6L6 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-clock" viewBox="0 0 24 24" fill="none"><path d="M22 12C22 17.52 17.52 22 12 22C6.48 22 2 17.52 2 12C2 6.48 6.48 2 12 2C17.52 2 22 6.48 22 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 7V12.5L15.5 14.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol></svg><!-- /wm-icon-sprite -->
+<path d="M11.9955 13.75H12.0045" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-close" viewBox="0 0 24 24" fill="none"><path d="M6 6L18 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M18 6L6 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-clock" viewBox="0 0 24 24" fill="none"><path d="M22 12C22 17.52 17.52 22 12 22C6.48 22 2 17.52 2 12C2 6.48 6.48 2 12 2C17.52 2 22 6.48 22 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 7V12.5L15.5 14.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-lock" viewBox="0 0 24 24" fill="none"><path d="M6 10V8C6 4.69 7 2 12 2C17 2 18 4.69 18 8V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 18.5C13.3807 18.5 14.5 17.3807 14.5 16C14.5 14.6193 13.3807 13.5 12 13.5C10.6193 13.5 9.5 14.6193 9.5 16C9.5 17.3807 10.6193 18.5 12 18.5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 22H7C3 22 2 21 2 17V15C2 11 3 10 7 10H17C21 10 22 11 22 15V17C22 21 21 22 17 22Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol></svg><!-- /wm-icon-sprite -->
 
   <div class="crumb">
     <a href="invoices.html">
@@ -371,6 +387,24 @@
     <div class="step" id="step1">
       <h1>Ready to Pay</h1>
       <p class="sub">Please transfer the funds using the details below to complete your payment.</p>
+
+      <div class="amount-hero" id="amountHero">
+        <div class="amount-hero-label">Amount to transfer</div>
+        <div class="amount-hero-value" id="payAmount">$12,450.00</div>
+        <div class="amount-hero-sub" id="amountHeroSub" hidden>
+          <span id="amountHeroInr">₹18,500.00</span>
+          <span class="dot-sep">·</span>
+          <span class="rate" id="amountHeroRate">$1 = ₹83.50</span>
+          <span class="lock-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-lock"/></svg>
+            Rate locked
+          </span>
+        </div>
+        <div class="amount-hero-info" id="amountHeroInfo" hidden>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-info-circle"/></svg>
+          <span>This exchange rate is locked for this payment. The amount you transfer won't change before you complete it.</span>
+        </div>
+      </div>
 
       <div class="account-card">
         <div class="section-label">Receiving Account</div>
@@ -403,10 +437,6 @@
           <div>
             <div class="kv-cell-label">Swift / BIC (Wire)</div>
             <div class="kv-cell-value">CHASUS33</div>
-          </div>
-          <div>
-            <div class="kv-cell-label">Amount to transfer</div>
-            <div class="kv-cell-value" id="payAmount">$12,450.00</div>
           </div>
 
           <div class="ref-block">
@@ -540,9 +570,9 @@
     const invNum = params.get('inv') || '#INV-1042';
 
     // When arriving from an approval, reflect the contractor + amount + currency.
-    // For INR reimbursements we show the live USD⇄INR rate, which locks on "I've made the payment".
+    // For INR reimbursements the USD⇄INR rate is locked for this payment (no live ticking).
     (function () {
-      const BASE_RATE = 83.50;
+      const RATE = 83.50;
       const payTo = params.get('to');
       const cur = (params.get('cur') || 'USD').toUpperCase();
       const rawAmt = parseFloat((params.get('amt') || '').replace(/[^0-9.]/g, ''));
@@ -566,50 +596,21 @@
       if (!(rawAmt && rawAmt > 0)) return;
 
       if (cur === 'INR') {
-        // Freelancer requested INR — the client transfers the USD equivalent at the live FX rate.
+        // Freelancer requested INR — the client transfers the USD equivalent at the locked FX rate.
         const inrAmount = rawAmt;
-        const amtCell = document.getElementById('payAmount');
-        if (amtCell) {
-          amtCell.innerHTML =
-            '<div class="amt-stack">' +
-              '<span class="amt-main" id="amtUsd"></span>' +
-              '<span class="amt-sub">' + inr(inrAmount) +
-                ' <span class="alt" id="amtRate"></span>' +
-                ' <span class="live-badge" id="amtLive"><span class="live-dot"></span>Live</span>' +
-              '</span>' +
-            '</div>';
-        }
-        let rate = BASE_RATE, locked = false, timer = null;
-        function paint() {
-          const usdVal = inrAmount / rate;
-          const u = usd(usdVal);
-          const elU = document.getElementById('amtUsd'); if (elU) elU.textContent = u;
-          const elR = document.getElementById('amtRate'); if (elR) elR.textContent = '$1 = ₹' + rate.toFixed(2);
-          ['payAmt2', 'payAmt3'].forEach(id => { const x = document.getElementById(id); if (x) x.textContent = u; });
-          ['payInr2', 'payInr3'].forEach(id => { const x = document.getElementById(id); if (x) x.textContent = inr(inrAmount); });
-          const cs = document.getElementById('calcSend');
-          if (cs && !cs.matches(':focus')) {
-            cs.value = usdVal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-            cs.dispatchEvent(new Event('input'));
-          }
-        }
-        function tick() {
-          if (locked) return;
-          rate = +(BASE_RATE + (Math.random() - 0.5) * 0.4).toFixed(2);
-          paint();
-        }
-        paint();
-        timer = setInterval(tick, 3000);
-        // Exposed so the "I've made the payment" handler can freeze the rate.
-        window.__lockFx = function () {
-          if (locked) return;
-          locked = true;
-          if (timer) clearInterval(timer);
-          const badge = document.getElementById('amtLive');
-          if (badge) { badge.classList.add('locked'); badge.innerHTML = '<span class="live-dot"></span>Rate locked'; }
-        };
+        const usdVal = inrAmount / RATE;
+        const u = usd(usdVal);
+        const elV = document.getElementById('payAmount'); if (elV) elV.textContent = u;
+        const elI = document.getElementById('amountHeroInr'); if (elI) elI.textContent = inr(inrAmount);
+        const elR = document.getElementById('amountHeroRate'); if (elR) elR.textContent = '$1 = ₹' + RATE.toFixed(2);
+        const sub = document.getElementById('amountHeroSub'); if (sub) sub.hidden = false;
+        const info = document.getElementById('amountHeroInfo'); if (info) info.hidden = false;
+        ['payAmt2', 'payAmt3'].forEach(id => { const x = document.getElementById(id); if (x) x.textContent = u; });
+        ['payInr2', 'payInr3'].forEach(id => { const x = document.getElementById(id); if (x) x.textContent = inr(inrAmount); });
+        const cs = document.getElementById('calcSend');
+        if (cs) { cs.value = usdVal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); cs.dispatchEvent(new Event('input')); }
       } else {
-        const u = usd(rawAmt), i = inr(rawAmt * BASE_RATE);
+        const u = usd(rawAmt), i = inr(rawAmt * RATE);
         ['payAmount', 'payAmt2', 'payAmt3'].forEach(id => { const el = document.getElementById(id); if (el) el.textContent = u; });
         ['payInr2', 'payInr3'].forEach(id => { const el = document.getElementById(id); if (el) el.textContent = i; });
       }
@@ -626,7 +627,6 @@
     }
 
     document.getElementById('madePaymentBtn').addEventListener('click', () => {
-      if (window.__lockFx) window.__lockFx();   // freeze the live FX rate at pay time
       setPayState('matching');
       showStep(2);
       // Auto-advance to step 3 after ~3s to simulate matching
