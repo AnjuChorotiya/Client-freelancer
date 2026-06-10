@@ -135,31 +135,16 @@
     .kv-cell-value.blue { color: var(--primary-500); }
     .routing-row .kv-cell-value { justify-content: space-between; }
 
-    /* Payment breakdown summary card (below the heading) */
+    /* Simple amount display (below the heading) */
     .sub strong { color: var(--text-primary); font-weight: 700; }
-    .pay-summary {
-      border: 1px solid var(--border-strong);
-      border-radius: 14px;
-      padding: 4px 22px;
-      margin: 4px 0 24px;
-      text-align: left;
-    }
-    .sum-row {
-      display: flex; align-items: center; justify-content: space-between; gap: 16px;
-      padding: 15px 2px;
-    }
-    .sum-row + .sum-row { border-top: 1px solid var(--border); }
-    .sum-label { font-size: 13.5px; font-weight: 600; color: var(--text-secondary); }
-    .sum-label .hint {
-      display: inline-flex; align-items: center; gap: 4px;
-      margin-top: 4px; font-size: 11.5px; font-weight: 600; color: var(--primary-700);
-    }
-    .sum-label .hint svg { width: 12px; height: 12px; color: var(--primary-600); flex-shrink: 0; }
-    .sum-value { font-size: 15px; font-weight: 700; color: var(--text-primary); text-align: right; }
-    .sum-value.muted { font-weight: 600; color: var(--text-secondary); }
-    .sum-row.total { border-top: 2px solid var(--border-strong); }
-    .sum-row.total .sum-label { font-size: 15px; font-weight: 700; color: var(--text-primary); }
-    .sum-row.total .sum-value { font-size: 26px; font-weight: 700; color: var(--primary-600); letter-spacing: -0.5px; }
+    .pay-amount { text-align: center; margin: 4px 0 28px; }
+    .pay-amount-big { font-size: 46px; font-weight: 700; color: var(--text-primary); letter-spacing: -1.2px; line-height: 1; }
+    .pay-amount-cap { font-family: 'Satoshi', sans-serif; font-weight: 300; font-size: 12px; letter-spacing: 0.6px; text-transform: uppercase; color: var(--text-muted); margin-top: 9px; }
+    .pay-amount-meta { font-size: 13.5px; font-weight: 600; color: var(--text-secondary); margin-top: 18px; }
+    .pay-amount-meta .rate { color: var(--primary-600); }
+    .pay-amount-eta { display: inline-flex; align-items: center; gap: 6px; margin-top: 10px; font-size: 13px; color: var(--text-secondary); }
+    .pay-amount-eta svg { width: 15px; height: 15px; color: var(--primary-600); flex-shrink: 0; }
+    .pay-amount-eta b { font-weight: 700; color: var(--text-primary); }
     .kv-cell-value.addr { display: block; font-weight: 600; font-size: 13.5px; line-height: 1.45; }
     .toggle-pill {
       display: inline-flex;
@@ -386,27 +371,17 @@
     <!-- ─── STEP 1 — Ready to Pay ─── -->
     <div class="step" id="step1">
       <h1>Send this payment</h1>
-      <p class="sub">Pay <strong id="payCopyAmt">$221.56</strong> to <strong id="payCopyName">Ananya Iyer</strong>. Here's the breakdown before you transfer.</p>
+      <p class="sub">Transfer the amount below to <strong id="payCopyName">Ananya Iyer</strong> to complete this payment.</p>
 
-      <div class="pay-summary">
-        <div class="sum-row" id="sumReqRow">
-          <div class="sum-label">Requested amount</div>
-          <div class="sum-value" id="sumReq">₹18,500.00</div>
+      <div class="pay-amount">
+        <div class="pay-amount-big" id="sumPay">$221.56</div>
+        <div class="pay-amount-cap">Amount to transfer</div>
+        <div class="pay-amount-meta" id="metaConvert">
+          ₹18,500.00 requested · Rate locked at <span class="rate">$1 = ₹83.50</span>
         </div>
-        <div class="sum-row" id="sumRateRow">
-          <div class="sum-label">
-            Exchange rate
-            <span class="hint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-lock"/></svg> Locked for 1 hour</span>
-          </div>
-          <div class="sum-value" id="sumRate">$1 = ₹83.50</div>
-        </div>
-        <div class="sum-row total">
-          <div class="sum-label">You transfer now</div>
-          <div class="sum-value" id="sumPay">$221.56</div>
-        </div>
-        <div class="sum-row">
-          <div class="sum-label">Estimated to reach account</div>
-          <div class="sum-value muted" id="sumEta">Today by 5:00 PM</div>
+        <div class="pay-amount-eta">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-clock"/></svg>
+          Arrives in <span id="metaName">Ananya Iyer</span>'s account <b id="sumEta">today by 5:00 PM</b>
         </div>
       </div>
 
@@ -604,6 +579,7 @@
       if (payTo) {
         set('payBeneficiary', payTo);
         set('payCopyName', payTo);
+        set('metaName', payTo);
         const gl = document.querySelector('.calc-get-label');
         if (gl) gl.textContent = payTo + ' receives';
         const ct = document.querySelector('.calc-modal-head p');
@@ -619,10 +595,9 @@
         const inrAmount = rawAmt;
         const usdVal = inrAmount / RATE;
         const u = usd(usdVal);
-        set('payCopyAmt', u);
-        set('sumReq', inr(inrAmount));
-        set('sumRate', '$1 = ₹' + RATE.toFixed(2));
         set('sumPay', u);
+        const meta = document.getElementById('metaConvert');
+        if (meta) meta.innerHTML = inr(inrAmount) + ' requested · Rate locked at <span class="rate">$1 = ₹' + RATE.toFixed(2) + '</span>';
         ['payAmt2', 'payAmt3'].forEach(id => set(id, u));
         ['payInr2', 'payInr3'].forEach(id => set(id, inr(inrAmount)));
         const cs = document.getElementById('calcSend');
@@ -630,10 +605,8 @@
       } else {
         // USD request — no FX conversion; what's requested is what you transfer.
         const u = usd(rawAmt);
-        set('payCopyAmt', u);
         set('sumPay', u);
-        hide('sumReqRow');
-        hide('sumRateRow');
+        hide('metaConvert');
         ['payAmt2', 'payAmt3'].forEach(id => set(id, u));
         ['payInr2', 'payInr3'].forEach(id => set(id, inr(rawAmt * RATE)));
       }
