@@ -990,6 +990,69 @@
       padding: 14px 20px; border-top: 1px solid #f0f1f1; flex-shrink: 0;
     }
 
+    /* Pay now screen */
+    .pay-overlay {
+      position: fixed; inset: 0; background: rgba(17,22,32,0.55);
+      opacity: 0; visibility: hidden; transition: opacity .2s ease, visibility .2s ease; z-index: 2400;
+    }
+    .pay-overlay.open { opacity: 1; visibility: visible; }
+    .pay-modal {
+      position: fixed; top: 50%; left: 50%; transform: translate(-50%, -46%);
+      width: min(460px, 94vw); max-height: 92vh;
+      background: #fff; border-radius: 16px; display: flex; flex-direction: column;
+      overflow: hidden; box-shadow: 0 24px 60px rgba(0,0,0,.28);
+      opacity: 0; visibility: hidden; transition: opacity .2s ease, visibility .2s ease, transform .2s ease; z-index: 2401;
+    }
+    .pay-modal.open { opacity: 1; visibility: visible; transform: translate(-50%, -50%); }
+    .pay-head { display: flex; align-items: center; justify-content: space-between; padding: 18px 22px 0; }
+    .pay-head-title { font-family: 'Satoshi', sans-serif; font-size: 16px; font-weight: 700; color: #222224; }
+    .pay-close {
+      width: 34px; height: 34px; border: none; background: transparent; border-radius: 8px;
+      color: #85878d; cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: background .15s ease, color .15s ease;
+    }
+    .pay-close:hover { background: #f3f4f6; color: #222224; }
+    .pay-close svg { width: 20px; height: 20px; }
+    .pay-body { padding: 14px 22px 4px; display: flex; flex-direction: column; align-items: center; text-align: center; }
+    .pay-recipient { display: flex; align-items: center; gap: 10px; }
+    .pay-avatar {
+      width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0; background: #2684FF; color: #fff;
+      font-family: 'Satoshi', sans-serif; font-size: 14px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .pay-rec-name { font-size: 14px; font-weight: 600; color: #222224; text-align: left; }
+    .pay-rec-role { font-size: 12px; color: #85878d; text-align: left; margin-top: 1px; }
+    .pay-amount { font-family: 'Satoshi', sans-serif; font-size: 34px; font-weight: 700; color: #222224; margin: 16px 0 2px; }
+    .pay-amount-sub { font-size: 13px; color: #85878d; }
+    .pay-rows { width: 100%; margin-top: 18px; border: 1px solid #f0f1f1; border-radius: 12px; overflow: hidden; }
+    .pay-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; border-bottom: 1px solid #f4f5f7; font-size: 13.5px; }
+    .pay-row:last-child { border-bottom: none; }
+    .pay-row-label { color: #85878d; }
+    .pay-row-value { color: #222224; font-weight: 600; }
+    .pay-method { display: flex; align-items: center; gap: 8px; }
+    .pay-method-ic {
+      width: 26px; height: 26px; border-radius: 7px; background: var(--primary-50); color: var(--primary-600);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .pay-method-ic svg { width: 15px; height: 15px; }
+    .pay-eta { font-size: 12.5px; color: #85878d; margin-top: 14px; display: flex; align-items: center; gap: 6px; }
+    .pay-eta svg { width: 15px; height: 15px; flex-shrink: 0; }
+    .pay-foot { display: flex; gap: 12px; padding: 18px 22px 22px; }
+    .pay-foot .secondary-btn { flex: 1; justify-content: center; }
+    .pay-foot .primary-btn { flex: 1.5; justify-content: center; }
+    /* success state */
+    .pay-success { display: none; flex-direction: column; align-items: center; text-align: center; padding: 34px 22px 26px; }
+    .pay-modal.is-success .pay-body, .pay-modal.is-success .pay-foot { display: none; }
+    .pay-modal.is-success .pay-success { display: flex; }
+    .pay-success-ic {
+      width: 64px; height: 64px; border-radius: 50%; background: var(--success-50); color: var(--success-700);
+      display: flex; align-items: center; justify-content: center; margin-bottom: 16px;
+    }
+    .pay-success-ic svg { width: 34px; height: 34px; }
+    .pay-success-title { font-family: 'Satoshi', sans-serif; font-size: 18px; font-weight: 700; color: #222224; }
+    .pay-success-text { font-size: 13.5px; color: #626368; margin-top: 6px; line-height: 1.5; max-width: 300px; }
+    .pay-success .primary-btn { margin-top: 22px; min-width: 150px; justify-content: center; }
+
     .sp-footer {
       display: flex; gap: 12px;
       padding: 16px 24px;
@@ -1818,6 +1881,56 @@
     </div>
   </div>
 
+  <!-- ─── Pay now screen ─── -->
+  <div class="pay-overlay" id="payOverlay"></div>
+  <div class="pay-modal" id="payModal" role="dialog" aria-modal="true" aria-labelledby="payTitle">
+    <div class="pay-head">
+      <span class="pay-head-title" id="payTitle">Pay freelancer</span>
+      <button class="pay-close" id="payClose" aria-label="Close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-close"/></svg>
+      </button>
+    </div>
+    <div class="pay-body">
+      <div class="pay-recipient">
+        <div class="pay-avatar" id="payInitials">RS</div>
+        <div>
+          <div class="pay-rec-name" id="payName">Rajesh Singh</div>
+          <div class="pay-rec-role" id="payRole">Developer · India</div>
+        </div>
+      </div>
+      <div class="pay-amount" id="payAmount">$2,500.00</div>
+      <div class="pay-amount-sub">Approved · ready to pay</div>
+      <div class="pay-rows">
+        <div class="pay-row"><span class="pay-row-label">Reference</span><span class="pay-row-value" id="payRef">#INV-2024</span></div>
+        <div class="pay-row"><span class="pay-row-label">For</span><span class="pay-row-value" id="payFor">Monthly retainer</span></div>
+        <div class="pay-row">
+          <span class="pay-row-label">Payment method</span>
+          <span class="pay-row-value pay-method">
+            <span class="pay-method-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-wallet-money"/></svg></span>
+            Wisemonk balance
+          </span>
+        </div>
+      </div>
+      <div class="pay-eta">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-info-circle"/></svg>
+        Funds typically arrive in 1–2 business days.
+      </div>
+    </div>
+    <div class="pay-foot">
+      <button class="secondary-btn" id="payCancel">Cancel</button>
+      <button class="primary-btn" id="payConfirm">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-wallet-money"/></svg>
+        <span id="payConfirmAmt">Pay $2,500.00</span>
+      </button>
+    </div>
+    <div class="pay-success">
+      <div class="pay-success-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-tick-circle"/></svg></div>
+      <div class="pay-success-title">Payment scheduled</div>
+      <div class="pay-success-text" id="paySuccessText">Your payment to Rajesh Singh is on its way.</div>
+      <button class="primary-btn" id="payDone">Done</button>
+    </div>
+  </div>
+
   <script>
     // Approvals tabs
     const aprTabs = document.querySelectorAll('.apr-tab');
@@ -1836,10 +1949,15 @@
     function openPanel() { panel.classList.add('open'); overlay.classList.add('open'); panel.setAttribute('aria-hidden', 'false'); }
     function closePanel() { panel.classList.remove('open'); overlay.classList.remove('open'); panel.setAttribute('aria-hidden', 'true'); }
 
+    // Remember the request currently shown in the side panel so the
+    // Pay now screen can be populated from it after approval.
+    let currentReq = null;
+
     // Fill the side panel from a clicked request row's data attributes,
     // adapting for reimbursement requests (currency + receipt attachment).
     function fillPanel(row) {
       const d = row.dataset;
+      currentReq = d;
       const isReimb = d.type === 'reimbursement';
       document.getElementById('spKind').textContent = isReimb ? 'Reimbursement' : 'Invoice';
       document.getElementById('spInv').textContent = d.inv || '';
@@ -1899,7 +2017,37 @@
     overlay.addEventListener('click', closePanel);
     document.getElementById('spClose').addEventListener('click', closePanel);
     document.getElementById('denyBtn').addEventListener('click', closePanel);
-    document.getElementById('approveBtn').addEventListener('click', closePanel);
+
+    // Pay now screen — opens after a request is approved
+    const payOverlay = document.getElementById('payOverlay');
+    const payModal = document.getElementById('payModal');
+    function openPay() {
+      const d = currentReq || {};
+      const isReimb = d.type === 'reimbursement';
+      document.getElementById('payInitials').textContent = d.initials || '';
+      document.getElementById('payName').textContent = d.name || '';
+      document.getElementById('payRole').textContent = d.role || '';
+      document.getElementById('payAmount').textContent = d.amount || '';
+      document.getElementById('payRef').textContent = d.inv || '';
+      document.getElementById('payFor').textContent = d.typelabel || (isReimb ? 'Reimbursement' : 'Invoice');
+      document.getElementById('payConfirmAmt').textContent = 'Pay ' + (d.amount || '');
+      document.getElementById('paySuccessText').textContent = 'Your payment to ' + (d.name || 'the freelancer') + ' is on its way.';
+      payModal.classList.remove('is-success');
+      payOverlay.classList.add('open');
+      payModal.classList.add('open');
+    }
+    function closePay() { payOverlay.classList.remove('open'); payModal.classList.remove('open'); }
+
+    // Approve → close the detail panel and show the Pay now screen
+    document.getElementById('approveBtn').addEventListener('click', () => {
+      closePanel();
+      openPay();
+    });
+    document.getElementById('payConfirm').addEventListener('click', () => payModal.classList.add('is-success'));
+    payOverlay.addEventListener('click', closePay);
+    document.getElementById('payClose').addEventListener('click', closePay);
+    document.getElementById('payCancel').addEventListener('click', closePay);
+    document.getElementById('payDone').addEventListener('click', closePay);
 
     // Attachment viewer modal
     const attOverlay = document.getElementById('attOverlay');
@@ -1920,6 +2068,7 @@
     document.addEventListener('keydown', e => {
       if (e.key !== 'Escape') return;
       if (attModal.classList.contains('open')) { closeAtt(); return; }
+      if (payModal.classList.contains('open')) { closePay(); return; }
       closePanel();
     });
   </script>
