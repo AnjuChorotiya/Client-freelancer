@@ -397,22 +397,11 @@
               <h1>Attendance</h1>
               <p>Manage and track your team's time and leaves.</p>
             </div>
-            <div class="heading-actions">
-              <button class="primary-btn">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-clock"/></svg>
-                Clock in
-              </button>
-              <button class="secondary-btn">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-global"/></svg>
-                Request WFH
-              </button>
-            </div>
           </div>
 
           <div class="tabs-row">
             <div class="tabs">
-              <button class="tab active" data-tab="logs">Logs</button>
-              <button class="tab" data-tab="requests">Attendance requests</button>
+              <button class="tab active" data-tab="requests">Attendance requests</button>
             </div>
             <button class="dropdown-btn">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-calendar"/></svg>
@@ -421,92 +410,8 @@
             </button>
           </div>
 
-          <!-- LOGS -->
-          <div class="tab-pane active" data-pane="logs">
-            <div class="table-card">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Dates</th>
-                    <th>Clock-in</th>
-                    <th>Clock-out</th>
-                    <th>Hours worked</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>Oct 4 <span class="wfh-tag">WFH</span></td>
-                    <td>8:00 AM</td>
-                    <td>12:45 PM</td>
-                    <td>4h 45m</td>
-                    <td><span class="pill absent">Absent</span></td>
-                    <td><button class="row-action"><svg viewBox="0 0 24 24" fill="currentColor"><use href="#ic-more"/></svg></button></td>
-                  </tr>
-                  <tr>
-                    <td>Oct 3</td>
-                    <td>10:00 AM</td>
-                    <td>4:15 PM</td>
-                    <td>6h 15m</td>
-                    <td><span class="pill present">Present</span></td>
-                    <td><button class="row-action"><svg viewBox="0 0 24 24" fill="currentColor"><use href="#ic-more"/></svg></button></td>
-                  </tr>
-                  <tr>
-                    <td>Oct 1 (2nd half)</td>
-                    <td>1:30 PM</td>
-                    <td>6:00 PM</td>
-                    <td>4h 30m</td>
-                    <td><span class="pill present">Present</span></td>
-                    <td><button class="row-action"><svg viewBox="0 0 24 24" fill="currentColor"><use href="#ic-more"/></svg></button></td>
-                  </tr>
-                  <tr>
-                    <td>Oct 1</td>
-                    <td>8:00 AM</td>
-                    <td>12:45 PM</td>
-                    <td>4h 45m</td>
-                    <td><span class="pill present">Present</span></td>
-                    <td><button class="row-action"><svg viewBox="0 0 24 24" fill="currentColor"><use href="#ic-more"/></svg></button></td>
-                  </tr>
-                  <tr>
-                    <td>Sep 31</td>
-                    <td>9:30 AM</td>
-                    <td>7:00 PM</td>
-                    <td>9h 30m</td>
-                    <td><span class="pill present">Present</span></td>
-                    <td><button class="row-action"><svg viewBox="0 0 24 24" fill="currentColor"><use href="#ic-more"/></svg></button></td>
-                  </tr>
-                  <tr>
-                    <td>Sep 30 (2nd half)</td>
-                    <td>9:15 AM</td>
-                    <td>3:20 PM</td>
-                    <td>5h 35m</td>
-                    <td><span class="pill present">Present</span></td>
-                    <td><button class="row-action"><svg viewBox="0 0 24 24" fill="currentColor"><use href="#ic-more"/></svg></button></td>
-                  </tr>
-                  <tr>
-                    <td>Sep 29</td>
-                    <td>—</td>
-                    <td>—</td>
-                    <td>—</td>
-                    <td><span class="pill missing">Missing</span></td>
-                    <td><button class="row-action"><svg viewBox="0 0 24 24" fill="currentColor"><use href="#ic-more"/></svg></button></td>
-                  </tr>
-                  <tr>
-                    <td>Sep 28</td>
-                    <td>—</td>
-                    <td>—</td>
-                    <td>—</td>
-                    <td><span class="pill leave">Leave</span></td>
-                    <td><button class="row-action"><svg viewBox="0 0 24 24" fill="currentColor"><use href="#ic-more"/></svg></button></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-
           <!-- REQUESTS -->
-          <div class="tab-pane" data-pane="requests">
+          <div class="tab-pane active" data-pane="requests">
             <div class="table-card">
               <table>
                 <thead>
