@@ -1223,13 +1223,13 @@
           </span>
           Home
         </a>
-        <a href="#" class="nav-link" data-tab="freelancers">
+        <a href="freelancers.html" class="nav-link">
           <span class="nav-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-profile-2user"/></svg>
           </span>
           Freelancers
         </a>
-        <a href="#" class="nav-link" data-tab="invoices">
+        <a href="invoices.html" class="nav-link">
           <span class="nav-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-receipt-text"/></svg>
           </span>
@@ -1341,97 +1341,8 @@
 
        <!-- ── Locked tab empty state ── -->
        <!-- ── FREELANCERS (empty) ── -->
-       <div id="freelancersView" hidden>
-         <div class="wm-card">
-           <div class="wm-card-heading">
-             <div>
-               <h1>Freelancers</h1>
-               <p>Manage your team of freelancers and full-time employees.</p>
-             </div>
-             <div class="wm-head-actions">
-               <a href="compliance.html" class="cmp-check-btn">
-                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-shield-tick"/></svg>
-                 Run compliance check
-               </a>
-               <button class="primary-btn" onclick="location.href='add-freelancer.html'">
-                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-add"/></svg>
-                 Add freelancer
-               </button>
-             </div>
-           </div>
-           <div class="filter-bar">
-             <div class="search"><input type="text" placeholder="Search by name or role"></div>
-             <div class="filter-dd">
-               <button class="dd-trigger"><span>All status</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-arrow-down"/></svg></button>
-             </div>
-           </div>
-           <div class="table-card">
-             <table>
-               <thead><tr><th>Name</th><th>Contract type</th><th>Rate</th><th>Status</th><th></th></tr></thead>
-               <tbody>
-                 <tr class="empty-only"><td colspan="5">
-                   <div class="table-empty">
-                     <div class="table-empty-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-profile-2user"/></svg></div>
-                     <h3>No freelancers yet</h3>
-                     <p>Add your first freelancer to start managing contracts, rates and payments in one place.</p>
-                   </div>
-                 </td></tr>
-                 <tr class="data-only" hidden><td><div class="cell-name"><div class="cell-avatar">PS</div><div class="cell-name-text"><strong>Priya Sharma</strong><small>Senior Designer</small></div></div></td><td>Freelancer · Monthly</td><td><strong>$3,400</strong>/mo</td><td><span class="pill active">Active</span></td><td><button class="row-action"><svg viewBox="0 0 24 24" fill="currentColor"><use href="#ic-more"/></svg></button></td></tr>
-                 <tr class="data-only" hidden><td><div class="cell-name"><div class="cell-avatar">CM</div><div class="cell-name-text"><strong>Carlos Mendez</strong><small>Backend Developer</small></div></div></td><td>Freelancer · Hourly</td><td><strong>$45</strong>/hr</td><td><span class="pill active">Active</span></td><td><button class="row-action"><svg viewBox="0 0 24 24" fill="currentColor"><use href="#ic-more"/></svg></button></td></tr>
-                 <tr class="data-only" hidden><td><div class="cell-name"><div class="cell-avatar">AK</div><div class="cell-name-text"><strong>Aisha Khan</strong><small>Growth Marketer</small></div></div></td><td>Freelancer · Monthly</td><td><strong>$2,800</strong>/mo</td><td><span class="pill paused">Inactive</span></td><td><button class="row-action"><svg viewBox="0 0 24 24" fill="currentColor"><use href="#ic-more"/></svg></button></td></tr>
-                 <tr class="data-only" hidden><td><div class="cell-name"><div class="cell-avatar">JL</div><div class="cell-name-text"><strong>John Lee</strong><small>Content Writer</small></div></div></td><td>Freelancer · Per project</td><td><strong>$120</strong>/post</td><td><span class="pill active">Active</span></td><td><button class="row-action"><svg viewBox="0 0 24 24" fill="currentColor"><use href="#ic-more"/></svg></button></td></tr>
-                 <tr class="data-only" hidden><td><div class="cell-name"><div class="cell-avatar">MS</div><div class="cell-name-text"><strong>Maria Silva</strong><small>Translator</small></div></div></td><td>Freelancer · Hourly</td><td><strong>$32</strong>/hr</td><td><span class="pill active">Active</span></td><td><button class="row-action"><svg viewBox="0 0 24 24" fill="currentColor"><use href="#ic-more"/></svg></button></td></tr>
-                 <tr class="data-only" hidden><td><div class="cell-name"><div class="cell-avatar">RS</div><div class="cell-name-text"><strong>Rajesh Singh</strong><small>Developer</small></div></div></td><td>Freelancer · Monthly</td><td><strong>$2,500</strong>/mo</td><td><span class="pill pending">Pending invite</span></td><td><button class="row-action"><svg viewBox="0 0 24 24" fill="currentColor"><use href="#ic-more"/></svg></button></td></tr>
-               </tbody>
-             </table>
-           </div>
-         </div>
-       </div>
-
-       <!-- ── INVOICES (empty) ── -->
-       <div id="invoicesView" hidden>
-         <div class="wm-card">
-           <div class="wm-card-heading">
-             <div>
-               <h1>Freelancer invoices</h1>
-               <p>Review and pay invoices submitted by your freelancers.</p>
-             </div>
-             <div class="wm-head-actions">
-               <button type="button" class="primary-btn">
-                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-add"/></svg>
-                 Generate invoice
-               </button>
-             </div>
-           </div>
-           <div class="filter-bar">
-             <div class="search"><input type="text" placeholder="Search by freelancer name or invoice"></div>
-             <div class="filter-dd">
-               <button class="dd-trigger"><span>All status</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-arrow-down"/></svg></button>
-             </div>
-           </div>
-           <div class="table-card">
-             <table>
-               <thead><tr><th>Invoice</th><th>Freelancer</th><th>Submitted</th><th>Due</th><th class="text-right">Amount</th><th>Status</th><th></th></tr></thead>
-               <tbody>
-                 <tr class="empty-only"><td colspan="7">
-                   <div class="table-empty">
-                     <div class="table-empty-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-receipt-text"/></svg></div>
-                     <h3>No invoices yet</h3>
-                     <p>Invoices submitted by your freelancers will appear here. You can also request one to get started.</p>
-                   </div>
-                 </td></tr>
-                 <tr class="data-only" hidden><td><span class="inv-num">#INV-1042</span></td><td><div class="cell-name"><div class="cell-avatar">CM</div>Carlos Mendez</div></td><td>Feb 28, 2026</td><td>Mar 14, 2026</td><td class="text-right amount">$1,200</td><td><span class="pill pending">Due</span></td><td><a class="pay-btn">Pay now</a></td></tr>
-                 <tr class="data-only" hidden><td><span class="inv-num">#INV-1041</span></td><td><div class="cell-name"><div class="cell-avatar">PS</div>Priya Sharma</div></td><td>Feb 26, 2026</td><td>Mar 12, 2026</td><td class="text-right amount">$3,400</td><td><span class="pill pending">Due</span></td><td><a class="pay-btn">Pay now</a></td></tr>
-                 <tr class="data-only" hidden><td><span class="inv-num">#INV-1040</span></td><td><div class="cell-name"><div class="cell-avatar">AK</div>Aisha Khan</div></td><td>Feb 22, 2026</td><td>Feb 28, 2026</td><td class="text-right amount">$600</td><td><span class="pill overdue">Overdue</span></td><td><a class="pay-btn">Pay now</a></td></tr>
-                 <tr class="data-only" hidden><td><span class="inv-num">#INV-1039</span></td><td><div class="cell-name"><div class="cell-avatar">JL</div>John Lee</div></td><td>Feb 20, 2026</td><td>Mar 6, 2026</td><td class="text-right amount">$400</td><td><span class="pill paid">Paid</span></td><td><button class="row-action"><svg viewBox="0 0 24 24" fill="currentColor"><use href="#ic-more"/></svg></button></td></tr>
-               </tbody>
-             </table>
-           </div>
-         </div>
-       </div>
-
-       <!-- ── TIME (empty) ── -->
-       <!-- Time tab navigates to the standalone time-leaves.html page (see sidebar). -->
+       <!-- Workspace tabs (Freelancers, Invoices, Time) navigate to their
+            standalone pages via the sidebar links — no embedded views here. -->
 
        <!-- ── COMPLIANCE ── -->
        <!-- ── DASHBOARD (shown after onboarding is complete) ── -->
@@ -2083,17 +1994,14 @@
   <script>
     (function () {
       const tabs = {
-        home:        { title: 'Good Morning, Aman!', view: null },
-        freelancers: { title: 'Freelancers',  view: 'freelancersView' },
-        invoices:    { title: 'Invoices',     view: 'invoicesView' }
+        home:        { title: 'Good Morning, Aman!', view: null }
       };
 
       const links = document.querySelectorAll('.nav-link[data-tab]');
       const homeView = document.getElementById('homeView');
       const dashboardView = document.getElementById('dashboardView');
       const headerTitle = document.querySelector('.header h1');
-      const sectionViews = ['freelancersView', 'invoicesView']
-        .map(id => document.getElementById(id));
+      const sectionViews = [];
 
       // Onboarding state. Set to true once the wizard's Finish step persists the
       // completion flag; this reveals the dashboard on Home and fills every tab.
