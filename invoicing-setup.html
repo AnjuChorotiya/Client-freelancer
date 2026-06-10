@@ -281,6 +281,130 @@
       .mode-grid { grid-template-columns: 1fr; }
       .field-row { grid-template-columns: 1fr; }
     }
+
+    /* COR (Contractor of Record) promo banner — minimal */
+    .cor-banner {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 24px;
+      background: #EEF1FF;
+      border-radius: 12px;
+      padding: 18px 24px;
+      margin-bottom: 20px;
+    }
+    .cor-banner-body { flex: 1; min-width: 0; }
+    .cor-banner-title {
+      font-family: 'Satoshi', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: #222224;
+      margin-bottom: 4px;
+    }
+    .cor-banner-desc {
+      font-family: 'Satoshi', sans-serif;
+      font-size: 13.5px;
+      color: #85878d;
+      line-height: 1.5;
+    }
+    .cor-banner-actions { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+    .cor-banner-cta {
+      display: inline-flex; align-items: center;
+      padding: 11px 22px;
+      background: #1a1d24;
+      color: #fff;
+      border-radius: 8px;
+      font-family: 'Satoshi', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: background 0.15s;
+      white-space: nowrap;
+    }
+    .cor-banner-cta:hover { background: #000; }
+    .cor-banner-secondary {
+      display: inline-flex; align-items: center;
+      padding: 11px 22px;
+      background: transparent;
+      color: #1a1d24;
+      border: 1px solid #D1D5DB;
+      border-radius: 8px;
+      font-family: 'Satoshi', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: background 0.15s, border-color 0.15s;
+      white-space: nowrap;
+    }
+    .cor-banner-secondary:hover { background: rgba(0,0,0,0.04); border-color: #9CA3AF; }
+    /* COR comparison modal */
+    .cor-modal-overlay { position: fixed; inset: 0; background: rgba(17,22,32,0.55); display: none; align-items: center; justify-content: center; padding: 24px; z-index: 2000; }
+    .cor-modal-overlay.open { display: flex; animation: corFade 0.18s ease; }
+    @keyframes corFade { from { opacity: 0; } to { opacity: 1; } }
+    .cor-modal { background: #fff; border-radius: 18px; width: 100%; max-width: 720px; max-height: 90vh; overflow-y: auto; box-shadow: 0 30px 70px -20px rgba(0,0,0,0.45); }
+    .cor-modal-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 26px 28px 4px; }
+    .cor-modal-head h2 { font-family: 'Satoshi', sans-serif; font-size: 21px; font-weight: 700; color: #222224; margin: 0 0 4px; letter-spacing: -0.2px; }
+    .cor-modal-head p { font-size: 14px; color: #85878d; margin: 0; line-height: 1.5; }
+    .cor-modal-close { width: 32px; height: 32px; flex-shrink: 0; border: none; background: transparent; border-radius: 8px; color: #85878d; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .cor-modal-close:hover { background: rgba(0,0,0,0.05); color: #222224; }
+    .cor-modal-close svg { width: 18px; height: 18px; }
+    .cor-modal-body { padding: 18px 28px 4px; }
+    .cor-table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 13.5px; }
+    .cor-table th, .cor-table td { text-align: left; padding: 13px 16px; vertical-align: top; line-height: 1.45; }
+    .cor-table thead th { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; color: #9AA2B2; padding-top: 10px; padding-bottom: 12px; }
+    .cor-table .col-feat { width: 23%; font-weight: 500; color: #222224; }
+    .cor-table .col-free { color: #6B7280; }
+    .cor-table tbody td.col-feat, .cor-table tbody td.col-free { border-bottom: 1px solid #F0F1F4; }
+    .cor-table tbody tr:last-child td.col-feat, .cor-table tbody tr:last-child td.col-free { border-bottom: none; }
+    .cor-table .col-cmor { background: #F2F3F5; color: #222224; font-weight: 500; }
+    .cor-table thead .col-cmor { background: #1a1d24; color: #fff; border-top-left-radius: 12px; border-top-right-radius: 12px; }
+    .cor-table tbody tr:last-child .col-cmor { border-bottom-left-radius: 12px; border-bottom-right-radius: 12px; }
+    .cor-table tbody td { font-weight: 500; }
+    .cor-table thead .cor-price { display: block; margin-top: 5px; font-size: 11.5px; font-weight: 600; letter-spacing: 0.1px; }
+    .cor-table thead .col-cmor .cor-price { color: #fff; opacity: 0.92; }
+    .cor-table thead .col-free .cor-price { color: #9AA2B2; }
+    .cor-cell { display: flex; gap: 8px; align-items: flex-start; }
+    .cor-ic { width: 16px; height: 16px; flex-shrink: 0; margin-top: 1px; }
+    .cor-ic.no { color: #C4CAD6; }
+    .cor-ic.yes { color: #1a1d24; }
+    .cor-modal-foot { display: flex; align-items: center; justify-content: flex-end; gap: 14px; padding: 18px 28px 24px; }
+    .cor-modal-foot .cor-foot-price { margin-right: auto; font-size: 13px; color: #6B7280; line-height: 1.3; }
+    .cor-modal-foot .cor-foot-price strong { color: #222224; font-weight: 700; font-size: 15px; }
+    .cor-modal-foot .cor-later { background: transparent; border: none; font-family: inherit; font-size: 14px; font-weight: 600; color: #85878d; cursor: pointer; padding: 11px 8px; }
+    .cor-modal-foot .cor-later:hover { color: #222224; }
+    .cor-modal-foot .cor-switch { display: inline-flex; align-items: center; gap: 8px; padding: 12px 22px; background: #1a1d24; color: #fff; border: none; border-radius: 9px; font-family: inherit; font-size: 14px; font-weight: 700; cursor: pointer; text-decoration: none; }
+    .cor-modal-foot .cor-switch:hover { background: #000; }
+    .cor-modal-foot .cor-switch svg { width: 16px; height: 16px; }
+    /* Talk to sales modal */
+    .sales-overlay { position: fixed; inset: 0; background: rgba(17,22,32,0.55); display: none; align-items: center; justify-content: center; padding: 24px; z-index: 2100; }
+    .sales-overlay.open { display: flex; animation: corFade 0.18s ease; }
+    .sales-modal { background: #fff; border-radius: 16px; width: 100%; max-width: 440px; box-shadow: 0 30px 70px -20px rgba(0,0,0,0.45); overflow: hidden; }
+    .sales-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 24px 24px 0; }
+    .sales-head h2 { font-family: 'Satoshi', sans-serif; font-size: 19px; font-weight: 700; color: #222224; margin: 0 0 4px; letter-spacing: -0.2px; }
+    .sales-head p { font-size: 13.5px; color: #85878d; margin: 0; line-height: 1.5; }
+    .sales-close { width: 32px; height: 32px; flex-shrink: 0; border: none; background: transparent; border-radius: 8px; color: #85878d; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .sales-close:hover { background: rgba(0,0,0,0.05); color: #222224; }
+    .sales-close svg { width: 18px; height: 18px; }
+    .sales-body { padding: 18px 24px 4px; }
+    .sales-field { margin-bottom: 14px; }
+    .sales-field label { display: block; font-size: 12.5px; font-weight: 700; color: #4b4d52; margin-bottom: 6px; }
+    .sales-field input, .sales-field select { width: 100%; font-family: inherit; font-size: 14px; color: #222224; border: 1px solid #D7DAE0; border-radius: 10px; padding: 11px 13px; background: #fff; outline: none; transition: border-color 0.15s, box-shadow 0.15s; }
+    .sales-field input::placeholder { color: #9AA2B2; }
+    .sales-field input:focus, .sales-field select:focus { border-color: #1A6FE0; box-shadow: 0 0 0 3px rgba(26,111,224,0.12); }
+    .sales-note { display: flex; gap: 9px; padding: 11px 13px; margin-top: 2px; background: #F2F6FF; border-radius: 10px; font-size: 12.5px; color: #4b4d52; line-height: 1.5; }
+    .sales-note svg { width: 16px; height: 16px; flex-shrink: 0; margin-top: 1px; color: #1A6FE0; }
+    .sales-foot { display: flex; align-items: center; justify-content: flex-end; gap: 12px; padding: 16px 24px 24px; }
+    .sales-foot .sales-cancel { background: transparent; border: none; font-family: inherit; font-size: 14px; font-weight: 600; color: #85878d; cursor: pointer; padding: 11px 8px; }
+    .sales-foot .sales-cancel:hover { color: #222224; }
+    .sales-foot .sales-submit { display: inline-flex; align-items: center; gap: 8px; padding: 12px 22px; background: #1a1d24; color: #fff; border: none; border-radius: 9px; font-family: inherit; font-size: 14px; font-weight: 700; cursor: pointer; }
+    .sales-foot .sales-submit:hover { background: #000; }
+    .sales-foot .sales-submit svg { width: 16px; height: 16px; }
+
+    .cor-banner-close {
+      width: 28px; height: 28px; border: none; background: transparent;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 6px; color: #85878d; cursor: pointer;
+    }
+    .cor-banner-close:hover { background: rgba(0,0,0,0.05); color: #222224; }
+    .cor-banner-close svg { width: 16px; height: 16px; }
   </style>
 </head>
 <body><!-- wm-icon-sprite --><svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true"><symbol id="ic-home-2" viewBox="0 0 24 24" fill="none"><path d="M9.02 2.84004L3.63 7.04004C2.73 7.74004 2 9.23004 2 10.36V17.77C2 20.09 3.89 21.99 6.21 21.99H17.79C20.11 21.99 22 20.09 22 17.78V10.5C22 9.29004 21.19 7.74004 20.2 7.05004L14.02 2.72004C12.62 1.74004 10.37 1.79004 9.02 2.84004Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -294,7 +418,7 @@
 <path d="M13.87 3.19994C13.56 3.10994 13.24 3.03994 12.91 2.99994C11.95 2.87994 11.03 2.94994 10.17 3.19994C10.46 2.45994 11.18 1.93994 12.02 1.93994C12.86 1.93994 13.58 2.45994 13.87 3.19994Z" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M15.02 19.0601C15.02 20.7101 13.67 22.0601 12.02 22.0601C11.2 22.0601 10.44 21.7201 9.90002 21.1801C9.36002 20.6401 9.02002 19.8801 9.02002 19.0601" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10"/></symbol><symbol id="ic-arrow-down" viewBox="0 0 24 24" fill="none"><path d="M19.9201 8.94995L13.4001 15.47C12.6301 16.24 11.3701 16.24 10.6001 15.47L4.08008 8.94995" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-refresh" viewBox="0 0 24 24" fill="none"><path d="M14.55 21.67C18.84 20.54 22 16.64 22 12C22 6.48 17.56 2 12 2C5.33 2 2 7.56 2 7.56M2 7.56V3M2 7.56H4.01H6.44" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M2 12C2 17.52 6.48 22 12 22" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3 3"/></symbol><symbol id="ic-sms" viewBox="0 0 24 24" fill="none"><path d="M17 20.5H7C4 20.5 2 19 2 15.5V8.5C2 5 4 3.5 7 3.5H17C20 3.5 22 5 22 8.5V15.5C22 19 20 20.5 17 20.5Z" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M17 9L13.87 11.5C12.84 12.32 11.15 12.32 10.12 11.5L7 9" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/></symbol></svg><!-- /wm-icon-sprite -->
+<path d="M17 9L13.87 11.5C12.84 12.32 11.15 12.32 10.12 11.5L7 9" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-close" viewBox="0 0 24 24" fill="none"><path d="M6 6L18 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M18 6L6 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-tick-circle" viewBox="0 0 24 24" fill="none"><path d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M7.75 12L10.58 14.83L16.25 9.17004" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-arrow-right" viewBox="0 0 24 24" fill="none"><path d="M14.4301 5.92993L20.5001 11.9999L14.4301 18.0699" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/><path d="M3.5 12H20.33" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-info-circle" viewBox="0 0 24 24" fill="none"><path d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 8V13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M11.9945 16H12.0035" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol></svg><!-- /wm-icon-sprite -->
 
   <div class="app">
 
@@ -340,6 +464,20 @@
       </header>
 
       <div class="content">
+
+        <div class="cor-banner">
+          <div class="cor-banner-body">
+            <div class="cor-banner-title">Reduce risk across your contractor base</div>
+            <div class="cor-banner-desc">Standardised compliant contracts, automated tax handling and IP protection, fully managed for your contractor base.</div>
+          </div>
+          <div class="cor-banner-actions">
+            <a href="#" class="cor-banner-secondary" onclick="openCorModal(event)">Learn more</a>
+            <a href="#" class="cor-banner-cta" onclick="openSalesModal(event)">Switch to COR</a>
+            <button class="cor-banner-close" aria-label="Dismiss">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-close"/></svg>
+            </button>
+          </div>
+        </div>
 
         <div class="crumb">
           <a href="freelancers.html">Freelancers</a>
@@ -556,6 +694,97 @@
       t.addEventListener('click', () => t.classList.toggle('on'));
     });
   </script>
+
+  <!-- wm-cor -->
+  <div class="cor-modal-overlay" id="corModal" role="dialog" aria-modal="true" aria-labelledby="corModalTitle">
+    <div class="cor-modal">
+      <div class="cor-modal-head">
+        <div>
+          <h2 id="corModalTitle">Switch to Contractor of Record</h2>
+          <p>See what changes when you move your freelancers to COR.</p>
+        </div>
+        <button class="cor-modal-close" type="button" onclick="closeCorModal()" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-close"/></svg></button>
+      </div>
+      <div class="cor-modal-body">
+        <table class="cor-table">
+          <thead>
+            <tr>
+              <th class="col-feat"></th>
+              <th class="col-free">Freelancers (Direct)<span class="cor-price">Self-managed</span></th>
+              <th class="col-cmor">Contractor of Record (COR)<span class="cor-price">6% per contractor</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="col-feat">Payments</td><td class="col-free"><span class="cor-cell"><svg class="cor-ic no" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-close"/></svg><span>Paid one by one, separately</span></span></td><td class="col-cmor"><span class="cor-cell"><svg class="cor-ic yes" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-tick-circle"/></svg><span>All contractors paid together, in one place</span></span></td></tr>
+            <tr><td class="col-feat">Invoicing</td><td class="col-free"><span class="cor-cell"><svg class="cor-ic no" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-close"/></svg><span>Manually triggered by you or the contractor</span></span></td><td class="col-cmor"><span class="cor-cell"><svg class="cor-ic yes" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-tick-circle"/></svg><span>Automated, triggered by workflows</span></span></td></tr>
+            <tr><td class="col-feat">Payment speed</td><td class="col-free"><span class="cor-cell"><svg class="cor-ic no" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-close"/></svg><span>2-3 business days + FX / holiday delays</span></span></td><td class="col-cmor"><span class="cor-cell"><svg class="cor-ic yes" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-tick-circle"/></svg><span>Same-day &mdash; paid the day money hits your US account</span></span></td></tr>
+            <tr><td class="col-feat">Manager controls</td><td class="col-free"><span class="cor-cell"><svg class="cor-ic no" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-close"/></svg><span>None &mdash; no hierarchy or oversight</span></span></td><td class="col-cmor"><span class="cor-cell"><svg class="cor-ic yes" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-tick-circle"/></svg><span>Org hierarchy with timesheet approvals &amp; reports</span></span></td></tr>
+            <tr><td class="col-feat">Tax &amp; PE risk</td><td class="col-free"><span class="cor-cell"><svg class="cor-ic no" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-close"/></svg><span>Higher exposure</span></span></td><td class="col-cmor"><span class="cor-cell"><svg class="cor-ic yes" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-tick-circle"/></svg><span>Significantly reduced</span></span></td></tr>
+            <tr><td class="col-feat">Misclassification risk</td><td class="col-free"><span class="cor-cell"><svg class="cor-ic no" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-close"/></svg><span>Falls on you, the employer</span></span></td><td class="col-cmor"><span class="cor-cell"><svg class="cor-ic yes" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-tick-circle"/></svg><span>Significantly reduced</span></span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="cor-modal-foot">
+        <div class="cor-foot-price">Just <strong>6%</strong> per contractor</div>
+        <button class="cor-later" type="button" onclick="closeCorModal()">Maybe later</button>
+        <a href="#" class="cor-switch" onclick="openSalesModal(event)">Switch to COR <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-arrow-right"/></svg></a>
+      </div>
+    </div>
+  </div>
+  <div class="sales-overlay" id="salesModal" role="dialog" aria-modal="true" aria-labelledby="salesTitle">
+    <div class="sales-modal">
+      <div class="sales-head">
+        <div>
+          <h2 id="salesTitle">Talk to sales</h2>
+          <p>Moving to Contractor of Record is set up with our team. Share a few details and we&rsquo;ll reach out within one business day.</p>
+        </div>
+        <button class="sales-close" type="button" onclick="closeSalesModal()" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-close"/></svg></button>
+      </div>
+      <div class="sales-body">
+        <div class="sales-field">
+          <label for="salesName">Full name</label>
+          <input id="salesName" type="text" placeholder="Your name">
+        </div>
+        <div class="sales-field">
+          <label for="salesEmail">Work email</label>
+          <input id="salesEmail" type="email" placeholder="you@company.com">
+        </div>
+        <div class="sales-field">
+          <label for="salesCount">Contractors to move to COR</label>
+          <select id="salesCount">
+            <option>1&ndash;5</option>
+            <option>6&ndash;20</option>
+            <option>21&ndash;50</option>
+            <option>50+</option>
+          </select>
+        </div>
+        <div class="sales-note">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-info-circle"/></svg>
+          <span>No charge until your contractors are onboarded to COR. Pricing is 6% per contractor.</span>
+        </div>
+      </div>
+      <div class="sales-foot">
+        <button class="sales-cancel" type="button" onclick="closeSalesModal()">Cancel</button>
+        <button class="sales-submit" type="button" onclick="submitSales()"><span class="sales-submit-label">Request a call</span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-arrow-right"/></svg></button>
+      </div>
+    </div>
+  </div>
+  <script>
+    function openCorModal(e){ if(e) e.preventDefault(); var m=document.getElementById('corModal'); if(m){ m.classList.add('open'); document.body.style.overflow='hidden'; } }
+    function closeCorModal(){ var m=document.getElementById('corModal'); if(m){ m.classList.remove('open'); document.body.style.overflow=''; } }
+    function openSalesModal(e){ if(e) e.preventDefault(); closeCorModal(); var m=document.getElementById('salesModal'); if(m){ var b=m.querySelector('.sales-submit'); var l=m.querySelector('.sales-submit-label'); if(l) l.textContent='Request a call'; if(b){ b.disabled=false; b.style.opacity=''; } m.classList.add('open'); document.body.style.overflow='hidden'; } }
+    function closeSalesModal(){ var m=document.getElementById('salesModal'); if(m){ m.classList.remove('open'); document.body.style.overflow=''; } }
+    function submitSales(){ var m=document.getElementById('salesModal'); var b=m.querySelector('.sales-submit'); var l=m.querySelector('.sales-submit-label'); if(l) l.textContent='Request sent'; if(b){ b.disabled=true; b.style.opacity='0.7'; } setTimeout(closeSalesModal, 1100); }
+    (function(){
+      var m=document.getElementById('corModal');
+      if(m){ m.addEventListener('click', function(ev){ if(ev.target===this) closeCorModal(); }); }
+      var s=document.getElementById('salesModal');
+      if(s){ s.addEventListener('click', function(ev){ if(ev.target===this) closeSalesModal(); }); }
+      document.addEventListener('keydown', function(ev){ if(ev.key==='Escape'){ closeSalesModal(); closeCorModal(); } });
+      document.querySelectorAll('.cor-banner-close').forEach(function(btn){ btn.addEventListener('click', function(){ var b=btn.closest('.cor-banner'); if(b) b.remove(); }); });
+    })();
+  </script>
+  <!-- /wm-cor -->
 
 </body>
 </html>
