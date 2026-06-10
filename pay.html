@@ -137,15 +137,40 @@
 
     /* Simple amount display (below the heading) */
     .sub strong { color: var(--text-primary); font-weight: 700; }
-    .pay-amount { text-align: center; margin: 4px 0 28px; }
+    .pay-amount { text-align: center; margin: 4px 0 26px; }
+    .pay-amount-cap { font-family: 'Satoshi', sans-serif; font-weight: 300; font-size: 12px; letter-spacing: 0.6px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px; }
     .pay-amount-big { font-size: 46px; font-weight: 700; color: var(--text-primary); letter-spacing: -1.2px; line-height: 1; }
-    .pay-amount-cap { font-family: 'Satoshi', sans-serif; font-weight: 300; font-size: 12px; letter-spacing: 0.6px; text-transform: uppercase; color: var(--text-muted); margin-top: 9px; }
-    .pay-amount-meta { font-size: 13.5px; font-weight: 600; color: var(--text-secondary); margin-top: 18px; }
+    .pay-amount-meta { font-size: 13.5px; font-weight: 600; color: var(--text-secondary); margin-top: 16px; }
     .pay-amount-meta .rate { color: var(--primary-600); }
-    .pay-amount-eta { display: inline-flex; align-items: center; gap: 6px; margin-top: 10px; font-size: 13px; color: var(--text-secondary); }
-    .pay-amount-eta svg { width: 15px; height: 15px; color: var(--primary-600); flex-shrink: 0; }
-    .pay-amount-eta b { font-weight: 700; color: var(--text-primary); }
-    .kv-cell-value.addr { display: block; font-weight: 600; font-size: 13.5px; line-height: 1.45; }
+    .pay-amount-meta .meta-div { display: inline-block; width: 1px; height: 11px; background: var(--border-strong); margin: 0 10px; vertical-align: -1px; }
+
+    /* Payment reference strip */
+    .ref-strip {
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      padding: 14px 18px;
+      background: var(--primary-50);
+      border-radius: 12px;
+      text-align: left;
+    }
+    .ref-strip-label { font-family: 'Satoshi', sans-serif; font-weight: 300; font-size: 11px; letter-spacing: 0.5px; text-transform: uppercase; color: var(--primary-700); margin-bottom: 4px; }
+    .ref-strip-value { font-size: 17px; font-weight: 700; color: var(--primary-600); letter-spacing: 0.2px; }
+    .ref-hint { font-size: 12.5px; color: var(--text-muted); text-align: left; margin: 8px 2px 24px; line-height: 1.5; }
+
+    /* Receiving account details */
+    .account-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 6px; }
+    .account-head .section-label { margin-bottom: 0; }
+    .detail-list { display: flex; flex-direction: column; }
+    .detail-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 18px; padding: 13px 0; }
+    .detail-row + .detail-row { border-top: 1px solid var(--border); }
+    .detail-label { font-size: 13.5px; font-weight: 500; color: var(--text-muted); flex-shrink: 0; }
+    .detail-value { font-size: 14px; font-weight: 700; color: var(--text-primary); text-align: right; }
+    .detail-value.blue { color: var(--primary-500); letter-spacing: 0.3px; }
+    .detail-value.addr { font-weight: 600; font-size: 13.5px; line-height: 1.45; max-width: 320px; }
+
+    /* Estimated arrival line */
+    .eta-line { display: inline-flex; align-items: center; gap: 7px; margin: 20px 0 4px; font-size: 13px; color: var(--text-secondary); }
+    .eta-line svg { width: 15px; height: 15px; color: var(--primary-600); flex-shrink: 0; }
+    .eta-line b { font-weight: 700; color: var(--text-primary); }
     .toggle-pill {
       display: inline-flex;
       background: var(--neutral-100);
@@ -371,80 +396,73 @@
     <!-- ─── STEP 1 — Ready to Pay ─── -->
     <div class="step" id="step1">
       <h1>Send this payment</h1>
-      <p class="sub">Transfer the amount below to <strong id="payCopyName">Ananya Iyer</strong> to complete this payment.</p>
+      <p class="sub" id="paySub">Send using the bank details below. Once you've completed the payment, please return here to confirm.</p>
 
       <div class="pay-amount">
+        <div class="pay-amount-cap">Payment amount</div>
         <div class="pay-amount-big" id="sumPay">$221.56</div>
-        <div class="pay-amount-cap">Amount to transfer</div>
         <div class="pay-amount-meta" id="metaConvert">
-          ₹18,500.00 requested · Rate locked at <span class="rate">$1 = ₹83.50</span>
-        </div>
-        <div class="pay-amount-eta">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-clock"/></svg>
-          Arrives in <span id="metaName">Ananya Iyer</span>'s account <b id="sumEta">today by 5:00 PM</b>
+          ₹18,500.00 requested
+          <span class="meta-div"></span>
+          Rate locked at <span class="rate">1 USD = ₹83.50</span> for 1 hour
         </div>
       </div>
+
+      <div class="ref-strip">
+        <div>
+          <div class="ref-strip-label">Unique payment reference</div>
+          <div class="ref-strip-value">REF-8923-WNK</div>
+        </div>
+        <button class="copy-btn" aria-label="Copy reference">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-copy"/></svg>
+        </button>
+      </div>
+      <p class="ref-hint">Include the payment reference in your transfer notes so we can match it automatically.</p>
 
       <div class="account-card">
-        <div class="section-label">Receiving Account</div>
+        <div class="account-head">
+          <div class="section-label">Receiving account details</div>
+          <span class="toggle-pill">
+            <button class="active" data-method="swift">Swift</button>
+            <button data-method="wire">Wire</button>
+          </span>
+        </div>
 
-        <div class="kv-grid">
-          <div>
-            <div class="kv-cell-label">Bank name</div>
-            <div class="kv-cell-value">JPMorgan Chase Bank, N.A.</div>
+        <div class="detail-list">
+          <div class="detail-row">
+            <span class="detail-label">Bank</span>
+            <span class="detail-value">JPMorgan Chase Bank, N.A.</span>
           </div>
-          <div>
-            <div class="kv-cell-label">Beneficiary name</div>
-            <div class="kv-cell-value" id="payBeneficiary">Rahul Sharma</div>
+          <div class="detail-row">
+            <span class="detail-label">Beneficiary name</span>
+            <span class="detail-value" id="payBeneficiary">Ananya Iyer</span>
           </div>
-
-          <div>
-            <div class="kv-cell-label">Account number</div>
-            <div class="kv-cell-value blue">7723 9904 1182</div>
+          <div class="detail-row">
+            <span class="detail-label">Account number</span>
+            <span class="detail-value blue">9253 8835 3752 9</span>
           </div>
-          <div class="routing-row">
-            <div class="kv-cell-label" id="routingLabel">Routing number (ACH)</div>
-            <div class="kv-cell-value">
-              <span id="routingValue">021000021</span>
-              <span class="toggle-pill">
-                <button class="active" data-method="swift">Swift</button>
-                <button data-method="wire">Wire</button>
-              </span>
-            </div>
+          <div class="detail-row">
+            <span class="detail-label" id="routingLabel">Routing number (ACH)</span>
+            <span class="detail-value" id="routingValue">021000021</span>
           </div>
-
-          <div>
-            <div class="kv-cell-label">Swift / BIC (Wire)</div>
-            <div class="kv-cell-value">CHASUS33</div>
+          <div class="detail-row">
+            <span class="detail-label">Account type</span>
+            <span class="detail-value">Business</span>
           </div>
-          <div>
-            <div class="kv-cell-label">Beneficiary address</div>
-            <div class="kv-cell-value addr" id="payBenAddress">42 MG Road, Indiranagar, Bengaluru, Karnataka 560038, India</div>
+          <div class="detail-row">
+            <span class="detail-label">Receiving currency</span>
+            <span class="detail-value">USD</span>
           </div>
-
-          <div class="ref-block">
-            <div>
-              <div class="ref-block-label">Use this payment reference</div>
-              <div class="ref-block-value">REF-8923-WNK</div>
-            </div>
-            <button class="copy-btn" aria-label="Copy">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-copy"/></svg>
-            </button>
+          <div class="detail-row">
+            <span class="detail-label">Beneficiary address</span>
+            <span class="detail-value addr" id="payBenAddress">42 MG Road, Indiranagar, Bengaluru, Karnataka 560038, India</span>
           </div>
         </div>
       </div>
 
-      <button type="button" class="calc-trigger" onclick="openCalcModal(event)">
-        See what your freelancer gets
-        <svg class="calc-trigger-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-arrow-right"/></svg>
-      </button>
-
-      <div class="info-banner">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-info-circle"/></svg>
-        <div>
-          <strong>Important:</strong> Include the payment reference in your transfer notes to ensure automated matching.
-          Once you've completed the payment, please return here to confirm. We'll then match your payment and update the status to matched.
-        </div>
+      <div class="eta-line">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-clock"/></svg>
+        Estimated arrival: <b>1–2 business days</b>
       </div>
 
       <button class="primary-btn" id="madePaymentBtn">I've made the payment</button>
@@ -568,25 +586,17 @@
       }
 
       const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+      const html = (id, v) => { const el = document.getElementById(id); if (el) el.innerHTML = v; };
       const hide = id => { const el = document.getElementById(id); if (el) el.style.display = 'none'; };
-      function etaText() {
-        const now = new Date();
-        const arrive = new Date(now.getTime() + 3 * 60 * 60 * 1000);
-        const time = arrive.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
-        return (arrive.toDateString() === now.toDateString() ? 'Today' : 'Tomorrow') + ' by ' + time;
-      }
+      const first = (payTo || 'Your freelancer').split(' ')[0];
 
       if (payTo) {
         set('payBeneficiary', payTo);
-        set('payCopyName', payTo);
-        set('metaName', payTo);
         const gl = document.querySelector('.calc-get-label');
         if (gl) gl.textContent = payTo + ' receives';
         const ct = document.querySelector('.calc-modal-head p');
-        if (ct) ct.textContent = 'See what ' + payTo.split(' ')[0] + ' receives after fees and conversion.';
+        if (ct) ct.textContent = 'See what ' + first + ' receives after fees and conversion.';
       }
-
-      set('sumEta', etaText());
 
       if (!(rawAmt && rawAmt > 0)) return;
 
@@ -596,8 +606,8 @@
         const usdVal = inrAmount / RATE;
         const u = usd(usdVal);
         set('sumPay', u);
-        const meta = document.getElementById('metaConvert');
-        if (meta) meta.innerHTML = inr(inrAmount) + ' requested · Rate locked at <span class="rate">$1 = ₹' + RATE.toFixed(2) + '</span>';
+        html('paySub', '<strong>' + first + '</strong> requested <strong>' + inr(inrAmount) + '</strong> in INR. Send the amount below using the bank details, then return here to confirm once you\'ve paid.');
+        html('metaConvert', inr(inrAmount) + ' requested <span class="meta-div"></span> Rate locked at <span class="rate">1 USD = ₹' + RATE.toFixed(2) + '</span> for 1 hour');
         ['payAmt2', 'payAmt3'].forEach(id => set(id, u));
         ['payInr2', 'payInr3'].forEach(id => set(id, inr(inrAmount)));
         const cs = document.getElementById('calcSend');
@@ -606,6 +616,7 @@
         // USD request — no FX conversion; what's requested is what you transfer.
         const u = usd(rawAmt);
         set('sumPay', u);
+        html('paySub', '<strong>' + first + '</strong> requested <strong>' + u + '</strong>. Send the amount below using the bank details, then return here to confirm once you\'ve paid.');
         hide('metaConvert');
         ['payAmt2', 'payAmt3'].forEach(id => set(id, u));
         ['payInr2', 'payInr3'].forEach(id => set(id, inr(rawAmt * RATE)));
