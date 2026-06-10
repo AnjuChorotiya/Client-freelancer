@@ -1235,7 +1235,7 @@
           </span>
           Invoices
         </a>
-        <a href="#" class="nav-link" data-tab="time">
+        <a href="time-leaves.html" class="nav-link">
           <span class="nav-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-clock"/></svg>
           </span>
@@ -1431,50 +1431,7 @@
        </div>
 
        <!-- ── TIME (empty) ── -->
-       <div id="timeView" hidden>
-         <div class="wm-card">
-           <div class="wm-card-heading">
-             <div>
-               <h1>Leaves</h1>
-               <p>Manage and track your team's time and leaves.</p>
-             </div>
-             <button class="primary-btn">
-               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-add"/></svg>
-               Request leave
-             </button>
-           </div>
-           <div class="stats-strip">
-             <div class="stat-card"><div class="stat-title">Leaves taken this month</div><div class="stat-value js-stat" data-empty="0" data-full="3">0</div><div class="stat-sub">freelancers on leave</div></div>
-             <div class="stat-card"><div class="stat-title">Upcoming leaves</div><div class="stat-value js-stat" data-empty="0" data-full="0">0</div><div class="stat-sub">scheduled leaves</div></div>
-             <div class="stat-card"><div class="stat-title">Leaves pending for approval</div><div class="stat-value js-stat" data-empty="0" data-full="1">0</div><div class="stat-sub">awaiting approval</div></div>
-           </div>
-           <div class="section-h">Leave requests</div>
-           <div class="filter-bar">
-             <div class="search"><input type="text" placeholder="Search"></div>
-             <div class="filter-group">
-               <button class="dropdown-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-calendar"/></svg> All time <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-arrow-down"/></svg></button>
-               <button class="dropdown-btn">All status <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-arrow-down"/></svg></button>
-             </div>
-           </div>
-           <div class="table-card">
-             <table>
-               <thead><tr><th>Dates</th><th>Leave type</th><th>Reason</th><th>Status</th><th>Actions</th></tr></thead>
-               <tbody>
-                 <tr class="empty-only"><td colspan="5">
-                   <div class="table-empty">
-                     <div class="table-empty-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-clock"/></svg></div>
-                     <h3>No leave requests yet</h3>
-                     <p>Time off and leave requests from your freelancers will show up here for review and approval.</p>
-                   </div>
-                 </td></tr>
-                 <tr class="data-only" hidden><td>Sep 30 (2nd half)</td><td><span class="leave-type-tag">Sick leave</span></td><td>Fever and rest</td><td><span class="pill pending">Pending</span></td><td><button class="row-action"><svg viewBox="0 0 24 24" fill="currentColor"><use href="#ic-more"/></svg></button></td></tr>
-                 <tr class="data-only" hidden><td>Sep 02 – Sep 05</td><td><span class="leave-type-tag">Casual leave</span></td><td>Medical appointment</td><td><span class="pill approved">Approved</span></td><td><button class="row-action"><svg viewBox="0 0 24 24" fill="currentColor"><use href="#ic-more"/></svg></button></td></tr>
-                 <tr class="data-only" hidden><td>Sep 15 – Sep 18</td><td><span class="leave-type-tag">Casual leave</span></td><td>Family emergency</td><td><span class="pill approved">Approved</span></td><td><button class="row-action"><svg viewBox="0 0 24 24" fill="currentColor"><use href="#ic-more"/></svg></button></td></tr>
-               </tbody>
-             </table>
-           </div>
-         </div>
-       </div>
+       <!-- Time tab navigates to the standalone time-leaves.html page (see sidebar). -->
 
        <!-- ── COMPLIANCE ── -->
        <!-- ── DASHBOARD (shown after onboarding is complete) ── -->
@@ -1934,6 +1891,7 @@
       if (d.inv) qs.set('inv', d.inv);
       if (d.name) qs.set('to', d.name);
       if (d.amount) qs.set('amt', d.amount);
+      if (d.currency) qs.set('cur', d.currency);
       location.href = 'pay.html?' + qs.toString();
     }
     document.getElementById('approveBtn').addEventListener('click', () => goToPay(currentReq));
@@ -2127,15 +2085,14 @@
       const tabs = {
         home:        { title: 'Good Morning, Aman!', view: null },
         freelancers: { title: 'Freelancers',  view: 'freelancersView' },
-        invoices:    { title: 'Invoices',     view: 'invoicesView' },
-        time:        { title: 'Time',         view: 'timeView' }
+        invoices:    { title: 'Invoices',     view: 'invoicesView' }
       };
 
       const links = document.querySelectorAll('.nav-link[data-tab]');
       const homeView = document.getElementById('homeView');
       const dashboardView = document.getElementById('dashboardView');
       const headerTitle = document.querySelector('.header h1');
-      const sectionViews = ['freelancersView', 'invoicesView', 'timeView']
+      const sectionViews = ['freelancersView', 'invoicesView']
         .map(id => document.getElementById(id));
 
       // Onboarding state. Set to true once the wizard's Finish step persists the
