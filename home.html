@@ -997,17 +997,6 @@
     }
     .sp-footer .deny-btn { flex: 1; padding: 12px 24px; justify-content: center; }
     .sp-footer .approve-btn { flex: 1; padding: 12px 24px; justify-content: center; }
-    .sp-footer-paid { align-items: center; }
-    .sp-approved-note {
-      flex: 1; display: flex; align-items: center; gap: 7px;
-      font-family: 'Satoshi', sans-serif; font-size: 14px; font-weight: 600;
-      color: #16a34a;
-    }
-    .sp-approved-note svg { width: 18px; height: 18px; }
-    .pay-now-btn { display: inline-flex; align-items: center; gap: 8px; }
-    .pay-now-btn svg { width: 17px; height: 17px; }
-    .pay-now-btn.is-paid { background: #16a34a; cursor: default; }
-    .pay-now-btn.is-paid:hover { background: #16a34a; }
 
     .req-col-value.link { cursor: pointer; }
     .req-col-value.link:hover { text-decoration: underline; }
@@ -1700,7 +1689,7 @@
     <div class="sp-header">
       <h3>
         <span id="spKind">Invoice</span> <span id="spInv">#INV-2024</span>
-        <span class="pill pending" id="spStatusPill">Needs review</span>
+        <span class="pill pending">Needs review</span>
       </h3>
       <button class="sp-close" id="spClose" aria-label="Close">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-close"/></svg>
@@ -1781,21 +1770,9 @@
       </div>
     </div>
 
-    <!-- Default review state: Deny / Approve -->
-    <div class="sp-footer" id="spFooterReview">
+    <div class="sp-footer">
       <button class="deny-btn" id="denyBtn">Deny</button>
       <button class="approve-btn" id="approveBtn">Approve</button>
-    </div>
-    <!-- Post-approval state: Approved badge + Pay now -->
-    <div class="sp-footer sp-footer-paid" id="spFooterApproved" hidden>
-      <span class="sp-approved-note">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-tick-circle"/></svg>
-        Approved
-      </span>
-      <button class="approve-btn pay-now-btn" id="payNowBtn">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-wallet-money"/></svg>
-        Pay now
-      </button>
     </div>
   </aside>
 
@@ -1859,19 +1836,6 @@
     function openPanel() { panel.classList.add('open'); overlay.classList.add('open'); panel.setAttribute('aria-hidden', 'false'); }
     function closePanel() { panel.classList.remove('open'); overlay.classList.remove('open'); panel.setAttribute('aria-hidden', 'true'); }
 
-    // Reset the footer + header back to the "needs review" state whenever a
-    // new request is opened (so a prior approval doesn't carry over).
-    function resetApprovalState() {
-      const pill = document.getElementById('spStatusPill');
-      pill.textContent = 'Needs review';
-      pill.className = 'pill pending';
-      document.getElementById('spFooterReview').hidden = false;
-      document.getElementById('spFooterApproved').hidden = true;
-      const payBtn = document.getElementById('payNowBtn');
-      payBtn.classList.remove('is-paid');
-      payBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-wallet-money"/></svg> Pay now';
-    }
-
     // Fill the side panel from a clicked request row's data attributes,
     // adapting for reimbursement requests (currency + receipt attachment).
     function fillPanel(row) {
@@ -1928,7 +1892,6 @@
       row.addEventListener('click', e => {
         if (e.target.closest('.req-actions')) return;
         fillPanel(row);
-        resetApprovalState();
         openPanel();
       });
     });
@@ -1936,25 +1899,7 @@
     overlay.addEventListener('click', closePanel);
     document.getElementById('spClose').addEventListener('click', closePanel);
     document.getElementById('denyBtn').addEventListener('click', closePanel);
-
-    // Approve: don't close — mark the request approved and surface a
-    // "Pay now" action so the client can release the payment immediately.
-    document.getElementById('approveBtn').addEventListener('click', () => {
-      const pill = document.getElementById('spStatusPill');
-      pill.textContent = 'Approved';
-      pill.className = 'pill approved';
-      document.getElementById('spFooterReview').hidden = true;
-      document.getElementById('spFooterApproved').hidden = false;
-    });
-
-    // Pay now: confirm the payment was scheduled, then close shortly after.
-    document.getElementById('payNowBtn').addEventListener('click', () => {
-      const payBtn = document.getElementById('payNowBtn');
-      if (payBtn.classList.contains('is-paid')) return;
-      payBtn.classList.add('is-paid');
-      payBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-tick-circle"/></svg> Payment scheduled';
-      setTimeout(closePanel, 1100);
-    });
+    document.getElementById('approveBtn').addEventListener('click', closePanel);
 
     // Attachment viewer modal
     const attOverlay = document.getElementById('attOverlay');
