@@ -485,6 +485,40 @@
     .apr-pane { display: none; }
     .apr-pane.active { display: block; }
 
+    /* "View all" overflow button (shown when > 4 pending requests) */
+    .apr-viewall { padding: 4px 22px 18px; }
+    .apr-viewall[hidden] { display: none; }
+    .apr-viewall-btn {
+      width: 100%;
+      padding: 11px 16px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--neutral-0);
+      font-family: inherit;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--primary-600);
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .apr-viewall-btn:hover { background: var(--primary-50); border-color: var(--primary-100); }
+
+    /* All-requests slide-over list */
+    .areq-item {
+      display: flex; flex-wrap: wrap; align-items: center;
+      gap: 12px;
+      padding: 16px 0;
+      border-bottom: 1px solid #f0f1f1;
+    }
+    .areq-item:last-child { border-bottom: none; }
+    .areq-item { cursor: pointer; }
+    .areq-main { flex: 1; min-width: 0; }
+    .areq-name { font-size: 14.5px; font-weight: 700; color: var(--text-primary); line-height: 1.2; }
+    .areq-role { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
+    .areq-amt { font-size: 15px; font-weight: 700; color: var(--text-primary); white-space: nowrap; }
+    .areq-actions { display: flex; gap: 8px; width: 100%; }
+    .areq-actions .deny-btn, .areq-actions .approve-btn { flex: 1; padding: 8px 14px; font-size: 13.5px; }
+
     /* Legacy requests section (kept for any remaining references) */
     .section-title {
       font-size: 15.5px;
@@ -1394,7 +1428,7 @@
           <div class="approvals-head">
             <h2>Needs your approval</h2>
             <div class="approvals-tabs">
-              <button class="apr-tab active" data-apr="payment">Payment requests <span class="apr-count">3</span></button>
+              <button class="apr-tab active" data-apr="payment">Payment requests <span class="apr-count">6</span></button>
             </div>
           </div>
 
@@ -1488,6 +1522,99 @@
                 <button class="deny-btn">Deny</button>
                 <button class="approve-btn">Approve</button>
               </div>
+            </div>
+
+            <div class="request-row"
+                 data-type="invoice"
+                 data-initials="DF" data-name="Diego Fernández" data-role="Developer · Spain"
+                 data-inv="#INV-2025" data-amount="$3,200.00"
+                 data-submitted="Submitted Mar 09, 2026 · due Mar 23, 2026"
+                 data-period="Feb 2026" data-typelabel="Monthly retainer" data-currency="USD"
+                 data-items="Platform API work|$2,400;;Weekend on-call · 16h|$800"
+                 data-note="February engineering retainer plus weekend on-call coverage.">
+              <div class="req-user">
+                <div class="req-avatar">DF</div>
+                <div>
+                  <div class="req-name">Diego Fernández</div>
+                  <div class="req-role">Developer · Spain</div>
+                </div>
+              </div>
+              <div class="req-col">
+                <div class="req-col-label">Type</div>
+                <div class="req-col-value">Invoice</div>
+              </div>
+              <div class="req-col">
+                <div class="req-col-label">Amount</div>
+                <div class="req-col-value">$3,200.00</div>
+              </div>
+              <div class="req-actions">
+                <button class="deny-btn">Deny</button>
+                <button class="approve-btn">Approve</button>
+              </div>
+            </div>
+
+            <div class="request-row"
+                 data-type="reimbursement"
+                 data-initials="ML" data-name="Mei Lin" data-role="Designer · Singapore"
+                 data-inv="#REI-0095" data-amount="$275.00"
+                 data-submitted="Submitted Mar 09, 2026 · due Mar 23, 2026"
+                 data-period="Mar 2026" data-typelabel="Reimbursement" data-currency="USD"
+                 data-items="Design software licence|$180;;Stock photography|$95"
+                 data-note="Monthly design tooling and stock asset licences."
+                 data-exp-type="Software" data-exp-date="Mar 09, 2026"
+                 data-attach-name="receipts-design-tools.pdf" data-attach-size="PDF · 2 files · 0.4 MB">
+              <div class="req-user">
+                <div class="req-avatar">ML</div>
+                <div>
+                  <div class="req-name">Mei Lin</div>
+                  <div class="req-role">Designer · Singapore</div>
+                </div>
+              </div>
+              <div class="req-col">
+                <div class="req-col-label">Type</div>
+                <div class="req-col-value">Reimbursement</div>
+              </div>
+              <div class="req-col">
+                <div class="req-col-label">Amount</div>
+                <div class="req-col-value">$275.00</div>
+              </div>
+              <div class="req-actions">
+                <button class="deny-btn">Deny</button>
+                <button class="approve-btn">Approve</button>
+              </div>
+            </div>
+
+            <div class="request-row"
+                 data-type="invoice"
+                 data-initials="OH" data-name="Omar Haddad" data-role="Developer · UAE"
+                 data-inv="#INV-2026" data-amount="$1,750.00"
+                 data-submitted="Submitted Mar 10, 2026 · due Mar 24, 2026"
+                 data-period="Feb 2026" data-typelabel="Project milestone" data-currency="USD"
+                 data-items="Mobile app milestone 2|$1,750"
+                 data-note="Milestone 2 delivery for the iOS app rebuild.">
+              <div class="req-user">
+                <div class="req-avatar">OH</div>
+                <div>
+                  <div class="req-name">Omar Haddad</div>
+                  <div class="req-role">Developer · UAE</div>
+                </div>
+              </div>
+              <div class="req-col">
+                <div class="req-col-label">Type</div>
+                <div class="req-col-value">Invoice</div>
+              </div>
+              <div class="req-col">
+                <div class="req-col-label">Amount</div>
+                <div class="req-col-value">$1,750.00</div>
+              </div>
+              <div class="req-actions">
+                <button class="deny-btn">Deny</button>
+                <button class="approve-btn">Approve</button>
+              </div>
+            </div>
+
+            <div class="apr-viewall" id="aprViewAll" hidden>
+              <button class="apr-viewall-btn" id="aprViewAllBtn" type="button">View all <span id="aprViewAllCount">6</span> requests</button>
             </div>
           </div>
 
@@ -1644,6 +1771,17 @@
     </div>
   </aside>
 
+  <!-- ─── All payment requests panel ─── -->
+  <aside class="side-panel" id="allReqPanel" aria-hidden="true">
+    <div class="sp-header">
+      <h3>Payment requests <span class="apr-count" id="allReqCount">6</span></h3>
+      <button class="sp-close" id="allReqClose" aria-label="Close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-close"/></svg>
+      </button>
+    </div>
+    <div class="sp-body" id="allReqList"></div>
+  </aside>
+
   <!-- ─── Attachment viewer modal ─── -->
   <div class="att-overlay" id="attOverlay"></div>
   <div class="att-modal" id="attModal" role="dialog" aria-modal="true" aria-labelledby="attModalName">
@@ -1784,11 +1922,87 @@
       const deny = row.querySelector('.req-actions .deny-btn');
       if (deny) deny.addEventListener('click', e => {
         e.stopPropagation();
-        row.style.transition = 'opacity .18s ease';
-        row.style.opacity = '0';
-        setTimeout(() => { row.remove(); refreshApprovalCount(); }, 180);
+        denyRow(row);
       });
     });
+
+    // ─── "View all" approvals drawer (shown when > 4 pending requests) ───
+    const VIEW_ALL_THRESHOLD = 4;
+    const allReqPanel = document.getElementById('allReqPanel');
+    const aprViewAll = document.getElementById('aprViewAll');
+
+    function paymentRows() {
+      return Array.from(document.querySelectorAll('.apr-pane[data-apr="payment"] .request-row'));
+    }
+
+    // Cap the inline list to the first 4 rows and reveal the "View all"
+    // button only when there are more pending requests than that.
+    function syncApprovalsView() {
+      const rows = paymentRows();
+      const overflow = rows.length > VIEW_ALL_THRESHOLD;
+      rows.forEach((row, i) => { row.style.display = (overflow && i >= VIEW_ALL_THRESHOLD) ? 'none' : ''; });
+      aprViewAll.hidden = !overflow;
+      if (overflow) document.getElementById('aprViewAllCount').textContent = rows.length;
+      refreshApprovalCount();
+    }
+
+    // Shared deny used by both the inline rows and the drawer rows so the
+    // count badge, inline cap and open drawer all stay in sync.
+    function denyRow(row) {
+      row.style.transition = 'opacity .18s ease';
+      row.style.opacity = '0';
+      setTimeout(() => {
+        row.remove();
+        syncApprovalsView();
+        if (allReqPanel.classList.contains('open')) renderAllReqDrawer();
+      }, 180);
+    }
+
+    // Build the full list inside the slide-over from the live request rows.
+    function renderAllReqDrawer() {
+      const rows = paymentRows();
+      document.getElementById('allReqCount').textContent = rows.length;
+      const list = document.getElementById('allReqList');
+      list.innerHTML = '';
+      if (!rows.length) {
+        list.innerHTML = '<div style="padding:40px 0; text-align:center; color:#626368; font-size:14px;">No pending requests.</div>';
+        return;
+      }
+      rows.forEach(row => {
+        const d = row.dataset;
+        const typeLabel = d.typelabel || (d.type === 'reimbursement' ? 'Reimbursement' : 'Invoice');
+        const item = document.createElement('div');
+        item.className = 'areq-item';
+        item.innerHTML =
+          '<div class="req-avatar">' + (d.initials || '') + '</div>' +
+          '<div class="areq-main">' +
+            '<div class="areq-name">' + (d.name || '') + '</div>' +
+            '<div class="areq-role">' + (d.role || '') + ' · ' + typeLabel + '</div>' +
+          '</div>' +
+          '<div class="areq-amt">' + (d.amount || '') + '</div>' +
+          '<div class="areq-actions">' +
+            '<button class="deny-btn" type="button">Deny</button>' +
+            '<button class="approve-btn" type="button">Approve</button>' +
+          '</div>';
+        item.addEventListener('click', e => {
+          if (e.target.closest('.areq-actions')) return;
+          closeAllReq();
+          fillPanel(row);
+          openPanel();
+        });
+        item.querySelector('.approve-btn').addEventListener('click', e => { e.stopPropagation(); goToPay(row.dataset); });
+        item.querySelector('.deny-btn').addEventListener('click', e => { e.stopPropagation(); denyRow(row); });
+        list.appendChild(item);
+      });
+    }
+
+    function openAllReq() { renderAllReqDrawer(); allReqPanel.classList.add('open'); overlay.classList.add('open'); allReqPanel.setAttribute('aria-hidden', 'false'); }
+    function closeAllReq() { allReqPanel.classList.remove('open'); overlay.classList.remove('open'); allReqPanel.setAttribute('aria-hidden', 'true'); }
+    document.getElementById('aprViewAllBtn').addEventListener('click', openAllReq);
+    document.getElementById('allReqClose').addEventListener('click', closeAllReq);
+    overlay.addEventListener('click', closeAllReq);
+
+    syncApprovalsView();
 
     overlay.addEventListener('click', closePanel);
     document.getElementById('spClose').addEventListener('click', closePanel);
@@ -1827,6 +2041,7 @@
       if (e.key !== 'Escape') return;
       if (attModal.classList.contains('open')) { closeAtt(); return; }
       closePanel();
+      closeAllReq();
     });
   </script>
 
