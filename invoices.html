@@ -1654,7 +1654,12 @@
         km.classList.remove('open');
         if (!activeRow) return;
         const cells = activeRow.querySelectorAll('td');
-        openSettlement(cells[0].textContent.trim(), cells[1].textContent.trim(), cells[5].textContent.trim());
+        // Freelancer name without the avatar initials prefix.
+        const nameCell = activeRow.querySelector('.cell-name');
+        let name = (nameCell || cells[1]).textContent.trim();
+        const avatar = nameCell && nameCell.querySelector('.cell-avatar');
+        if (avatar) name = name.replace(avatar.textContent.trim(), '').trim();
+        openSettlement(cells[0].textContent.trim(), name, cells[5].textContent.trim());
       });
       document.addEventListener('click', function (e) { if (!km.contains(e.target)) km.classList.remove('open'); });
       window.addEventListener('scroll', function () { km.classList.remove('open'); }, true);
