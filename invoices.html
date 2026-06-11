@@ -1060,7 +1060,7 @@
         </table>
       </div>
 
-      <div class="sp-section">
+      <div class="sp-section" id="bankTransferSection">
         <div class="sp-section-label">Bank transfer details</div>
         <div class="bank-toggle">
           <button class="active">Local</button>
@@ -1438,6 +1438,8 @@
       pInvNum.textContent = invNum;
       pStatus.textContent = status;
       pStatus.className = 'pill ' + (status === 'Paid' ? 'paid' : status === 'Overdue' ? 'overdue' : 'pending');
+      var bankSection = document.getElementById('bankTransferSection');
+      if (bankSection) bankSection.style.display = (status === 'Paid') ? 'none' : '';
       pAmount.textContent = amount;
       pDate.textContent = date;
       pRef.textContent = invNum.replace('#', '');
