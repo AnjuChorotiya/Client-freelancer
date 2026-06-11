@@ -374,6 +374,24 @@
     table { width: 100%; border-collapse: collapse; }
     thead { background: #fafafa; border-bottom: 1px solid #f0f1f1; }
     thead th { text-align: left; padding: 12px 24px; font-family: 'Satoshi', sans-serif; font-size: 12.5px; font-weight: 500; color: #85878d; }
+    /* Sortable column headers */
+    thead th.th-sort { cursor: pointer; user-select: none; white-space: nowrap; }
+    thead th.th-sort .th-label { transition: color 0.15s; }
+    thead th.th-sort:hover .th-label { color: var(--text-primary); }
+    thead th.th-sort.text-right { text-align: right; }
+    .th-caret { width: 13px; height: 13px; margin-left: 5px; vertical-align: middle; opacity: 0; transition: opacity 0.15s, transform 0.15s; color: var(--primary-500); }
+    thead th.th-sort:hover .th-caret { opacity: 0.4; }
+    thead th.th-sort.sorted .th-caret { opacity: 1; }
+    thead th.th-sort.sorted.asc .th-caret { transform: rotate(180deg); }
+    /* Status filter in header */
+    thead th.th-filter { padding: 6px 24px; overflow: visible; }
+    .th-filter .filter-dd { display: inline-block; }
+    .th-filter-trigger { display: inline-flex; align-items: center; gap: 6px; background: transparent; border: none; padding: 0; cursor: pointer; font-family: 'Satoshi', sans-serif; font-size: 12.5px; font-weight: 500; color: #85878d; }
+    .th-filter-trigger:hover { color: var(--text-primary); }
+    .th-filter-trigger .chev { width: 13px; height: 13px; color: inherit; transition: transform 0.2s; }
+    .th-filter-trigger.open { color: var(--primary-500); }
+    .th-filter-trigger.open .chev { transform: rotate(180deg); }
+    .th-filter-trigger.filtered { color: var(--primary-500); font-weight: 700; }
     tbody tr { border-bottom: 1px solid #f5f5f5; transition: background 0.2s ease; }
     tbody tr:last-child { border-bottom: none; }
     tbody td { border: none; }
@@ -1012,12 +1030,23 @@
           <table>
             <thead>
               <tr>
-                <th>Invoice</th>
-                <th>Freelancer</th>
-                <th>Submitted</th>
-                <th>Due</th>
-                <th class="text-right">Amount</th>
-                <th>Status</th>
+                <th class="th-sort" data-key="inv"><span class="th-label">Invoice</span><svg class="th-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-arrow-down"/></svg></th>
+                <th class="th-sort" data-key="name"><span class="th-label">Freelancer</span><svg class="th-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-arrow-down"/></svg></th>
+                <th class="th-sort" data-key="date"><span class="th-label">Submitted</span><svg class="th-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-arrow-down"/></svg></th>
+                <th class="th-sort" data-key="due"><span class="th-label">Due</span><svg class="th-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-arrow-down"/></svg></th>
+                <th class="th-sort text-right" data-key="amt"><span class="th-label">Amount</span><svg class="th-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-arrow-down"/></svg></th>
+                <th class="th-filter">
+                  <div class="filter-dd" id="statusThDd">
+                    <button class="th-filter-trigger" id="statusThTrigger" type="button"><span id="statusThLabel">Status</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-arrow-down"/></svg></button>
+                    <div class="dd-menu" id="statusThMenu" role="listbox">
+                      <button class="dd-item active" data-value="all" data-label="Status"><span class="dd-item-label">All status</span><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-tick-circle"/></svg></button>
+                      <button class="dd-item" data-value="due" data-label="Status"><span class="dd-item-label"><span class="dd-dot due"></span>Due</span><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-tick-circle"/></svg></button>
+                      <button class="dd-item" data-value="overdue" data-label="Status"><span class="dd-item-label"><span class="dd-dot overdue"></span>Overdue</span><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-tick-circle"/></svg></button>
+                      <button class="dd-item" data-value="paid" data-label="Status"><span class="dd-item-label"><span class="dd-dot paid"></span>Paid</span><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-tick-circle"/></svg></button>
+                      <button class="dd-item" data-value="draft" data-label="Status"><span class="dd-item-label"><span class="dd-dot draft"></span>Draft</span><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-tick-circle"/></svg></button>
+                    </div>
+                  </div>
+                </th>
                 <th></th>
               </tr>
             </thead>
@@ -1823,7 +1852,7 @@
 
       // Current selections.
       let statusFilter = 'all';
-      let sortMode = 'date-desc';
+      let sortMode = 'date-desc'; // "<key>-<dir>" e.g. amt-desc, name-asc
 
       // Map the visible status pill text to a filter value.
       function rowStatus(tr) {
@@ -1835,72 +1864,110 @@
         if (t.indexOf('due') > -1)      return 'due';
         return 'other'; // verifying / in review / action needed / rejected / transfer initiated
       }
-      function rowDate(tr) {
-        const d = new Date(tr.cells[2].textContent.trim());
-        return isNaN(d) ? 0 : d.getTime();
-      }
-      function rowAmount(tr) {
-        return parseFloat(tr.cells[4].textContent.replace(/[^0-9.]/g, '')) || 0;
+      function dateVal(tr, i) { const d = new Date(tr.cells[i].textContent.trim()); return isNaN(d) ? 0 : d.getTime(); }
+      function amtVal(tr)     { return parseFloat(tr.cells[4].textContent.replace(/[^0-9.]/g, '')) || 0; }
+      function textVal(tr, i) { return tr.cells[i].textContent.trim().toLowerCase(); }
+
+      // Comparator keyed by column.
+      function cmp(key, a, b) {
+        switch (key) {
+          case 'date': return dateVal(a, 2) - dateVal(b, 2);
+          case 'due':  return dateVal(a, 3) - dateVal(b, 3);
+          case 'amt':  return amtVal(a) - amtVal(b);
+          case 'inv':  return textVal(a, 0).localeCompare(textVal(b, 0));
+          case 'name': return textVal(a, 1).localeCompare(textVal(b, 1));
+          default:     return 0;
+        }
       }
 
+      // Human label for the toolbar "Sort by" trigger.
+      const sortLabels = {
+        'date-desc': 'Newest first', 'date-asc': 'Oldest first',
+        'amt-desc': 'Amount: high to low', 'amt-asc': 'Amount: low to high',
+        'due-desc': 'Due: latest', 'due-asc': 'Due: soonest',
+        'inv-desc': 'Invoice: Z–A', 'inv-asc': 'Invoice: A–Z',
+        'name-desc': 'Freelancer: Z–A', 'name-asc': 'Freelancer: A–Z'
+      };
+      const statusLabels = { all: 'All status', due: 'Due', overdue: 'Overdue', paid: 'Paid', draft: 'Draft' };
+
       function apply() {
+        const key = sortMode.split('-')[0];
+        const dir = sortMode.split('-')[1] === 'asc' ? 1 : -1;
         // Filter.
         rows.forEach(tr => {
           const show = (statusFilter === 'all') || (rowStatus(tr) === statusFilter);
           tr.style.display = show ? '' : 'none';
         });
-        // Sort (visible order; hidden rows ride along harmlessly).
-        const sorted = rows.slice().sort((a, b) => {
-          switch (sortMode) {
-            case 'date-asc':  return rowDate(a) - rowDate(b);
-            case 'date-desc': return rowDate(b) - rowDate(a);
-            case 'amt-asc':   return rowAmount(a) - rowAmount(b);
-            case 'amt-desc':  return rowAmount(b) - rowAmount(a);
-            default:          return 0;
-          }
-        });
-        sorted.forEach(tr => tbody.appendChild(tr));
+        // Sort.
+        rows.slice().sort((a, b) => dir * cmp(key, a, b)).forEach(tr => tbody.appendChild(tr));
+        syncUI();
       }
 
-      // Generic dropdown wiring (open/close + selection).
-      function wireDropdown(ddId, triggerId, menuId, labelId, onSelect) {
+      // Reflect current state across all controls.
+      function syncUI() {
+        const sortKey = sortMode.split('-')[0];
+        const asc = sortMode.split('-')[1] === 'asc';
+        // Header carets.
+        document.querySelectorAll('thead th.th-sort').forEach(th => {
+          const on = th.dataset.key === sortKey;
+          th.classList.toggle('sorted', on);
+          th.classList.toggle('asc', on && asc);
+        });
+        // Toolbar sort dropdown.
+        const sortLabelEl = document.getElementById('sortLabel');
+        if (sortLabelEl) sortLabelEl.textContent = sortLabels[sortMode] || 'Sort';
+        document.querySelectorAll('#sortMenu .dd-item').forEach(i => i.classList.toggle('active', i.dataset.sort === sortMode));
+        // Status menus (toolbar + header) + labels.
+        document.querySelectorAll('#statusMenu .dd-item, #statusThMenu .dd-item').forEach(i => i.classList.toggle('active', (i.dataset.value || 'all') === statusFilter));
+        const sLabel = document.getElementById('statusLabel');
+        if (sLabel) sLabel.textContent = statusLabels[statusFilter] || 'All status';
+        const thLabel = document.getElementById('statusThLabel');
+        if (thLabel) thLabel.textContent = statusFilter === 'all' ? 'Status' : statusLabels[statusFilter];
+        const thTrig = document.getElementById('statusThTrigger');
+        if (thTrig) thTrig.classList.toggle('filtered', statusFilter !== 'all');
+      }
+
+      // Generic dropdown open/close + selection.
+      const openables = [];
+      function wireDropdown(ddId, triggerId, menuId, onSelect) {
         const dd = document.getElementById(ddId);
+        if (!dd) return;
         const trigger = document.getElementById(triggerId);
         const menu = document.getElementById(menuId);
-        const label = document.getElementById(labelId);
-        if (!dd) return;
         trigger.addEventListener('click', e => {
           e.stopPropagation();
+          openables.forEach(o => { if (o.menu !== menu) { o.menu.classList.remove('open'); o.trigger.classList.remove('open'); } });
           const open = menu.classList.toggle('open');
           trigger.classList.toggle('open', open);
         });
         menu.querySelectorAll('.dd-item').forEach(item => {
           item.addEventListener('click', () => {
-            menu.querySelectorAll('.dd-item').forEach(i => i.classList.toggle('active', i === item));
-            if (label) label.textContent = item.dataset.label;
             menu.classList.remove('open');
             trigger.classList.remove('open');
             onSelect(item);
           });
         });
-        document.addEventListener('click', e => {
-          if (!dd.contains(e.target)) { menu.classList.remove('open'); trigger.classList.remove('open'); }
-        });
-        return { menu, trigger };
+        openables.push({ menu, trigger });
       }
 
-      const all = [];
-      all.push(wireDropdown('statusDd', 'statusTrigger', 'statusMenu', 'statusLabel', item => {
-        statusFilter = item.dataset.value || 'all';
-        apply();
-      }));
-      all.push(wireDropdown('sortDd', 'sortTrigger', 'sortMenu', 'sortLabel', item => {
-        sortMode = item.dataset.sort || 'date-desc';
-        apply();
-      }));
+      wireDropdown('statusDd', 'statusTrigger', 'statusMenu', item => { statusFilter = item.dataset.value || 'all'; apply(); });
+      wireDropdown('sortDd', 'sortTrigger', 'sortMenu', item => { sortMode = item.dataset.sort || 'date-desc'; apply(); });
+      wireDropdown('statusThDd', 'statusThTrigger', 'statusThMenu', item => { statusFilter = item.dataset.value || 'all'; apply(); });
 
+      // Clickable column headers: toggle direction, default descending.
+      document.querySelectorAll('thead th.th-sort').forEach(th => {
+        th.addEventListener('click', () => {
+          const key = th.dataset.key;
+          sortMode = (sortMode === key + '-desc') ? key + '-asc' : key + '-desc';
+          apply();
+        });
+      });
+
+      document.addEventListener('click', e => {
+        openables.forEach(o => { if (!o.menu.parentElement.contains(e.target)) { o.menu.classList.remove('open'); o.trigger.classList.remove('open'); } });
+      });
       document.addEventListener('keydown', e => {
-        if (e.key === 'Escape') all.forEach(d => { if (d) { d.menu.classList.remove('open'); d.trigger.classList.remove('open'); } });
+        if (e.key === 'Escape') openables.forEach(o => { o.menu.classList.remove('open'); o.trigger.classList.remove('open'); });
       });
 
       apply(); // initial sort (Newest first)
