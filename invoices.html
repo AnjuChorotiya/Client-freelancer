@@ -383,6 +383,7 @@
     .cell-avatar { width: 36px; height: 36px; background: #2684ff; border-radius: 50%; color: #fff; display: flex; align-items: center; justify-content: center; font-family: 'Satoshi', sans-serif; font-size: 14px; font-weight: 600; flex-shrink: 0; }
     .cell-name span:not(.cell-avatar) { color: #222224; font-family: 'Satoshi', sans-serif; font-weight: 500; }
     .amount { font-family: 'Satoshi', sans-serif; font-weight: 500; color: #222224; }
+    .amount .inr { display: block; font-family: 'Open Sans', sans-serif; font-weight: 300; font-size: 12px; color: var(--text-muted); margin-top: 2px; }
     .text-right { text-align: right; }
 
     .pill { display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 16px; font-family: 'Satoshi', sans-serif; font-size: 12px; font-weight: 500; line-height: 1; }
@@ -987,7 +988,7 @@
                 <td><div class="cell-name"><div class="cell-avatar" style="background:#2684FF;">CM</div>Carlos Mendez</div></td>
                 <td>Feb 28, 2026</td>
                 <td>Mar 14, 2026</td>
-                <td class="text-right amount">$1,200</td>
+                <td class="text-right amount">$1,200<span class="inr">₹1,06,920</span></td>
                 <td><span class="pill pending">Due</span></td>
                 <td><a class="pay-btn pay-link">Pay now</a></td>
               </tr>
@@ -997,7 +998,7 @@
                 <td><div class="cell-name"><div class="cell-avatar" style="background:#0026FF;">PS</div>Priya Sharma</div></td>
                 <td>Feb 26, 2026</td>
                 <td>Mar 12, 2026</td>
-                <td class="text-right amount">$3,400</td>
+                <td class="text-right amount">$3,400<span class="inr">₹3,02,940</span></td>
                 <td><span class="pill pending">Due</span></td>
                 <td><a class="pay-btn pay-link">Pay now</a></td>
               </tr>
@@ -1007,7 +1008,7 @@
                 <td><div class="cell-name"><div class="cell-avatar" style="background:#1A6FE0;">AK</div>Aisha Khan</div></td>
                 <td>Feb 22, 2026</td>
                 <td>Feb 28, 2026</td>
-                <td class="text-right amount">$600</td>
+                <td class="text-right amount">$600<span class="inr">₹53,460</span></td>
                 <td><span class="pill overdue">Overdue</span></td>
                 <td><a class="pay-btn pay-link">Pay now</a></td>
               </tr>
@@ -1017,7 +1018,7 @@
                 <td><div class="cell-name"><div class="cell-avatar" style="background:#4D97FF;">JL</div>John Lee</div></td>
                 <td>Feb 20, 2026</td>
                 <td>Mar 6, 2026</td>
-                <td class="text-right amount">$400</td>
+                <td class="text-right amount">$400<span class="inr">₹35,640</span></td>
                 <td><span class="pill paid">Paid</span></td>
                 <td><button class="row-action"><svg viewBox="0 0 24 24" fill="currentColor"><use href="#ic-more"/></svg></button></td>
               </tr>
@@ -1027,7 +1028,7 @@
                 <td><div class="cell-name"><div class="cell-avatar" style="background:#72ABFF;">MS</div>Maria Silva</div></td>
                 <td>Feb 18, 2026</td>
                 <td>Mar 4, 2026</td>
-                <td class="text-right amount">$720</td>
+                <td class="text-right amount">$720<span class="inr">₹64,152</span></td>
                 <td><span class="pill paid">Paid</span></td>
                 <td><button class="row-action"><svg viewBox="0 0 24 24" fill="currentColor"><use href="#ic-more"/></svg></button></td>
               </tr>
@@ -1037,7 +1038,7 @@
                 <td><div class="cell-name"><div class="cell-avatar" style="background:#0026FF;">PS</div>Priya Sharma</div></td>
                 <td>Jan 28, 2026</td>
                 <td>Feb 12, 2026</td>
-                <td class="text-right amount">$3,400</td>
+                <td class="text-right amount">$3,400<span class="inr">₹3,02,940</span></td>
                 <td><span class="pill paid">Paid</span></td>
                 <td><button class="row-action"><svg viewBox="0 0 24 24" fill="currentColor"><use href="#ic-more"/></svg></button></td>
               </tr>
@@ -1047,7 +1048,7 @@
                 <td><div class="cell-name"><div class="cell-avatar" style="background:#2684FF;">RS</div>Rahul Sharma</div></td>
                 <td>May 22, 2025</td>
                 <td>Jun 5, 2025</td>
-                <td class="text-right amount">$4,500</td>
+                <td class="text-right amount">$4,500<span class="inr">₹4,00,950</span></td>
                 <td><span class="pill verifying">Verifying</span></td>
                 <td><button class="row-action"><svg viewBox="0 0 24 24" fill="currentColor"><use href="#ic-more"/></svg></button></td>
               </tr>
@@ -1057,7 +1058,7 @@
                 <td><div class="cell-name"><div class="cell-avatar" style="background:#0026FF;">RS</div>Rahul Sharma</div></td>
                 <td>May 22, 2025</td>
                 <td>Jun 5, 2025</td>
-                <td class="text-right amount">$4,500</td>
+                <td class="text-right amount">$4,500<span class="inr">₹4,00,950</span></td>
                 <td><span class="pill review">In review</span></td>
                 <td><button class="row-action"><svg viewBox="0 0 24 24" fill="currentColor"><use href="#ic-more"/></svg></button></td>
               </tr>
@@ -1067,7 +1068,7 @@
                 <td><div class="cell-name"><div class="cell-avatar" style="background:#1A6FE0;">RS</div>Rahul Sharma</div></td>
                 <td>May 22, 2025</td>
                 <td>Jun 5, 2025</td>
-                <td class="text-right amount">$4,500</td>
+                <td class="text-right amount">$4,500<span class="inr">₹4,00,950</span></td>
                 <td><span class="pill mismatch">Action needed</span></td>
                 <td><button class="row-action"><svg viewBox="0 0 24 24" fill="currentColor"><use href="#ic-more"/></svg></button></td>
               </tr>
@@ -1077,7 +1078,7 @@
                 <td><div class="cell-name"><div class="cell-avatar" style="background:#72ABFF;">RS</div>Rahul Sharma</div></td>
                 <td>May 15, 2025</td>
                 <td>May 29, 2025</td>
-                <td class="text-right amount">$4,500</td>
+                <td class="text-right amount">$4,500<span class="inr">₹4,00,950</span></td>
                 <td><span class="pill rejected">Rejected</span></td>
                 <td><button class="row-action"><svg viewBox="0 0 24 24" fill="currentColor"><use href="#ic-more"/></svg></button></td>
               </tr>
