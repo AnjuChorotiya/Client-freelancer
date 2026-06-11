@@ -783,6 +783,18 @@
     .set-section-label::after { content: ''; flex: 1; height: 1px; background: var(--primary-100); }
     .set-row { display: flex; justify-content: space-between; align-items: center; padding: 11px 0; font-size: 14px; }
     .set-row .lbl { color: var(--text-secondary); display: flex; align-items: center; gap: 6px; }
+    .set-tip { position: relative; display: inline-flex; align-items: center; cursor: help; }
+    .set-tip svg { width: 15px; height: 15px; color: var(--text-muted); }
+    .set-tip::after {
+      content: attr(data-tip);
+      position: absolute; bottom: calc(100% + 8px); left: 0;
+      width: 230px; padding: 9px 11px; border-radius: 8px;
+      background: var(--text-primary); color: var(--neutral-0);
+      font-size: 12px; font-weight: 400; line-height: 1.45; text-align: left; letter-spacing: normal; text-transform: none;
+      opacity: 0; visibility: hidden; transform: translateY(3px); transition: opacity 0.15s, transform 0.15s;
+      z-index: 60; pointer-events: none; box-shadow: 0 8px 24px rgba(0,0,0,0.16);
+    }
+    .set-tip:hover::after { opacity: 1; visibility: visible; transform: translateY(0); }
     .set-row .lbl svg { width: 15px; height: 15px; color: var(--text-muted); }
     .set-row .val { font-weight: 700; color: var(--text-primary); }
     .set-row .val.rate { color: var(--primary-500); }
@@ -1300,7 +1312,7 @@
           <div class="set-row"><span class="lbl">Bank fx fees (0.5%)</span><span class="val">-$26.55</span></div>
           <div class="set-row"><span class="lbl">Wisemonk fee (0.5%)</span><span class="val">-$26.55</span></div>
           <div class="set-row"><span class="lbl">Amount received (USD)</span><span class="val">$5,256.90</span></div>
-          <div class="set-row"><span class="lbl">Converted to INR <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><use href="#ic-info-circle"/></svg></span><span class="val rate">1 USD = 89.10 INR</span></div>
+          <div class="set-row"><span class="lbl">Converted to INR <span class="set-tip" data-tip="This rate is live. The final rate will be locked once we receive your payment." tabindex="0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><use href="#ic-info-circle"/></svg></span></span><span class="val rate">1 USD = 89.10 INR</span></div>
           <div class="set-row total"><span class="lbl" id="setTotalLbl">Net credit to you</span><span class="val">₹4,68,389.79</span></div>
         </div>
 
