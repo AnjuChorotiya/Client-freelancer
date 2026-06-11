@@ -1661,8 +1661,8 @@
       function baseStages(name) {
         return [
           { date: '15 May 2025', title: 'Payment request',          meta: 'By ' + name,             state: 'done' },
-          { date: '20 May 2025', title: 'You approved the request', meta: 'Payment instructions sent', state: 'done' },
-          { date: '22 May 2025', title: 'Payment submitted',        meta: '$4,500.00',               state: 'done' }
+          { date: '20 May 2025', title: 'Approval',                 meta: 'Payment instructions sent', state: 'done' },
+          { date: '22 May 2025', title: 'Payment sent',             meta: '$4,500.00',               state: 'done' }
         ];
       }
 
@@ -1672,23 +1672,24 @@
         switch (caseId) {
           case 'settled':
             return baseStages(name).concat([
-              { date: '23 May 2025', title: 'Payment verified', meta: 'Invoice ' + ref + ' marked paid', state: 'done' },
-              { date: '25 May 2025', title: 'Contractor paid',  meta: '₹3,72,742.50 credited to ' + name, state: 'done', badge: 'Settled' }
+              { date: '23 May 2025', title: 'Awaiting payment',   meta: 'Payment matched to our records', state: 'done' },
+              { date: '24 May 2025', title: 'Transfer initiated', meta: 'Sent to ' + name + "'s bank", state: 'done' },
+              { date: '25 May 2025', title: 'Freelancer paid',    meta: '₹3,72,742.50 credited to ' + name, state: 'done', badge: 'Settled' }
             ]);
           case 'verifying':
             return baseStages(name).concat([
               { date: 'In progress', title: 'Verifying payment', state: 'progress', note: 'Matching your transfer to our records', noteType: 'info' },
-              { date: 'Pending',     title: 'Contractor paid',   state: 'pending' }
+              { date: 'Pending',     title: 'Freelancer paid',   state: 'pending' }
             ]);
           case 'verifying_delayed':
             return baseStages(name).concat([
               { date: 'In progress', title: 'Verifying is taking longer than usual', state: 'progress', note: 'Our team is reviewing your payment', noteType: 'warning' },
-              { date: 'Pending',     title: 'Contractor paid', state: 'pending' }
+              { date: 'Pending',     title: 'Freelancer paid', state: 'pending' }
             ]);
           case 'mismatch':
             return baseStages(name).concat([
               { date: '23 May 2025', title: 'Amount mismatch detected', state: 'progress', noteHtml: 'You paid $8,500 against an expected $8,700.<br><a href="#">Contact support &rarr;</a>', noteType: 'danger' },
-              { date: 'Pending',     title: 'Contractor paid', state: 'pending' }
+              { date: 'Pending',     title: 'Freelancer paid', state: 'pending' }
             ]);
           case 'rejected':
             return [
