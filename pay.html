@@ -402,8 +402,8 @@
         <div class="pay-amount-cap">Payment amount</div>
         <div class="pay-amount-big" id="sumPay">$2,450.00</div>
         <div class="pay-amount-meta" id="metaConvert">
-          ₹18,500 requested
-          <span class="meta-div"></span>
+          <span id="reqAmtLine">₹18,500 requested
+          <span class="meta-div"></span></span>
           Rate locked at <span class="rate">1 USD = 94.56</span> INR for 16 hours
         </div>
       </div>
@@ -584,6 +584,13 @@
       // Keep the confirmation steps in sync with the amount on Step 1.
       ['payAmt2', 'payAmt3'].forEach(id => set(id, '$2,450.00'));
       ['payInr2', 'payInr3'].forEach(id => set(id, '₹18,500'));
+
+      // Hide the "₹… requested" line when the requested currency is USD/dollars.
+      const reqCur = (params.get('cur') || 'INR').trim().toUpperCase();
+      if (reqCur === 'USD' || reqCur === 'USD$' || reqCur === '$') {
+        const reqLine = document.getElementById('reqAmtLine');
+        if (reqLine) reqLine.style.display = 'none';
+      }
     })();
 
     function showStep(n) {
