@@ -746,6 +746,56 @@
     .cmdk-foot span { display: inline-flex; align-items: center; gap: 6px; }
     .cmdk-foot .cmdk-kbd { padding: 1px 6px; }
     /* /wm-cmdk-css */
+
+    /* ─── Row three-dot (kebab) menu ─── */
+    .kebab-menu { position: absolute; display: none; background: var(--neutral-0); border: 1px solid var(--border); border-radius: 10px; box-shadow: 0 8px 24px rgba(18,22,32,0.14); padding: 6px; min-width: 168px; z-index: 1200; }
+    .kebab-menu.open { display: block; }
+    .kebab-item { display: flex; align-items: center; gap: 9px; width: 100%; padding: 9px 12px; border: none; background: transparent; border-radius: 7px; font-family: 'Satoshi', sans-serif; font-size: 14px; font-weight: 500; color: var(--text-secondary); cursor: pointer; text-align: left; }
+    .kebab-item:hover { background: var(--neutral-50); color: var(--text-primary); }
+    .kebab-item svg { width: 16px; height: 16px; color: var(--text-muted); flex-shrink: 0; }
+
+    /* ─── Settlement details modal ─── */
+    .set-overlay { position: fixed; inset: 0; background: rgba(18,22,32,0.45); display: none; align-items: flex-start; justify-content: center; padding: 40px 20px; z-index: 1100; overflow-y: auto; }
+    .set-overlay.open { display: flex; }
+    .set-modal { background: var(--bg-subtle); border-radius: 18px; width: 100%; max-width: 1040px; padding: 26px 30px 30px; box-shadow: 0 24px 60px rgba(18,22,32,0.22); position: relative; }
+    .set-head { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 20px; }
+    .set-head h2 { font-size: 22px; font-weight: 700; color: var(--text-primary); }
+    .set-head .set-sub { font-size: 14px; color: var(--text-muted); margin-top: 4px; }
+    .set-close { width: 34px; height: 34px; border: none; background: var(--neutral-0); border-radius: 8px; color: var(--text-muted); cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .set-close:hover { color: var(--text-primary); }
+    .set-close svg { width: 18px; height: 18px; }
+    .set-grid { display: grid; grid-template-columns: 1fr 330px; gap: 22px; align-items: start; }
+    .set-card { background: var(--neutral-0); border: 1px solid var(--border); border-radius: 14px; padding: 24px 26px; }
+    .set-cap { font-size: 13px; color: var(--text-muted); }
+    .set-net-amt { font-size: 28px; font-weight: 700; color: var(--text-primary); margin-top: 4px; }
+    .set-bank { display: flex; gap: 12px; align-items: flex-start; background: var(--neutral-50); border-radius: 12px; padding: 14px 16px; margin-top: 18px; }
+    .set-bank svg { width: 20px; height: 20px; color: var(--text-secondary); flex-shrink: 0; margin-top: 1px; }
+    .set-bank .b-name { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+    .set-bank .b-sub { font-size: 12.5px; color: var(--text-muted); margin-top: 2px; }
+    .set-bd-title { font-size: 15px; font-weight: 700; color: var(--text-primary); margin: 24px 0 2px; }
+    .set-section-label { font-size: 12px; font-weight: 700; letter-spacing: 0.6px; color: var(--primary-500); display: flex; align-items: center; gap: 14px; margin: 20px 0 4px; }
+    .set-section-label::after { content: ''; flex: 1; height: 1px; background: var(--primary-100); }
+    .set-row { display: flex; justify-content: space-between; align-items: center; padding: 11px 0; font-size: 14px; }
+    .set-row .lbl { color: var(--text-secondary); display: flex; align-items: center; gap: 6px; }
+    .set-row .lbl svg { width: 15px; height: 15px; color: var(--text-muted); }
+    .set-row .val { font-weight: 700; color: var(--text-primary); }
+    .set-row .val.rate { color: var(--primary-500); }
+    .set-row.total { background: var(--primary-50); border-radius: 10px; padding: 14px 16px; margin-top: 10px; }
+    .set-row.total .lbl { font-weight: 700; color: var(--text-primary); }
+    .set-row.total .val { color: var(--primary-600); font-size: 16px; }
+    .set-tl-title { font-size: 16px; font-weight: 700; color: var(--text-primary); margin-bottom: 18px; padding-bottom: 14px; border-bottom: 1px solid var(--border); }
+    .set-tl-item { display: grid; grid-template-columns: 22px 1fr; gap: 12px; position: relative; padding-bottom: 22px; }
+    .set-tl-item:not(:last-child)::before { content: ''; position: absolute; left: 10px; top: 24px; bottom: 0; width: 2px; background: var(--border-strong); }
+    .set-tl-dot { width: 22px; height: 22px; color: var(--primary-500); }
+    .set-tl-dot svg { width: 22px; height: 22px; }
+    .set-tl-item.pending .set-tl-dot { color: var(--neutral-300); }
+    .set-tl-item.pending:not(:last-child)::before { background: var(--neutral-100); }
+    .set-tl-date { font-size: 12px; color: var(--text-muted); }
+    .set-tl-name { font-size: 14px; font-weight: 700; color: var(--text-primary); margin-top: 2px; }
+    .set-tl-item.pending .set-tl-name { color: var(--text-muted); }
+    .set-tl-meta { font-size: 12.5px; color: var(--text-muted); margin-top: 2px; }
+    .set-tl-badge { display: inline-block; margin-top: 7px; background: var(--primary-50); color: var(--primary-600); font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 12px; }
+    @media (max-width: 860px) { .set-grid { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body><!-- wm-icon-sprite --><svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true"><symbol id="ic-home-2" viewBox="0 0 24 24" fill="none"><path d="M9.02 2.84004L3.63 7.04004C2.73 7.74004 2 9.23004 2 10.36V17.77C2 20.09 3.89 21.99 6.21 21.99H17.79C20.11 21.99 22 20.09 22 17.78V10.5C22 9.29004 21.19 7.74004 20.2 7.05004L14.02 2.72004C12.62 1.74004 10.37 1.79004 9.02 2.84004Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1121,6 +1171,63 @@
     </div>
   </aside>
 
+  <!-- ─── Row three-dot (kebab) menu ─── -->
+  <div class="kebab-menu" id="kebabMenu" role="menu">
+    <button class="kebab-item" id="kebabView" type="button" role="menuitem">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-receipt-text"/></svg>
+      View details
+    </button>
+  </div>
+
+  <!-- ─── Settlement details modal ─── -->
+  <div class="set-overlay" id="settleOverlay" role="dialog" aria-modal="true" aria-labelledby="setTitle">
+    <div class="set-modal">
+      <div class="set-head">
+        <div>
+          <h2 id="setTitle">Settlement details</h2>
+          <div class="set-sub" id="setSub">Invoice INV-098</div>
+        </div>
+        <button class="set-close" id="setClose" type="button" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-close"/></svg></button>
+      </div>
+
+      <div class="set-grid">
+        <!-- Left: settlement breakdown -->
+        <div class="set-card">
+          <div class="set-cap">Net credited amount</div>
+          <div class="set-net-amt" id="setNetAmt">₹3,72,742.50</div>
+
+          <div class="set-bank">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-wallet-money"/></svg>
+            <div>
+              <div class="b-name">HDFC Bank (&ast;&ast;&ast;&ast;&ast;&ast;&ast;&ast;&ast;&ast;&ast;1928)</div>
+              <div class="b-sub">Deposited on 25 May 2025</div>
+            </div>
+          </div>
+
+          <div class="set-bd-title">Breakdown</div>
+
+          <div class="set-section-label">Client payment in USD</div>
+          <div class="set-row"><span class="lbl">Gross service amount</span><span class="val">$4,500.00</span></div>
+          <div class="set-row"><span class="lbl">Bank fx fees (0.5%)</span><span class="val">-$26.55</span></div>
+          <div class="set-row"><span class="lbl">Amount received (USD)</span><span class="val">$5,283.45</span></div>
+          <div class="set-row"><span class="lbl">Converted USD &rarr; INR <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><use href="#ic-info-circle"/></svg></span><span class="val rate">1 USD = 89.10 INR</span></div>
+
+          <div class="set-section-label">Credited in INR</div>
+          <div class="set-row"><span class="lbl">Amount received (INR)</span><span class="val">₹4,70,755.40</span></div>
+          <div class="set-row"><span class="lbl">GST applicable (18%) <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><use href="#ic-info-circle"/></svg></span><span class="val">₹84,735.97</span></div>
+          <div class="set-row"><span class="lbl">TDS (10% on service)</span><span class="val">-₹40,095.00</span></div>
+          <div class="set-row total"><span class="lbl">Net credit to you</span><span class="val">₹5,34,646.40</span></div>
+        </div>
+
+        <!-- Right: payment-stage timeline -->
+        <div class="set-card">
+          <div class="set-tl-title">Timeline</div>
+          <div id="setTimeline"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- ─── Request invoice modal ─── -->
   <div class="ri-overlay" id="reqInvoiceModal" role="dialog" aria-modal="true" aria-labelledby="riTitle">
     <div class="ri-modal">
@@ -1480,6 +1587,78 @@
         document.querySelectorAll('.bank-toggle button').forEach(x => x.classList.toggle('active', x === b));
       });
     });
+
+    // ─── Settlement details modal + row three-dot "View details" ───
+    (function () {
+      const overlay = document.getElementById('settleOverlay');
+      const tlWrap  = document.getElementById('setTimeline');
+      const setSub  = document.getElementById('setSub');
+      const km      = document.getElementById('kebabMenu');
+      if (!overlay || !km) return;
+
+      // The five settlement stages. `meta` adapts to the invoice + contractor.
+      function stagesFor(invNum, name) {
+        const ref = invNum.replace('#', '');
+        return [
+          { date: '15 May 2025', title: 'Payment request',         meta: 'By ' + name },
+          { date: '20 May 2025', title: 'You approved the request', meta: 'Payment instructions sent' },
+          { date: '22 May 2025', title: 'Payment submitted',        meta: '$4,500.00' },
+          { date: '23 May 2025', title: 'Payment verified',         meta: 'Invoice ' + ref + ' marked paid' },
+          { date: '25 May 2025', title: 'Contractor paid',          meta: '₹3,72,742.50 credited to ' + name, badge: 'Settled' }
+        ];
+      }
+
+      // Map invoice status → how many stages are complete.
+      function stageForStatus(status) {
+        const s = (status || '').toLowerCase();
+        if (s.indexOf('paid') > -1)    return 5; // fully settled
+        if (s.indexOf('overdue') > -1) return 2; // approved, awaiting payment
+        if (s.indexOf('draft') > -1)   return 0;
+        return 1; // due → request raised
+      }
+
+      function openSettlement(invNum, name, status) {
+        const stage = stageForStatus(status);
+        if (setSub) setSub.textContent = 'Invoice ' + invNum.replace('#', '');
+        tlWrap.innerHTML = stagesFor(invNum, name).map(function (s, i) {
+          const done = i < stage;
+          return '<div class="set-tl-item' + (done ? '' : ' pending') + '">' +
+            '<span class="set-tl-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-tick-circle"/></svg></span>' +
+            '<div><div class="set-tl-date">' + s.date + '</div>' +
+            '<div class="set-tl-name">' + s.title + '</div>' +
+            '<div class="set-tl-meta">' + s.meta + '</div>' +
+            (s.badge && done ? '<span class="set-tl-badge">' + s.badge + '</span>' : '') +
+            '</div></div>';
+        }).join('');
+        overlay.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      }
+      function closeSettlement() { overlay.classList.remove('open'); document.body.style.overflow = ''; }
+      document.getElementById('setClose').addEventListener('click', closeSettlement);
+      overlay.addEventListener('click', function (e) { if (e.target === overlay) closeSettlement(); });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeSettlement(); });
+
+      // Three-dot menu: anchor it under the clicked row-action button.
+      let activeRow = null;
+      document.querySelectorAll('.row-action').forEach(function (btn) {
+        btn.addEventListener('click', function (e) {
+          e.stopPropagation();
+          activeRow = btn.closest('tr');
+          km.classList.add('open');
+          const r = btn.getBoundingClientRect();
+          km.style.top  = (window.scrollY + r.bottom + 6) + 'px';
+          km.style.left = (window.scrollX + r.right - km.offsetWidth) + 'px';
+        });
+      });
+      document.getElementById('kebabView').addEventListener('click', function () {
+        km.classList.remove('open');
+        if (!activeRow) return;
+        const cells = activeRow.querySelectorAll('td');
+        openSettlement(cells[0].textContent.trim(), cells[1].textContent.trim(), cells[5].textContent.trim());
+      });
+      document.addEventListener('click', function (e) { if (!km.contains(e.target)) km.classList.remove('open'); });
+      window.addEventListener('scroll', function () { km.classList.remove('open'); }, true);
+    })();
   </script>
 
   <script>
