@@ -1761,7 +1761,7 @@
         var totalLbl = document.getElementById('setTotalLbl');
         if (capEl)    capEl.textContent    = settled ? 'Net credited amount'    : 'Estimated net credit';
         if (bankSub)  bankSub.textContent  = settled ? 'Deposited on 25 May 2025' : 'Will be deposited to your bank';
-        if (totalLbl) totalLbl.textContent = settled ? 'Net credit to you'       : 'Estimated net credit to you';
+        if (totalLbl) totalLbl.textContent = (settled ? 'Net credit to '       : 'Estimated net credit to ') + name;
 
         tlWrap.innerHTML = buildTimeline(caseId, invNum, name).map(function (s) {
           const dotInner = (s.state === 'done')
