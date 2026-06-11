@@ -486,7 +486,7 @@
     .apr-pane.active { display: block; }
 
     /* "View all" overflow link (shown when > 4 pending requests) */
-    .apr-viewall { display: flex; justify-content: center; padding: 6px 22px 18px; }
+    .apr-viewall { padding-bottom: 18px; }
     .apr-viewall[hidden] { display: none; }
     .apr-viewall-btn {
       padding: 2px 4px;
@@ -1425,8 +1425,8 @@
         <div class="approvals-card">
           <div class="approvals-head">
             <h2>Needs your approval</h2>
-            <div class="approvals-tabs">
-              <button class="apr-tab active" data-apr="payment">Payment requests <span class="apr-count">6</span></button>
+            <div class="apr-viewall" id="aprViewAll" hidden>
+              <button class="apr-viewall-btn" id="aprViewAllBtn" type="button">View all requests</button>
             </div>
           </div>
 
@@ -1611,9 +1611,6 @@
               </div>
             </div>
 
-            <div class="apr-viewall" id="aprViewAll" hidden>
-              <button class="apr-viewall-btn" id="aprViewAllBtn" type="button">View all requests</button>
-            </div>
           </div>
 
         </div>
