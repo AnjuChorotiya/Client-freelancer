@@ -485,23 +485,21 @@
     .apr-pane { display: none; }
     .apr-pane.active { display: block; }
 
-    /* "View all" overflow button (shown when > 4 pending requests) */
-    .apr-viewall { padding: 4px 22px 18px; }
+    /* "View all" overflow link (shown when > 4 pending requests) */
+    .apr-viewall { display: flex; justify-content: center; padding: 6px 22px 18px; }
     .apr-viewall[hidden] { display: none; }
     .apr-viewall-btn {
-      width: 100%;
-      padding: 11px 16px;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      background: var(--neutral-0);
+      padding: 2px 4px;
+      border: none;
+      background: transparent;
       font-family: inherit;
-      font-size: 13.5px;
+      font-size: 14px;
       font-weight: 600;
-      color: var(--primary-600);
+      color: var(--primary-500);
       cursor: pointer;
-      transition: background 0.15s, border-color 0.15s;
+      transition: color 0.15s;
     }
-    .apr-viewall-btn:hover { background: var(--primary-50); border-color: var(--primary-100); }
+    .apr-viewall-btn:hover { color: var(--primary-700); text-decoration: underline; }
 
     /* All-requests slide-over list */
     .areq-item {
