@@ -309,7 +309,9 @@
     .search input:focus { border-color: var(--primary-500); box-shadow: 0 0 0 4px var(--primary-50); }
 
     /* Custom dropdown */
+    .dd-group { display: flex; align-items: center; gap: 12px; }
     .filter-dd { position: relative; }
+    .dd-trigger .sort-ic { width: 16px; height: 16px; color: var(--text-muted); flex-shrink: 0; }
     .dd-trigger {
       display: inline-flex; align-items: center; justify-content: space-between;
       gap: 12px;
@@ -937,6 +939,7 @@
 
           <div class="filter-bar">
           <div class="search"><input type="text" placeholder="Search by freelancer name or invoice"></div>
+          <div class="dd-group">
           <div class="filter-dd" id="statusDd">
             <button class="dd-trigger" id="statusTrigger">
               <span id="statusLabel">All status</span>
@@ -964,6 +967,32 @@
                 <svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-tick-circle"/></svg>
               </button>
             </div>
+          </div>
+          <div class="filter-dd" id="sortDd">
+            <button class="dd-trigger" id="sortTrigger">
+              <svg class="sort-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-arrow-down"/></svg>
+              <span id="sortLabel">Newest first</span>
+              <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-arrow-down"/></svg>
+            </button>
+            <div class="dd-menu" id="sortMenu" role="listbox">
+              <button class="dd-item active" data-sort="date-desc" data-label="Newest first">
+                <span class="dd-item-label">Newest first</span>
+                <svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-tick-circle"/></svg>
+              </button>
+              <button class="dd-item" data-sort="date-asc" data-label="Oldest first">
+                <span class="dd-item-label">Oldest first</span>
+                <svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-tick-circle"/></svg>
+              </button>
+              <button class="dd-item" data-sort="amt-desc" data-label="Amount: high to low">
+                <span class="dd-item-label">Amount: high to low</span>
+                <svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-tick-circle"/></svg>
+              </button>
+              <button class="dd-item" data-sort="amt-asc" data-label="Amount: low to high">
+                <span class="dd-item-label">Amount: low to high</span>
+                <svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-tick-circle"/></svg>
+              </button>
+            </div>
+          </div>
           </div>
         </div>
 
@@ -1774,38 +1803,95 @@
   </script>
 
   <script>
-    const dd = document.getElementById('statusDd');
-    const trigger = document.getElementById('statusTrigger');
-    const menu = document.getElementById('statusMenu');
-    const label = document.getElementById('statusLabel');
+    (function () {
+      const tbody = document.querySelector('.table-card tbody');
+      if (!tbody) return;
+      const rows = Array.from(tbody.querySelectorAll('tr'));
 
-    trigger.addEventListener('click', e => {
-      e.stopPropagation();
-      const open = menu.classList.toggle('open');
-      trigger.classList.toggle('open', open);
-    });
+      // Current selections.
+      let statusFilter = 'all';
+      let sortMode = 'date-desc';
 
-    menu.querySelectorAll('.dd-item').forEach(item => {
-      item.addEventListener('click', () => {
-        menu.querySelectorAll('.dd-item').forEach(i => i.classList.toggle('active', i === item));
-        label.textContent = item.dataset.label;
-        menu.classList.remove('open');
-        trigger.classList.remove('open');
+      // Map the visible status pill text to a filter value.
+      function rowStatus(tr) {
+        const pill = tr.querySelector('.pill');
+        const t = (pill ? pill.textContent : '').toLowerCase();
+        if (t.indexOf('paid') > -1)     return 'paid';
+        if (t.indexOf('overdue') > -1)  return 'overdue';
+        if (t.indexOf('draft') > -1)    return 'draft';
+        if (t.indexOf('due') > -1)      return 'due';
+        return 'other'; // verifying / in review / action needed / rejected / transfer initiated
+      }
+      function rowDate(tr) {
+        const d = new Date(tr.cells[2].textContent.trim());
+        return isNaN(d) ? 0 : d.getTime();
+      }
+      function rowAmount(tr) {
+        return parseFloat(tr.cells[4].textContent.replace(/[^0-9.]/g, '')) || 0;
+      }
+
+      function apply() {
+        // Filter.
+        rows.forEach(tr => {
+          const show = (statusFilter === 'all') || (rowStatus(tr) === statusFilter);
+          tr.style.display = show ? '' : 'none';
+        });
+        // Sort (visible order; hidden rows ride along harmlessly).
+        const sorted = rows.slice().sort((a, b) => {
+          switch (sortMode) {
+            case 'date-asc':  return rowDate(a) - rowDate(b);
+            case 'date-desc': return rowDate(b) - rowDate(a);
+            case 'amt-asc':   return rowAmount(a) - rowAmount(b);
+            case 'amt-desc':  return rowAmount(b) - rowAmount(a);
+            default:          return 0;
+          }
+        });
+        sorted.forEach(tr => tbody.appendChild(tr));
+      }
+
+      // Generic dropdown wiring (open/close + selection).
+      function wireDropdown(ddId, triggerId, menuId, labelId, onSelect) {
+        const dd = document.getElementById(ddId);
+        const trigger = document.getElementById(triggerId);
+        const menu = document.getElementById(menuId);
+        const label = document.getElementById(labelId);
+        if (!dd) return;
+        trigger.addEventListener('click', e => {
+          e.stopPropagation();
+          const open = menu.classList.toggle('open');
+          trigger.classList.toggle('open', open);
+        });
+        menu.querySelectorAll('.dd-item').forEach(item => {
+          item.addEventListener('click', () => {
+            menu.querySelectorAll('.dd-item').forEach(i => i.classList.toggle('active', i === item));
+            if (label) label.textContent = item.dataset.label;
+            menu.classList.remove('open');
+            trigger.classList.remove('open');
+            onSelect(item);
+          });
+        });
+        document.addEventListener('click', e => {
+          if (!dd.contains(e.target)) { menu.classList.remove('open'); trigger.classList.remove('open'); }
+        });
+        return { menu, trigger };
+      }
+
+      const all = [];
+      all.push(wireDropdown('statusDd', 'statusTrigger', 'statusMenu', 'statusLabel', item => {
+        statusFilter = item.dataset.value || 'all';
+        apply();
+      }));
+      all.push(wireDropdown('sortDd', 'sortTrigger', 'sortMenu', 'sortLabel', item => {
+        sortMode = item.dataset.sort || 'date-desc';
+        apply();
+      }));
+
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') all.forEach(d => { if (d) { d.menu.classList.remove('open'); d.trigger.classList.remove('open'); } });
       });
-    });
 
-    document.addEventListener('click', e => {
-      if (!dd.contains(e.target)) {
-        menu.classList.remove('open');
-        trigger.classList.remove('open');
-      }
-    });
-    document.addEventListener('keydown', e => {
-      if (e.key === 'Escape') {
-        menu.classList.remove('open');
-        trigger.classList.remove('open');
-      }
-    });
+      apply(); // initial sort (Newest first)
+    })();
   </script>
 
 
