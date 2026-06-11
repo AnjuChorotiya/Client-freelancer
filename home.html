@@ -630,11 +630,15 @@
       letter-spacing: -0.1px;
     }
     .panel-head a {
+      display: inline-flex; align-items: center; gap: 4px;
       font-size: 14px;
       font-weight: 600;
       color: var(--primary-500);
+      transition: color 0.15s;
     }
     .panel-head a:hover { color: var(--primary-700); }
+    .panel-head a:hover span { text-decoration: underline; }
+    .panel-head a:hover .apr-viewall-arrow { max-width: 18px; opacity: 1; transform: translateX(0); }
 
     .activity-row {
       display: grid;
@@ -1633,7 +1637,7 @@
         <div class="panel">
           <div class="panel-head">
             <h2>Recent Activity</h2>
-            <a href="invoices.html">View all</a>
+            <a href="invoices.html"><span>View all</span><svg class="apr-viewall-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-arrow-right"/></svg></a>
           </div>
 
           <div class="activity-row">
