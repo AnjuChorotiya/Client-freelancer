@@ -1612,7 +1612,7 @@
             </div>
 
             <div class="apr-viewall" id="aprViewAll" hidden>
-              <button class="apr-viewall-btn" id="aprViewAllBtn" type="button">View all <span id="aprViewAllCount">6</span> requests</button>
+              <button class="apr-viewall-btn" id="aprViewAllBtn" type="button">View all requests</button>
             </div>
           </div>
 
@@ -1940,7 +1940,6 @@
       const overflow = rows.length > VIEW_ALL_THRESHOLD;
       rows.forEach((row, i) => { row.style.display = (overflow && i >= VIEW_ALL_THRESHOLD) ? 'none' : ''; });
       aprViewAll.hidden = !overflow;
-      if (overflow) document.getElementById('aprViewAllCount').textContent = rows.length;
       refreshApprovalCount();
     }
 
