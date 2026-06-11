@@ -379,19 +379,8 @@
     thead th.th-sort .th-label { transition: color 0.15s; }
     thead th.th-sort:hover .th-label { color: var(--text-primary); }
     thead th.th-sort.text-right { text-align: right; }
-    .th-caret { width: 13px; height: 13px; margin-left: 5px; vertical-align: middle; opacity: 0; transition: opacity 0.15s, transform 0.15s; color: var(--primary-500); }
-    thead th.th-sort:hover .th-caret { opacity: 0.4; }
-    thead th.th-sort.sorted .th-caret { opacity: 1; }
+    .th-caret { width: 13px; height: 13px; margin-left: 5px; vertical-align: middle; color: #9AA2B2; transition: transform 0.15s; }
     thead th.th-sort.sorted.asc .th-caret { transform: rotate(180deg); }
-    /* Status filter in header */
-    thead th.th-filter { padding: 6px 24px; overflow: visible; }
-    .th-filter .filter-dd { display: inline-block; }
-    .th-filter-trigger { display: inline-flex; align-items: center; gap: 6px; background: transparent; border: none; padding: 0; cursor: pointer; font-family: 'Satoshi', sans-serif; font-size: 12.5px; font-weight: 500; color: #85878d; }
-    .th-filter-trigger:hover { color: var(--text-primary); }
-    .th-filter-trigger .chev { width: 13px; height: 13px; color: inherit; transition: transform 0.2s; }
-    .th-filter-trigger.open { color: var(--primary-500); }
-    .th-filter-trigger.open .chev { transform: rotate(180deg); }
-    .th-filter-trigger.filtered { color: var(--primary-500); font-weight: 700; }
     tbody tr { border-bottom: 1px solid #f5f5f5; transition: background 0.2s ease; }
     tbody tr:last-child { border-bottom: none; }
     tbody td { border: none; }
@@ -1035,18 +1024,7 @@
                 <th class="th-sort" data-key="date"><span class="th-label">Submitted</span><svg class="th-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-arrow-down"/></svg></th>
                 <th class="th-sort" data-key="due"><span class="th-label">Due</span><svg class="th-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-arrow-down"/></svg></th>
                 <th class="th-sort text-right" data-key="amt"><span class="th-label">Amount</span><svg class="th-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-arrow-down"/></svg></th>
-                <th class="th-filter">
-                  <div class="filter-dd" id="statusThDd">
-                    <button class="th-filter-trigger" id="statusThTrigger" type="button"><span id="statusThLabel">Status</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-arrow-down"/></svg></button>
-                    <div class="dd-menu" id="statusThMenu" role="listbox">
-                      <button class="dd-item active" data-value="all" data-label="Status"><span class="dd-item-label">All status</span><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-tick-circle"/></svg></button>
-                      <button class="dd-item" data-value="due" data-label="Status"><span class="dd-item-label"><span class="dd-dot due"></span>Due</span><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-tick-circle"/></svg></button>
-                      <button class="dd-item" data-value="overdue" data-label="Status"><span class="dd-item-label"><span class="dd-dot overdue"></span>Overdue</span><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-tick-circle"/></svg></button>
-                      <button class="dd-item" data-value="paid" data-label="Status"><span class="dd-item-label"><span class="dd-dot paid"></span>Paid</span><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-tick-circle"/></svg></button>
-                      <button class="dd-item" data-value="draft" data-label="Status"><span class="dd-item-label"><span class="dd-dot draft"></span>Draft</span><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-tick-circle"/></svg></button>
-                    </div>
-                  </div>
-                </th>
+                <th class="th-sort" data-key="status"><span class="th-label">Status</span><svg class="th-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-arrow-down"/></svg></th>
                 <th></th>
               </tr>
             </thead>
@@ -1874,9 +1852,10 @@
           case 'date': return dateVal(a, 2) - dateVal(b, 2);
           case 'due':  return dateVal(a, 3) - dateVal(b, 3);
           case 'amt':  return amtVal(a) - amtVal(b);
-          case 'inv':  return textVal(a, 0).localeCompare(textVal(b, 0));
-          case 'name': return textVal(a, 1).localeCompare(textVal(b, 1));
-          default:     return 0;
+          case 'inv':    return textVal(a, 0).localeCompare(textVal(b, 0));
+          case 'name':   return textVal(a, 1).localeCompare(textVal(b, 1));
+          case 'status': return textVal(a, 5).localeCompare(textVal(b, 5));
+          default:       return 0;
         }
       }
 
@@ -1886,7 +1865,8 @@
         'amt-desc': 'Amount: high to low', 'amt-asc': 'Amount: low to high',
         'due-desc': 'Due: latest', 'due-asc': 'Due: soonest',
         'inv-desc': 'Invoice: Z–A', 'inv-asc': 'Invoice: A–Z',
-        'name-desc': 'Freelancer: Z–A', 'name-asc': 'Freelancer: A–Z'
+        'name-desc': 'Freelancer: Z–A', 'name-asc': 'Freelancer: A–Z',
+        'status-desc': 'Status: Z–A', 'status-asc': 'Status: A–Z'
       };
       const statusLabels = { all: 'All status', due: 'Due', overdue: 'Overdue', paid: 'Paid', draft: 'Draft' };
 
@@ -1917,14 +1897,10 @@
         const sortLabelEl = document.getElementById('sortLabel');
         if (sortLabelEl) sortLabelEl.textContent = sortLabels[sortMode] || 'Sort';
         document.querySelectorAll('#sortMenu .dd-item').forEach(i => i.classList.toggle('active', i.dataset.sort === sortMode));
-        // Status menus (toolbar + header) + labels.
-        document.querySelectorAll('#statusMenu .dd-item, #statusThMenu .dd-item').forEach(i => i.classList.toggle('active', (i.dataset.value || 'all') === statusFilter));
+        // Status filter (toolbar) + label.
+        document.querySelectorAll('#statusMenu .dd-item').forEach(i => i.classList.toggle('active', (i.dataset.value || 'all') === statusFilter));
         const sLabel = document.getElementById('statusLabel');
         if (sLabel) sLabel.textContent = statusLabels[statusFilter] || 'All status';
-        const thLabel = document.getElementById('statusThLabel');
-        if (thLabel) thLabel.textContent = statusFilter === 'all' ? 'Status' : statusLabels[statusFilter];
-        const thTrig = document.getElementById('statusThTrigger');
-        if (thTrig) thTrig.classList.toggle('filtered', statusFilter !== 'all');
       }
 
       // Generic dropdown open/close + selection.
@@ -1952,7 +1928,6 @@
 
       wireDropdown('statusDd', 'statusTrigger', 'statusMenu', item => { statusFilter = item.dataset.value || 'all'; apply(); });
       wireDropdown('sortDd', 'sortTrigger', 'sortMenu', item => { sortMode = item.dataset.sort || 'date-desc'; apply(); });
-      wireDropdown('statusThDd', 'statusThTrigger', 'statusThMenu', item => { statusFilter = item.dataset.value || 'all'; apply(); });
 
       // Clickable column headers: toggle direction, default descending.
       document.querySelectorAll('thead th.th-sort').forEach(th => {
