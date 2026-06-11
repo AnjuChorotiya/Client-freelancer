@@ -392,6 +392,10 @@
     .pill.draft    { background: #F0F1F1; color: #626368; }
     .pill.matching { background: #F0F1F1; color: #626368; }
     .pill.initiated { background: #F0F1F1; color: #626368; }
+    .pill.verifying { background: #E1EDFF; color: #2684FF; }
+    .pill.review    { background: #FFFAEB; color: #B54708; }
+    .pill.mismatch  { background: #FEECEB; color: #B42318; }
+    .pill.rejected  { background: #F0F1F1; color: #626368; }
 
     .pay-btn {
       display: inline-flex; align-items: center; gap: 6px;
@@ -795,6 +799,23 @@
     .set-tl-item.pending .set-tl-name { color: var(--text-muted); }
     .set-tl-meta { font-size: 12.5px; color: var(--text-muted); margin-top: 2px; }
     .set-tl-badge { display: inline-block; margin-top: 7px; background: var(--primary-50); color: var(--primary-600); font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 12px; }
+    /* In-flight / outcome dot states (no svg — styled circle) */
+    .set-tl-dot.progress, .set-tl-dot.pending, .set-tl-dot.rejected {
+      border-radius: 50%; box-sizing: border-box; align-self: start;
+    }
+    .set-tl-dot.progress { border: 5px solid var(--primary-500); background: var(--neutral-0); }
+    .set-tl-dot.pending  { border: 2px solid var(--neutral-300); background: var(--neutral-0); }
+    .set-tl-dot.rejected { border: 5px solid var(--danger-500, #F04438); background: var(--neutral-0); }
+    .set-tl-item.rejected .set-tl-name { color: var(--danger-700, #B42318); }
+    .set-tl-item.progress:not(:last-child)::before { background: var(--neutral-100); }
+    .set-tl-note { font-size: 12.5px; line-height: 1.5; margin-top: 8px; padding: 9px 12px; border-radius: 10px; }
+    .set-tl-note a { font-weight: 600; text-decoration: none; }
+    .set-tl-note.info    { background: var(--primary-50);  color: var(--primary-700, #175CD3); }
+    .set-tl-note.info a    { color: var(--primary-600); }
+    .set-tl-note.warning { background: var(--warning-50, #FFFAEB); color: var(--warning-700, #B54708); }
+    .set-tl-note.warning a { color: var(--warning-700, #B54708); }
+    .set-tl-note.danger  { background: var(--danger-50, #FEF3F2);  color: var(--danger-700, #B42318); }
+    .set-tl-note.danger a  { color: var(--danger-700, #B42318); }
     @media (max-width: 860px) { .set-grid { grid-template-columns: 1fr; } }
   </style>
 </head>
@@ -1018,6 +1039,46 @@
                 <td>Feb 12, 2026</td>
                 <td class="text-right amount">$3,400</td>
                 <td><span class="pill paid">Paid</span></td>
+                <td><button class="row-action"><svg viewBox="0 0 24 24" fill="currentColor"><use href="#ic-more"/></svg></button></td>
+              </tr>
+
+              <tr data-case="verifying">
+                <td><span class="inv-num">#INV-1036</span></td>
+                <td><div class="cell-name"><div class="cell-avatar" style="background:#2684FF;">RS</div>Rahul Sharma</div></td>
+                <td>May 22, 2025</td>
+                <td>Jun 5, 2025</td>
+                <td class="text-right amount">$4,500</td>
+                <td><span class="pill verifying">Verifying</span></td>
+                <td><button class="row-action"><svg viewBox="0 0 24 24" fill="currentColor"><use href="#ic-more"/></svg></button></td>
+              </tr>
+
+              <tr data-case="verifying_delayed">
+                <td><span class="inv-num">#INV-1035</span></td>
+                <td><div class="cell-name"><div class="cell-avatar" style="background:#0026FF;">RS</div>Rahul Sharma</div></td>
+                <td>May 22, 2025</td>
+                <td>Jun 5, 2025</td>
+                <td class="text-right amount">$4,500</td>
+                <td><span class="pill review">In review</span></td>
+                <td><button class="row-action"><svg viewBox="0 0 24 24" fill="currentColor"><use href="#ic-more"/></svg></button></td>
+              </tr>
+
+              <tr data-case="mismatch">
+                <td><span class="inv-num">#INV-1034</span></td>
+                <td><div class="cell-name"><div class="cell-avatar" style="background:#1A6FE0;">RS</div>Rahul Sharma</div></td>
+                <td>May 22, 2025</td>
+                <td>Jun 5, 2025</td>
+                <td class="text-right amount">$4,500</td>
+                <td><span class="pill mismatch">Action needed</span></td>
+                <td><button class="row-action"><svg viewBox="0 0 24 24" fill="currentColor"><use href="#ic-more"/></svg></button></td>
+              </tr>
+
+              <tr data-case="rejected">
+                <td><span class="inv-num">#INV-1033</span></td>
+                <td><div class="cell-name"><div class="cell-avatar" style="background:#72ABFF;">RS</div>Rahul Sharma</div></td>
+                <td>May 15, 2025</td>
+                <td>May 29, 2025</td>
+                <td class="text-right amount">$4,500</td>
+                <td><span class="pill rejected">Rejected</span></td>
                 <td><button class="row-action"><svg viewBox="0 0 24 24" fill="currentColor"><use href="#ic-more"/></svg></button></td>
               </tr>
 
@@ -1596,40 +1657,76 @@
       const km      = document.getElementById('kebabMenu');
       if (!overlay || !km) return;
 
-      // The five settlement stages. `meta` adapts to the invoice + contractor.
-      function stagesFor(invNum, name) {
-        const ref = invNum.replace('#', '');
+      // First three stages are shared by every "payment in flight" case.
+      function baseStages(name) {
         return [
-          { date: '15 May 2025', title: 'Payment request',         meta: 'By ' + name },
-          { date: '20 May 2025', title: 'You approved the request', meta: 'Payment instructions sent' },
-          { date: '22 May 2025', title: 'Payment submitted',        meta: '$4,500.00' },
-          { date: '23 May 2025', title: 'Payment verified',         meta: 'Invoice ' + ref + ' marked paid' },
-          { date: '25 May 2025', title: 'Contractor paid',          meta: '₹3,72,742.50 credited to ' + name, badge: 'Settled' }
+          { date: '15 May 2025', title: 'Payment request',          meta: 'By ' + name,             state: 'done' },
+          { date: '20 May 2025', title: 'You approved the request', meta: 'Payment instructions sent', state: 'done' },
+          { date: '22 May 2025', title: 'Payment submitted',        meta: '$4,500.00',               state: 'done' }
         ];
       }
 
-      // Map invoice status → how many stages are complete.
-      function stageForStatus(status) {
-        const s = (status || '').toLowerCase();
-        if (s.indexOf('paid') > -1)      return 5; // fully settled
-        if (s.indexOf('initiated') > -1) return 3; // submitted, awaiting verification
-        if (s.indexOf('matching') > -1)  return 3;
-        if (s.indexOf('overdue') > -1)   return 2; // approved, awaiting payment
-        if (s.indexOf('draft') > -1)     return 0;
-        return 1; // due → request raised
+      // Build the timeline items for a given settlement case.
+      function buildTimeline(caseId, invNum, name) {
+        const ref = invNum.replace('#', '');
+        switch (caseId) {
+          case 'settled':
+            return baseStages(name).concat([
+              { date: '23 May 2025', title: 'Payment verified', meta: 'Invoice ' + ref + ' marked paid', state: 'done' },
+              { date: '25 May 2025', title: 'Contractor paid',  meta: '₹3,72,742.50 credited to ' + name, state: 'done', badge: 'Settled' }
+            ]);
+          case 'verifying':
+            return baseStages(name).concat([
+              { date: 'In progress', title: 'Verifying payment', state: 'progress', note: 'Matching your transfer to our records', noteType: 'info' },
+              { date: 'Pending',     title: 'Contractor paid',   state: 'pending' }
+            ]);
+          case 'verifying_delayed':
+            return baseStages(name).concat([
+              { date: 'In progress', title: 'Verifying is taking longer than usual', state: 'progress', note: 'Our team is reviewing your payment', noteType: 'warning' },
+              { date: 'Pending',     title: 'Contractor paid', state: 'pending' }
+            ]);
+          case 'mismatch':
+            return baseStages(name).concat([
+              { date: '23 May 2025', title: 'Amount mismatch detected', state: 'progress', noteHtml: 'You paid $8,500 against an expected $8,700.<br><a href="#">Contact support &rarr;</a>', noteType: 'danger' },
+              { date: 'Pending',     title: 'Contractor paid', state: 'pending' }
+            ]);
+          case 'rejected':
+            return [
+              { date: '15 May 2025', title: 'Payment request',         meta: 'By ' + name, state: 'done' },
+              { date: '20 May 2025', title: 'You rejected the request', meta: 'Reason: Hours dispute — not approved for billing', state: 'rejected' }
+            ];
+          default:
+            return baseStages(name);
+        }
       }
 
-      function openSettlement(invNum, name, status) {
-        const stage = stageForStatus(status);
+      // Resolve which case an invoice row represents.
+      function caseForRow(row, statusText) {
+        if (row && row.dataset.case) return row.dataset.case;
+        const s = (statusText || '').toLowerCase();
+        if (s.indexOf('paid') > -1)     return 'settled';
+        if (s.indexOf('reject') > -1)   return 'rejected';
+        if (s.indexOf('mismatch') > -1 || s.indexOf('action') > -1) return 'mismatch';
+        if (s.indexOf('review') > -1)   return 'verifying_delayed';
+        return 'verifying'; // initiated / matching / verifying / default in-flight
+      }
+
+      function openSettlement(invNum, name, caseId) {
         if (setSub) setSub.textContent = 'Invoice ' + invNum.replace('#', '');
-        tlWrap.innerHTML = stagesFor(invNum, name).map(function (s, i) {
-          const done = i < stage;
-          return '<div class="set-tl-item' + (done ? '' : ' pending') + '">' +
-            '<span class="set-tl-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-tick-circle"/></svg></span>' +
+        tlWrap.innerHTML = buildTimeline(caseId, invNum, name).map(function (s) {
+          const dotInner = (s.state === 'done')
+            ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-tick-circle"/></svg>'
+            : '';
+          let metaHtml = '';
+          if (s.meta)     metaHtml += '<div class="set-tl-meta">' + s.meta + '</div>';
+          if (s.note)     metaHtml += '<div class="set-tl-note ' + (s.noteType || 'info') + '">' + s.note + '</div>';
+          if (s.noteHtml) metaHtml += '<div class="set-tl-note ' + (s.noteType || 'info') + '">' + s.noteHtml + '</div>';
+          if (s.badge)    metaHtml += '<span class="set-tl-badge">' + s.badge + '</span>';
+          return '<div class="set-tl-item ' + s.state + '">' +
+            '<span class="set-tl-dot ' + s.state + '">' + dotInner + '</span>' +
             '<div><div class="set-tl-date">' + s.date + '</div>' +
             '<div class="set-tl-name">' + s.title + '</div>' +
-            '<div class="set-tl-meta">' + s.meta + '</div>' +
-            (s.badge && done ? '<span class="set-tl-badge">' + s.badge + '</span>' : '') +
+            metaHtml +
             '</div></div>';
         }).join('');
         overlay.classList.add('open');
@@ -1661,7 +1758,7 @@
         let name = (nameCell || cells[1]).textContent.trim();
         const avatar = nameCell && nameCell.querySelector('.cell-avatar');
         if (avatar) name = name.replace(avatar.textContent.trim(), '').trim();
-        openSettlement(cells[0].textContent.trim(), name, cells[5].textContent.trim());
+        openSettlement(cells[0].textContent.trim(), name, caseForRow(activeRow, cells[5].textContent.trim()));
       });
       document.addEventListener('click', function (e) { if (!km.contains(e.target)) km.classList.remove('open'); });
       window.addEventListener('scroll', function () { km.classList.remove('open'); }, true);
