@@ -1254,14 +1254,14 @@
       <div class="set-grid">
         <!-- Left: settlement breakdown -->
         <div class="set-card">
-          <div class="set-cap">Net credited amount</div>
+          <div class="set-cap" id="setCap">Net credited amount</div>
           <div class="set-net-amt" id="setNetAmt">₹3,72,742.50</div>
 
           <div class="set-bank">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-wallet-money"/></svg>
             <div>
               <div class="b-name">HDFC Bank (&ast;&ast;&ast;&ast;&ast;&ast;&ast;&ast;&ast;&ast;&ast;1928)</div>
-              <div class="b-sub">Deposited on 25 May 2025</div>
+              <div class="b-sub" id="setBankSub">Deposited on 25 May 2025</div>
             </div>
           </div>
 
@@ -1277,7 +1277,7 @@
           <div class="set-row"><span class="lbl">Amount received (INR)</span><span class="val">₹4,70,755.40</span></div>
           <div class="set-row"><span class="lbl">GST applicable (18%) <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><use href="#ic-info-circle"/></svg></span><span class="val">₹84,735.97</span></div>
           <div class="set-row"><span class="lbl">TDS (10% on service)</span><span class="val">-₹40,095.00</span></div>
-          <div class="set-row total"><span class="lbl">Net credit to you</span><span class="val">₹5,34,646.40</span></div>
+          <div class="set-row total"><span class="lbl" id="setTotalLbl">Net credit to you</span><span class="val">₹5,34,646.40</span></div>
         </div>
 
         <!-- Right: payment-stage timeline -->
@@ -1713,6 +1713,16 @@
 
       function openSettlement(invNum, name, caseId) {
         if (setSub) setSub.textContent = 'Invoice ' + invNum.replace('#', '');
+
+        // Pre-payout cases show estimated figures; settled shows the actual credit.
+        var settled  = (caseId === 'settled');
+        var capEl    = document.getElementById('setCap');
+        var bankSub  = document.getElementById('setBankSub');
+        var totalLbl = document.getElementById('setTotalLbl');
+        if (capEl)    capEl.textContent    = settled ? 'Net credited amount'    : 'Estimated net credit';
+        if (bankSub)  bankSub.textContent  = settled ? 'Deposited on 25 May 2025' : 'Will be deposited to your bank';
+        if (totalLbl) totalLbl.textContent = settled ? 'Net credit to you'       : 'Estimated net credit to you';
+
         tlWrap.innerHTML = buildTimeline(caseId, invNum, name).map(function (s) {
           const dotInner = (s.state === 'done')
             ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-tick-circle"/></svg>'
