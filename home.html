@@ -489,6 +489,7 @@
     .apr-viewall { padding-bottom: 18px; }
     .apr-viewall[hidden] { display: none; }
     .apr-viewall-btn {
+      display: inline-flex; align-items: center; gap: 4px;
       padding: 2px 4px;
       border: none;
       background: transparent;
@@ -499,7 +500,20 @@
       cursor: pointer;
       transition: color 0.15s;
     }
-    .apr-viewall-btn:hover { color: var(--primary-700); text-decoration: underline; }
+    .apr-viewall-btn:hover { color: var(--primary-700); }
+    .apr-viewall-btn:hover span { text-decoration: underline; }
+    .apr-viewall-arrow {
+      width: 15px; height: 15px;
+      max-width: 0;
+      opacity: 0;
+      transform: translateX(-4px);
+      transition: max-width 0.2s ease, opacity 0.2s ease, transform 0.2s ease;
+    }
+    .apr-viewall-btn:hover .apr-viewall-arrow {
+      max-width: 18px;
+      opacity: 1;
+      transform: translateX(0);
+    }
 
     /* All-requests slide-over list */
     .areq-item {
@@ -1426,7 +1440,7 @@
           <div class="approvals-head">
             <h2>Needs your approval</h2>
             <div class="apr-viewall" id="aprViewAll" hidden>
-              <button class="apr-viewall-btn" id="aprViewAllBtn" type="button">View all requests</button>
+              <button class="apr-viewall-btn" id="aprViewAllBtn" type="button"><span>View all requests</span><svg class="apr-viewall-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-arrow-right"/></svg></button>
             </div>
           </div>
 
