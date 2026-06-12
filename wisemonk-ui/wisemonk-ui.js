@@ -790,6 +790,14 @@
     group.addEventListener('click', function (e) {
       var item = e.target.closest('.wm-nav-item');
       if (!item || !group.contains(item)) return;
+      // a parent row discloses its children instead of becoming active
+      if (item.hasAttribute('data-wm-nav-group')) {
+        e.preventDefault();
+        item.classList.toggle('is-open');
+        var kids = item.nextElementSibling;
+        if (kids && kids.classList.contains('wm-nav-children')) kids.classList.toggle('is-open');
+        return;
+      }
       $all('.wm-nav-item', group).forEach(function (i) { i.classList.remove('is-active'); });
       item.classList.add('is-active');
     });

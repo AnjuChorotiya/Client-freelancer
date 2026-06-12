@@ -6,7 +6,7 @@
 <title>Wisemonk UI — Component Library</title>
 <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,600,700&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="wisemonk-ui.css?v=1.1.0">
+<link rel="stylesheet" href="wisemonk-ui.css?v=1.2.0">
 <style>
   /* showcase chrome only — not part of the library */
   body { margin: 0; font-family: var(--wm-font); color: var(--wm-text-primary); background: var(--wm-neutral-50); }
@@ -60,7 +60,7 @@
 <div class="doc-shell">
   <aside class="doc-nav">
     <div class="doc-brand"><span class="dot"><svg><use href="iconsax-sprite.svg#ic-flash"/></svg></span> Wisemonk UI</div>
-    <p class="doc-ver">v1.1 · component library</p>
+    <p class="doc-ver">v1.2 · component library</p>
     <a href="#shell">App shell</a>
     <a href="#colors">Colors</a>
     <a href="#typography">Typography</a>
@@ -119,6 +119,14 @@
                 <a class="wm-nav-item" href="#shell"><svg><use href="iconsax-sprite.svg#ic-profile-2user"/></svg><span class="wm-nav-label">Contractors</span><span class="wm-nav-badge">48</span></a>
                 <a class="wm-nav-item" href="#shell"><svg><use href="iconsax-sprite.svg#ic-receipt-text"/></svg><span class="wm-nav-label">Invoices</span></a>
                 <a class="wm-nav-item" href="#shell"><svg><use href="iconsax-sprite.svg#ic-wallet"/></svg><span class="wm-nav-label">Payouts</span></a>
+                <button class="wm-nav-item is-open" data-wm-nav-group aria-expanded="true">
+                  <svg><use href="iconsax-sprite.svg#ic-clock"/></svg><span class="wm-nav-label">Time</span>
+                  <svg class="wm-nav-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="wm-nav-children is-open">
+                  <a class="wm-nav-item" href="#shell"><span class="wm-nav-label">Attendance</span></a>
+                  <a class="wm-nav-item" href="#shell"><span class="wm-nav-label">Leaves</span></a>
+                </div>
                 <div class="wm-nav-group-label">Workspace</div>
                 <a class="wm-nav-item" href="#shell"><svg><use href="iconsax-sprite.svg#ic-shield-tick"/></svg><span class="wm-nav-label">Compliance</span></a>
                 <a class="wm-nav-item" href="#shell"><svg><use href="iconsax-sprite.svg#ic-setting-2"/></svg><span class="wm-nav-label">Settings</span></a>
@@ -143,7 +151,11 @@
                 </div>
                 <div class="wm-appbar-actions">
                   <button class="wm-icon-btn wm-appbar-dot" aria-label="Notifications"><svg><use href="iconsax-sprite.svg#ic-notification"/></svg></button>
-                  <span class="wm-avatar wm-avatar--sm">AK</span>
+                  <div class="wm-appbar-user">
+                    <span class="wm-avatar wm-avatar--sm">AK</span>
+                    <span class="wm-appbar-user-name">Anju Chorotiya</span>
+                    <svg class="wm-appbar-user-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                  </div>
                 </div>
               </header>
               <div class="wm-shell-content">
@@ -697,7 +709,7 @@
   </div>
 </div>
 
-<script src="wisemonk-ui.js?v=1.1.0"></script>
+<script src="wisemonk-ui.js?v=1.2.0"></script>
 <script>
   /* showcase wiring only */
   // color swatches

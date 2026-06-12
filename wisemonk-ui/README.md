@@ -1,6 +1,6 @@
 # Wisemonk UI
 
-**Version 1.1.0** · see [CHANGELOG.md](CHANGELOG.md) for version history.
+**Version 1.2.0** · see [CHANGELOG.md](CHANGELOG.md) for version history.
 
 A portable, framework-free component library extracted from the Wisemonk portal.
 Plain HTML + CSS + vanilla JS — no build step, no dependencies. Drop it into any
@@ -71,8 +71,8 @@ automates this with an `inline_sprite.py` script.)
 | Component | Base class | Modifiers |
 |---|---|---|
 | App shell | `.wm-shell` | `.wm-shell-main`, `.wm-shell-content`, `.wm-shell-scrim` |
-| Sidebar nav | `.wm-sidebar` | `--collapsed`; `.wm-sidebar-head/-brand/-logo`, `.wm-sidebar-nav`, `.wm-nav-item .is-active`, `.wm-nav-label`, `.wm-nav-badge`, `.wm-nav-group-label`, `.wm-sidebar-foot/-user`. Wrap items in `[data-wm-nav]`; toggle with `[data-wm-sidebar-toggle]` |
-| Header / app bar | `.wm-appbar` | `-title -sub -spacer -search -actions`, `.wm-appbar-dot` (notification badge) |
+| Sidebar nav | `.wm-sidebar` | `--collapsed`; `.wm-sidebar-head/-brand/-logo`, `.wm-sidebar-nav`, `.wm-nav-item .is-active`, `.wm-nav-label`, `.wm-nav-badge`, `.wm-nav-group-label`, `.wm-sidebar-foot/-user`. **Collapsible group:** parent `.wm-nav-item[data-wm-nav-group]` + `.wm-nav-chev` + `.wm-nav-children`. Wrap items in `[data-wm-nav]`; toggle with `[data-wm-sidebar-toggle]` |
+| Header / app bar | `.wm-appbar` | `-title -sub -spacer -search -actions`, `.wm-appbar-dot` (notification badge), `.wm-appbar-user` (chip: avatar + `-name` + `-chev`) |
 | Button | `.wm-btn` | `--primary --secondary --outline --ghost --dark --danger --sm --lg --block` |
 | Icon button | `.wm-icon-btn` | — |
 | Pill / badge | `.wm-pill` | `--success --warning --danger --info --neutral` |

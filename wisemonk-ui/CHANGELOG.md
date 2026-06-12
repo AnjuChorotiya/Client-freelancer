@@ -9,6 +9,18 @@ This project follows [Semantic Versioning](https://semver.org/) (`MAJOR.MINOR.PA
 
 ---
 
+## [1.2.0] — 2026-06-12
+
+Aligned the app shell with the live freelancer portal's nav + header.
+
+### Added
+- **Collapsible nav groups** — a parent `.wm-nav-item[data-wm-nav-group]` with a
+  rotating `.wm-nav-chev` discloses a `.wm-nav-children` block (indented sub-items),
+  matching the portal's expandable sections (e.g. Time → Attendance/Leaves). Children
+  collapse with the icon-rail; clicking the parent toggles instead of going active.
+- **Header user chip** — `.wm-appbar-user` (avatar + `.wm-appbar-user-name` +
+  `.wm-appbar-user-chev`), a pill identity control ported from the portal header.
+
 ## [1.1.0] — 2026-06-11
 
 ### Added
