@@ -9,6 +9,20 @@ This project follows [Semantic Versioning](https://semver.org/) (`MAJOR.MINOR.PA
 
 ---
 
+## [1.3.0] — 2026-06-12
+
+### Changed
+- **App shell is now the exact freelancer-portal nav + header**, copied verbatim into
+  [`app-shell.html`](app-shell.html) (portal classes `.sidebar` / `.nav-link` /
+  `.nav-section` / `.nav-parent`+`.nav-children` / `.header` / `.user-chip` /
+  `.cmdk-trigger`, with the portal's own CSS + nav-toggle JS). The showcase embeds it
+  via an iframe. This replaces the bespoke `wm-` app-shell abstraction.
+
+### Removed
+- The `wm-`-namespaced app-shell components added in 1.1.0–1.2.0 (`.wm-shell`,
+  `.wm-sidebar`, `.wm-appbar`, `.wm-nav-*`, `[data-wm-sidebar-toggle]`,
+  `[data-wm-nav]`) — superseded by the verbatim portal copy above.
+
 ## [1.2.0] — 2026-06-12
 
 Aligned the app shell with the live freelancer portal's nav + header.

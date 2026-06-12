@@ -1,6 +1,6 @@
 # Wisemonk UI
 
-**Version 1.2.0** · see [CHANGELOG.md](CHANGELOG.md) for version history.
+**Version 1.3.0** · see [CHANGELOG.md](CHANGELOG.md) for version history.
 
 A portable, framework-free component library extracted from the Wisemonk portal.
 Plain HTML + CSS + vanilla JS — no build step, no dependencies. Drop it into any
@@ -70,9 +70,7 @@ automates this with an `inline_sprite.py` script.)
 
 | Component | Base class | Modifiers |
 |---|---|---|
-| App shell | `.wm-shell` | `.wm-shell-main`, `.wm-shell-content`, `.wm-shell-scrim` |
-| Sidebar nav | `.wm-sidebar` | `--collapsed`; `.wm-sidebar-head/-brand/-logo`, `.wm-sidebar-nav`, `.wm-nav-item .is-active`, `.wm-nav-label`, `.wm-nav-badge`, `.wm-nav-group-label`, `.wm-sidebar-foot/-user`. **Collapsible group:** parent `.wm-nav-item[data-wm-nav-group]` + `.wm-nav-chev` + `.wm-nav-children`. Wrap items in `[data-wm-nav]`; toggle with `[data-wm-sidebar-toggle]` |
-| Header / app bar | `.wm-appbar` | `-title -sub -spacer -search -actions`, `.wm-appbar-dot` (notification badge), `.wm-appbar-user` (chip: avatar + `-name` + `-chev`) |
+| App shell (nav + header) | exact freelancer-portal copy → [`app-shell.html`](app-shell.html) | Portal classes, verbatim: `.sidebar` / `.sidebar-logo` / `.nav-section` / `.nav-title` / `.nav-link`(`.active`) / `.nav-icon` / `.nav-parent`(`.open`)+`.nav-chev`+`.nav-children`; `.header` / `.header-right` / `.cmdk-trigger` / `.bell-btn` / `.user-chip`(`.user-avatar`/`.user-name`/`.user-chev`). Copy the markup + CSS from `app-shell.html`. |
 | Button | `.wm-btn` | `--primary --secondary --outline --ghost --dark --danger --sm --lg --block` |
 | Icon button | `.wm-icon-btn` | — |
 | Pill / badge | `.wm-pill` | `--success --warning --danger --info --neutral` |
@@ -127,24 +125,6 @@ Most things work declaratively — no JS to write.
 
 <!-- command palette trigger -->
 <button data-wm-cmdk>Search…</button>
-
-<!-- app shell: sidebar toggle (collapse on desktop, off-canvas on mobile)
-     + single-active nav -->
-<div class="wm-shell">
-  <aside class="wm-sidebar">
-    <nav class="wm-sidebar-nav" data-wm-nav>
-      <a class="wm-nav-item is-active" href="#">Dashboard</a>
-      <a class="wm-nav-item" href="#">Invoices</a>
-    </nav>
-  </aside>
-  <div class="wm-shell-main">
-    <header class="wm-appbar">
-      <button class="wm-icon-btn" data-wm-sidebar-toggle>☰</button>
-    </header>
-    <div class="wm-shell-content">…</div>
-  </div>
-  <div class="wm-shell-scrim"></div>
-</div>
 
 <!-- table: live search + filter dropdown (rows need data-<key> to filter) -->
 <input data-wm-table-search="#people">
