@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Client verification — Wisemonk</title>
+  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@700,500,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-50: #E8F2FF;
+      --primary-100: #C5DCFF;
+      --primary-500: #2684FF;
+      --primary-600: #1A6FE0;
+      --primary-700: #1059BD;
+      --accent-500: #2684FF;
+      --accent-tint: rgba(38, 132, 255, 0.10);
+      --neutral-0: #FFFFFF;
+      --neutral-50: #F7F8FA;
+      --neutral-100: #EEF0F4;
+      --neutral-200: #DDE1E9;
+      --neutral-300: #C4CAD6;
+      --neutral-400: #9AA2B2;
+      --neutral-500: #6B7588;
+      --neutral-700: #363D4D;
+      --neutral-800: #222733;
+      --neutral-900: #121620;
+      --grey-300: #ABADB1;
+      --grey-700: #222224;
+      --bg-subtle: #F1F8FF;
+      --border: #EEF0F4;
+      --border-strong: #DDE1E9;
+      --text-primary: #222733;
+      --text-secondary: #363D4D;
+      --text-muted: #9AA2B2;
+      --success-50: #E6F9F0;
+      --success-500: #12B76A;
+      --success-700: #027A48;
+      --warning-50: #FFFAEB;
+      --warning-700: #B54708;
+      --radius-md: 12px;
+      --radius-full: 100px;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Satoshi', sans-serif; background: var(--bg-subtle); color: var(--text-primary); min-height: 100vh; }
+    a { text-decoration: none; color: inherit; }
+
+    .app { display: flex; min-height: 100vh; }
+
+    /* Sidebar (shared) */
+    .sidebar { width: 240px; flex-shrink: 0; background: var(--neutral-0); border-right: 1px solid var(--border); padding: 30px 20px; display: flex; flex-direction: column; gap: 32px; }
+    .sidebar-logo { display: flex; align-items: center; gap: 10px; height: 26px; overflow: hidden; }
+    .sidebar-logo img { height: 56px; width: auto; margin-top: -30px; display: block; }
+    .nav-section { display: flex; flex-direction: column; }
+    .nav-title { font-family: 'Satoshi', sans-serif; font-weight: 300; font-size: 13px; letter-spacing: 0.5px; color: var(--grey-300); padding: 8px; margin-bottom: 2px; }
+    .nav-link { display: flex; align-items: center; gap: 10px; height: 36px; padding: 0 8px; border-radius: 8px; font-weight: 500; font-size: 15px; color: var(--grey-700); transition: background 0.15s; }
+    .nav-link:hover { background: var(--neutral-50); }
+    .nav-link.active { background: var(--accent-tint); color: var(--accent-500); }
+    .nav-link.active .nav-icon { color: var(--accent-500); }
+    .nav-icon { width: 20px; height: 20px; flex-shrink: 0; color: var(--grey-700); }
+    .nav-parent { display: flex; align-items: center; justify-content: space-between; cursor: pointer; }
+    .nav-parent .nav-chev { width: 16px; height: 16px; color: var(--grey-700); transition: transform 0.2s; }
+    .nav-parent.open .nav-chev { transform: rotate(180deg); }
+    .nav-children { display: flex; flex-direction: column; margin-left: 30px; margin-top: 2px; }
+    .nav-children .nav-link { font-size: 14.5px; }
+
+    /* Main */
+    .main-col { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+    .header {
+      display: flex; align-items: center; justify-content: space-between;
+      height: 80px;
+      padding: 0 40px;
+      background: var(--bg-subtle);
+    }
+    .header h1 {
+      font-family: 'Satoshi', sans-serif;
+      font-weight: 700;
+      font-size: 23px;
+      color: #222224;
+      margin: 0;
+    }
+    .header-right { display: flex; align-items: center; gap: 16px; }
+    .bell-btn {
+      width: 36px; height: 36px;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 8px;
+      background: transparent;
+      border: none;
+      color: #404145;
+      cursor: pointer;
+    }
+    .bell-btn:hover { background: rgba(0,0,0,0.04); }
+    .bell-btn svg { width: 22px; height: 22px; }
+    .user-chip {
+      display: flex; align-items: center; gap: 8px;
+      cursor: pointer;
+      padding: 4px 8px 4px 4px;
+      border-radius: 100px;
+      flex-shrink: 0;
+    }
+    .user-avatar {
+      width: 32px; height: 32px;
+      min-width: 32px;
+      border-radius: 50%;
+      background: var(--accent-500);
+      color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px;
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+    .user-name { font-weight: 500; font-size: 16px; color: var(--grey-700); white-space: nowrap; }
+    .user-chev { width: 16px; height: 16px; color: #85878d; flex-shrink: 0; }
+
+    .content { flex: 1; padding: 8px 40px 56px; }
+
+    /* Unified card wrapper (matches insurance page pattern) */
+    .wm-card {
+      background: #ffffff;
+      border-radius: 8px;
+      padding: 0 0 16px;
+      max-width: 100%;
+      min-width: 0;
+    }
+    .wm-card-heading {
+      padding: 16px 20px 12px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .wm-card-heading h1 {
+      color: #222224;
+      font-family: 'Satoshi', sans-serif;
+      font-size: 1.437rem;
+      font-weight: 700;
+      line-height: 1.3;
+      margin-bottom: 4px;
+    }
+    .wm-card-heading p {
+      color: #85878d;
+      font-family: 'Satoshi', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 1.4;
+    }
+    .wm-card .filter-bar { margin: 0; padding: 16px 20px; background: #fff; }
+    .wm-card .table-card { margin: 0 20px; border: none; border-radius: 0; }
+    .primary-btn { display: inline-flex; align-items: center; gap: 8px; padding: 11px 18px; border-radius: 10px; background: var(--primary-500); color: #fff; font-family: inherit; font-size: 14px; font-weight: 700; cursor: pointer; transition: all 0.15s; border: none; }
+    .primary-btn:hover { background: var(--primary-600); }
+    .primary-btn svg { width: 20px; height: 20px; }
+    .wm-head-actions { display: flex; align-items: center; gap: 10px; }
+    .cmp-check-btn { display: inline-flex; align-items: center; gap: 8px; padding: 11px 16px; border-radius: 10px; background: #fff; color: #222224; border: 1px solid var(--border-strong); font-family: inherit; font-size: 14px; font-weight: 700; cursor: pointer; text-decoration: none; transition: all .15s; }
+    .cmp-check-btn:hover { border-color: #9AA2B2; background: #F7F8FA; }
+    .cmp-check-btn svg { width: 18px; height: 18px; }
+
+    /* Filter bar */
+    .filter-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
+    .search { width: 500px; position: relative; }
+    .search input {
+      width: 100%;
+      padding: 11px 14px 11px 40px;
+      border: 1px solid var(--border-strong);
+      border-radius: 8px;
+      font-family: inherit; font-size: 14px;
+      background: var(--neutral-0) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239AA2B2' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='11' cy='11' r='8'/><path d='m21 21-4.3-4.3'/></svg>") no-repeat 14px center / 16px;
+      outline: none; transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .search input::placeholder { color: var(--text-muted); }
+    .search input:focus { border-color: var(--primary-500); box-shadow: 0 0 0 4px var(--primary-50); }
+
+    /* Custom dropdown */
+    .filter-dd { position: relative; }
+    .dd-trigger {
+      display: inline-flex; align-items: center; justify-content: space-between;
+      gap: 12px;
+      min-width: 160px;
+      padding: 11px 14px;
+      border: 1px solid var(--border-strong);
+      background: var(--neutral-0);
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .dd-trigger:hover { border-color: var(--neutral-400); }
+    .dd-trigger.open { border-color: var(--primary-500); box-shadow: 0 0 0 4px var(--primary-50); }
+    .dd-trigger .chev { width: 16px; height: 16px; color: var(--text-muted); transition: transform 0.2s; }
+    .dd-trigger.open .chev { transform: rotate(180deg); }
+
+    .dd-menu {
+      position: absolute;
+      top: calc(100% + 6px);
+      right: 0;
+      min-width: 220px;
+      background: var(--neutral-0);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 6px;
+      box-shadow: 0 12px 28px -8px rgba(34, 39, 51, 0.15), 0 4px 8px -4px rgba(34, 39, 51, 0.08);
+      display: none;
+      z-index: 50;
+    }
+    .dd-menu.open { display: block; animation: ddIn 0.12s ease-out; }
+    @keyframes ddIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+    .dd-item {
+      display: flex; align-items: center; justify-content: space-between;
+      width: 100%;
+      padding: 9px 12px;
+      border: none;
+      background: transparent;
+      border-radius: 6px;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-primary);
+      cursor: pointer;
+      text-align: left;
+      transition: background 0.1s;
+    }
+    .dd-item:hover { background: var(--neutral-50); }
+    .dd-item.active { background: var(--primary-50); color: var(--primary-700); font-weight: 700; }
+    .dd-item .check { width: 16px; height: 16px; color: var(--primary-600); opacity: 0; }
+    .dd-item.active .check { opacity: 1; }
+    .dd-item-label { display: flex; align-items: center; gap: 8px; }
+    .dd-count { color: var(--text-muted); font-weight: 500; font-size: 12.5px; margin-left: 6px; }
+    .dd-item.active .dd-count { color: var(--primary-600); }
+
+    /* Table — wm-table aligned */
+    .table-card {
+      background: #ffffff;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    table { width: 100%; border-collapse: collapse; }
+    thead { background: #fafafa; border-bottom: 1px solid #f0f1f1; }
+    thead th {
+      text-align: left;
+      padding: 12px 24px;
+      font-family: 'Satoshi', sans-serif;
+      font-size: 12.5px;
+      font-weight: 500;
+      color: #85878d;
+    }
+    tbody tr { border-bottom: 1px solid #f5f5f5; transition: background 0.2s ease; }
+    tbody tr:last-child { border-bottom: none; }
+    tbody td { border: none; }
+    tbody tr:hover { background: #fafbfc; }
+    tbody td { padding: 22px 24px; font-family: 'Satoshi', sans-serif; font-size: 14px; font-weight: 500; color: #404145; vertical-align: middle; }
+    tbody td strong { font-family: 'Satoshi', sans-serif; font-weight: 600; color: #222224; }
+
+    .cell-name { display: flex; align-items: center; gap: 12px; min-width: 0; }
+    .cell-avatar { width: 36px; height: 36px; background: #2684ff; border-radius: 50%; color: #fff; display: flex; align-items: center; justify-content: center; font-family: 'Satoshi', sans-serif; font-size: 14px; font-weight: 600; flex-shrink: 0; }
+    .cell-name span:not(.cell-avatar) { font-family: 'Satoshi', sans-serif; font-size: 14px; font-weight: 700; color: #222224; }
+    .cell-name-text { display: flex; flex-direction: column; }
+    .cell-name-text strong { font-family: 'Satoshi', sans-serif; font-size: 14px; font-weight: 700; color: #222224; }
+    .cell-name-text small { font-family: 'Satoshi', sans-serif; font-size: 12px; font-weight: 500; color: #85878d; margin-top: 1px; }
+
+    .country { display: flex; align-items: center; gap: 8px; }
+    .country img { width: 18px; height: 18px; border-radius: 50%; object-fit: cover; box-shadow: 0 0 0 1px var(--border-strong); }
+
+    .pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 5px 12px;
+      border-radius: 16px;
+      font-family: 'Satoshi', sans-serif;
+      font-size: 12px; font-weight: 500; line-height: 1;
+    }
+    .pill.active  { background: #E1EDFF; color: #2684FF; }
+    .pill.paused  { background: #F0F1F1; color: #626368; }
+    .pill.pending { background: #F0F1F1; color: #626368; }
+
+    .row-action {
+      width: 32px; height: 32px;
+      display: inline-flex; align-items: center; justify-content: center;
+      border-radius: 8px;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.15s;
+      background: transparent;
+      border: none;
+    }
+    .row-action:hover { background: var(--neutral-100); color: var(--text-primary); }
+    .row-action svg { width: 18px; height: 18px; }
+
+    @media (max-width: 980px) {
+      .sidebar { display: none; }
+      .header { padding: 16px 20px; }
+      .content { padding: 8px 20px 56px; }
+      thead { display: none; }
+      tbody td { display: block; padding: 8px 20px; }
+      tbody tr { padding: 12px 0; }
+    }
+  
+    /* COR (Contractor of Record) promo banner — minimal */
+    .cor-banner {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 24px;
+      background: #EEF1FF;
+      border-radius: 12px;
+      padding: 18px 24px;
+      margin-bottom: 20px;
+    }
+    .cor-banner-body { flex: 1; min-width: 0; }
+    .cor-banner-title {
+      font-family: 'Satoshi', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: #222224;
+      margin-bottom: 4px;
+    }
+    .cor-banner-desc {
+      font-family: 'Satoshi', sans-serif;
+      font-size: 13.5px;
+      color: #85878d;
+      line-height: 1.5;
+    }
+    .cor-banner-actions { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+    .cor-banner-cta {
+      display: inline-flex; align-items: center;
+      padding: 11px 22px;
+      background: #1a1d24;
+      color: #fff;
+      border-radius: 8px;
+      font-family: 'Satoshi', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: background 0.15s;
+      white-space: nowrap;
+    }
+    .cor-banner-cta:hover { background: #000; }
+    .cor-banner-secondary {
+      display: inline-flex; align-items: center;
+      padding: 11px 22px;
+      background: transparent;
+      color: #1a1d24;
+      border: 1px solid #D1D5DB;
+      border-radius: 8px;
+      font-family: 'Satoshi', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: background 0.15s, border-color 0.15s;
+      white-space: nowrap;
+    }
+    .cor-banner-secondary:hover { background: rgba(0,0,0,0.04); border-color: #9CA3AF; }
+    /* wm-cor-css */
+    /* COR comparison modal */
+    .cor-modal-overlay { position: fixed; inset: 0; background: rgba(17,22,32,0.55); display: none; align-items: center; justify-content: center; padding: 24px; z-index: 2000; }
+    .cor-modal-overlay.open { display: flex; animation: corFade 0.18s ease; }
+    @keyframes corFade { from { opacity: 0; } to { opacity: 1; } }
+    .cor-modal { background: #fff; border-radius: 18px; width: 100%; max-width: 720px; max-height: 90vh; overflow-y: auto; box-shadow: 0 30px 70px -20px rgba(0,0,0,0.45); }
+    .cor-modal-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 26px 28px 4px; }
+    .cor-modal-head h2 { font-family: 'Satoshi', sans-serif; font-size: 21px; font-weight: 700; color: #222224; margin: 0 0 4px; letter-spacing: -0.2px; }
+    .cor-modal-head p { font-size: 14px; color: #85878d; margin: 0; line-height: 1.5; }
+    .cor-modal-close { width: 32px; height: 32px; flex-shrink: 0; border: none; background: transparent; border-radius: 8px; color: #85878d; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .cor-modal-close:hover { background: rgba(0,0,0,0.05); color: #222224; }
+    .cor-modal-close svg { width: 18px; height: 18px; }
+    .cor-modal-body { padding: 18px 28px 4px; }
+    .cor-table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 13.5px; }
+    .cor-table th, .cor-table td { text-align: left; padding: 13px 16px; vertical-align: top; line-height: 1.45; }
+    .cor-table thead th { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; color: #9AA2B2; padding-top: 10px; padding-bottom: 12px; }
+    .cor-table .col-feat { width: 23%; font-weight: 600; color: #222224; }
+    .cor-table .col-free { color: #6B7280; }
+    .cor-table tbody td.col-feat, .cor-table tbody td.col-free { border-bottom: 1px solid #F0F1F4; }
+    .cor-table tbody tr:last-child td.col-feat, .cor-table tbody tr:last-child td.col-free { border-bottom: none; }
+    /* highlighted COR column */
+    .cor-table .col-cmor { background: #F2F3F5; color: #222224; font-weight: 500; }
+    .cor-table thead .col-cmor { background: #1a1d24; color: #fff; border-top-left-radius: 12px; border-top-right-radius: 12px; }
+    .cor-table tbody tr:last-child .col-cmor { border-bottom-left-radius: 12px; border-bottom-right-radius: 12px; }
+    .cor-table .col-feat { font-weight: 500; }
+    .cor-table tbody td { font-weight: 500; }
+    /* price subtext in header */
+    .cor-table thead .cor-price { display: block; margin-top: 5px; font-size: 11.5px; font-weight: 600; letter-spacing: 0.1px; }
+    .cor-table thead .col-cmor .cor-price { color: #fff; opacity: 0.92; }
+    .cor-table thead .col-free .cor-price { color: #9AA2B2; }
+    .cor-cell { display: flex; gap: 8px; align-items: flex-start; }
+    .cor-ic { width: 16px; height: 16px; flex-shrink: 0; margin-top: 1px; }
+    .cor-ic.no { color: #C4CAD6; }
+    .cor-ic.yes { color: #1a1d24; }
+    .cor-modal-foot { display: flex; align-items: center; justify-content: flex-end; gap: 14px; padding: 18px 28px 24px; }
+    .cor-modal-foot .cor-foot-price { margin-right: auto; font-size: 13px; color: #6B7280; line-height: 1.3; }
+    .cor-modal-foot .cor-foot-price strong { color: #222224; font-weight: 700; font-size: 15px; }
+    .cor-modal-foot .cor-later { background: transparent; border: none; font-family: inherit; font-size: 14px; font-weight: 600; color: #85878d; cursor: pointer; padding: 11px 8px; }
+    .cor-modal-foot .cor-later:hover { color: #222224; }
+    .cor-modal-foot .cor-switch { display: inline-flex; align-items: center; gap: 8px; padding: 12px 22px; background: #1a1d24; color: #fff; border: none; border-radius: 9px; font-family: inherit; font-size: 14px; font-weight: 700; cursor: pointer; text-decoration: none; }
+    .cor-modal-foot .cor-switch:hover { background: #000; }
+    .cor-modal-foot .cor-switch svg { width: 16px; height: 16px; }
+    /* Talk to sales modal */
+    .sales-overlay { position: fixed; inset: 0; background: rgba(17,22,32,0.55); display: none; align-items: center; justify-content: center; padding: 24px; z-index: 2100; }
+    .sales-overlay.open { display: flex; animation: corFade 0.18s ease; }
+    .sales-modal { background: #fff; border-radius: 16px; width: 100%; max-width: 440px; box-shadow: 0 30px 70px -20px rgba(0,0,0,0.45); overflow: hidden; }
+    .sales-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 24px 24px 0; }
+    .sales-head h2 { font-family: 'Satoshi', sans-serif; font-size: 19px; font-weight: 700; color: #222224; margin: 0 0 4px; letter-spacing: -0.2px; }
+    .sales-head p { font-size: 13.5px; color: #85878d; margin: 0; line-height: 1.5; }
+    .sales-close { width: 32px; height: 32px; flex-shrink: 0; border: none; background: transparent; border-radius: 8px; color: #85878d; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .sales-close:hover { background: rgba(0,0,0,0.05); color: #222224; }
+    .sales-close svg { width: 18px; height: 18px; }
+    .sales-body { padding: 18px 24px 4px; }
+    .sales-field { margin-bottom: 14px; }
+    .sales-field label { display: block; font-size: 12.5px; font-weight: 700; color: #4b4d52; margin-bottom: 6px; }
+    .sales-field input, .sales-field select { width: 100%; font-family: inherit; font-size: 14px; color: #222224; border: 1px solid #D7DAE0; border-radius: 10px; padding: 11px 13px; background: #fff; outline: none; transition: border-color 0.15s, box-shadow 0.15s; }
+    .sales-field input::placeholder { color: #9AA2B2; }
+    .sales-field input:focus, .sales-field select:focus { border-color: #1A6FE0; box-shadow: 0 0 0 3px rgba(26,111,224,0.12); }
+    .sales-note { display: flex; gap: 9px; padding: 11px 13px; margin-top: 2px; background: #F2F6FF; border-radius: 10px; font-size: 12.5px; color: #4b4d52; line-height: 1.5; }
+    .sales-note svg { width: 16px; height: 16px; flex-shrink: 0; margin-top: 1px; color: #1A6FE0; }
+    .sales-foot { display: flex; align-items: center; justify-content: flex-end; gap: 12px; padding: 16px 24px 24px; }
+    .sales-foot .sales-cancel { background: transparent; border: none; font-family: inherit; font-size: 14px; font-weight: 600; color: #85878d; cursor: pointer; padding: 11px 8px; }
+    .sales-foot .sales-cancel:hover { color: #222224; }
+    .sales-foot .sales-submit { display: inline-flex; align-items: center; gap: 8px; padding: 12px 22px; background: #1a1d24; color: #fff; border: none; border-radius: 9px; font-family: inherit; font-size: 14px; font-weight: 700; cursor: pointer; }
+    .sales-foot .sales-submit:hover { background: #000; }
+    .sales-foot .sales-submit svg { width: 16px; height: 16px; }
+    /* /wm-cor-css */
+
+    .cor-banner-close {
+      width: 28px; height: 28px; border: none; background: transparent;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 6px; color: #85878d; cursor: pointer;
+    }
+    .cor-banner-close:hover { background: rgba(0,0,0,0.05); color: #222224; }
+    .cor-banner-close svg { width: 16px; height: 16px; }
+
+    
+    /* wm-cmdk-css */
+    /* Command palette */
+    .cmdk-trigger { display: inline-flex; align-items: center; gap: 10px; height: 38px; padding: 0 12px; min-width: 220px; border-radius: 10px; background: var(--neutral-0); border: 1px solid var(--border-strong); color: var(--text-muted); font-family: inherit; font-size: 13.5px; font-weight: 500; cursor: pointer; transition: border-color .15s; }
+    .cmdk-trigger:hover { border-color: #9AA2B2; }
+    .cmdk-trigger svg { width: 16px; height: 16px; flex-shrink: 0; }
+    .cmdk-trigger .cmdk-trigger-label { flex: 1; text-align: left; }
+    .cmdk-kbd { font-family: inherit; font-size: 11px; font-weight: 600; color: #6B7588; background: #F2F3F5; border: 1px solid var(--border-strong); border-radius: 6px; padding: 2px 7px; line-height: 1.4; }
+    .cmdk-overlay { position: fixed; inset: 0; background: rgba(18,22,32,0.45); display: none; align-items: flex-start; justify-content: center; padding: 14vh 24px 24px; z-index: 3000; }
+    .cmdk-overlay.open { display: flex; animation: cmdkFade .15s ease; }
+    @keyframes cmdkFade { from { opacity: 0; } to { opacity: 1; } }
+    .cmdk { width: 100%; max-width: 560px; background: #fff; border-radius: 16px; box-shadow: 0 30px 80px -20px rgba(0,0,0,0.5); overflow: hidden; animation: cmdkPop .16s ease; }
+    @keyframes cmdkPop { from { transform: translateY(-8px) scale(0.99); opacity: 0; } to { transform: none; opacity: 1; } }
+    .cmdk-search { display: flex; align-items: center; gap: 12px; padding: 16px 20px; border-bottom: 1px solid var(--border); }
+    .cmdk-search svg { width: 20px; height: 20px; color: var(--text-muted); flex-shrink: 0; }
+    .cmdk-search input { flex: 1; border: none; outline: none; background: transparent; font-family: inherit; font-size: 16px; color: #222224; min-width: 0; }
+    .cmdk-search input::placeholder { color: var(--text-muted); }
+    .cmdk-list { max-height: 340px; overflow-y: auto; padding: 8px; }
+    .cmdk-section { font-size: 11px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase; color: var(--text-muted); padding: 8px 10px 6px; }
+    .cmdk-item { display: flex; align-items: center; gap: 13px; padding: 11px 12px; border-radius: 10px; cursor: pointer; color: #222224; font-size: 14.5px; font-weight: 600; text-decoration: none; }
+    .cmdk-item.active { background: #F2F3F5; }
+    .cmdk-ic { width: 36px; height: 36px; flex-shrink: 0; border-radius: 10px; background: #E8F2FF; color: #1A6FE0; display: flex; align-items: center; justify-content: center; }
+    .cmdk-ic svg { width: 19px; height: 19px; }
+    .cmdk-item-sub { margin-left: auto; font-size: 12.5px; font-weight: 500; color: var(--text-muted); }
+    .cmdk-enter { margin-left: auto; font-size: 11px; font-weight: 600; color: #6B7588; opacity: 0; }
+    .cmdk-item.active .cmdk-enter { opacity: 1; }
+    .cmdk-item.active .cmdk-item-sub { display: none; }
+    .cmdk-empty { display: none; padding: 28px; text-align: center; color: var(--text-muted); font-size: 14px; }
+    .cmdk-foot { display: flex; align-items: center; gap: 18px; padding: 10px 18px; border-top: 1px solid var(--border); font-size: 12px; color: var(--text-muted); }
+    .cmdk-foot span { display: inline-flex; align-items: center; gap: 6px; }
+    .cmdk-foot .cmdk-kbd { padding: 1px 6px; }
+    /* /wm-cmdk-css */
+    /* wm-verify — client verification dashboard */
+    .rerun-btn { display:inline-flex; align-items:center; gap:8px; padding:11px 16px; border-radius:10px; background:#fff; color:#222224; border:1px solid var(--border-strong); font-family:inherit; font-size:14px; font-weight:700; cursor:pointer; transition:all .15s; }
+    .rerun-btn:hover { border-color:#9AA2B2; background:#F7F8FA; }
+    .rerun-btn:disabled { opacity:.6; cursor:default; }
+    .rerun-note { padding:0 20px 4px; font-size:13px; color:#85878d; font-weight:500; }
+    .stat-row { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; padding:12px 20px 16px; }
+    .stat-card { text-align:left; background:#fff; border:1px solid var(--border-strong); border-radius:12px; padding:16px 18px; font-family:inherit; transition:border-color .15s, box-shadow .15s; }
+    button.stat-card { cursor:pointer; }
+    button.stat-card:hover { border-color:#9AA2B2; }
+    button.stat-card.active { border-color:var(--primary-500); box-shadow:0 0 0 3px var(--primary-50); }
+    .stat-label { font-size:13px; font-weight:600; color:#85878d; margin-bottom:8px; }
+    .stat-value { font-size:28px; font-weight:700; color:#222224; line-height:1; }
+    .stat-value.warn { color:#B54708; }
+    .stat-value.ok { color:#027A48; }
+    .stat-value.bad { color:#B42318; }
+    .stat-sub { margin-top:6px; font-size:12px; font-weight:500; color:#9AA2B2; }
+    .pill.verified { background:#E6F9F0; color:#027A48; }
+    .pill.review   { background:#FFF1F0; color:#B42318; }
+    .risk-pill { display:inline-flex; align-items:center; gap:7px; padding:5px 12px; border-radius:16px; font-family:'Satoshi',sans-serif; font-size:12px; font-weight:600; line-height:1; }
+    .risk-pill::before { content:''; width:7px; height:7px; border-radius:50%; }
+    .risk-pill.low  { background:#E6F9F0; color:#027A48; } .risk-pill.low::before  { background:#12B76A; }
+    .risk-pill.med  { background:#FFFAEB; color:#B54708; } .risk-pill.med::before  { background:#F79009; }
+    .risk-pill.high { background:#FFF1F0; color:#B42318; } .risk-pill.high::before { background:#F04438; }
+    .req-cell { display:inline-flex; align-items:center; gap:7px; font-weight:600; }
+    .req-cell.ok { color:#027A48; }
+    .req-cell.miss { color:#B42318; }
+    .req-cell svg { width:16px; height:16px; }
+    .view-report { display:inline-flex; align-items:center; gap:6px; padding:8px 13px; border-radius:8px; background:#fff; border:1px solid var(--border-strong); font-family:inherit; font-size:13px; font-weight:700; color:#1A6FE0; cursor:pointer; }
+    .view-report:hover { background:#F2F6FF; border-color:#9AA2B2; }
+    .view-report svg { width:15px; height:15px; }
+    /* AI report modal */
+    .ai-overlay { position:fixed; inset:0; background:rgba(17,22,32,.55); display:none; align-items:center; justify-content:center; padding:24px; z-index:2200; }
+    .ai-overlay.open { display:flex; animation:corFade .18s ease; }
+    .ai-modal { background:#fff; border-radius:16px; width:100%; max-width:600px; max-height:90vh; overflow-y:auto; box-shadow:0 30px 70px -20px rgba(0,0,0,.45); }
+    .ai-head { display:flex; align-items:flex-start; gap:14px; padding:24px 26px 16px; border-bottom:1px solid var(--border); }
+    .ai-eyebrow { font-size:11px; font-weight:700; letter-spacing:.5px; text-transform:uppercase; color:#9AA2B2; margin-bottom:5px; }
+    .ai-head h2 { font-family:'Satoshi',sans-serif; font-size:20px; font-weight:700; color:#222224; margin:0 0 3px; }
+    .ai-head p { font-size:13.5px; color:#85878d; margin:0; }
+    .ai-risk-badge { margin-left:auto; align-self:center; padding:6px 13px; border-radius:16px; font-size:12.5px; font-weight:700; white-space:nowrap; }
+    .ai-risk-badge.low  { background:#E6F9F0; color:#027A48; }
+    .ai-risk-badge.med  { background:#FFFAEB; color:#B54708; }
+    .ai-risk-badge.high { background:#FFF1F0; color:#B42318; }
+    .ai-close { width:32px; height:32px; flex-shrink:0; border:none; background:transparent; border-radius:8px; color:#85878d; cursor:pointer; display:flex; align-items:center; justify-content:center; }
+    .ai-close:hover { background:rgba(0,0,0,.05); color:#222224; }
+    .ai-close svg { width:18px; height:18px; }
+    .ai-body { padding:8px 26px 6px; }
+    .ai-check { display:flex; gap:12px; padding:14px 0; border-bottom:1px solid #F2F3F5; }
+    .ai-check:last-child { border-bottom:none; }
+    .ai-check-ic { width:22px; height:22px; flex-shrink:0; margin-top:1px; }
+    .ai-check-ic svg { width:22px; height:22px; }
+    .ai-check-ic.pass { color:#12B76A; }
+    .ai-check-ic.warn { color:#F79009; }
+    .ai-check-ic.flag { color:#F04438; }
+    .ai-check-text strong { display:block; font-size:14px; font-weight:700; color:#222224; margin-bottom:2px; }
+    .ai-check-text span { font-size:13px; color:#6B7588; line-height:1.5; }
+    .ai-foot { display:flex; align-items:center; justify-content:flex-end; gap:10px; padding:16px 26px 22px; border-top:1px solid var(--border); }
+    .ai-foot .ai-secondary { background:#fff; border:1px solid var(--border-strong); border-radius:9px; font-family:inherit; font-size:14px; font-weight:700; color:#222224; cursor:pointer; padding:11px 16px; }
+    .ai-foot .ai-secondary:hover { background:#F7F8FA; border-color:#9AA2B2; }
+    .ai-foot .ai-primary { display:inline-flex; align-items:center; gap:8px; background:#1A6FE0; border:none; border-radius:9px; font-family:inherit; font-size:14px; font-weight:700; color:#fff; cursor:pointer; padding:12px 18px; }
+    .ai-foot .ai-primary:hover { background:#1059BD; }
+    .ai-foot .ai-primary:disabled { opacity:.6; cursor:default; }
+    .ai-disclaimer { padding:0 26px 18px; font-size:11.5px; color:#9AA2B2; line-height:1.5; }
+    @media (max-width: 980px) { .stat-row { grid-template-columns:repeat(2,1fr); } }
+    /* /wm-verify */
+    /* wm-th-sort */
+    thead th.th-sort { cursor: pointer; user-select: none; white-space: nowrap; }
+    thead th.th-sort .th-label { transition: color 0.15s; }
+    thead th.th-sort:hover .th-label { color: var(--text-primary); }
+    thead th.th-sort.text-right { text-align: right; }
+    .th-caret { width: 13px; height: 13px; margin-left: 5px; vertical-align: middle; color: #9AA2B2; transition: transform 0.15s; }
+    thead th.th-sort.sorted.asc .th-caret { transform: rotate(180deg); }
+    /* /wm-th-sort */
+  </style>
+</head>
+<body><!-- wm-icon-sprite --><svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true"><symbol id="ic-home-2" viewBox="0 0 24 24" fill="none"><path d="M9.02 2.84004L3.63 7.04004C2.73 7.74004 2 9.23004 2 10.36V17.77C2 20.09 3.89 21.99 6.21 21.99H17.79C20.11 21.99 22 20.09 22 17.78V10.5C22 9.29004 21.19 7.74004 20.2 7.05004L14.02 2.72004C12.62 1.74004 10.37 1.79004 9.02 2.84004Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M12 17.99V14.99" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-profile-2user" viewBox="0 0 24 24" fill="none"><path d="M9.16006 10.87C9.06006 10.86 8.94006 10.86 8.83006 10.87C6.45006 10.79 4.56006 8.84 4.56006 6.44C4.56006 3.99 6.54006 2 9.00006 2C11.4501 2 13.4401 3.99 13.4401 6.44C13.4301 8.84 11.5401 10.79 9.16006 10.87Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M16.41 4C18.35 4 19.91 5.57 19.91 7.5C19.91 9.39 18.41 10.93 16.54 11C16.46 10.99 16.37 10.99 16.28 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M4.15997 14.56C1.73997 16.18 1.73997 18.82 4.15997 20.43C6.90997 22.27 11.42 22.27 14.17 20.43C16.59 18.81 16.59 16.17 14.17 14.56C11.43 12.73 6.91997 12.73 4.15997 14.56Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M18.3401 20C19.0601 19.85 19.7401 19.56 20.3001 19.13C21.8601 17.96 21.8601 16.03 20.3001 14.86C19.7501 14.44 19.0801 14.16 18.3701 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-receipt-text" viewBox="0 0 24 24" fill="none"><path d="M22 6V8.42C22 10 21 11 19.42 11H16V4.01C16 2.9 16.91 2 18.02 2C19.11 2.01 20.11 2.45 20.83 3.17C21.55 3.9 22 4.9 22 6Z" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M2 7V21C2 21.83 2.93998 22.3 3.59998 21.8L5.31 20.52C5.71 20.22 6.27 20.26 6.63 20.62L8.28998 22.29C8.67998 22.68 9.32002 22.68 9.71002 22.29L11.39 20.61C11.74 20.26 12.3 20.22 12.69 20.52L14.4 21.8C15.06 22.29 16 21.82 16 21V4C16 2.9 16.9 2 18 2H7H6C3 2 2 3.79 2 6V7Z" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M6 9H12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M6.75 13H11.25" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-clock" viewBox="0 0 24 24" fill="none"><path d="M22 12C22 17.52 17.52 22 12 22C6.48 22 2 17.52 2 12C2 6.48 6.48 2 12 2C17.52 2 22 6.48 22 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 7V12.5L15.5 14.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-shield-tick" viewBox="0 0 24 24" fill="none"><path d="M10.49 2.23006L5.50003 4.11006C4.35003 4.54006 3.41003 5.90006 3.41003 7.12006V14.5501C3.41003 15.7301 4.19003 17.2801 5.14003 17.9901L9.44003 21.2001C10.85 22.2601 13.17 22.2601 14.58 21.2001L18.88 17.9901C19.83 17.2801 20.61 15.7301 20.61 14.5501V7.12006C20.61 5.89006 19.67 4.53006 18.52 4.10006L13.53 2.23006C12.68 1.92006 11.32 1.92006 10.49 2.23006Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M9.05005 11.8701L10.66 13.4801L14.96 9.18005" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-search-normal" viewBox="0 0 24 24" fill="none"><path d="M11 20C15.9706 20 20 15.9706 20 11C20 6.02944 15.9706 2 11 2C6.02944 2 2 6.02944 2 11C2 15.9706 6.02944 20 11 20Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M18.9299 20.6898C19.4599 22.2898 20.6699 22.4498 21.5999 21.0498C22.4499 19.7698 21.8899 18.7198 20.3499 18.7198C19.2099 18.7098 18.5699 19.5998 18.9299 20.6898Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-notification" viewBox="0 0 24 24" fill="none"><path d="M12.02 2.90991C8.70997 2.90991 6.01997 5.59991 6.01997 8.90991V11.7999C6.01997 12.4099 5.75997 13.3399 5.44997 13.8599L4.29997 15.7699C3.58997 16.9499 4.07997 18.2599 5.37997 18.6999C9.68997 20.1399 14.34 20.1399 18.65 18.6999C19.86 18.2999 20.39 16.8699 19.73 15.7699L18.58 13.8599C18.28 13.3399 18.02 12.4099 18.02 11.7999V8.90991C18.02 5.60991 15.32 2.90991 12.02 2.90991Z" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"/>
+<path d="M13.87 3.19994C13.56 3.10994 13.24 3.03994 12.91 2.99994C11.95 2.87994 11.03 2.94994 10.17 3.19994C10.46 2.45994 11.18 1.93994 12.02 1.93994C12.86 1.93994 13.58 2.45994 13.87 3.19994Z" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M15.02 19.0601C15.02 20.7101 13.67 22.0601 12.02 22.0601C11.2 22.0601 10.44 21.7201 9.90002 21.1801C9.36002 20.6401 9.02002 19.8801 9.02002 19.0601" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10"/></symbol><symbol id="ic-arrow-down" viewBox="0 0 24 24" fill="none"><path d="M19.9201 8.94995L13.4001 15.47C12.6301 16.24 11.3701 16.24 10.6001 15.47L4.08008 8.94995" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-close" viewBox="0 0 24 24" fill="none"><path d="M6 6L18 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M18 6L6 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-add" viewBox="0 0 24 24" fill="none"><path d="M6 12H18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M12 18V6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-tick-circle" viewBox="0 0 24 24" fill="none"><path d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M7.75 12L10.58 14.83L16.25 9.17004" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-more" viewBox="0 0 24 24" fill="none"><circle cx="5" cy="12" r="2" fill="currentColor"/><circle cx="12" cy="12" r="2" fill="currentColor"/><circle cx="19" cy="12" r="2" fill="currentColor"/></symbol><symbol id="ic-user-add" viewBox="0 0 24 24" fill="none"><path d="M12 12C14.7614 12 17 9.76142 17 7C17 4.23858 14.7614 2 12 2C9.23858 2 7 4.23858 7 7C7 9.76142 9.23858 12 12 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M3.40991 22C3.40991 18.13 7.25991 15 11.9999 15C12.9599 15 13.8899 15.13 14.7599 15.37" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M22 18C22 18.32 21.96 18.63 21.88 18.93C21.79 19.33 21.63 19.72 21.42 20.06C20.73 21.22 19.46 22 18 22C16.97 22 16.04 21.61 15.34 20.97C15.04 20.71 14.78 20.4 14.58 20.06C14.21 19.46 14 18.75 14 18C14 16.92 14.43 15.93 15.13 15.21C15.86 14.46 16.88 14 18 14C19.18 14 20.25 14.51 20.97 15.33C21.61 16.04 22 16.98 22 18Z" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M19.49 17.98H16.51" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M18 16.52V19.51" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-document-text" viewBox="0 0 24 24" fill="none"><path d="M21 7V17C21 20 19.5 22 16 22H8C4.5 22 3 20 3 17V7C3 4 4.5 2 8 2H16C19.5 2 21 4 21 7Z" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M14.5 4.5V6.5C14.5 7.6 15.4 8.5 16.5 8.5H18.5" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M8 13H12" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M8 17H16" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-wallet-money" viewBox="0 0 24 24" fill="none"><path d="M10.7516 16.8604V18.8904C10.7516 20.6104 9.15158 22.0004 7.18158 22.0004C5.21158 22.0004 3.60156 20.6104 3.60156 18.8904V16.8604C3.60156 18.5804 5.20158 19.8004 7.18158 19.8004C9.15158 19.8004 10.7516 18.5704 10.7516 16.8604Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M10.7501 14.11C10.7501 14.61 10.6101 15.07 10.3701 15.47C9.78006 16.44 8.57004 17.05 7.17004 17.05C5.77004 17.05 4.56003 16.43 3.97003 15.47C3.73003 15.07 3.59009 14.61 3.59009 14.11C3.59009 13.25 3.99007 12.48 4.63007 11.92C5.28007 11.35 6.17003 11.01 7.16003 11.01C8.15003 11.01 9.04006 11.36 9.69006 11.92C10.3501 12.47 10.7501 13.25 10.7501 14.11Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M10.7516 14.11V16.86C10.7516 18.58 9.15158 19.8 7.18158 19.8C5.21158 19.8 3.60156 18.57 3.60156 16.86V14.11C3.60156 12.39 5.20158 11 7.18158 11C8.17158 11 9.06161 11.35 9.71161 11.91C10.3516 12.47 10.7516 13.25 10.7516 14.11Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M22 10.9699V13.03C22 13.58 21.56 14.0299 21 14.0499H19.0399C17.9599 14.0499 16.97 13.2599 16.88 12.1799C16.82 11.5499 17.0599 10.9599 17.4799 10.5499C17.8499 10.1699 18.36 9.94995 18.92 9.94995H21C21.56 9.96995 22 10.4199 22 10.9699Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M2 10.5V8.5C2 5.78 3.64 3.88 6.19 3.56C6.45 3.52 6.72 3.5 7 3.5H16C16.26 3.5 16.51 3.50999 16.75 3.54999C19.33 3.84999 21 5.76 21 8.5V9.95001H18.92C18.36 9.95001 17.85 10.17 17.48 10.55C17.06 10.96 16.82 11.55 16.88 12.18C16.97 13.26 17.96 14.05 19.04 14.05H21V15.5C21 18.5 19 20.5 16 20.5H13.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-arrow-right" viewBox="0 0 24 24" fill="none"><path d="M14.4301 5.92993L20.5001 11.9999L14.4301 18.0699" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M3.5 12H20.33" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-info-circle" viewBox="0 0 24 24" fill="none"><path d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M12 8V13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M11.9945 16H12.0035" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol></svg><!-- /wm-icon-sprite -->
+
+  <div class="app">
+
+    <aside class="sidebar">
+      <a href="home.html" class="sidebar-logo">
+        <img src="wisemonk_logo_final.png" alt="Wisemonk">
+      </a>
+      <nav class="nav-section">
+        <div class="nav-title">WORKSPACE</div>
+        <a href="home.html" class="nav-link">
+          <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-home-2"/></svg></span>
+          Home
+        </a>
+        <a href="freelancers.html" class="nav-link">
+          <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-profile-2user"/></svg></span>
+          Freelancers
+        </a>
+        <a href="client-verification.html" class="nav-link active">
+          <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-shield-tick"/></svg></span>
+          Verification
+        </a>
+        <a href="invoices.html" class="nav-link">
+          <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-receipt-text"/></svg></span>
+          Invoices
+        </a>
+        <div class="nav-link nav-parent open" id="timeParent">
+          <div style="display:flex; align-items:center; gap:10px;">
+            <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-clock"/></svg></span>
+            Time
+          </div>
+          <svg class="nav-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-arrow-down"/></svg>
+        </div>
+        <div class="nav-children" id="timeChildren">
+          <a href="time-leaves.html" class="nav-link">Leaves</a>
+          <a href="time-attendance.html" class="nav-link">Attendance</a>
+        </div>
+      </nav>
+    </aside>
+
+    <div class="main-col">
+
+      <header class="header">
+        <h1>Good Morning, Aman!</h1>
+        <div class="header-right">
+        <button type="button" class="cmdk-trigger" onclick="openCmdk()" aria-label="Quick actions (Ctrl K)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-search-normal"/></svg><span class="cmdk-trigger-label">Quick actions</span><span class="cmdk-kbd" id="cmdkHint">Ctrl K</span></button>
+          <button class="bell-btn" aria-label="Notifications"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-notification"/></svg></button>
+          <div class="user-chip">
+            <span class="user-avatar">AS</span>
+            <span class="user-name">Aman Singh</span>
+            <svg class="user-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-arrow-down"/></svg>
+          </div>
+        </div>
+      </header>
+
+      <div class="content">
+
+        <div class="wm-card">
+
+          <div class="wm-card-heading">
+            <div>
+              <h1>Client verification</h1>
+              <p>Review and verify client onboarding submissions before activation.</p>
+            </div>
+            <div class="wm-head-actions">
+              <button class="rerun-btn" id="rerunBtn" onclick="runAllChecks()">Run AI check again</button>
+            </div>
+          </div>
+          <div class="rerun-note">All clients re-screened <span id="lastRun">10 Jun 2026</span></div>
+
+          <div class="stat-row">
+            <button class="stat-card active" id="statTotal" data-filter="all" onclick="resetFilters()">
+              <div class="stat-label">Total clients</div>
+              <div class="stat-value">6</div>
+              <div class="stat-sub">All submissions</div>
+            </button>
+            <div class="stat-card">
+              <div class="stat-label">Pending review</div>
+              <div class="stat-value warn">3</div>
+              <div class="stat-sub">Awaiting verification</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Verified</div>
+              <div class="stat-value ok">2</div>
+              <div class="stat-sub">Cleared &amp; activated</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">High risk</div>
+              <div class="stat-value bad">1</div>
+              <div class="stat-sub">Flagged by AI screening</div>
+            </div>
+          </div>
+
+          <div class="filter-bar">
+            <div class="search"><input type="text" id="searchInput" placeholder="Search by company, legal name or country"></div>
+            <div style="display:flex; align-items:center; gap:10px;">
+              <div class="filter-dd" id="statusDd">
+                <button class="dd-trigger" id="statusTrigger">
+                  <span id="statusLabel">All status</span>
+                  <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-arrow-down"/></svg>
+                </button>
+                <div class="dd-menu" id="statusMenu" role="listbox">
+                  <button class="dd-item active" data-value="all" data-label="All status">
+                    <span class="dd-item-label">All<span class="dd-count">· 6</span></span>
+                    <svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-tick-circle"/></svg>
+                  </button>
+                  <button class="dd-item" data-value="pending" data-label="Pending">
+                    <span class="dd-item-label">Pending<span class="dd-count">· 3</span></span>
+                    <svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-tick-circle"/></svg>
+                  </button>
+                  <button class="dd-item" data-value="verified" data-label="Verified">
+                    <span class="dd-item-label">Verified<span class="dd-count">· 2</span></span>
+                    <svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-tick-circle"/></svg>
+                  </button>
+                  <button class="dd-item" data-value="review" data-label="Needs review">
+                    <span class="dd-item-label">Needs review<span class="dd-count">· 1</span></span>
+                    <svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-tick-circle"/></svg>
+                  </button>
+                </div>
+              </div>
+              <div class="filter-dd" id="riskDd">
+                <button class="dd-trigger" id="riskTrigger">
+                  <span id="riskLabel">All risk</span>
+                  <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-arrow-down"/></svg>
+                </button>
+                <div class="dd-menu" id="riskMenu" role="listbox">
+                  <button class="dd-item active" data-value="all" data-label="All risk">
+                    <span class="dd-item-label">All<span class="dd-count">· 6</span></span>
+                    <svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-tick-circle"/></svg>
+                  </button>
+                  <button class="dd-item" data-value="low" data-label="Low risk">
+                    <span class="dd-item-label">Low<span class="dd-count">· 3</span></span>
+                    <svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-tick-circle"/></svg>
+                  </button>
+                  <button class="dd-item" data-value="med" data-label="Medium risk">
+                    <span class="dd-item-label">Medium<span class="dd-count">· 2</span></span>
+                    <svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-tick-circle"/></svg>
+                  </button>
+                  <button class="dd-item" data-value="high" data-label="High risk">
+                    <span class="dd-item-label">High<span class="dd-count">· 1</span></span>
+                    <svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-tick-circle"/></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        <div class="table-card">
+          <table>
+            <thead>
+              <tr>
+                <th class="th-sort" data-key="client"><span class="th-label">Client</span><svg class="th-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></th>
+                <th class="th-sort" data-key="country"><span class="th-label">Country</span><svg class="th-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></th>
+                <th class="th-sort" data-key="req"><span class="th-label">Required info</span><svg class="th-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></th>
+                <th class="th-sort" data-key="risk"><span class="th-label">AI risk</span><svg class="th-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></th>
+                <th class="th-sort" data-key="submitted"><span class="th-label">Submitted</span><svg class="th-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></th>
+                <th class="th-sort" data-key="status"><span class="th-label">Status</span><svg class="th-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+
+              <tr data-status="verified" data-risk="low">
+                <td><div class="cell-name">
+                  <div class="cell-avatar">AT</div>
+                  <div class="cell-name-text"><strong>Acme Tech Pvt Ltd</strong><small>Acme Technologies Pvt Ltd</small></div>
+                </div></td>
+                <td>India</td>
+                <td><span class="req-cell ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-tick-circle"/></svg>Complete</span></td>
+                <td><span class="risk-pill low">Low</span></td>
+                <td>8 Jun 2026</td>
+                <td><span class="pill verified">Verified</span></td>
+                <td><button class="view-report" onclick="openAi('acme')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-document-text"/></svg>View report</button></td>
+              </tr>
+
+              <tr data-status="pending" data-risk="med">
+                <td><div class="cell-name">
+                  <div class="cell-avatar">BL</div>
+                  <div class="cell-name-text"><strong>Bright Labs LLC</strong><small>Bright Labs LLC</small></div>
+                </div></td>
+                <td>United States</td>
+                <td><span class="req-cell ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-tick-circle"/></svg>Complete</span></td>
+                <td><span class="risk-pill med">Medium</span></td>
+                <td>9 Jun 2026</td>
+                <td><span class="pill pending">Pending</span></td>
+                <td><button class="view-report" onclick="openAi('bright')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-document-text"/></svg>View report</button></td>
+              </tr>
+
+              <tr data-status="pending" data-risk="low">
+                <td><div class="cell-name">
+                  <div class="cell-avatar">ND</div>
+                  <div class="cell-name-text"><strong>Nordic Design AB</strong><small>Nordic Design AB</small></div>
+                </div></td>
+                <td>Sweden</td>
+                <td><span class="req-cell ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-tick-circle"/></svg>Complete</span></td>
+                <td><span class="risk-pill low">Low</span></td>
+                <td>9 Jun 2026</td>
+                <td><span class="pill pending">Pending</span></td>
+                <td><button class="view-report" onclick="openAi('nordic')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-document-text"/></svg>View report</button></td>
+              </tr>
+
+              <tr data-status="review" data-risk="high">
+                <td><div class="cell-name">
+                  <div class="cell-avatar">ZT</div>
+                  <div class="cell-name-text"><strong>Zenith Trading FZE</strong><small>Zenith Trading FZE</small></div>
+                </div></td>
+                <td>United Arab Emirates</td>
+                <td><span class="req-cell miss"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-info-circle"/></svg>Missing UBO</span></td>
+                <td><span class="risk-pill high">High</span></td>
+                <td>7 Jun 2026</td>
+                <td><span class="pill review">Needs review</span></td>
+                <td><button class="view-report" onclick="openAi('zenith')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-document-text"/></svg>View report</button></td>
+              </tr>
+
+              <tr data-status="verified" data-risk="low">
+                <td><div class="cell-name">
+                  <div class="cell-avatar">MS</div>
+                  <div class="cell-name-text"><strong>Maple Studios Inc</strong><small>Maple Studios Inc</small></div>
+                </div></td>
+                <td>Canada</td>
+                <td><span class="req-cell ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-tick-circle"/></svg>Complete</span></td>
+                <td><span class="risk-pill low">Low</span></td>
+                <td>6 Jun 2026</td>
+                <td><span class="pill verified">Verified</span></td>
+                <td><button class="view-report" onclick="openAi('maple')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-document-text"/></svg>View report</button></td>
+              </tr>
+
+              <tr data-status="pending" data-risk="med">
+                <td><div class="cell-name">
+                  <div class="cell-avatar">OM</div>
+                  <div class="cell-name-text"><strong>Orchid Media Pte Ltd</strong><small>Orchid Media Pte Ltd</small></div>
+                </div></td>
+                <td>Singapore</td>
+                <td><span class="req-cell ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-tick-circle"/></svg>Complete</span></td>
+                <td><span class="risk-pill med">Medium</span></td>
+                <td>10 Jun 2026</td>
+                <td><span class="pill pending">Pending</span></td>
+                <td><button class="view-report" onclick="openAi('orchid')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-document-text"/></svg>View report</button></td>
+              </tr>
+
+            </tbody>
+          </table>
+          <div class="ai-disclaimer" style="padding-top:14px;">AI screening results are automated indicators for demonstration only and do not constitute a compliance determination.</div>
+        </div>
+
+        </div> <!-- /.wm-card -->
+
+        <!-- AI verification report modal -->
+        <div class="ai-overlay" id="aiModal" role="dialog" aria-modal="true" aria-labelledby="aiClient">
+          <div class="ai-modal">
+            <div class="ai-head">
+              <div>
+                <div class="ai-eyebrow">AI verification report</div>
+                <h2 id="aiClient">Client</h2>
+                <p id="aiMeta"></p>
+              </div>
+              <span class="ai-risk-badge low" id="aiRiskBadge">Low risk</span>
+              <button class="ai-close" type="button" onclick="closeAi()" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-close"/></svg></button>
+            </div>
+            <div class="ai-body" id="aiBody"></div>
+            <div class="ai-disclaimer">Generated automatically from the submitted onboarding details. Results are simulated for this demo.</div>
+            <div class="ai-foot">
+              <button class="ai-secondary" type="button" onclick="closeAi()">Close</button>
+              <button class="ai-secondary" type="button" id="aiRequestBtn" onclick="requestInfo()">Request more info</button>
+              <button class="ai-primary" type="button" id="aiVerifyBtn" onclick="verifyClient()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-tick-circle"/></svg><span id="aiVerifyLabel">Mark as verified</span></button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+    var statusVal = 'all', riskVal = 'all';
+    var searchInput = document.getElementById('searchInput');
+    var tableBody = document.querySelector('.table-card tbody');
+
+    function applyFilters() {
+      var q = (searchInput.value || '').trim().toLowerCase();
+      Array.prototype.forEach.call(tableBody.querySelectorAll('tr'), function (row) {
+        var okStatus = statusVal === 'all' || row.dataset.status === statusVal;
+        var okRisk = riskVal === 'all' || row.dataset.risk === riskVal;
+        var okQuery = !q || row.textContent.toLowerCase().indexOf(q) > -1;
+        row.style.display = (okStatus && okRisk && okQuery) ? '' : 'none';
+      });
+      // "Total clients" card stays highlighted only when no filter is active
+      var total = document.getElementById('statTotal');
+      if (total) total.classList.toggle('active', statusVal === 'all' && riskVal === 'all' && !q);
+    }
+
+    function wireDropdown(ddId, triggerId, menuId, labelId, onPick) {
+      var dd = document.getElementById(ddId);
+      var trigger = document.getElementById(triggerId);
+      var menu = document.getElementById(menuId);
+      var label = document.getElementById(labelId);
+      trigger.addEventListener('click', function (e) {
+        e.stopPropagation();
+        var open = menu.classList.toggle('open');
+        trigger.classList.toggle('open', open);
+      });
+      menu.querySelectorAll('.dd-item').forEach(function (item) {
+        item.addEventListener('click', function () {
+          menu.querySelectorAll('.dd-item').forEach(function (i) { i.classList.toggle('active', i === item); });
+          label.textContent = item.dataset.label;
+          menu.classList.remove('open');
+          trigger.classList.remove('open');
+          onPick(item.dataset.value);
+          applyFilters();
+        });
+      });
+      document.addEventListener('click', function (e) {
+        if (!dd.contains(e.target)) { menu.classList.remove('open'); trigger.classList.remove('open'); }
+      });
+    }
+
+    wireDropdown('statusDd', 'statusTrigger', 'statusMenu', 'statusLabel', function (v) { statusVal = v; });
+    wireDropdown('riskDd', 'riskTrigger', 'riskMenu', 'riskLabel', function (v) { riskVal = v; });
+    searchInput.addEventListener('input', applyFilters);
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') {
+        document.querySelectorAll('.dd-menu.open').forEach(function (m) { m.classList.remove('open'); });
+        document.querySelectorAll('.dd-trigger.open').forEach(function (t) { t.classList.remove('open'); });
+      }
+    });
+
+    function resetFilters() {
+      statusVal = 'all'; riskVal = 'all';
+      if (searchInput) searchInput.value = '';
+      document.getElementById('statusLabel').textContent = 'All status';
+      document.getElementById('riskLabel').textContent = 'All risk';
+      ['statusMenu', 'riskMenu'].forEach(function (id) {
+        var m = document.getElementById(id);
+        m.querySelectorAll('.dd-item').forEach(function (i) { i.classList.toggle('active', i.dataset.value === 'all'); });
+      });
+      applyFilters();
+    }
+
+    function runAllChecks() {
+      var btn = document.getElementById('rerunBtn');
+      if (!btn || btn.disabled) return;
+      var original = btn.textContent;
+      btn.disabled = true;
+      btn.textContent = 'Running AI checks…';
+      setTimeout(function () {
+        btn.disabled = false;
+        btn.textContent = original;
+        var d = new Date();
+        var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+        document.getElementById('lastRun').textContent = d.getDate() + ' ' + months[d.getMonth()] + ' ' + d.getFullYear();
+      }, 1600);
+    }
+  </script>
+
+
+  <script>
+    // COR banner dismiss
+    document.querySelectorAll('.cor-banner-close').forEach(btn => {
+      btn.addEventListener('click', () => btn.closest('.cor-banner').remove());
+    });
+  </script>
+
+
+  <!-- wm-cmdk -->
+  <div class="cmdk-overlay" id="cmdkOverlay" role="dialog" aria-modal="true" aria-label="Quick actions">
+    <div class="cmdk">
+      <div class="cmdk-search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-search-normal"/></svg>
+        <input type="text" id="cmdkInput" placeholder="Search for an action&hellip;" autocomplete="off" spellcheck="false">
+      </div>
+      <div class="cmdk-list" id="cmdkList">
+        <div class="cmdk-section">Quick actions</div>
+        <a href="add-freelancer.html" class="cmdk-item" data-kw="add freelancer contractor onboard hire"><span class="cmdk-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-user-add"/></svg></span><span>Add freelancer</span><span class="cmdk-item-sub">People</span><span class="cmdk-enter">&crarr; Enter</span></a>
+        <a href="compliance.html" class="cmdk-item" data-kw="risk check compliance audit misclassification"><span class="cmdk-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-shield-tick"/></svg></span><span>Run risk check</span><span class="cmdk-item-sub">Compliance</span><span class="cmdk-enter">&crarr; Enter</span></a>
+        <a href="compliance.html" class="cmdk-item" data-kw="generate document contract agreement legal doc"><span class="cmdk-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-document-text"/></svg></span><span>Generate document</span><span class="cmdk-item-sub">Compliance</span><span class="cmdk-enter">&crarr; Enter</span></a>
+        <a href="invoices.html" class="cmdk-item" data-kw="transfer payment pay money send invoice payout"><span class="cmdk-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-wallet-money"/></svg></span><span>Transfer payment</span><span class="cmdk-item-sub">Payments</span><span class="cmdk-enter">&crarr; Enter</span></a>
+        <div class="cmdk-empty" id="cmdkEmpty">No matching actions</div>
+      </div>
+      <div class="cmdk-foot">
+        <span><span class="cmdk-kbd">&uarr;</span><span class="cmdk-kbd">&darr;</span> Navigate</span>
+        <span><span class="cmdk-kbd">&crarr;</span> Select</span>
+        <span><span class="cmdk-kbd">Esc</span> Close</span>
+      </div>
+    </div>
+  </div>
+  <script>
+    (function(){
+      var ov=document.getElementById('cmdkOverlay');
+      var input=document.getElementById('cmdkInput');
+      var empty=document.getElementById('cmdkEmpty');
+      if(!ov) return;
+      var isMac=/Mac|iPod|iPhone|iPad/.test(navigator.platform);
+      var hint=document.getElementById('cmdkHint'); if(hint && isMac) hint.textContent='\u2318 K';
+      function items(){ return Array.prototype.slice.call(ov.querySelectorAll('.cmdk-item')); }
+      function visible(){ return items().filter(function(i){ return i.style.display!=='none'; }); }
+      function clearActive(){ items().forEach(function(i){ i.classList.remove('active'); }); }
+      function setActive(el){ if(!el) return; clearActive(); el.classList.add('active'); el.scrollIntoView({block:'nearest'}); }
+      window.openCmdk=function(){ ov.classList.add('open'); document.body.style.overflow='hidden'; input.value=''; filter(); setTimeout(function(){ input.focus(); },60); };
+      window.closeCmdk=function(){ ov.classList.remove('open'); document.body.style.overflow=''; };
+      function filter(){
+        var q=input.value.trim().toLowerCase(); var shown=0;
+        items().forEach(function(it){
+          var hit=!q || (it.getAttribute('data-kw')+' '+it.textContent).toLowerCase().indexOf(q)>-1;
+          it.style.display=hit?'':'none'; if(hit) shown++;
+        });
+        if(empty) empty.style.display=shown?'none':'block';
+        var vis=visible(); clearActive(); if(vis.length) vis[0].classList.add('active');
+      }
+      input.addEventListener('input', filter);
+      document.addEventListener('keydown', function(ev){
+        var k=ev.key.toLowerCase();
+        if((ev.metaKey||ev.ctrlKey) && k==='k'){ ev.preventDefault(); ov.classList.contains('open')?closeCmdk():openCmdk(); return; }
+        if(!ov.classList.contains('open')) return;
+        if(k==='escape'){ closeCmdk(); }
+        else if(k==='arrowdown'){ ev.preventDefault(); var v=visible(); var i=v.indexOf(ov.querySelector('.cmdk-item.active')); setActive(v[Math.min(i+1,v.length-1)]); }
+        else if(k==='arrowup'){ ev.preventDefault(); var v=visible(); var i=v.indexOf(ov.querySelector('.cmdk-item.active')); setActive(v[Math.max(i-1,0)]); }
+        else if(k==='enter'){ var a=ov.querySelector('.cmdk-item.active'); if(a){ ev.preventDefault(); window.location.href=a.getAttribute('href'); } }
+      });
+      ov.addEventListener('click', function(ev){ if(ev.target===ov) closeCmdk(); });
+      items().forEach(function(it){ it.addEventListener('mousemove', function(){ setActive(it); }); });
+    })();
+  </script>
+  <!-- /wm-cmdk -->
+
+  <!-- wm-verify-js -->
+  <script>
+    // Time submenu toggle (shared chrome)
+    (function(){
+      var timeParent=document.getElementById('timeParent');
+      var timeChildren=document.getElementById('timeChildren');
+      if(timeParent&&timeChildren){ timeParent.addEventListener('click', function(){ var open=timeParent.classList.toggle('open'); timeChildren.style.display=open?'flex':'none'; }); }
+    })();
+
+    // ── AI verification report (simulated) ──────────────────────────────
+    var CLIENTS = {
+      acme: { name:'Acme Tech Pvt Ltd', meta:'India · Submitted 8 Jun 2026', risk:'low', verified:true, checks:[
+        { label:'Business registration & tax ID', status:'pass', detail:'CIN verified against the MCA India registry; GST registration active.' },
+        { label:'Sanctions, AML & PEP screening', status:'pass', detail:'No matches on OFAC, UN, EU or UK sanctions lists; no politically-exposed-person exposure.' },
+        { label:'Document verification', status:'pass', detail:'Certificate of incorporation matches the submitted registration number.' },
+        { label:'Beneficial ownership (UBO)', status:'pass', detail:'Single UBO holding 62% declared and identity-verified.' },
+        { label:'Online presence & address', status:'pass', detail:'Active website and LinkedIn match the declared brand and work address.' }
+      ]},
+      bright: { name:'Bright Labs LLC', meta:'United States · Submitted 9 Jun 2026', risk:'med', verified:false, checks:[
+        { label:'Business registration & tax ID', status:'pass', detail:'EIN format valid; Delaware state registration confirmed.' },
+        { label:'Sanctions, AML & PEP screening', status:'warn', detail:'A director shares a name with a low-relevance watchlist entry — manual review advised.' },
+        { label:'Document verification', status:'pass', detail:'Business registration document legible and internally consistent.' },
+        { label:'Beneficial ownership (UBO)', status:'pass', detail:'Two UBOs declared (55% / 45%), both identity-verified.' },
+        { label:'Online presence & address', status:'warn', detail:'Website is live but the domain was registered under six months ago.' }
+      ]},
+      nordic: { name:'Nordic Design AB', meta:'Sweden · Submitted 9 Jun 2026', risk:'low', verified:false, checks:[
+        { label:'Business registration & tax ID', status:'pass', detail:'Organisationsnummer validated with Bolagsverket.' },
+        { label:'Sanctions, AML & PEP screening', status:'pass', detail:'Clear across all screened sanctions and PEP lists.' },
+        { label:'Document verification', status:'pass', detail:'Tax registration document verified.' },
+        { label:'Beneficial ownership (UBO)', status:'pass', detail:'Single UBO holding 100% identity-verified.' },
+        { label:'Online presence & address', status:'pass', detail:'Portfolio site and declared address are consistent.' }
+      ]},
+      zenith: { name:'Zenith Trading FZE', meta:'United Arab Emirates · Submitted 7 Jun 2026', risk:'high', verified:false, checks:[
+        { label:'Business registration & tax ID', status:'warn', detail:'Free-zone licence number could not be auto-matched; awaiting a manual check.' },
+        { label:'Sanctions, AML & PEP screening', status:'flag', detail:'The declared owner appears on an enhanced-due-diligence list — escalation required.' },
+        { label:'Document verification', status:'flag', detail:'Uploaded incorporation certificate is missing the ownership/UBO section.' },
+        { label:'Beneficial ownership (UBO)', status:'flag', detail:'No UBO declared despite ownership above the 25% threshold.' },
+        { label:'Online presence & address', status:'warn', detail:'No verifiable online presence found for the declared brand.' }
+      ]},
+      maple: { name:'Maple Studios Inc', meta:'Canada · Submitted 6 Jun 2026', risk:'low', verified:true, checks:[
+        { label:'Business registration & tax ID', status:'pass', detail:'Corporation number verified with Corporations Canada.' },
+        { label:'Sanctions, AML & PEP screening', status:'pass', detail:'Clear across all screened sanctions and PEP lists.' },
+        { label:'Document verification', status:'pass', detail:'Certificate of incorporation matches the registration number.' },
+        { label:'Beneficial ownership (UBO)', status:'pass', detail:'Single UBO holding 80% identity-verified.' },
+        { label:'Online presence & address', status:'pass', detail:'Website and declared address are consistent.' }
+      ]},
+      orchid: { name:'Orchid Media Pte Ltd', meta:'Singapore · Submitted 10 Jun 2026', risk:'med', verified:false, checks:[
+        { label:'Business registration & tax ID', status:'pass', detail:'UEN validated with ACRA Singapore.' },
+        { label:'Sanctions, AML & PEP screening', status:'pass', detail:'Clear across all screened sanctions and PEP lists.' },
+        { label:'Document verification', status:'warn', detail:'Proof-of-business document is a low-quality scan — a re-upload is recommended.' },
+        { label:'Beneficial ownership (UBO)', status:'pass', detail:'Two UBOs declared (60% / 40%), both identity-verified.' },
+        { label:'Online presence & address', status:'pass', detail:'Social presence and declared address are consistent.' }
+      ]}
+    };
+    var RISK_TEXT = { low:'Low risk', med:'Medium risk', high:'High risk' };
+    var aiModal = document.getElementById('aiModal');
+
+    function openAi(id) {
+      var c = CLIENTS[id];
+      if (!c) return;
+      document.getElementById('aiClient').textContent = c.name;
+      document.getElementById('aiMeta').textContent = c.meta;
+      var badge = document.getElementById('aiRiskBadge');
+      badge.className = 'ai-risk-badge ' + c.risk;
+      badge.textContent = RISK_TEXT[c.risk];
+      var html = '';
+      c.checks.forEach(function (chk) {
+        var icon = chk.status === 'pass' ? 'ic-tick-circle' : 'ic-info-circle';
+        html += '<div class="ai-check">'
+          + '<span class="ai-check-ic ' + chk.status + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#' + icon + '"/></svg></span>'
+          + '<div class="ai-check-text"><strong>' + chk.label + '</strong><span>' + chk.detail + '</span></div>'
+          + '</div>';
+      });
+      document.getElementById('aiBody').innerHTML = html;
+      var vBtn = document.getElementById('aiVerifyBtn');
+      var vLabel = document.getElementById('aiVerifyLabel');
+      var rBtn = document.getElementById('aiRequestBtn');
+      vBtn.disabled = false; rBtn.disabled = false;
+      vLabel.textContent = c.verified ? 'Verified' : 'Mark as verified';
+      vBtn.disabled = c.verified;
+      aiModal.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeAi() { aiModal.classList.remove('open'); document.body.style.overflow = ''; }
+    function verifyClient() {
+      var vBtn = document.getElementById('aiVerifyBtn');
+      var vLabel = document.getElementById('aiVerifyLabel');
+      vLabel.textContent = 'Verified';
+      vBtn.disabled = true;
+      setTimeout(closeAi, 700);
+    }
+    function requestInfo() {
+      var rBtn = document.getElementById('aiRequestBtn');
+      rBtn.textContent = 'Request sent';
+      rBtn.disabled = true;
+      setTimeout(closeAi, 900);
+    }
+    aiModal.addEventListener('click', function (ev) { if (ev.target === aiModal) closeAi(); });
+    document.addEventListener('keydown', function (ev) { if (ev.key === 'Escape') closeAi(); });
+  </script>
+  <!-- /wm-verify-js -->
+  <!-- wm-th-sort -->
+  <script>
+    (function(){
+      function parseNum(s){ var m = s.replace(/,/g,'').match(/-?\d+(?:\.\d+)?/); return m ? parseFloat(m[0]) : NaN; }
+      function parseDate(s){ var m = s.match(/([A-Za-z]{3,})\.?\s+(\d{1,2})/); if(m){ var t = Date.parse(m[1]+' '+m[2]+', 2025'); if(!isNaN(t)) return t; } var t2 = Date.parse(s); return isNaN(t2)?0:t2; }
+      function cellText(row, i){ var c = row.children[i]; return c ? c.textContent.trim() : ''; }
+      document.querySelectorAll('table').forEach(function(table){
+        var ths = table.querySelectorAll('thead th.th-sort');
+        if(!ths.length) return;
+        var tbody = table.querySelector('tbody'); if(!tbody) return;
+        var curKey = null, asc = false;
+        ths.forEach(function(th){
+          th.addEventListener('click', function(){
+            var key = th.dataset.key, idx = th.cellIndex;
+            if(curKey === key){ asc = !asc; } else { curKey = key; asc = false; }
+            var dir = asc ? 1 : -1;
+            var rows = Array.prototype.slice.call(tbody.children).filter(function(r){ return r.tagName === 'TR'; });
+            rows.sort(function(a,b){
+              var av = cellText(a, idx), bv = cellText(b, idx), cmp;
+              if(/date|due|dates/.test(key)){ cmp = parseDate(av) - parseDate(bv); }
+              else if(/rate|amt|amount|pay/.test(key)){ var an = parseNum(av), bn = parseNum(bv); if(isNaN(an)&&isNaN(bn)) cmp = 0; else if(isNaN(an)) cmp = -1; else if(isNaN(bn)) cmp = 1; else cmp = an - bn; }
+              else { cmp = av.localeCompare(bv); }
+              return dir * cmp;
+            });
+            rows.forEach(function(r){ tbody.appendChild(r); });
+            ths.forEach(function(t){ t.classList.remove('sorted','asc'); });
+            th.classList.add('sorted'); if(asc) th.classList.add('asc');
+          });
+        });
+      });
+    })();
+  </script>
+  <!-- /wm-th-sort -->
+</body>
+</html>
