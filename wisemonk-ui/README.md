@@ -1,6 +1,6 @@
 # Wisemonk UI
 
-**Version 1.3.0** · see [CHANGELOG.md](CHANGELOG.md) for version history.
+**Version 1.3.1** · see [CHANGELOG.md](CHANGELOG.md) for version history.
 
 A portable, framework-free component library extracted from the Wisemonk portal.
 Plain HTML + CSS + vanilla JS — no build step, no dependencies. Drop it into any
@@ -70,7 +70,7 @@ automates this with an `inline_sprite.py` script.)
 
 | Component | Base class | Modifiers |
 |---|---|---|
-| App shell (nav + header) | exact freelancer-portal copy → [`app-shell.html`](app-shell.html) | Portal classes, verbatim: `.sidebar` / `.sidebar-logo` / `.nav-section` / `.nav-title` / `.nav-link`(`.active`) / `.nav-icon` / `.nav-parent`(`.open`)+`.nav-chev`+`.nav-children`; `.header` / `.header-right` / `.cmdk-trigger` / `.bell-btn` / `.user-chip`(`.user-avatar`/`.user-name`/`.user-chev`). Copy the markup + CSS from `app-shell.html`. |
+| App shell (nav + header) | exact freelancer-portal copy → [`app-shell.html`](app-shell.html) | Portal classes, verbatim: `.sidebar` / `.sidebar-logo` / `.nav-section` / `.nav-title` / `.nav-link`(`.active`) / `.nav-icon` / `.nav-parent`(`.open`)+`.nav-chev`+`.nav-children`; `.header` / `.header-right` / `.bell-btn` / `.user-chip`(`.user-avatar`/`.user-name`/`.user-chev`). Copy the markup + CSS from `app-shell.html`. |
 | Button | `.wm-btn` | `--primary --secondary --outline --ghost --dark --danger --sm --lg --block` |
 | Icon button | `.wm-icon-btn` | — |
 | Pill / badge | `.wm-pill` | `--success --warning --danger --info --neutral` |

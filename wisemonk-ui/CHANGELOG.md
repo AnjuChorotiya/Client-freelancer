@@ -9,6 +9,13 @@ This project follows [Semantic Versioning](https://semver.org/) (`MAJOR.MINOR.PA
 
 ---
 
+## [1.3.1] — 2026-06-12
+
+### Changed
+- Removed the **Quick actions (Cmd-K) trigger** from the app-shell header
+  (`app-shell.html`); the header now carries just the notification bell and the
+  user chip.
+
 ## [1.3.0] — 2026-06-12
 
 ### Changed
