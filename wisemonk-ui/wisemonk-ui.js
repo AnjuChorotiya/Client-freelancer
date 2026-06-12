@@ -708,6 +708,8 @@
     });
 
     // components
+    $all('.wm-shell').forEach(initShell);
+    $all('[data-wm-nav]').forEach(initNav);
     $all('[data-wm-toggle], .wm-toggle').forEach(initToggle);
     $all('[data-wm-option-group]').forEach(initOptionGroup);
     $all('.wm-option-card').forEach(function (c) {
@@ -750,6 +752,46 @@
           cmdk.isOpen() ? cmdk.close() : cmdk.open();
         }
       }
+    });
+  }
+
+  /* ---- app shell: sidebar + header --------------------------------------- */
+  // Hamburger toggles an icon-rail on desktop and an off-canvas drawer on
+  // mobile (<=900px). Mark the toggle with [data-wm-sidebar-toggle].
+  function initShell(shell) {
+    if (shell.dataset.wmShell) return;
+    shell.dataset.wmShell = '1';
+    var sidebar = $('.wm-sidebar', shell);
+    var scrim = $('.wm-shell-scrim', shell);
+    function isMobile() { return window.matchMedia('(max-width: 900px)').matches; }
+    function closeMobile() {
+      if (sidebar) sidebar.classList.remove('is-open');
+      shell.classList.remove('is-sidebar-open');
+    }
+    shell.addEventListener('click', function (e) {
+      var toggle = e.target.closest('[data-wm-sidebar-toggle]');
+      if (!toggle || !sidebar) return;
+      e.preventDefault();
+      if (isMobile()) {
+        sidebar.classList.toggle('is-open');
+        shell.classList.toggle('is-sidebar-open');
+      } else {
+        sidebar.classList.toggle('wm-sidebar--collapsed');
+      }
+    });
+    if (scrim) scrim.addEventListener('click', closeMobile);
+  }
+
+  // Single-active navigation: clicking a .wm-nav-item inside [data-wm-nav]
+  // moves the active state to it. Real hrefs still navigate.
+  function initNav(group) {
+    if (group.dataset.wmNavReady) return;
+    group.dataset.wmNavReady = '1';
+    group.addEventListener('click', function (e) {
+      var item = e.target.closest('.wm-nav-item');
+      if (!item || !group.contains(item)) return;
+      $all('.wm-nav-item', group).forEach(function (i) { i.classList.remove('is-active'); });
+      item.classList.add('is-active');
     });
   }
 

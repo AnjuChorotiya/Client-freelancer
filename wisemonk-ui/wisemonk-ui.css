@@ -525,10 +525,90 @@
 .wm-toast--danger svg { color: #FF8A80; }
 @keyframes wmToastIn { from { transform: translateY(12px); opacity: 0; } to { transform: none; opacity: 1; } }
 
+/* ---- App shell: header + sidebar ----------------------------------------- */
+/* Layout: fixed-width left sidebar + a fluid main column (appbar + content). */
+.wm-shell { display: flex; min-height: 100vh; background: var(--wm-neutral-50); }
+.wm-shell-main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.wm-shell-content { flex: 1; padding: 28px 32px; }
+
+/* Sidebar (left navigation) */
+.wm-sidebar {
+  width: 256px; flex-shrink: 0; height: 100vh; position: sticky; top: 0;
+  display: flex; flex-direction: column;
+  background: var(--wm-neutral-0); border-right: 1px solid var(--wm-border);
+  transition: width var(--wm-transition), transform var(--wm-transition);
+}
+.wm-sidebar-head { display: flex; align-items: center; gap: 10px; height: 64px; padding: 0 20px; flex-shrink: 0; }
+.wm-sidebar-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; font-family: var(--wm-font); font-weight: 700; font-size: 16px; color: var(--wm-text-primary); white-space: nowrap; overflow: hidden; }
+.wm-sidebar-logo { width: 30px; height: 30px; flex-shrink: 0; border-radius: 9px; background: var(--wm-primary-500); color: #fff; display: inline-flex; align-items: center; justify-content: center; }
+.wm-sidebar-logo svg { width: 17px; height: 17px; }
+.wm-sidebar-nav { flex: 1; overflow-y: auto; padding: 8px 12px 16px; }
+.wm-nav-group-label { font-family: var(--wm-font-tag); font-weight: 300; font-size: 11px; letter-spacing: 0.5px; text-transform: uppercase; color: var(--wm-text-muted); padding: 16px 12px 6px; white-space: nowrap; }
+.wm-nav-item {
+  display: flex; align-items: center; gap: 12px; width: 100%;
+  padding: 10px 12px; margin: 2px 0; border-radius: var(--wm-radius-sm);
+  font-family: var(--wm-font); font-size: 14px; font-weight: 600; text-align: left;
+  color: var(--wm-text-secondary); background: transparent; border: none;
+  cursor: pointer; text-decoration: none; white-space: nowrap;
+  transition: background var(--wm-transition), color var(--wm-transition);
+}
+.wm-nav-item:hover { background: var(--wm-neutral-100); color: var(--wm-text-primary); }
+.wm-nav-item svg { width: 20px; height: 20px; flex-shrink: 0; }
+.wm-nav-item.is-active { background: var(--wm-primary-50); color: var(--wm-primary-700); }
+.wm-nav-item.is-active svg { color: var(--wm-primary-600); }
+.wm-nav-label { flex: 1; overflow: hidden; }
+.wm-nav-badge { margin-left: auto; flex-shrink: 0; font-size: 11px; font-weight: 700; background: var(--wm-primary-500); color: #fff; border-radius: var(--wm-radius-full); padding: 1px 8px; }
+.wm-nav-item.is-active .wm-nav-badge { background: var(--wm-primary-600); }
+.wm-sidebar-foot { padding: 12px; border-top: 1px solid var(--wm-border); flex-shrink: 0; }
+.wm-sidebar-user { display: flex; align-items: center; gap: 10px; padding: 8px; border-radius: var(--wm-radius-sm); cursor: pointer; }
+.wm-sidebar-user:hover { background: var(--wm-neutral-100); }
+.wm-sidebar-user-text { min-width: 0; overflow: hidden; }
+.wm-sidebar-user-text strong { display: block; font-size: 13.5px; font-weight: 700; color: var(--wm-text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.wm-sidebar-user-text small { display: block; font-size: 12px; color: var(--wm-text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* Collapsed icon-rail (desktop) — hide labels, center icons */
+.wm-sidebar--collapsed { width: 72px; }
+.wm-sidebar--collapsed .wm-sidebar-brand span,
+.wm-sidebar--collapsed .wm-nav-label,
+.wm-sidebar--collapsed .wm-nav-badge,
+.wm-sidebar--collapsed .wm-nav-group-label,
+.wm-sidebar--collapsed .wm-sidebar-user-text { display: none; }
+.wm-sidebar--collapsed .wm-nav-item,
+.wm-sidebar--collapsed .wm-sidebar-user { justify-content: center; }
+
+/* Off-canvas scrim (mobile) */
+.wm-shell-scrim { display: none; position: fixed; inset: 0; background: rgba(18,22,32,0.45); z-index: 39; }
+
+/* App bar / header */
+.wm-appbar {
+  display: flex; align-items: center; gap: 16px; height: 64px; flex-shrink: 0;
+  padding: 0 24px; background: var(--wm-neutral-0);
+  border-bottom: 1px solid var(--wm-border); position: sticky; top: 0; z-index: 20;
+}
+.wm-appbar-title { font-family: var(--wm-font); font-weight: 700; font-size: 18px; color: var(--wm-text-primary); white-space: nowrap; }
+.wm-appbar-sub { font-size: 13px; color: var(--wm-text-muted); font-weight: 500; }
+.wm-appbar-spacer { flex: 1; }
+.wm-appbar-search { flex: 0 1 360px; display: flex; align-items: center; gap: 10px; height: 40px; padding: 0 14px; border-radius: var(--wm-radius-md); background: var(--wm-neutral-50); border: 1px solid var(--wm-border); }
+.wm-appbar-search svg { width: 18px; height: 18px; color: var(--wm-text-muted); flex-shrink: 0; }
+.wm-appbar-search input { flex: 1; min-width: 0; border: none; background: transparent; outline: none; font-family: var(--wm-font); font-size: 14px; color: var(--wm-text-primary); }
+.wm-appbar-actions { display: flex; align-items: center; gap: 6px; }
+.wm-appbar .wm-icon-btn { width: 38px; height: 38px; color: var(--wm-text-secondary); }
+.wm-appbar .wm-icon-btn svg { width: 20px; height: 20px; }
+.wm-appbar-dot { position: relative; }
+.wm-appbar-dot::after { content: ""; position: absolute; top: 8px; right: 9px; width: 7px; height: 7px; border-radius: 50%; background: var(--wm-danger-500); border: 2px solid var(--wm-neutral-0); }
+
 /* ---- Responsive ---------------------------------------------------------- */
 @media (max-width: 720px) {
   .wm-field-row { grid-template-columns: 1fr; gap: 14px; }
   .wm-banner { flex-direction: column; align-items: flex-start; }
   .wm-drawer, .wm-modal { max-width: none; }
   .wm-btn--block-mobile { width: 100%; }
+}
+@media (max-width: 900px) {
+  /* sidebar becomes an off-canvas drawer; hamburger slides it in */
+  .wm-sidebar { position: fixed; top: 0; left: 0; bottom: 0; height: 100vh; z-index: 40; transform: translateX(-100%); }
+  .wm-sidebar.is-open { transform: translateX(0); box-shadow: var(--wm-shadow-md); }
+  .wm-sidebar--collapsed { width: 256px; }  /* don't icon-rail on mobile */
+  .wm-shell.is-sidebar-open .wm-shell-scrim { display: block; }
+  .wm-appbar-search { display: none; }
 }

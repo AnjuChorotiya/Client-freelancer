@@ -9,6 +9,25 @@ This project follows [Semantic Versioning](https://semver.org/) (`MAJOR.MINOR.PA
 
 ---
 
+## [1.1.0] — 2026-06-11
+
+### Added
+- **App shell** — a full application chrome:
+  - **Sidebar** (`.wm-sidebar`) — left navigation with brand header, grouped
+    `.wm-nav-item`s (active state, icons, `.wm-nav-badge`), `.wm-nav-group-label`
+    section headers, and a `.wm-sidebar-user` footer. Collapses to a 72px icon-rail
+    via `.wm-sidebar--collapsed`; becomes an off-canvas drawer below 900px.
+  - **Header** (`.wm-appbar`) — sticky top bar with menu toggle, title/subtitle,
+    flexible `.wm-appbar-search`, and `.wm-appbar-actions` (icon buttons with an
+    optional `.wm-appbar-dot` notification badge + avatar).
+  - **Layout** (`.wm-shell` / `.wm-shell-main` / `.wm-shell-content`) tying the
+    sidebar and header together, with an off-canvas `.wm-shell-scrim`.
+- **Behaviors (JS)** — `[data-wm-sidebar-toggle]` collapses the rail on desktop and
+  slides the drawer on mobile; `[data-wm-nav]` gives single-active navigation. Both
+  auto-wire on load (and via `WMUI.refresh()`).
+
+[1.1.0]: https://github.com/AnjuChorotiya/Client-freelancer/tree/main/wisemonk-ui
+
 ## [1.0.0] — 2026-06-09
 
 First stable release of the portable, framework-free component library extracted
