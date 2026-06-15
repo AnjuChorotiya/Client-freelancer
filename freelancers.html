@@ -927,5 +927,49 @@
     })();
   </script>
   <!-- /wm-th-sort -->
+
+  <!-- wm-setup-banner: finish-onboarding nudge, shown on portal tabs until setup is complete -->
+  <script>
+  (function () {
+    var done = false;
+    try { done = localStorage.getItem('wm_onboarding_complete') === '1'; } catch (e) {}
+    if (done) return;
+    var content = document.querySelector('.content');
+    if (!content) return;
+
+    if (!document.getElementById('wm-setup-banner-css')) {
+      var css = document.createElement('style');
+      css.id = 'wm-setup-banner-css';
+      css.textContent = [
+        '.wm-setup-banner{display:flex;align-items:center;gap:16px;background:var(--neutral-50,#F7F8FA);border:1px solid var(--border,#EEF0F4);border-radius:14px;padding:16px 18px;margin-bottom:20px;}',
+        '.wm-setup-banner__icon{position:relative;flex:0 0 auto;width:44px;height:44px;border-radius:50%;background:var(--neutral-100,#EEF0F4);display:flex;align-items:center;justify-content:center;color:var(--neutral-500,#6B7588);}',
+        '.wm-setup-banner__icon svg{width:24px;height:24px;}',
+        '.wm-setup-banner__badge{position:absolute;right:-1px;bottom:-1px;width:18px;height:18px;border-radius:50%;background:var(--warning-500,#F79009);border:2px solid var(--neutral-0,#fff);display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:700;line-height:1;}',
+        '.wm-setup-banner__text{flex:1 1 auto;min-width:0;}',
+        '.wm-setup-banner__title{font-size:15px;font-weight:700;color:var(--text-primary,#222733);}',
+        '.wm-setup-banner__desc{font-size:13px;color:var(--text-muted,#9AA2B2);margin-top:2px;line-height:1.45;}',
+        '.wm-setup-banner__btn{flex:0 0 auto;display:inline-flex;align-items:center;height:40px;padding:0 18px;border-radius:100px;background:var(--success-50,#E6F9F0);color:var(--success-700,#027A48);font-family:inherit;font-size:14px;font-weight:700;border:none;cursor:pointer;white-space:nowrap;transition:background .15s;}',
+        '.wm-setup-banner__btn:hover{background:#D2F4E2;}',
+        '@media(max-width:640px){.wm-setup-banner{flex-wrap:wrap;}.wm-setup-banner__btn{width:100%;justify-content:center;}}'
+      ].join('');
+      document.head.appendChild(css);
+    }
+
+    var banner = document.createElement('div');
+    banner.className = 'wm-setup-banner';
+    banner.innerHTML =
+      '<span class="wm-setup-banner__icon">' +
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9Z"/><path d="M20.59 22c0-3.87-3.85-7-8.59-7s-8.59 3.13-8.59 7"/></svg>' +
+        '<span class="wm-setup-banner__badge">!</span>' +
+      '</span>' +
+      '<div class="wm-setup-banner__text">' +
+        '<div class="wm-setup-banner__title">Your account&#39;s almost ready</div>' +
+        '<div class="wm-setup-banner__desc">We just need a few more details before you can use Wisemonk.</div>' +
+      '</div>' +
+      '<a class="wm-setup-banner__btn" href="client-onboarding.html">Set up account</a>';
+    content.insertBefore(banner, content.firstChild);
+  })();
+  </script>
+
 </body>
 </html>

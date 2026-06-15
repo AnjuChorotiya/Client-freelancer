@@ -1232,6 +1232,43 @@
     .cmdk-foot span { display: inline-flex; align-items: center; gap: 6px; }
     .cmdk-foot .cmdk-kbd { padding: 1px 6px; }
     /* /wm-cmdk-css */
+
+    /* ---------- Post-onboarding feedback modal ---------- */
+    .fb-overlay { position: fixed; inset: 0; z-index: 200; background: rgba(18, 22, 32, 0.45); display: flex; align-items: center; justify-content: center; padding: 24px; opacity: 0; transition: opacity 0.2s; }
+    .fb-overlay[hidden] { display: none; }
+    .fb-overlay.show { opacity: 1; }
+    .fb-modal { width: 100%; max-width: 480px; background: var(--neutral-0); border-radius: 20px; padding: 28px; position: relative; box-shadow: 0 24px 60px rgba(18, 22, 32, 0.22); transform: translateY(8px); transition: transform 0.2s; }
+    .fb-overlay.show .fb-modal { transform: translateY(0); }
+    .fb-close { position: absolute; top: 20px; right: 20px; width: 34px; height: 34px; border-radius: 50%; border: none; background: var(--neutral-100); color: var(--neutral-500); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background 0.15s, color 0.15s; }
+    .fb-close:hover { background: var(--neutral-200); color: var(--text-primary); }
+    .fb-close svg { width: 18px; height: 18px; }
+    .fb-eyebrow { font-size: 18px; font-weight: 700; color: var(--text-primary); margin-bottom: 22px; padding-right: 40px; }
+    .fb-q { font-size: 20px; font-weight: 700; letter-spacing: -0.2px; color: var(--text-primary); line-height: 1.3; margin-bottom: 18px; }
+    .fb-scale { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; }
+    .fb-pill { height: 48px; border: 1px solid var(--border-strong); border-radius: 10px; background: var(--neutral-0); font-family: inherit; font-size: 16px; font-weight: 700; color: var(--text-secondary); cursor: pointer; transition: border-color 0.12s, background 0.12s, color 0.12s; }
+    .fb-pill:hover { border-color: var(--primary-500); }
+    .fb-pill.selected { background: var(--primary-500); border-color: var(--primary-500); color: #fff; }
+    .fb-scale-labels { display: flex; justify-content: space-between; gap: 12px; margin-top: 8px; font-size: 13px; font-weight: 600; color: var(--text-muted); }
+    .fb-scale-labels span { display: inline-flex; align-items: center; gap: 5px; }
+    .fb-field-label { display: block; font-size: 14px; font-weight: 700; color: var(--text-primary); margin: 24px 0 8px; }
+    .fb-field-label span { font-weight: 500; color: var(--text-muted); }
+    .fb-textarea { width: 100%; min-height: 76px; resize: vertical; padding: 12px 14px; border: 1px solid var(--border-strong); border-radius: 10px; font-family: inherit; font-size: 15px; font-weight: 500; color: var(--text-primary); background: var(--neutral-0); outline: none; transition: border-color 0.15s, box-shadow 0.15s; }
+    .fb-textarea:focus { border-color: var(--primary-500); box-shadow: 0 0 0 3px var(--accent-tint); }
+    .fb-contact-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin: 22px 0; }
+    .fb-contact-label { font-size: 14px; font-weight: 500; color: var(--text-secondary); line-height: 1.45; }
+    .fb-toggle { flex: 0 0 auto; width: 46px; height: 26px; border-radius: 100px; border: none; background: var(--neutral-200); padding: 3px; cursor: pointer; transition: background 0.18s; }
+    .fb-toggle .fb-toggle-knob { display: block; width: 20px; height: 20px; border-radius: 50%; background: #fff; box-shadow: 0 1px 2px rgba(0,0,0,0.2); transition: transform 0.18s; }
+    .fb-toggle[aria-checked="true"] { background: var(--primary-500); }
+    .fb-toggle[aria-checked="true"] .fb-toggle-knob { transform: translateX(20px); }
+    .fb-submit { width: 100%; height: 52px; border: none; border-radius: 100px; background: var(--primary-500); color: #fff; font-family: inherit; font-size: 16px; font-weight: 700; cursor: pointer; transition: background 0.15s; }
+    .fb-submit:hover:not(:disabled) { background: var(--primary-600); }
+    .fb-submit:disabled { background: var(--neutral-100); color: var(--neutral-400); cursor: not-allowed; }
+    @media (max-width: 520px) {
+      .fb-modal { padding: 22px; }
+      .fb-q { font-size: 18px; }
+      .fb-pill { height: 44px; font-size: 15px; }
+      .fb-scale-labels { font-size: 12px; }
+    }
   </style>
 </head>
 <body><!-- wm-icon-sprite --><svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true"><symbol id="ic-home-2" viewBox="0 0 24 24" fill="none"><path d="M9.02 2.84004L3.63 7.04004C2.73 7.74004 2 9.23004 2 10.36V17.77C2 20.09 3.89 21.99 6.21 21.99H17.79C20.11 21.99 22 20.09 22 17.78V10.5C22 9.29004 21.19 7.74004 20.2 7.05004L14.02 2.72004C12.62 1.74004 10.37 1.79004 9.02 2.84004Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -2287,6 +2324,98 @@
 
       applyDataState();
       showTab('home');
+    })();
+  </script>
+
+  <!-- Post-onboarding feedback modal — asked once after account setup is complete -->
+  <div class="fb-overlay" id="fbOverlay" hidden>
+    <div class="fb-modal" role="dialog" aria-modal="true" aria-labelledby="fbEyebrow">
+      <button class="fb-close" id="fbClose" type="button" aria-label="Close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+      <div class="fb-eyebrow" id="fbEyebrow">Help us improve Wisemonk</div>
+      <h2 class="fb-q">How was setting up your Wisemonk account?</h2>
+      <div class="fb-scale" id="fbScale">
+        <button type="button" class="fb-pill" data-score="1">1</button>
+        <button type="button" class="fb-pill" data-score="2">2</button>
+        <button type="button" class="fb-pill" data-score="3">3</button>
+        <button type="button" class="fb-pill" data-score="4">4</button>
+        <button type="button" class="fb-pill" data-score="5">5</button>
+        <button type="button" class="fb-pill" data-score="6">6</button>
+        <button type="button" class="fb-pill" data-score="7">7</button>
+      </div>
+      <div class="fb-scale-labels">
+        <span>😖 Very difficult</span>
+        <span>Very easy 😄</span>
+      </div>
+      <label class="fb-field-label" for="fbReason">Why did you give this rating? <span>(Optional)</span></label>
+      <textarea class="fb-textarea" id="fbReason" rows="3"></textarea>
+      <div class="fb-contact-row">
+        <span class="fb-contact-label">I'm happy for Wisemonk to contact me to discuss my feedback</span>
+        <button type="button" class="fb-toggle" id="fbToggle" role="switch" aria-checked="false" aria-label="Happy to be contacted about my feedback"><span class="fb-toggle-knob"></span></button>
+      </div>
+      <button class="fb-submit" id="fbSubmit" type="button" disabled>Submit</button>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const FEEDBACK_KEY = 'wm_onboarding_feedback_done';
+      let onboardingComplete = false, feedbackDone = false;
+      try {
+        onboardingComplete = localStorage.getItem('wm_onboarding_complete') === '1';
+        feedbackDone = localStorage.getItem(FEEDBACK_KEY) === '1';
+      } catch (e) {}
+
+      const overlay = document.getElementById('fbOverlay');
+      const scale = document.getElementById('fbScale');
+      const toggle = document.getElementById('fbToggle');
+      const submit = document.getElementById('fbSubmit');
+      const reason = document.getElementById('fbReason');
+      let score = null;
+
+      function openFb() {
+        overlay.hidden = false;
+        void overlay.offsetWidth; // force reflow so the fade-in transition plays
+        overlay.classList.add('show');
+      }
+      function closeFb() {
+        overlay.classList.remove('show');
+        try { localStorage.setItem(FEEDBACK_KEY, '1'); } catch (e) {}
+        setTimeout(() => { overlay.hidden = true; }, 200);
+      }
+
+      scale.addEventListener('click', e => {
+        const pill = e.target.closest('.fb-pill');
+        if (!pill) return;
+        score = pill.dataset.score;
+        scale.querySelectorAll('.fb-pill').forEach(p => p.classList.toggle('selected', p === pill));
+        submit.disabled = false;
+      });
+
+      toggle.addEventListener('click', () => {
+        toggle.setAttribute('aria-checked', toggle.getAttribute('aria-checked') === 'true' ? 'false' : 'true');
+      });
+
+      submit.addEventListener('click', () => {
+        if (!score) return;
+        const payload = {
+          score: Number(score),
+          reason: reason.value.trim(),
+          mayContact: toggle.getAttribute('aria-checked') === 'true'
+        };
+        try { localStorage.setItem('wm_onboarding_feedback', JSON.stringify(payload)); } catch (e) {}
+        closeFb();
+      });
+
+      document.getElementById('fbClose').addEventListener('click', closeFb);
+      overlay.addEventListener('click', e => { if (e.target === overlay) closeFb(); });
+      document.addEventListener('keydown', e => { if (e.key === 'Escape' && !overlay.hidden) closeFb(); });
+
+      // Ask once, shortly after the completed home view settles.
+      if (onboardingComplete && !feedbackDone) {
+        setTimeout(openFb, 600);
+      }
     })();
   </script>
 </body>
