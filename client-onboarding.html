@@ -663,6 +663,33 @@
     .save-btn:disabled { background: #E5E7EB; color: #99A1AF; cursor: not-allowed; }
     .save-btn.success:not(:disabled) { background: var(--brand-500); }
 
+    /* ---------- Phone OTP verification screen ---------- */
+    .otp-screen { position: fixed; inset: 0; z-index: 60; background: var(--bg); display: none; flex-direction: column; }
+    .otp-screen.open { display: flex; }
+    .otp-topbar { height: 80px; flex-shrink: 0; max-width: 1440px; width: 100%; margin: 0 auto; padding: 0 40px; display: flex; align-items: center; justify-content: space-between; }
+    .otp-body { flex: 1; display: flex; align-items: flex-start; justify-content: center; padding: 24px; overflow-y: auto; }
+    .otp-card { width: 100%; max-width: 420px; margin-top: 5vh; text-align: center; }
+    .otp-icon { width: 72px; height: 72px; margin: 0 auto 28px; border-radius: 50%; background: var(--brand-50); display: flex; align-items: center; justify-content: center; }
+    .otp-icon svg { width: 34px; height: 34px; color: var(--brand-500); }
+    .otp-title { font-size: 26px; font-weight: 700; letter-spacing: -0.3px; color: var(--text-primary); margin-bottom: 12px; }
+    .otp-sub { font-size: 15px; color: var(--text-muted); line-height: 1.6; margin-bottom: 32px; }
+    .otp-sub strong { color: var(--text-primary); font-weight: 700; }
+    .otp-change { background: none; border: none; padding: 0; font-family: inherit; font-size: 15px; font-weight: 700; color: var(--text-primary); text-decoration: underline; text-underline-offset: 2px; cursor: pointer; }
+    .otp-change:hover { color: var(--brand-600); }
+    .otp-field { text-align: left; margin-bottom: 14px; }
+    .otp-field label { display: block; font-size: 14px; font-weight: 600; color: var(--text-secondary); margin-bottom: 8px; }
+    .otp-field input { width: 100%; height: 56px; padding: 0 16px; border: 1px solid var(--border-strong); border-radius: 8px; font-family: inherit; font-size: 22px; font-weight: 600; letter-spacing: 6px; color: var(--text-primary); background: var(--card); outline: none; transition: border-color 0.15s, box-shadow 0.15s; }
+    .otp-field input:focus { border-color: var(--brand-500); box-shadow: 0 0 0 1.5px var(--brand-100); }
+    .otp-field.has-error input { border-color: var(--danger); }
+    .otp-error { font-size: 13px; color: var(--danger); margin-top: 8px; }
+    .otp-resend { text-align: left; font-size: 14px; font-weight: 600; color: var(--text-muted); margin-bottom: 28px; }
+    .otp-resend.active { color: var(--brand-600); cursor: pointer; text-decoration: underline; text-underline-offset: 2px; }
+    .otp-done { width: 100%; height: 52px; background: var(--brand-500); color: #fff; border: none; border-radius: 26px; font-family: inherit; font-size: 16px; font-weight: 700; cursor: pointer; transition: background 0.15s; }
+    .otp-done:hover { background: var(--brand-600); }
+    .otp-another { display: block; margin: 18px auto 0; background: none; border: none; padding: 4px; font-family: inherit; font-size: 15px; font-weight: 700; color: var(--text-primary); text-decoration: underline; text-underline-offset: 2px; cursor: pointer; }
+    .otp-another:hover { color: var(--brand-600); }
+    .otp-note { font-size: 13px; font-weight: 600; color: var(--success); margin-top: 14px; text-align: center; }
+
     @media (max-width: 720px) {
       .topbar { padding: 14px 16px; }
       main { padding: 32px 12px; }
@@ -670,6 +697,8 @@
       .fl-row, .fl-row-3, .choice-cards { grid-template-columns: 1fr; }
       .footer-inner { padding: 0 16px; }
       .next-label { display: none; }
+      .otp-topbar { height: 64px; padding: 0 16px; }
+      .otp-title { font-size: 22px; }
     }
   </style>
 </head>
@@ -695,7 +724,7 @@
 <path d="M4.15997 14.56C1.73997 16.18 1.73997 18.82 4.15997 20.43C6.90997 22.27 11.42 22.27 14.17 20.43C16.59 18.81 16.59 16.17 14.17 14.56C11.43 12.73 6.91997 12.73 4.15997 14.56Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M18.3401 20C19.0601 19.85 19.7401 19.56 20.3001 19.13C21.8601 17.96 21.8601 16.03 20.3001 14.86C19.7501 14.44 19.0801 14.16 18.3701 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-arrow-down" viewBox="0 0 24 24" fill="none"><path d="M19.9201 8.94995L13.4001 15.47C12.6301 16.24 11.3701 16.24 10.6001 15.47L4.08008 8.94995" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-arrow-left" viewBox="0 0 24 24" fill="none"><path d="M9.57 5.92993L3.5 11.9999L9.57 18.0699" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M20.5 12H3.67004" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-arrow-right" viewBox="0 0 24 24" fill="none"><path d="M14.4301 5.92993L20.5001 11.9999L14.4301 18.0699" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M3.5 12H20.33" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/></symbol></svg><!-- /wm-icon-sprite -->
+<path d="M3.5 12H20.33" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="ic-sms" viewBox="0 0 24 24" fill="none"><path d="M17 20.5H7C4 20.5 2 19 2 15.5V8.5C2 5 4 3.5 7 3.5H17C20 3.5 22 5 22 8.5V15.5C22 19 20 20.5 17 20.5Z" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 9L13.87 11.5C12.84 12.32 11.15 12.32 10.12 11.5L7 9" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/></symbol></svg><!-- /wm-icon-sprite -->
 
   <header class="topbar">
     <div class="topbar-inner">
@@ -1123,6 +1152,32 @@
     </div>
   </footer>
 
+  <!-- Phone OTP verification screen (shown after step 1) -->
+  <div class="otp-screen" id="otpScreen" aria-hidden="true">
+    <header class="otp-topbar">
+      <a href="home.html" class="topbar-logo"><img src="wisemonk_logo_final.png" alt="Wisemonk"></a>
+      <a href="home.html" class="top-close" aria-label="Close and exit">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-close"/></svg>
+      </a>
+    </header>
+    <div class="otp-body">
+      <div class="otp-card">
+        <div class="otp-icon"><svg viewBox="0 0 24 24"><use href="#ic-sms"/></svg></div>
+        <h1 class="otp-title">We just sent you an SMS</h1>
+        <p class="otp-sub">We sent it to <strong id="otpPhone">your phone</strong>. <button class="otp-change" id="otpChange" type="button">Change phone number</button></p>
+        <div class="otp-field" id="otpFieldWrap">
+          <label for="otpInput">Your 6-digit code</label>
+          <input id="otpInput" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="">
+          <p class="otp-error" id="otpError" hidden>Enter the 6-digit code we sent you.</p>
+        </div>
+        <div class="otp-resend" id="otpResend">Resend code <span id="otpTimer">0:28</span></div>
+        <button class="otp-done" id="otpDone" type="button">Done</button>
+        <button class="otp-another" id="otpAnother" type="button">Try another way</button>
+        <p class="otp-note" id="otpNote" hidden></p>
+      </div>
+    </div>
+  </div>
+
   <script>
     const steps = document.querySelectorAll('.step');
     const total = steps.length;
@@ -1504,6 +1559,7 @@
     document.getElementById('saveBtn').addEventListener('click', () => {
       attempted.add(current);
       if (!runValidation(true)) return;
+      if (current === 1 && !phoneVerified) { openOtp(); return; }
       if (current === total) {
         try { localStorage.removeItem(SAVE_KEY); localStorage.setItem('wm_onboarding_complete', '1'); } catch (e) {}
         location.href = 'home.html';
@@ -1516,6 +1572,97 @@
 
     document.getElementById('backBtn').addEventListener('click', () => {
       if (current > 1) { current--; render(); saveState(); }
+    });
+
+    // ---------- Phone OTP verification ----------
+    let phoneVerified = false;
+    let resendTimer = null;
+    const otpScreen = document.getElementById('otpScreen');
+    const otpInput = document.getElementById('otpInput');
+    const otpError = document.getElementById('otpError');
+    const otpFieldWrap = document.getElementById('otpFieldWrap');
+    const otpResend = document.getElementById('otpResend');
+    const otpNote = document.getElementById('otpNote');
+
+    function startResendTimer() {
+      let remaining = 28;
+      otpResend.classList.remove('active');
+      otpResend.innerHTML = 'Resend code <span id="otpTimer"></span>';
+      const tEl = document.getElementById('otpTimer');
+      const paint = () => {
+        const m = Math.floor(remaining / 60), s = remaining % 60;
+        tEl.textContent = m + ':' + String(s).padStart(2, '0');
+      };
+      paint();
+      clearInterval(resendTimer);
+      resendTimer = setInterval(() => {
+        remaining--;
+        if (remaining <= 0) {
+          clearInterval(resendTimer); resendTimer = null;
+          otpResend.classList.add('active');
+          otpResend.textContent = 'Resend code';
+          return;
+        }
+        paint();
+      }, 1000);
+    }
+
+    function openOtp() {
+      const cc = document.querySelector('.step[data-step="1"] .fl-phone .cc');
+      const num = document.querySelector('.step[data-step="1"] .fl-phone .num');
+      const code = cc ? cc.value : '';
+      const digits = (num ? num.value : '').replace(/[\s-]/g, '');
+      document.getElementById('otpPhone').textContent = (code + ' ' + digits).trim();
+      otpInput.value = '';
+      otpError.hidden = true;
+      otpFieldWrap.classList.remove('has-error');
+      otpNote.hidden = true;
+      otpScreen.classList.add('open');
+      otpScreen.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+      startResendTimer();
+      setTimeout(() => otpInput.focus(), 50);
+    }
+
+    function closeOtp() {
+      otpScreen.classList.remove('open');
+      otpScreen.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      clearInterval(resendTimer); resendTimer = null;
+    }
+
+    function submitOtp() {
+      const v = otpInput.value.replace(/\s/g, '');
+      if (!/^\d{6}$/.test(v)) {
+        otpFieldWrap.classList.add('has-error');
+        otpError.hidden = false;
+        otpInput.focus();
+        return;
+      }
+      phoneVerified = true;
+      closeOtp();
+      current++;            // advance from step 1 to step 2
+      render();
+      saveState();
+    }
+
+    document.getElementById('otpDone').addEventListener('click', submitOtp);
+    otpInput.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); submitOtp(); } });
+    otpInput.addEventListener('input', () => {
+      otpInput.value = otpInput.value.replace(/\D/g, '').slice(0, 6);
+      if (otpFieldWrap.classList.contains('has-error')) {
+        otpFieldWrap.classList.remove('has-error'); otpError.hidden = true;
+      }
+    });
+    document.getElementById('otpChange').addEventListener('click', closeOtp);
+    otpResend.addEventListener('click', () => {
+      if (!otpResend.classList.contains('active')) return;
+      otpNote.hidden = false; otpNote.textContent = 'A new code is on its way.';
+      startResendTimer();
+    });
+    document.getElementById('otpAnother').addEventListener('click', () => {
+      otpNote.hidden = false; otpNote.textContent = "We'll call you with your code instead.";
+      startResendTimer();
     });
 
     // Selectable option cards — single choice per group
