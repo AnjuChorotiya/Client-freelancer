@@ -266,15 +266,14 @@
     .ri-cm-value { font-size: 14px; font-weight: 700; color: var(--text-primary); }
     .ri-breakdown { display: none; margin-bottom: 18px; padding: 14px 16px; border: 1px solid var(--border); border-radius: 8px; background: #F7F8FA; }
     .ri-breakdown.show { display: block; }
-    .ri-attach { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; text-align: center; padding: 22px 16px; border: 1.5px dashed var(--border-strong); border-radius: 8px; background: #F9FAFB; cursor: pointer; transition: border-color .15s, background .15s; }
+    .ri-attach { display: inline-flex; align-items: center; gap: 8px; max-width: 100%; padding: 9px 14px; border: 1px solid var(--border-strong); border-radius: 8px; background: var(--neutral-0); cursor: pointer; font-size: 14px; font-weight: 600; color: var(--text-primary); transition: border-color .15s, background .15s; }
     .ri-attach:hover { border-color: var(--primary-500); background: var(--primary-50); }
-    .ri-attach.has-file { border-style: solid; border-color: var(--primary-500); background: var(--primary-50); }
-    .ri-attach-ico { width: 44px; height: 44px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: var(--neutral-0); border: 1px solid var(--border); color: var(--text-muted); transition: background .15s, color .15s, border-color .15s; }
-    .ri-attach:hover .ri-attach-ico, .ri-attach.has-file .ri-attach-ico { background: var(--primary-100); border-color: var(--primary-100); color: var(--primary-600); }
-    .ri-attach-ico svg { width: 20px; height: 20px; }
-    .ri-attach-text { font-size: 13.5px; font-weight: 600; color: var(--text-primary); line-height: 1.4; word-break: break-word; }
-    .ri-attach-text .ri-attach-cta { color: var(--primary-600); }
-    .ri-attach-sub { font-size: 12px; font-weight: 500; color: var(--text-muted); }
+    .ri-attach.has-file { border-color: var(--primary-500); color: var(--primary-600); }
+    .ri-attach-ico { display: inline-flex; align-items: center; flex-shrink: 0; color: var(--text-muted); }
+    .ri-attach.has-file .ri-attach-ico { color: var(--primary-600); }
+    .ri-attach-ico svg { width: 16px; height: 16px; }
+    .ri-attach-text { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .ri-attach-hint { font-size: 12px; color: var(--text-muted); margin: 6px 2px 0; }
     .ri-bd-row { display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: var(--text-muted); padding: 4px 0; }
     .ri-bd-row span:last-child { font-weight: 600; color: var(--text-secondary); }
     .ri-bd-total { margin-top: 8px; padding-top: 10px; border-top: 1px solid var(--border-strong); }
@@ -1406,10 +1405,10 @@
           <label for="riAttachInput">Attachment</label>
           <label class="ri-attach" id="riAttach">
             <input type="file" id="riAttachInput" accept="image/*,.pdf" hidden>
-            <span class="ri-attach-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5-5 5 5"/><path d="M12 5v12"/></svg></span>
-            <span class="ri-attach-text" id="riAttachText"><span class="ri-attach-cta">Click to upload</span> a receipt or document</span>
-            <span class="ri-attach-sub">PDF or image · up to 10 MB</span>
+            <span class="ri-attach-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a5 5 0 0 1-7.07-7.07l9.19-9.19a3.33 3.33 0 0 1 4.71 4.71l-9.2 9.19a1.67 1.67 0 0 1-2.36-2.36l8.49-8.48"/></svg></span>
+            <span class="ri-attach-text" id="riAttachText">Upload file</span>
           </label>
+          <p class="ri-attach-hint">PDF or image, up to 10 MB.</p>
         </div>
         <div class="ri-breakdown" id="riBreakdown">
           <div class="ri-bd-row"><span>Invoice amount</span><span id="riBdAmount">$0.00</span></div>
@@ -1461,15 +1460,15 @@
       const attachInput = document.getElementById('riAttachInput');
       const attachTile = document.getElementById('riAttach');
       const attachText = document.getElementById('riAttachText');
-      const ATTACH_DEFAULT = '<span class="ri-attach-cta">Click to upload</span> a receipt or document';
+      const ATTACH_DEFAULT = 'Upload file';
       function resetAttach() {
         if (attachInput) attachInput.value = '';
-        if (attachText) attachText.innerHTML = ATTACH_DEFAULT;
+        if (attachText) attachText.textContent = ATTACH_DEFAULT;
         if (attachTile) attachTile.classList.remove('has-file');
       }
       if (attachInput) attachInput.addEventListener('change', function () {
         const f = attachInput.files && attachInput.files[0];
-        if (attachText) { if (f) attachText.textContent = f.name; else attachText.innerHTML = ATTACH_DEFAULT; }
+        if (attachText) attachText.textContent = f ? f.name : ATTACH_DEFAULT;
         if (attachTile) attachTile.classList.toggle('has-file', !!f);
       });
 
