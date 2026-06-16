@@ -839,6 +839,13 @@
     .table-empty-icon svg { width: 26px; height: 26px; }
     .table-empty h3 { font-family: 'Satoshi', sans-serif; font-size: 16px; font-weight: 700; color: var(--text-primary); margin-bottom: 6px; }
     .table-empty p { font-size: 13.5px; color: var(--text-muted); max-width: 360px; margin: 0 auto; line-height: 1.5; }
+    /* Time sub-tabs (Leaves · Attendance) */
+    .time-subtabs { display: flex; gap: 4px; border-bottom: 1px solid var(--border); padding: 0 20px; margin: 4px 0 16px; }
+    .time-subtab { position: relative; background: none; border: none; cursor: pointer; font-family: 'Satoshi', sans-serif; font-size: 14px; font-weight: 600; color: var(--text-muted); padding: 10px 6px; }
+    .time-subtab:hover { color: var(--text-secondary); }
+    .time-subtab.active { color: var(--primary-500); }
+    .time-subtab.active::after { content: ''; position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; background: var(--primary-500); }
+    .time-pane[hidden] { display: none; }
 
     /* Compliance iframe section */
     .cmp-intro { padding: 4px 0 18px; }
@@ -1519,40 +1526,75 @@
          <div class="wm-card">
            <div class="wm-card-heading">
              <div>
-               <h1>Leaves</h1>
+               <h1>Time</h1>
                <p>Manage and track your team's time and leaves.</p>
              </div>
-             <button class="primary-btn">
+             <button class="primary-btn" data-time-cta>
                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-add"/></svg>
                Request leave
              </button>
            </div>
-           <div class="stats-strip">
-             <div class="stat-card"><div class="stat-title">Leaves taken this month</div><div class="stat-value">0</div><div class="stat-sub">freelancers on leave</div></div>
-             <div class="stat-card"><div class="stat-title">Upcoming leaves</div><div class="stat-value">0</div><div class="stat-sub">scheduled leaves</div></div>
-             <div class="stat-card"><div class="stat-title">Leaves pending for approval</div><div class="stat-value">0</div><div class="stat-sub">awaiting approval</div></div>
+
+           <!-- sub-tabs: Leaves · Attendance -->
+           <div class="time-subtabs" data-time-subtabs>
+             <button class="time-subtab active" data-sub="leaves">Leaves</button>
+             <button class="time-subtab" data-sub="attendance">Attendance</button>
            </div>
-           <div class="section-h">Leave requests</div>
-           <div class="filter-bar">
-             <div class="search"><input type="text" placeholder="Search"></div>
-             <div class="filter-group">
-               <button class="dropdown-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-calendar"/></svg> All time <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-arrow-down"/></svg></button>
-               <button class="dropdown-btn">All status <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-arrow-down"/></svg></button>
+
+           <!-- LEAVES sub-pane -->
+           <div class="time-pane" data-pane="leaves">
+             <div class="stats-strip">
+               <div class="stat-card"><div class="stat-title">Leaves taken this month</div><div class="stat-value">0</div><div class="stat-sub">freelancers on leave</div></div>
+               <div class="stat-card"><div class="stat-title">Upcoming leaves</div><div class="stat-value">0</div><div class="stat-sub">scheduled leaves</div></div>
+               <div class="stat-card"><div class="stat-title">Leaves pending for approval</div><div class="stat-value">0</div><div class="stat-sub">awaiting approval</div></div>
+             </div>
+             <div class="section-h">Leave requests</div>
+             <div class="filter-bar">
+               <div class="search"><input type="text" placeholder="Search"></div>
+               <div class="filter-group">
+                 <button class="dropdown-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-calendar"/></svg> All time <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-arrow-down"/></svg></button>
+                 <button class="dropdown-btn">All status <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-arrow-down"/></svg></button>
+               </div>
+             </div>
+             <div class="table-card">
+               <table>
+                 <thead><tr><th>Dates</th><th>Leave type</th><th>Reason</th><th>Status</th><th>Actions</th></tr></thead>
+                 <tbody>
+                   <tr><td colspan="5">
+                     <div class="table-empty">
+                       <div class="table-empty-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-clock"/></svg></div>
+                       <h3>No leave requests yet</h3>
+                       <p>Time off and leave requests from your freelancers will show up here for review and approval.</p>
+                     </div>
+                   </td></tr>
+                 </tbody>
+               </table>
              </div>
            </div>
-           <div class="table-card">
-             <table>
-               <thead><tr><th>Dates</th><th>Leave type</th><th>Reason</th><th>Status</th><th>Actions</th></tr></thead>
-               <tbody>
-                 <tr><td colspan="5">
-                   <div class="table-empty">
-                     <div class="table-empty-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-clock"/></svg></div>
-                     <h3>No leave requests yet</h3>
-                     <p>Time off and leave requests from your freelancers will show up here for review and approval.</p>
-                   </div>
-                 </td></tr>
-               </tbody>
-             </table>
+
+           <!-- ATTENDANCE sub-pane -->
+           <div class="time-pane" data-pane="attendance" hidden>
+             <div class="filter-bar">
+               <div class="search"><input type="text" placeholder="Search by freelancer"></div>
+               <div class="filter-group">
+                 <button class="dropdown-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-calendar"/></svg> All time <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-arrow-down"/></svg></button>
+                 <button class="dropdown-btn">All status <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-arrow-down"/></svg></button>
+               </div>
+             </div>
+             <div class="table-card">
+               <table>
+                 <thead><tr><th>Freelancer</th><th>Dates</th><th>Reason</th><th>Status</th><th>Actions</th></tr></thead>
+                 <tbody>
+                   <tr><td colspan="5">
+                     <div class="table-empty">
+                       <div class="table-empty-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-calendar"/></svg></div>
+                       <h3>No attendance requests yet</h3>
+                       <p>Attendance and time-tracking requests from your freelancers will show up here for review and approval.</p>
+                     </div>
+                   </td></tr>
+                 </tbody>
+               </table>
+             </div>
            </div>
          </div>
        </div>
@@ -2474,6 +2516,21 @@
       if (startBtn) {
         startBtn.addEventListener('click', () => {
           location.href = 'client-onboarding.html';
+        });
+      }
+
+      // Time sub-tabs: Leaves · Attendance.
+      const subtabs = document.querySelector('[data-time-subtabs]');
+      if (subtabs) {
+        const panes = document.querySelectorAll('#timeView .time-pane');
+        const timeCta = document.querySelector('#timeView [data-time-cta]');
+        subtabs.addEventListener('click', e => {
+          const t = e.target.closest('.time-subtab');
+          if (!t) return;
+          const sub = t.dataset.sub;
+          subtabs.querySelectorAll('.time-subtab').forEach(b => b.classList.toggle('active', b === t));
+          panes.forEach(p => { p.hidden = p.dataset.pane !== sub; });
+          if (timeCta) timeCta.lastChild.textContent = sub === 'attendance' ? ' Log attendance' : ' Request leave';
         });
       }
 
