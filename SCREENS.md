@@ -7,7 +7,7 @@ Purpose and flow for each screen in this repo. Live pages:
 
 ## home.html
 
-**Purpose:** The signed-in client workspace home ("Good Morning, Aman!"). Shows account-setup progress while onboarding is incomplete, then surfaces day-to-day work — freelancers, invoices, approvals and recent activity — once set up.
+**Purpose:** The signed-in client workspace home **before setup** ("Good Morning, Aman!") — the onboarding state. Shows the "Account setup" progress card and the 6-step checklist that the client works through before the portal is fully active. (`dashboard.html` is the same home **after setup**.)
 
 **Flow:**
 1. Left sidebar provides the WORKSPACE nav: Home, Freelancers, Invoices, Time. The header has a Quick actions command palette (Ctrl/Cmd K), notifications and the user chip.
@@ -60,7 +60,7 @@ Purpose and flow for each screen in this repo. Live pages:
 
 ## dashboard.html
 
-**Purpose:** Alternate/standalone client home screen showing both the onboarding-in-progress state and the completed "You're all set" state with next-step suggestions.
+**Purpose:** The same client workspace home **after setup** — the completed "You're all set, Aman!" state (6 of 6 steps, "Setup complete") with day-to-day work and "What's next" suggestions. (`home.html` is the same home **before setup**, showing the onboarding checklist.)
 
 **Flow:**
 1. Same sidebar (Home, Freelancers, Invoices, Time) and header pattern as `home.html`.
