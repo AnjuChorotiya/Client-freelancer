@@ -708,6 +708,7 @@
     });
 
     // components
+    initNotes();
     $all('[data-wm-toggle], .wm-toggle').forEach(initToggle);
     $all('[data-wm-option-group]').forEach(initOptionGroup);
     $all('.wm-option-card').forEach(function (c) {
@@ -754,6 +755,76 @@
   }
 
 
+  /* ---- dev notes (design annotations for developers) --------------------- */
+  // Any element with data-wm-note="..." gets a numbered pin + a side-panel entry.
+  // Hidden by default; reveal via the floating button, Alt+N, or a ?notes URL param.
+  var notes = (function () {
+    var btn = null, panel = null, listEl = null, on = false, pins = [];
+    function targets() { return $all('[data-wm-note]'); }
+    function build() {
+      btn = document.createElement('button');
+      btn.className = 'wm-notes-toggle';
+      btn.type = 'button';
+      btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg><span>Dev notes</span><span class="wm-notes-count"></span>';
+      btn.addEventListener('click', toggle);
+      document.body.appendChild(btn);
+      panel = document.createElement('aside');
+      panel.className = 'wm-notes-panel';
+      panel.setAttribute('role', 'dialog');
+      panel.setAttribute('aria-label', 'Dev notes');
+      panel.innerHTML = '<div class="wm-notes-panel-head"><strong>Dev notes</strong>'
+        + '<button class="wm-close" type="button" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>'
+        + '<div class="wm-notes-list"></div>';
+      document.body.appendChild(panel);
+      listEl = $('.wm-notes-list', panel);
+      $('.wm-close', panel).addEventListener('click', hide);
+      document.addEventListener('keydown', function (e) {
+        if (e.altKey && (e.key === 'n' || e.key === 'N')) { e.preventDefault(); toggle(); }
+      });
+    }
+    function render() {
+      var els = targets();
+      $('.wm-notes-count', btn).textContent = els.length;
+      pins.forEach(function (p) { if (p.parentNode) p.parentNode.removeChild(p); });
+      pins = [];
+      listEl.innerHTML = '';
+      if (!els.length) { listEl.innerHTML = '<div class="wm-notes-empty">No notes on this screen.</div>'; return; }
+      els.forEach(function (el, i) {
+        var n = i + 1;
+        if (getComputedStyle(el).position === 'static') el.style.position = 'relative';
+        var pin = document.createElement('span');
+        pin.className = 'wm-note-pin';
+        pin.textContent = n;
+        pin.addEventListener('click', function (e) { e.stopPropagation(); activate(i, true); });
+        el.appendChild(pin);
+        pins.push(pin);
+        var item = document.createElement('div');
+        item.className = 'wm-note-item';
+        item.innerHTML = '<span class="wm-note-num">' + n + '</span><span class="wm-note-text"></span>';
+        $('.wm-note-text', item).textContent = el.getAttribute('data-wm-note') || '';
+        item.addEventListener('click', function () { activate(i, true); });
+        listEl.appendChild(item);
+      });
+    }
+    function activate(i, scroll) {
+      pins.forEach(function (p, j) { p.classList.toggle('is-active', j === i); });
+      $all('.wm-note-item', listEl).forEach(function (it, j) { it.classList.toggle('is-active', j === i); });
+      if (scroll) { var els = targets(); if (els[i]) els[i].scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+    }
+    function show() { if (!btn) return; render(); document.body.classList.add('wm-notes-on'); panel.classList.add('is-open'); btn.classList.add('is-on'); on = true; }
+    function hide() { if (!btn) return; document.body.classList.remove('wm-notes-on'); panel.classList.remove('is-open'); btn.classList.remove('is-on'); on = false; }
+    function toggle() { on ? hide() : show(); }
+    function refresh() { if (!btn) { init(); return; } if (on) render(); else $('.wm-notes-count', btn).textContent = targets().length; }
+    function init() {
+      if (btn || !targets().length) return;
+      build();
+      $('.wm-notes-count', btn).textContent = targets().length;
+      if (/[?&]notes(=1)?(&|$)/.test(location.search)) show();
+    }
+    return { init: init, show: show, hide: hide, toggle: toggle, refresh: refresh };
+  })();
+  function initNotes() { notes.init(); }
+
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
   } else {
@@ -769,6 +840,7 @@
     cmdk: cmdk,
     select: { value: function (selOrEl) { var el = resolve(selOrEl); var s = el && (el.tagName === 'SELECT' ? el : el.querySelector('select')); return s ? selectValue(s) : null; } },
     validate: validateForm,
+    notes: notes,
     refresh: init
   };
 })(window);

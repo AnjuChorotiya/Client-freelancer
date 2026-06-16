@@ -9,6 +9,16 @@ This project follows [Semantic Versioning](https://semver.org/) (`MAJOR.MINOR.PA
 
 ---
 
+## [1.4.0] — 2026-06-12
+
+### Added
+- **Dev notes** — in-screen design annotations for developers. Tag any element with
+  `data-wm-note="…"`; a floating **Dev notes** button reveals numbered pins on the
+  annotated elements plus a side panel listing every note. Hidden from end-users by
+  default; open via the button, the `Alt+N` shortcut, or a `?notes` URL parameter.
+  Auto-initialises when a page contains any `[data-wm-note]`. API: `WMUI.notes`
+  (`show` / `hide` / `toggle` / `refresh`).
+
 ## [1.3.1] — 2026-06-12
 
 ### Changed

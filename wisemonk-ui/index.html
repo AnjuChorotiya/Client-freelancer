@@ -6,7 +6,7 @@
 <title>Wisemonk UI — Component Library</title>
 <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,600,700&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="wisemonk-ui.css?v=1.3.1">
+<link rel="stylesheet" href="wisemonk-ui.css?v=1.4.0">
 <style>
   /* showcase chrome only — not part of the library */
   body { margin: 0; font-family: var(--wm-font); color: var(--wm-text-primary); background: var(--wm-neutral-50); }
@@ -53,8 +53,9 @@
 <div class="doc-shell">
   <aside class="doc-nav">
     <div class="doc-brand"><span class="dot"><svg><use href="iconsax-sprite.svg#ic-flash"/></svg></span> Wisemonk UI</div>
-    <p class="doc-ver">v1.3 · component library</p>
+    <p class="doc-ver">v1.4 · component library</p>
     <a href="#shell">App shell</a>
+    <a href="#devnotes">Dev notes</a>
     <a href="#colors">Colors</a>
     <a href="#typography">Typography</a>
     <a href="#icons">Icons</a>
@@ -102,6 +103,36 @@
             style="width:100%;height:100%;border:0;display:block"></iframe>
         </div>
         <p class="demo-label" style="margin:14px 0 0">Click <strong>Time</strong> to collapse the group. Open <a href="app-shell.html?v=1.3.1" target="_blank">app-shell.html</a> full-page, or resize below 900px to see the sidebar hide (portal behavior).</p>
+      </div>
+    </section>
+
+    <!-- DEV NOTES -->
+    <section id="devnotes">
+      <h2>Dev notes — design annotations</h2>
+      <p class="sec-desc">
+        Add <code>data-wm-note="…"</code> to any element to leave a note for developers.
+        A floating <strong>Dev notes</strong> button (bottom-right) reveals numbered pins on the
+        annotated elements plus a side panel listing every note. Hidden from end-users by default;
+        open it with the button, the <span class="wm-kbd">Alt N</span> shortcut, or a
+        <code>?notes</code> URL parameter. The elements below are annotated — click <strong>Dev notes</strong> to see them.
+      </p>
+      <div class="demo">
+        <div class="demo-row">
+          <button class="wm-btn wm-btn--primary" data-wm-note="Primary CTA — triggers POST /payouts. Disable while the request is in flight (add .is-loading).">Send payout</button>
+          <button class="wm-btn wm-btn--outline" data-wm-note="Opens the filter dropdown. Persist the chosen filter in the URL query so it survives refresh.">Filter</button>
+        </div>
+        <div class="demo-grid" style="margin-top:16px">
+          <div class="wm-card" data-wm-note="Stat tile — value comes from GET /metrics/contractors. Poll every 60s; show a skeleton on first load.">
+            <div class="wm-stat-title">Total contractors</div>
+            <div class="wm-stat-value">48</div>
+            <div class="wm-stat-sub">+6 added this month</div>
+          </div>
+          <div class="wm-card" data-wm-note="Amounts are stored in paise (integer). Format with the shared money() helper, never raw division.">
+            <div class="wm-stat-title">Pending payouts</div>
+            <div class="wm-stat-value">$84,200</div>
+            <div class="wm-stat-sub">3 invoices awaiting approval</div>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -629,7 +660,7 @@
   </div>
 </div>
 
-<script src="wisemonk-ui.js?v=1.3.1"></script>
+<script src="wisemonk-ui.js?v=1.4.0"></script>
 <script>
   /* showcase wiring only */
   // color swatches

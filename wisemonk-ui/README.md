@@ -1,6 +1,6 @@
 # Wisemonk UI
 
-**Version 1.3.1** · see [CHANGELOG.md](CHANGELOG.md) for version history.
+**Version 1.4.0** · see [CHANGELOG.md](CHANGELOG.md) for version history.
 
 A portable, framework-free component library extracted from the Wisemonk portal.
 Plain HTML + CSS + vanilla JS — no build step, no dependencies. Drop it into any
@@ -95,6 +95,7 @@ automates this with an `inline_sprite.py` script.)
 | Drawer | `.wm-drawer-overlay` / `.wm-drawer` | `-head -body -foot` |
 | Command palette | `.wm-cmdk-trigger` / `.wm-cmdk` | `.wm-kbd` |
 | Toast | `.wm-toast` | `--success --danger` |
+| Dev notes | `data-wm-note="…"` on any element | Floating **Dev notes** toggle → numbered pins + side panel. Open via the button, `Alt+N`, or `?notes` URL param. API: `WMUI.notes`. Devs-only; hidden by default. |
 
 ### Typography
 
@@ -125,6 +126,9 @@ Most things work declaratively — no JS to write.
 
 <!-- command palette trigger -->
 <button data-wm-cmdk>Search…</button>
+
+<!-- dev notes: annotate any element; a floating toggle shows pins + a panel -->
+<div class="wm-card" data-wm-note="Amounts are in paise — format with money(), never raw division.">…</div>
 
 <!-- table: live search + filter dropdown (rows need data-<key> to filter) -->
 <input data-wm-table-search="#people">
