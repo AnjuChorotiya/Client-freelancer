@@ -1699,7 +1699,7 @@
         if (!statusCell || !actionCell) return;
 
         if (state.status === 'matching') {
-          statusCell.innerHTML = '<span class="pill matching">Matching</span>';
+          statusCell.innerHTML = '<span class="pill matching">Awaiting payment</span>';
           actionCell.innerHTML = '';
         } else if (state.status === 'initiated') {
           statusCell.innerHTML = '<span class="pill initiated">Transfer initiated</span>';
