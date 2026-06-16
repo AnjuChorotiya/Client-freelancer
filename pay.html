@@ -330,10 +330,19 @@
     .calc-modal-close:hover { background: var(--neutral-100); color: var(--text-primary); }
     .calc-modal-close svg { width: 18px; height: 18px; }
     .calc-modal-body { padding: 18px 24px 24px; text-align: left; }
-    /* Confirm-payment modal actions */
-    .cf-actions { display: flex; gap: 12px; margin-top: 4px; }
-    .cf-btn { flex: 1; height: 48px; border: none; border-radius: 12px; font-family: inherit; font-size: 15px; font-weight: 700; cursor: pointer; transition: background .15s; }
-    .cf-ghost { background: var(--neutral-100); color: var(--text-primary); }
+    /* Confirm-payment modal */
+    .cf-modal { position: relative; background: var(--neutral-0); border-radius: 18px; width: 100%; max-width: 440px; padding: 32px 32px 28px; box-shadow: 0 30px 80px -24px rgba(18,22,32,0.5); text-align: left; }
+    .cf-close { position: absolute; top: 22px; right: 22px; width: 32px; height: 32px; border: none; background: transparent; border-radius: 8px; color: var(--text-muted); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background .15s, color .15s; }
+    .cf-close:hover { background: var(--neutral-100); color: var(--text-primary); }
+    .cf-close svg { width: 18px; height: 18px; }
+    .cf-icon { width: 50px; height: 50px; border-radius: 14px; background: var(--primary-50); color: var(--primary-500); display: flex; align-items: center; justify-content: center; margin-bottom: 20px; }
+    .cf-icon svg { width: 24px; height: 24px; }
+    .cf-title { font-size: 20px; font-weight: 700; letter-spacing: -0.2px; color: var(--text-primary); margin: 0 0 10px; line-height: 1.3; padding-right: 28px; }
+    .cf-desc { font-size: 14px; color: var(--text-secondary); line-height: 1.65; margin: 0 0 26px; }
+    .cf-desc b { font-weight: 700; color: var(--text-primary); }
+    .cf-actions { display: flex; gap: 12px; }
+    .cf-btn { flex: 1; height: 50px; border: none; border-radius: 12px; font-family: inherit; font-size: 15px; font-weight: 700; cursor: pointer; transition: background .15s; }
+    .cf-ghost { background: var(--neutral-100); color: var(--text-secondary); }
     .cf-ghost:hover { background: var(--neutral-200); }
     .cf-primary { background: var(--primary-500); color: #fff; }
     .cf-primary:hover { background: var(--primary-600); }
@@ -548,19 +557,14 @@
   <!-- Payout calculator modal -->
   <!-- Confirm-payment modal -->
   <div class="calc-modal-overlay" id="confirmModal" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
-    <div class="calc-modal" style="max-width:420px;">
-      <div class="calc-modal-head">
-        <div>
-          <h2 id="confirmTitle">Have you completed the payment?</h2>
-          <p>Only confirm once you've sent <b id="confirmAmt">the amount</b> from your bank using the reference above. We'll then start matching it to your account.</p>
-        </div>
-        <button class="calc-modal-close" type="button" id="confirmClose" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-close"/></svg></button>
-      </div>
-      <div class="calc-modal-body">
-        <div class="cf-actions">
-          <button class="cf-btn cf-ghost" id="confirmCancel" type="button">Not yet</button>
-          <button class="cf-btn cf-primary" id="confirmYes" type="button">Yes, I've paid</button>
-        </div>
+    <div class="cf-modal">
+      <button class="cf-close" type="button" id="confirmClose" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-close"/></svg></button>
+      <div class="cf-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg></div>
+      <h2 class="cf-title" id="confirmTitle">Have you completed the payment?</h2>
+      <p class="cf-desc">Only confirm once you've sent <b id="confirmAmt">the amount</b> from your bank using the reference above. We'll then start matching it to your account.</p>
+      <div class="cf-actions">
+        <button class="cf-btn cf-ghost" id="confirmCancel" type="button">Not yet</button>
+        <button class="cf-btn cf-primary" id="confirmYes" type="button">Yes, I've paid</button>
       </div>
     </div>
   </div>
