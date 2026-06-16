@@ -9,6 +9,13 @@ This project follows [Semantic Versioning](https://semver.org/) (`MAJOR.MINOR.PA
 
 ---
 
+## [1.4.1] — 2026-06-12
+
+### Changed
+- **Dev notes:** hovering an annotated element now shows its note as a tooltip —
+  no need to open the side panel. Turning notes on reveals the pins + enables
+  hover; the panel is now opt-in (click a pin to open the full list).
+
 ## [1.4.0] — 2026-06-12
 
 ### Added

@@ -759,7 +759,7 @@
   // Any element with data-wm-note="..." gets a numbered pin + a side-panel entry.
   // Hidden by default; reveal via the floating button, Alt+N, or a ?notes URL param.
   var notes = (function () {
-    var btn = null, panel = null, listEl = null, on = false, pins = [];
+    var btn = null, panel = null, listEl = null, tip = null, on = false, pins = [];
     function targets() { return $all('[data-wm-note]'); }
     function build() {
       btn = document.createElement('button');
@@ -777,11 +777,42 @@
         + '<div class="wm-notes-list"></div>';
       document.body.appendChild(panel);
       listEl = $('.wm-notes-list', panel);
-      $('.wm-close', panel).addEventListener('click', hide);
+      $('.wm-close', panel).addEventListener('click', closePanel);
+      // hover tooltip — read a note without opening the panel
+      tip = document.createElement('div');
+      tip.className = 'wm-note-tip';
+      document.body.appendChild(tip);
+      document.addEventListener('mouseover', function (e) {
+        if (!on) return;
+        var el = e.target.closest('[data-wm-note]');
+        if (el) showTip(el);
+      });
+      document.addEventListener('mouseout', function (e) {
+        if (!on) return;
+        var el = e.target.closest('[data-wm-note]');
+        if (el && !el.contains(e.relatedTarget)) hideTip();
+      });
+      window.addEventListener('scroll', function () { if (on) hideTip(); }, true);
       document.addEventListener('keydown', function (e) {
         if (e.altKey && (e.key === 'n' || e.key === 'N')) { e.preventDefault(); toggle(); }
       });
     }
+    function showTip(el) {
+      var note = el.getAttribute('data-wm-note');
+      if (!note) return;
+      tip.textContent = note;
+      tip.classList.add('is-show');
+      var r = el.getBoundingClientRect();
+      var tr = tip.getBoundingClientRect();
+      var top = r.top - tr.height - 10;
+      if (top < 8) top = r.bottom + 10;            // flip below if no room above
+      var left = Math.max(8, Math.min(r.left, window.innerWidth - tr.width - 8));
+      tip.style.top = top + 'px';
+      tip.style.left = left + 'px';
+    }
+    function hideTip() { if (tip) tip.classList.remove('is-show'); }
+    function openPanel() { if (panel) panel.classList.add('is-open'); }
+    function closePanel() { if (panel) panel.classList.remove('is-open'); }
     function render() {
       var els = targets();
       $('.wm-notes-count', btn).textContent = els.length;
@@ -795,7 +826,7 @@
         var pin = document.createElement('span');
         pin.className = 'wm-note-pin';
         pin.textContent = n;
-        pin.addEventListener('click', function (e) { e.stopPropagation(); activate(i, true); });
+        pin.addEventListener('click', function (e) { e.stopPropagation(); openPanel(); activate(i, true); });
         el.appendChild(pin);
         pins.push(pin);
         var item = document.createElement('div');
@@ -811,8 +842,10 @@
       $all('.wm-note-item', listEl).forEach(function (it, j) { it.classList.toggle('is-active', j === i); });
       if (scroll) { var els = targets(); if (els[i]) els[i].scrollIntoView({ behavior: 'smooth', block: 'center' }); }
     }
-    function show() { if (!btn) return; render(); document.body.classList.add('wm-notes-on'); panel.classList.add('is-open'); btn.classList.add('is-on'); on = true; }
-    function hide() { if (!btn) return; document.body.classList.remove('wm-notes-on'); panel.classList.remove('is-open'); btn.classList.remove('is-on'); on = false; }
+    // Turning notes on shows the pins + enables hover tooltips. The side panel
+    // (full list) is opt-in — click a pin to open it focused on that note.
+    function show() { if (!btn) return; render(); document.body.classList.add('wm-notes-on'); btn.classList.add('is-on'); on = true; }
+    function hide() { if (!btn) return; document.body.classList.remove('wm-notes-on'); closePanel(); hideTip(); btn.classList.remove('is-on'); on = false; }
     function toggle() { on ? hide() : show(); }
     function refresh() { if (!btn) { init(); return; } if (on) render(); else $('.wm-notes-count', btn).textContent = targets().length; }
     function init() {

@@ -6,7 +6,7 @@
 <title>Wisemonk UI — Component Library</title>
 <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,600,700&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="wisemonk-ui.css?v=1.4.0">
+<link rel="stylesheet" href="wisemonk-ui.css?v=1.4.1">
 <style>
   /* showcase chrome only — not part of the library */
   body { margin: 0; font-family: var(--wm-font); color: var(--wm-text-primary); background: var(--wm-neutral-50); }
@@ -111,10 +111,11 @@
       <h2>Dev notes — design annotations</h2>
       <p class="sec-desc">
         Add <code>data-wm-note="…"</code> to any element to leave a note for developers.
-        A floating <strong>Dev notes</strong> button (bottom-right) reveals numbered pins on the
-        annotated elements plus a side panel listing every note. Hidden from end-users by default;
-        open it with the button, the <span class="wm-kbd">Alt N</span> shortcut, or a
-        <code>?notes</code> URL parameter. The elements below are annotated — click <strong>Dev notes</strong> to see them.
+        Click the floating <strong>Dev notes</strong> button (bottom-right) to reveal numbered pins, then
+        <strong>hover any element to read its note</strong> — no panel needed. (Click a pin for the full
+        list.) Hidden from end-users by default; open the mode with the button, the
+        <span class="wm-kbd">Alt N</span> shortcut, or a <code>?notes</code> URL parameter.
+        The elements below are annotated — toggle <strong>Dev notes</strong> and hover them.
       </p>
       <div class="demo">
         <div class="demo-row">
@@ -660,7 +661,7 @@
   </div>
 </div>
 
-<script src="wisemonk-ui.js?v=1.4.0"></script>
+<script src="wisemonk-ui.js?v=1.4.1"></script>
 <script>
   /* showcase wiring only */
   // color swatches

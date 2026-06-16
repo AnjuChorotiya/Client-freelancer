@@ -547,6 +547,9 @@ body.wm-notes-on .wm-note-pin { display: flex; }
 .wm-note-num { flex-shrink: 0; width: 20px; height: 20px; border-radius: 50%; background: var(--wm-warning-500); color: #fff; font-family: var(--wm-font); font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
 .wm-note-text { font-family: var(--wm-font); font-size: 13.5px; line-height: 1.5; color: var(--wm-text-secondary); }
 .wm-notes-empty { padding: 24px; color: var(--wm-text-muted); font-size: 13px; text-align: center; }
+/* hover tooltip — read a note without opening the panel */
+.wm-note-tip { position: fixed; z-index: 9002; max-width: 280px; padding: 8px 11px; border-radius: var(--wm-radius-sm); background: var(--wm-ink); color: #fff; font-family: var(--wm-font); font-size: 12.5px; font-weight: 500; line-height: 1.45; box-shadow: var(--wm-shadow-md); pointer-events: none; opacity: 0; transform: translateY(4px); transition: opacity 0.12s ease, transform 0.12s ease; }
+.wm-note-tip.is-show { opacity: 1; transform: none; }
 
 /* ---- Responsive ---------------------------------------------------------- */
 @media (max-width: 720px) {
