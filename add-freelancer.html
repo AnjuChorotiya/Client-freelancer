@@ -288,7 +288,7 @@
       color: var(--brand-500);
       cursor: pointer;
       padding: 6px 10px;
-      border-radius: 6px;
+      border-radius: 8px;
       transition: background 0.1s;
     }
     .cal-footer button:hover { background: var(--brand-50); }
@@ -487,7 +487,7 @@
     /* Pill row (toggle row on last step) */
     /* Selectable option cards (radio-style choice) */
     .option-cards { display: flex; flex-direction: column; gap: 12px; }
-    .option-card { display: flex; align-items: flex-start; gap: 14px; width: 100%; text-align: left; padding: 16px; border: 1px solid var(--border); border-radius: 12px; background: var(--card); font-family: inherit; cursor: pointer; transition: border-color 0.15s, background 0.15s, box-shadow 0.15s; }
+    .option-card { display: flex; align-items: flex-start; gap: 14px; width: 100%; text-align: left; padding: 16px; border: 1px solid var(--border); border-radius: 8px; background: var(--card); font-family: inherit; cursor: pointer; transition: border-color 0.15s, background 0.15s, box-shadow 0.15s; }
     .option-card:hover { border-color: var(--border-strong); }
     .option-card.selected { border-color: var(--brand-500); background: var(--brand-50); box-shadow: 0 0 0 1.5px var(--brand-100); }
     .option-card-icon { width: 40px; height: 40px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; border-radius: 10px; background: #F3F4F6; color: var(--text-muted); transition: background 0.15s, color 0.15s; }
@@ -496,9 +496,9 @@
     .option-card-body { flex: 1; }
     .option-card-title { display: block; font-size: 16px; font-weight: 700; color: var(--text-primary); line-height: 1.3; }
     .option-card-desc { display: block; font-size: 14px; color: var(--text-muted); margin-top: 4px; line-height: 1.55; }
-    .option-card-radio { width: 20px; height: 20px; flex-shrink: 0; margin-top: 2px; border: 2px solid var(--border-strong); border-radius: 50%; position: relative; transition: border-color 0.15s; }
+    .option-card-radio { width: 20px; height: 20px; flex-shrink: 0; margin-top: 2px; border: 2px solid var(--border-strong); border-radius: 8px; position: relative; transition: border-color 0.15s; }
     .option-card.selected .option-card-radio { border-color: var(--brand-500); }
-    .option-card.selected .option-card-radio::after { content: ''; position: absolute; inset: 3px; border-radius: 50%; background: var(--brand-500); }
+    .option-card.selected .option-card-radio::after { content: ''; position: absolute; inset: 3px; border-radius: 8px; background: var(--brand-500); }
 
     /* Inline info icon (in a question label, not a field) */
     .info-icon.inline { position: relative; top: auto; right: auto; width: 18px; height: 18px; vertical-align: middle; display: inline-flex; align-items: center; justify-content: center; background: transparent; border: none; padding: 0; color: var(--text-muted); cursor: help; border-radius: 50%; transition: color 0.15s, background 0.15s; }
@@ -528,7 +528,7 @@
 
     /* Choice cards (horizontal, no icon) */
     .choice-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    .choice-card { text-align: left; padding: 14px 16px; border: 1px solid var(--border); border-radius: 10px; background: var(--card); font-family: inherit; cursor: pointer; transition: border-color 0.15s, background 0.15s, box-shadow 0.15s; }
+    .choice-card { text-align: left; padding: 14px 16px; border: 1px solid var(--border); border-radius: 8px; background: var(--card); font-family: inherit; cursor: pointer; transition: border-color 0.15s, background 0.15s, box-shadow 0.15s; }
     .choice-card:hover { border-color: var(--border-strong); }
     .choice-card.selected { border-color: var(--brand-500); background: var(--brand-50); box-shadow: 0 0 0 1.5px var(--brand-100); }
     .choice-card-title { display: block; font-size: 15px; font-weight: 700; color: var(--text-primary); line-height: 1.3; }
@@ -547,7 +547,7 @@
     .excerpt p:last-child { margin-bottom: 0; }
 
     /* Agreement file row + upload */
-    .file-row { display: flex; align-items: center; gap: 14px; padding: 16px; border: 1px solid var(--border); border-radius: 10px; background: var(--card); cursor: pointer; transition: border-color 0.15s, background 0.15s; }
+    .file-row { display: flex; align-items: center; gap: 14px; padding: 16px; border: 1px solid var(--border); border-radius: 8px; background: var(--card); cursor: pointer; transition: border-color 0.15s, background 0.15s; }
     .file-row:hover { border-color: var(--brand-500); background: var(--brand-50); }
     .file-pdf { width: 40px; height: 40px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; border-radius: 8px; background: var(--brand-50); color: var(--brand-500); }
     .file-pdf svg { width: 22px; height: 22px; }
