@@ -26,9 +26,9 @@
     + 'body.wm-notes-on [data-wm-note]{outline:1.5px dashed #F79009;outline-offset:2px}'
     // table rows can't paint an outline reliably — tint the cells and box them instead
     + 'body.wm-notes-on tr[data-wm-note]{outline:none}'
-    + 'body.wm-notes-on tr[data-wm-note]>td,body.wm-notes-on tr[data-wm-note]>th{background:rgba(247,144,9,.10);box-shadow:inset 0 1.5px #F79009,inset 0 -1.5px #F79009}'
-    + 'body.wm-notes-on tr[data-wm-note]>:first-child{box-shadow:inset 1.5px 0 #F79009,inset 0 1.5px #F79009,inset 0 -1.5px #F79009}'
-    + 'body.wm-notes-on tr[data-wm-note]>:last-child{box-shadow:inset -1.5px 0 #F79009,inset 0 1.5px #F79009,inset 0 -1.5px #F79009}'
+    + 'body.wm-notes-on tr[data-wm-note]>td,body.wm-notes-on tr[data-wm-note]>th{border-top:1.5px dashed #F79009;border-bottom:1.5px dashed #F79009}'
+    + 'body.wm-notes-on tr[data-wm-note]>:first-child{border-left:1.5px dashed #F79009}'
+    + 'body.wm-notes-on tr[data-wm-note]>:last-child{border-right:1.5px dashed #F79009}'
     + '.wm-note-pin{position:absolute;z-index:2147482000;top:-11px;right:-11px;width:22px;height:22px;border-radius:50%;background:#F79009;color:#fff;font-family:"Satoshi",system-ui,sans-serif;font-size:12px;font-weight:700;display:none;align-items:center;justify-content:center;cursor:pointer;border:2px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.25)}'
     + 'body.wm-notes-on .wm-note-pin{display:flex}'
     + '.wm-note-pin.is-active{background:#2684FF;transform:scale(1.15)}'
