@@ -12,7 +12,7 @@ Purpose and flow for each screen in this repo. Live pages:
 **Flow:**
 1. Left sidebar provides the WORKSPACE nav: Home, Freelancers, Invoices, Time. The header has a Quick actions command palette (Ctrl/Cmd K), notifications and the user chip.
 2. Until setup is complete, an "Account setup" progress card ("You're 17% there", 1 of 6 steps) and a 6-step checklist render: Verify your email, About you, People behind the business, Documents, Your work, Features you'd like to use.
-3. The "Start" button on the active checklist step launches client onboarding.
+3. The "Start" button on the active checklist step launches the **setup-steps wizard** — [`client-onboarding.html`](client-onboarding.html) ("Set up your account"), whose steps are: 1) Tell us about yourself, 2) People behind your business, 3) Provide your documents, 4) Tell us about your work, 5) Compliance declaration, 6) Review & confirm (+ SMS OTP). On completion the home switches to the **after-setup** state (`dashboard.html`).
 4. Other tabs (Freelancers, Invoices, Leaves) swap in card views with empty states, a "Needs your approval" panel (payment/reimbursement requests with Approve/Deny), and a Recent Activity feed.
 
 **Notes:** Freelancers view links to `add-freelancer.html` and a "Run compliance check" to `compliance.html`; invoice rows expose a "Pay now" action. Shares the COR-comparison and Talk-to-sales modals used across the portal.
