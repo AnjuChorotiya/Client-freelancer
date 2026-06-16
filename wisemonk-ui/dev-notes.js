@@ -26,9 +26,10 @@
     + 'body.wm-notes-on [data-wm-note]{outline:1.5px dashed #F79009;outline-offset:2px}'
     // table rows can't paint an outline reliably — tint the cells and box them instead
     + 'body.wm-notes-on tr[data-wm-note]{outline:none}'
-    + 'body.wm-notes-on tr[data-wm-note]>td,body.wm-notes-on tr[data-wm-note]>th{border-top:1.5px dashed #F79009;border-bottom:1.5px dashed #F79009}'
-    + 'body.wm-notes-on tr[data-wm-note]>:first-child{border-left:1.5px dashed #F79009}'
-    + 'body.wm-notes-on tr[data-wm-note]>:last-child{border-right:1.5px dashed #F79009}'
+    + 'body.wm-notes-on tr[data-wm-note]>td,body.wm-notes-on tr[data-wm-note]>th{border-top:2px dashed #F79009;border-bottom:2px dashed #F79009;background:rgba(247,144,9,.07)}'
+    + 'body.wm-notes-on tr[data-wm-note]>:first-child{border-left:2px dashed #F79009}'
+    + 'body.wm-notes-on tr[data-wm-note]>:last-child{border-right:2px dashed #F79009}'
+    + '.wm-note-pin--row{right:8px}'
     + '.wm-note-pin{position:absolute;z-index:2147482000;top:-11px;right:-11px;width:22px;height:22px;border-radius:50%;background:#F79009;color:#fff;font-family:"Satoshi",system-ui,sans-serif;font-size:12px;font-weight:700;display:none;align-items:center;justify-content:center;cursor:pointer;border:2px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.25)}'
     + 'body.wm-notes-on .wm-note-pin{display:flex}'
     + '.wm-note-pin.is-active{background:#2684FF;transform:scale(1.15)}'
@@ -115,10 +116,11 @@
     els.forEach(function (el, i) {
       var n = i + 1;
       // a <tr> can't host an absolutely-positioned pin — anchor it in the last cell
-      var host = (el.tagName === 'TR') ? (el.lastElementChild || el) : el;
+      var isRow = (el.tagName === 'TR');
+      var host = isRow ? (el.lastElementChild || el) : el;
       if (getComputedStyle(host).position === 'static') host.style.position = 'relative';
       var pin = document.createElement('span');
-      pin.className = 'wm-note-pin';
+      pin.className = isRow ? 'wm-note-pin wm-note-pin--row' : 'wm-note-pin';
       pin.textContent = n;
       pin.addEventListener('click', function (e) { e.stopPropagation(); openPanel(); activate(i, true); });
       host.appendChild(pin);
