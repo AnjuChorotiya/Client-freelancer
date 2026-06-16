@@ -447,7 +447,7 @@
           </div>
           <div class="detail-row">
             <span class="detail-label">Receiving currency</span>
-            <span class="detail-value">INR</span>
+            <span class="detail-value" id="payRecvCur">INR</span>
           </div>
           <div class="detail-row">
             <span class="detail-label" id="routingLabel">Routing number</span>
@@ -519,7 +519,7 @@
         </div>
       </div>
 
-      <div class="eta-line">
+      <div class="eta-line" id="step3RateLine">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-lock"/></svg>
         FX rate locked at <b>1 USD = 94.56 INR</b>
       </div>
@@ -579,28 +579,47 @@
     // The payment amount + locked FX rate shown here are fixed for this transfer.
     (function () {
       const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+      const RATE = 94.56; // 1 USD = RATE INR
+      const usd = n => '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      const inr = n => '₹' + Math.round(n).toLocaleString('en-IN');
 
-      // Keep the confirmation steps in sync with the amount on Step 1.
-      ['payAmt2', 'payAmt3'].forEach(id => set(id, '$2,450.00'));
-      ['payInr2', 'payInr3'].forEach(id => set(id, '₹18,500'));
-
-      // Requestor name drives both the heading copy and the beneficiary name.
+      // Carried from the invoice row: requestor name, billed currency, amount.
       const reqName = (params.get('name') || 'Ananya').trim();
-      const benEl = document.getElementById('payBeneficiary');
-      if (benEl) benEl.textContent = reqName;
-
-      // When the request itself is in USD, state the dollar amount in the heading
-      // copy and drop the "₹… requested" conversion line (there's nothing to convert).
       const reqCur = (params.get('cur') || 'INR').trim().toUpperCase();
       const isUSD = (reqCur === 'USD' || reqCur === 'USD$' || reqCur === '$');
+      const rawAmt = parseFloat((params.get('amt') || '').replace(/[^0-9.]/g, ''));
+      const amt = (isFinite(rawAmt) && rawAmt > 0) ? rawAmt : (isUSD ? 2450 : 18500);
+
       const sub = document.getElementById('paySub');
       const subTail = ' Send using the bank details below. Once you\'ve completed the payment, please return here to confirm.';
+      const big = document.getElementById('sumPay');
+      const reqLine = document.getElementById('reqAmtLine');
+      const meta = document.getElementById('metaConvert');
+      const recvCur = document.getElementById('payRecvCur');
+      const step3Rate = document.getElementById('step3RateLine');
+
+      // Requestor name drives both the heading copy and the beneficiary name.
+      set('payBeneficiary', reqName);
+
       if (isUSD) {
-        const reqLine = document.getElementById('reqAmtLine');
-        if (reqLine) reqLine.style.display = 'none';
-        if (sub) sub.textContent = reqName + ' requested $2,450.00.' + subTail;
-      } else if (sub) {
-        sub.textContent = reqName + ' requested ₹18,500 INR.' + subTail;
+        // Billed in USD — the client pays that amount directly, no FX conversion.
+        const pay = usd(amt);
+        if (big) big.textContent = pay;
+        if (sub) sub.textContent = reqName + ' requested ' + pay + '.' + subTail;
+        if (meta) meta.style.display = 'none';
+        if (recvCur) recvCur.textContent = 'USD';
+        if (step3Rate) step3Rate.style.display = 'none';
+        ['payAmt2', 'payAmt3'].forEach(id => set(id, pay));
+        ['payInr2', 'payInr3'].forEach(id => set(id, pay));
+      } else {
+        // Billed in INR — the freelancer receives ₹amt; the client pays the USD equivalent.
+        const payUSD = amt / RATE;
+        if (big) big.textContent = usd(payUSD);
+        if (sub) sub.textContent = reqName + ' requested ' + inr(amt) + ' INR.' + subTail;
+        if (reqLine) reqLine.innerHTML = inr(amt) + ' requested <span class="meta-div"></span>';
+        if (recvCur) recvCur.textContent = 'INR';
+        ['payAmt2', 'payAmt3'].forEach(id => set(id, usd(payUSD)));
+        ['payInr2', 'payInr3'].forEach(id => set(id, inr(amt)));
       }
     })();
 

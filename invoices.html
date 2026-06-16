@@ -48,7 +48,7 @@
 
     .app { display: flex; min-height: 100vh; }
 
-    .sidebar { width: 240px; flex-shrink: 0; background: var(--neutral-0); border-right: 1px solid var(--border); padding: 30px 20px; display: flex; flex-direction: column; gap: 32px; }
+    .sidebar { width: 240px; flex-shrink: 0; background: var(--neutral-0); padding: 30px 20px; display: flex; flex-direction: column; gap: 32px; }
     .sidebar-logo { display: flex; align-items: center; gap: 10px; height: 26px; overflow: hidden; }
     .sidebar-logo img { height: 56px; width: auto; margin-top: -30px; display: block; }
     .nav-section { display: flex; flex-direction: column; }
@@ -266,6 +266,14 @@
     .ri-cm-value { font-size: 14px; font-weight: 700; color: var(--text-primary); }
     .ri-breakdown { display: none; margin-bottom: 18px; padding: 14px 16px; border: 1px solid var(--border); border-radius: 12px; background: #F7F8FA; }
     .ri-breakdown.show { display: block; }
+    .ri-attach { display: flex; align-items: center; gap: 11px; padding: 11px 14px; border: 1px dashed var(--border-strong); border-radius: 10px; background: #F7F8FA; cursor: pointer; transition: border-color .15s, background .15s; }
+    .ri-attach:hover { border-color: var(--primary-500); background: var(--primary-50); }
+    .ri-attach.has-file { border-style: solid; border-color: var(--primary-500); background: var(--primary-50); }
+    .ri-attach-ico { width: 34px; height: 34px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; border-radius: 8px; background: #EEF0F4; color: var(--text-muted); }
+    .ri-attach.has-file .ri-attach-ico { background: var(--primary-100); color: var(--primary-600); }
+    .ri-attach-ico svg { width: 17px; height: 17px; }
+    .ri-attach-text { font-size: 13.5px; font-weight: 600; color: var(--text-secondary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .ri-attach-hint { font-size: 12px; color: var(--text-muted); margin: 6px 2px 0; }
     .ri-bd-row { display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: var(--text-muted); padding: 4px 0; }
     .ri-bd-row span:last-child { font-weight: 600; color: var(--text-secondary); }
     .ri-bd-total { margin-top: 8px; padding-top: 10px; border-top: 1px solid var(--border-strong); }
@@ -322,7 +330,7 @@
       border-radius: 8px;
       font-family: inherit;
       font-size: 14px;
-      font-weight: 600;
+      font-weight: 500;
       color: var(--text-primary);
       cursor: pointer;
       transition: all 0.15s;
@@ -992,7 +1000,6 @@
           </div>
           <div class="filter-dd" id="sortDd">
             <button class="dd-trigger" id="sortTrigger">
-              <svg class="sort-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-arrow-down"/></svg>
               <span id="sortLabel">Newest first</span>
               <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-arrow-down"/></svg>
             </button>
@@ -1375,12 +1382,6 @@
           <select id="riCurrency">
             <option value="USD" data-sym="$">USD — US Dollar</option>
             <option value="INR" data-sym="₹">INR — Indian Rupee</option>
-            <option value="EUR" data-sym="€">EUR — Euro</option>
-            <option value="GBP" data-sym="£">GBP — British Pound</option>
-            <option value="AUD" data-sym="A$">AUD — Australian Dollar</option>
-            <option value="SGD" data-sym="S$">SGD — Singapore Dollar</option>
-            <option value="CAD" data-sym="C$">CAD — Canadian Dollar</option>
-            <option value="AED" data-sym="AED">AED — UAE Dirham</option>
           </select>
         </div>
         <div class="ri-row">
@@ -1402,6 +1403,15 @@
         <div class="ri-field">
           <label for="riDesc">Work description</label>
           <textarea id="riDesc" placeholder="e.g. March cycle &mdash; frontend development"></textarea>
+        </div>
+        <div class="ri-field" id="riAttachField" hidden>
+          <label for="riAttachInput">Attachment</label>
+          <label class="ri-attach" id="riAttach">
+            <input type="file" id="riAttachInput" accept="image/*,.pdf" hidden>
+            <span class="ri-attach-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a5 5 0 0 1-7.07-7.07l9.19-9.19a3.33 3.33 0 0 1 4.71 4.71l-9.2 9.19a1.67 1.67 0 0 1-2.36-2.36l8.49-8.48"/></svg></span>
+            <span class="ri-attach-text" id="riAttachText">Upload receipt or supporting document</span>
+          </label>
+          <p class="ri-attach-hint">PDF or image, up to 10 MB.</p>
         </div>
         <div class="ri-breakdown" id="riBreakdown">
           <div class="ri-bd-row"><span>Invoice amount</span><span id="riBdAmount">$0.00</span></div>
@@ -1449,6 +1459,20 @@
       const curPrefix = document.querySelector('.ri-amount-wrap .ri-cur');
       const amt = document.getElementById('riAmount');
       const bd = document.getElementById('riBreakdown');
+      const attachField = document.getElementById('riAttachField');
+      const attachInput = document.getElementById('riAttachInput');
+      const attachTile = document.getElementById('riAttach');
+      const attachText = document.getElementById('riAttachText');
+      function resetAttach() {
+        if (attachInput) attachInput.value = '';
+        if (attachText) attachText.textContent = 'Upload receipt or supporting document';
+        if (attachTile) attachTile.classList.remove('has-file');
+      }
+      if (attachInput) attachInput.addEventListener('change', function () {
+        const f = attachInput.files && attachInput.files[0];
+        if (attachText) attachText.textContent = f ? f.name : 'Upload receipt or supporting document';
+        if (attachTile) attachTile.classList.toggle('has-file', !!f);
+      });
 
       // Service is billed in USD at the contractor's rate; reimbursement/other are
       // flat amounts in a chosen currency.
@@ -1496,6 +1520,10 @@
       function syncType() {
         const isService = !typeSel || typeSel.value === 'service';
         if (curField) curField.hidden = isService;
+        if (attachField) {
+          attachField.hidden = isService;
+          if (isService) resetAttach();
+        }
         refreshMeta();
         applyCurrencyUI();
       }
@@ -1681,13 +1709,23 @@
     }
     applyPayState();
 
-    // Wire Pay now links → pay.html with invoice number
+    // Wire Pay now links → pay.html, carrying the row's invoice, freelancer name,
+    // amount and currency so the pay screen mirrors the table row.
     document.querySelectorAll('.pay-link').forEach(link => {
       link.addEventListener('click', e => {
         e.stopPropagation();
         const row = link.closest('tr');
         const invNum = getInvoiceNum(row);
-        location.href = 'pay.html?inv=' + encodeURIComponent(invNum);
+        const nameCell = row.querySelector('.cell-name');
+        let name = (nameCell || row.cells[1]).textContent.trim();
+        const avatar = nameCell && nameCell.querySelector('.cell-avatar');
+        if (avatar) name = name.replace(avatar.textContent.trim(), '').trim();
+        const amtText = (row.querySelector('.amount') || {}).textContent || '';
+        const cur = amtText.indexOf('₹') > -1 ? 'INR' : 'USD';
+        const amt = amtText.replace(/[^0-9.]/g, '');
+        const qs = new URLSearchParams({ inv: invNum, name: name, cur: cur });
+        if (amt) qs.set('amt', amt);
+        location.href = 'pay.html?' + qs.toString();
       });
       link.style.cursor = 'pointer';
     });
@@ -2233,5 +2271,6 @@
   </script>
 
   <script defer src="https://anjuchorotiya.github.io/Client-freelancer/wisemonk-ui/dev-notes.js"></script>
+  <script src="wm-select.js" defer></script>
 </body>
 </html>
