@@ -2270,6 +2270,16 @@
       let onboardingComplete = false;
       try { onboardingComplete = localStorage.getItem('wm_onboarding_complete') === '1'; } catch (e) {}
 
+      // URL override so the registry's before/after links are deterministic,
+      // regardless of any saved localStorage state:
+      //   home.html?setup  → always show the pre-setup onboarding checklist
+      //   home.html?done   → always show the completed dashboard
+      try {
+        const sp = new URLSearchParams(location.search);
+        if (sp.has('setup') || sp.get('state') === 'setup') onboardingComplete = false;
+        if (sp.has('done')  || sp.get('state') === 'done')  onboardingComplete = true;
+      } catch (e) {}
+
       function hideAllSections() {
         sectionViews.forEach(v => { if (v) v.hidden = true; });
       }

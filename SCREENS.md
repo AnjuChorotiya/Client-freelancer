@@ -15,7 +15,7 @@ Purpose and flow for each screen in this repo. Live pages:
 3. The "Start" button on the active checklist step launches the **setup-steps wizard** — [`client-onboarding.html`](client-onboarding.html) ("Set up your account"), whose steps are: 1) Tell us about yourself, 2) People behind your business, 3) Provide your documents, 4) Tell us about your work, 5) Compliance declaration, 6) Review & confirm (+ SMS OTP). On completion the home switches to the **after-setup** state (`dashboard.html`).
 4. Other tabs (Freelancers, Invoices, Leaves) swap in card views with empty states, a "Needs your approval" panel (payment/reimbursement requests with Approve/Deny), and a Recent Activity feed.
 
-**Notes:** Freelancers view links to `add-freelancer.html` and a "Run compliance check" to `compliance.html`; invoice rows expose a "Pay now" action. Shares the COR-comparison and Talk-to-sales modals used across the portal.
+**Notes:** Whether the onboarding checklist (`#homeView`) or the completed dashboard (`#dashboardView`) shows is driven by `localStorage 'wm_onboarding_complete'`. To preview a state deterministically (ignoring saved state), use a URL param: **`home.html?setup`** forces the pre-setup checklist, **`home.html?done`** forces the completed dashboard. Freelancers view links to `add-freelancer.html` and a "Run compliance check" to `compliance.html`; invoice rows expose a "Pay now" action. Shares the COR-comparison and Talk-to-sales modals used across the portal.
 
 ---
 
