@@ -1178,14 +1178,6 @@
             <div class="kv-label">Reference</div>
             <div class="kv-value" id="pRef">INV-2026-0042</div>
           </div>
-          <div>
-            <div class="kv-label">Transaction ID</div>
-            <div class="kv-value" id="pTxn">INV-2026-0042</div>
-          </div>
-          <div>
-            <div class="kv-label">Balance after</div>
-            <div class="kv-value">$24,200.00</div>
-          </div>
         </div>
       </div>
 
@@ -1283,10 +1275,6 @@
 
     <div class="sp-footer">
       <button class="secondary-btn" id="panelCloseBtn">Close</button>
-      <button class="primary-btn">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-document-download"/></svg>
-        Download receipt
-      </button>
     </div>
   </aside>
 
@@ -1740,7 +1728,6 @@
     const pAmount = document.getElementById('pAmount');
     const pDate = document.getElementById('pDate');
     const pRef = document.getElementById('pRef');
-    const pTxn = document.getElementById('pTxn');
 
     function openPanel(invNum, status, amount, date) {
       pInvNum.textContent = invNum;
@@ -1751,7 +1738,6 @@
       pAmount.textContent = amount;
       pDate.textContent = date;
       pRef.textContent = invNum.replace('#', '');
-      pTxn.textContent = invNum.replace('#', '');
       panel.classList.add('open');
       overlay.classList.add('open');
       panel.setAttribute('aria-hidden', 'false');
