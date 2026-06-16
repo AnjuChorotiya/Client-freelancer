@@ -11,10 +11,10 @@ Static HTML mockups for the Wisemonk signup flow and client dashboard.
 - **`signup-country.html`** — country picker with searchable dropdown
 
 ### Onboarding
-- **`dashboard.html`** — 5-step onboarding checklist (Verify email · Personal details · Tax · Payment · First contractor)
+- **`home.html`** — the home **before setup**: account-setup progress card + 6-step onboarding checklist (Verify email · About you · People behind the business · Documents · Your work · Features)
 
 ### Client portal
-- **`home.html`** — dashboard with stats + "Needs your approval" payment requests + Recent Activity feed
+- **`dashboard.html`** — the same home **after setup**: "You're all set" + stats + "Needs your approval" payment requests + Recent Activity feed
 - **`freelancers.html`** — team management table with status filter dropdown
 - **`invoices.html`** — invoices table with status filter + side-panel detail view + Pay now CTA
 - **`time.html`** — hours-by-day chart + by-contractor breakdown + entries table
@@ -38,9 +38,9 @@ signup-role.html
    ↓ (pick role)
 signup-country.html
    ↓ (Continue)
-dashboard.html (onboarding)
-   ↓ (Start)
-home.html (post-setup dashboard)
+home.html (home — before setup · onboarding checklist)
+   ↓ (Start → complete setup)
+dashboard.html (home — after setup · "You're all set")
    ↔ freelancers.html · invoices.html · time.html
    ↓ (Pay now on an invoice)
 pay.html
