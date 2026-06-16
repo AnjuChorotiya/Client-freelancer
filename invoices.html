@@ -550,18 +550,19 @@
     .bank-toggle button.active { background: var(--neutral-0); color: var(--text-primary); box-shadow: 0 1px 2px rgba(0,0,0,0.06); }
 
     .bank-row {
-      display: flex; align-items: center; justify-content: space-between;
-      gap: 12px;
+      display: flex; align-items: center;
+      gap: 16px;
       padding: 12px 0;
       border-bottom: 1px solid var(--border);
       font-size: 14px;
     }
     .bank-row:last-child { border-bottom: none; }
-    .bank-label { color: var(--text-secondary); }
+    .bank-label { color: var(--text-secondary); width: 150px; flex-shrink: 0; }
     .bank-value {
       display: flex; align-items: center; gap: 8px;
+      flex: 1; min-width: 0;
       font-weight: 700; color: var(--text-primary);
-      text-align: right;
+      justify-content: flex-start; text-align: left;
     }
     .bank-value.mono { font-family: 'Courier New', monospace; font-weight: 600; }
     .copy-btn {
@@ -1221,7 +1222,7 @@
         </table>
       </div>
 
-      <div class="sp-section" id="bankTransferSection" data-wm-note="Show only if the invoice is unpaid">
+      <div class="sp-section" id="bankTransferSection" data-wm-note="Show only when the invoice is pending payment (Due / Overdue)">
         <div class="sp-section-label">Bank transfer details</div>
         <div class="bank-toggle">
           <button class="active">Local</button>
@@ -1688,7 +1689,7 @@
 
         if (state.status === 'matching') {
           statusCell.innerHTML = '<span class="pill matching">Awaiting payment</span>';
-          actionCell.innerHTML = '';
+          actionCell.innerHTML = '<button class="row-action"><svg viewBox="0 0 24 24" fill="currentColor"><use href="#ic-more"/></svg></button>';
         } else if (state.status === 'initiated') {
           statusCell.innerHTML = '<span class="pill initiated">Transfer initiated</span>';
           actionCell.innerHTML = '<button class="row-action"><svg viewBox="0 0 24 24" fill="currentColor"><use href="#ic-more"/></svg></button>';
@@ -1733,8 +1734,10 @@
       pInvNum.textContent = invNum;
       pStatus.textContent = status;
       pStatus.className = 'pill ' + (status === 'Paid' ? 'paid' : status === 'Overdue' ? 'overdue' : 'pending');
+      // Bank transfer details are only relevant while the invoice still awaits the
+      // client's payment (Due / Overdue) — hidden once paid or in any later stage.
       var bankSection = document.getElementById('bankTransferSection');
-      if (bankSection) bankSection.style.display = (status === 'Paid') ? 'none' : '';
+      if (bankSection) bankSection.style.display = (status === 'Due' || status === 'Overdue') ? '' : 'none';
       pAmount.textContent = amount;
       pDate.textContent = date;
       pRef.textContent = invNum.replace('#', '');
