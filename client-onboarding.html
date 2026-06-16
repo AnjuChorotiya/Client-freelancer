@@ -479,6 +479,8 @@
 
     /* Inline validation errors */
     .field-error { font-size: 12px; font-weight: 600; color: var(--danger); margin-top: 2px; padding: 0 4px; line-height: 1.45; }
+    /* Declaration-row errors sit right under the statement text, not floating below the row's padding */
+    .check-row + .field-error { margin-top: -4px; padding-left: 30px; }
     .fl-field.has-error input, .fl-field.has-error select, .fl-field.has-error textarea { border-color: var(--danger); }
     .fl-field.has-error input:focus, .fl-field.has-error select:focus, .fl-field.has-error textarea:focus { border-color: var(--danger); box-shadow: 0 0 0 1.5px rgba(228,0,20,0.15); }
     .fl-field.has-error label { color: var(--danger); }
@@ -532,6 +534,11 @@
     .check-row label a.terms-link { color: var(--text-primary); font-weight: 700; text-decoration: underline; }
     .check-row input[type="radio"] { flex-shrink: 0; width: 18px; height: 18px; margin-top: 1px; accent-color: var(--brand-500); cursor: pointer; }
     .char-count { font-size: 12px; font-weight: 500; color: var(--text-muted); text-align: right; margin-top: 4px; padding: 0 4px; }
+    /* Footer row: pairs the field hint (left) with the character counter (right) on one baseline */
+    .field-foot { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-top: 4px; }
+    .field-foot .field-hint { flex: 1 1 auto; margin-top: 0; }
+    .fl-field:focus-within .field-foot .field-hint { margin-top: 0; }
+    .field-foot .char-count { flex: 0 0 auto; margin-top: 0; line-height: 1.45; }
     .prohibited-toggle { display: inline-flex; align-items: center; gap: 6px; margin-top: 16px; color: var(--brand-500); font-weight: 700; font-size: 14px; cursor: pointer; }
     .prohibited-toggle svg { width: 16px; height: 16px; transition: transform 0.2s; }
     .prohibited-toggle.open svg { transform: rotate(180deg); }
@@ -933,8 +940,11 @@
           <div class="fl-field">
             <textarea id="workDesc" maxlength="400" placeholder=" " data-must></textarea>
             <label>Work description<span class="req">*</span></label>
-            <div class="char-count"><span id="workDescCount">0</span>/400</div>
-          <p class="field-hint">Helps us understand the kind of work you do. Please write at least 50 characters.</p></div>
+            <div class="field-foot">
+              <p class="field-hint">Helps us understand the kind of work you do. Please write at least 50 characters.</p>
+              <div class="char-count"><span id="workDescCount">0</span>/400</div>
+            </div>
+          </div>
         </div>
 
         <div class="q-block">
@@ -1013,55 +1023,8 @@
     <!-- STEP 5: COMPLIANCE DECLARATION -->
     <div class="step" data-step="5">
       <div class="page-heading">
-        <h1>Features &amp; compliance</h1>
-        <p>Pick the modules you'd like to use, then confirm the declarations to finish setting up your account.</p>
-      </div>
-
-      <div class="section-card">
-        <div class="section-title">Features you'd like to use</div>
-        <p class="section-desc">Choose the Wisemonk modules you want to enable for your team. You can change these any time.</p>
-        <div class="feature-cards" id="featureCards">
-          <button type="button" class="feature-card selected" data-feature="attendance">
-            <span class="feature-card-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-clock"/></svg>
-            </span>
-            <span class="option-card-body">
-              <span class="option-card-title">Attendance tracking</span>
-              <span class="option-card-desc">Track working hours, clock-in/out, and timesheets for your team.</span>
-            </span>
-            <span class="feature-card-check"></span>
-          </button>
-          <button type="button" class="feature-card selected" data-feature="leaves">
-            <span class="feature-card-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-calendar"/></svg>
-            </span>
-            <span class="option-card-body">
-              <span class="option-card-title">Leave management</span>
-              <span class="option-card-desc">Let your team request time off and approve leaves with a clear balance view.</span>
-            </span>
-            <span class="feature-card-check"></span>
-          </button>
-          <button type="button" class="feature-card" data-feature="managers">
-            <span class="feature-card-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-profile-2user"/></svg>
-            </span>
-            <span class="option-card-body">
-              <span class="option-card-title">Managers &amp; approvals</span>
-              <span class="option-card-desc">Assign managers who can review timesheets, approve leaves, and oversee their team.</span>
-            </span>
-            <span class="feature-card-check"></span>
-          </button>
-          <button type="button" class="feature-card" data-feature="holidays">
-            <span class="feature-card-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-flag"/></svg>
-            </span>
-            <span class="option-card-body">
-              <span class="option-card-title">Holidays</span>
-              <span class="option-card-desc">Set a shared holiday calendar so your team knows public holidays and non-working days.</span>
-            </span>
-            <span class="feature-card-check"></span>
-          </button>
-        </div>
+        <h1>Compliance declaration</h1>
+        <p>Confirm the declarations below to finish setting up your account.</p>
       </div>
 
       <div class="section-card divided">
@@ -1461,15 +1424,6 @@
           html += '</div>';
         }
       });
-
-      // Features summary
-      const feats = Array.from(document.querySelectorAll('.feature-card.selected'))
-        .map(c => c.querySelector('.option-card-title')?.textContent.trim())
-        .filter(Boolean);
-      if (feats.length) {
-        html += '<div class="review-group"><div class="review-group-head"><div class="review-group-title">Features enabled</div><button type="button" class="review-edit" data-edit-step="5">Edit</button></div>';
-        html += '<div class="review-row"><span class="review-key">Selected modules</span><span class="review-val">' + escapeHtml(feats.join(', ')) + '</span></div></div>';
-      }
 
       // Compliance summary (step 5 checkboxes)
       const step5 = document.querySelector('.step[data-step="5"]');
