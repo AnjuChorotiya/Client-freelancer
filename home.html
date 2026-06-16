@@ -1308,19 +1308,19 @@
           </span>
           Home
         </a>
-        <a href="freelancers.html" class="nav-link">
+        <a href="freelancers.html" class="nav-link" data-tab="freelancers">
           <span class="nav-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-profile-2user"/></svg>
           </span>
           Freelancers
         </a>
-        <a href="invoices.html" class="nav-link">
+        <a href="invoices.html" class="nav-link" data-tab="invoices">
           <span class="nav-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-receipt-text"/></svg>
           </span>
           Invoices
         </a>
-        <a href="time-leaves.html" class="nav-link">
+        <a href="time-leaves.html" class="nav-link" data-tab="time">
           <span class="nav-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-clock"/></svg>
           </span>
@@ -1432,12 +1432,131 @@
         </div>
        </div>
 
-       <!-- ── Locked tab empty state ── -->
+       <!-- ── Workspace tab empty states (shown before setup is complete).
+            After setup, the sidebar links navigate to the populated standalone pages. ── -->
        <!-- ── FREELANCERS (empty) ── -->
-       <!-- Workspace tabs (Freelancers, Invoices, Time) navigate to their
-            standalone pages via the sidebar links — no embedded views here. -->
+       <div id="freelancersView" hidden>
+         <div class="wm-card">
+           <div class="wm-card-heading">
+             <div>
+               <h1>Freelancers</h1>
+               <p>Manage your team of freelancers and full-time employees.</p>
+             </div>
+             <div class="wm-head-actions">
+               <a href="compliance.html" class="cmp-check-btn">
+                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-shield-tick"/></svg>
+                 Run compliance check
+               </a>
+               <button class="primary-btn" onclick="location.href='add-freelancer.html'">
+                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-add"/></svg>
+                 Add freelancer
+               </button>
+             </div>
+           </div>
+           <div class="filter-bar">
+             <div class="search"><input type="text" placeholder="Search by name or role"></div>
+             <div class="filter-dd">
+               <button class="dd-trigger"><span>All status</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-arrow-down"/></svg></button>
+             </div>
+           </div>
+           <div class="table-card">
+             <table>
+               <thead><tr><th>Name</th><th>Contract type</th><th>Rate</th><th>Status</th><th></th></tr></thead>
+               <tbody>
+                 <tr><td colspan="5">
+                   <div class="table-empty">
+                     <div class="table-empty-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-profile-2user"/></svg></div>
+                     <h3>No freelancers yet</h3>
+                     <p>Add your first freelancer to start managing contracts, rates and payments in one place.</p>
+                   </div>
+                 </td></tr>
+               </tbody>
+             </table>
+           </div>
+         </div>
+       </div>
 
-       <!-- ── COMPLIANCE ── -->
+       <!-- ── INVOICES (empty) ── -->
+       <div id="invoicesView" hidden>
+         <div class="wm-card">
+           <div class="wm-card-heading">
+             <div>
+               <h1>Freelancer invoices</h1>
+               <p>Review and pay invoices submitted by your freelancers.</p>
+             </div>
+             <div class="wm-head-actions">
+               <button type="button" class="primary-btn">
+                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-add"/></svg>
+                 Generate invoice
+               </button>
+             </div>
+           </div>
+           <div class="filter-bar">
+             <div class="search"><input type="text" placeholder="Search by freelancer name or invoice"></div>
+             <div class="filter-dd">
+               <button class="dd-trigger"><span>All status</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-arrow-down"/></svg></button>
+             </div>
+           </div>
+           <div class="table-card">
+             <table>
+               <thead><tr><th>Invoice</th><th>Freelancer</th><th>Submitted</th><th>Due</th><th class="text-right">Amount</th><th>Status</th><th></th></tr></thead>
+               <tbody>
+                 <tr><td colspan="7">
+                   <div class="table-empty">
+                     <div class="table-empty-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-receipt-text"/></svg></div>
+                     <h3>No invoices yet</h3>
+                     <p>Invoices submitted by your freelancers will appear here. You can also request one to get started.</p>
+                   </div>
+                 </td></tr>
+               </tbody>
+             </table>
+           </div>
+         </div>
+       </div>
+
+       <!-- ── TIME (empty) ── -->
+       <div id="timeView" hidden>
+         <div class="wm-card">
+           <div class="wm-card-heading">
+             <div>
+               <h1>Leaves</h1>
+               <p>Manage and track your team's time and leaves.</p>
+             </div>
+             <button class="primary-btn">
+               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-add"/></svg>
+               Request leave
+             </button>
+           </div>
+           <div class="stats-strip">
+             <div class="stat-card"><div class="stat-title">Leaves taken this month</div><div class="stat-value">0</div><div class="stat-sub">freelancers on leave</div></div>
+             <div class="stat-card"><div class="stat-title">Upcoming leaves</div><div class="stat-value">0</div><div class="stat-sub">scheduled leaves</div></div>
+             <div class="stat-card"><div class="stat-title">Leaves pending for approval</div><div class="stat-value">0</div><div class="stat-sub">awaiting approval</div></div>
+           </div>
+           <div class="section-h">Leave requests</div>
+           <div class="filter-bar">
+             <div class="search"><input type="text" placeholder="Search"></div>
+             <div class="filter-group">
+               <button class="dropdown-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-calendar"/></svg> All time <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-arrow-down"/></svg></button>
+               <button class="dropdown-btn">All status <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-arrow-down"/></svg></button>
+             </div>
+           </div>
+           <div class="table-card">
+             <table>
+               <thead><tr><th>Dates</th><th>Leave type</th><th>Reason</th><th>Status</th><th>Actions</th></tr></thead>
+               <tbody>
+                 <tr><td colspan="5">
+                   <div class="table-empty">
+                     <div class="table-empty-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-clock"/></svg></div>
+                     <h3>No leave requests yet</h3>
+                     <p>Time off and leave requests from your freelancers will show up here for review and approval.</p>
+                   </div>
+                 </td></tr>
+               </tbody>
+             </table>
+           </div>
+         </div>
+       </div>
+
        <!-- ── DASHBOARD (shown after onboarding is complete) ── -->
        <div id="dashboardView" hidden>
 
@@ -2264,14 +2383,32 @@
   <script>
     (function () {
       const tabs = {
-        home:        { title: 'Good Morning, Aman!', view: null }
+        home:        { title: 'Good Morning, Aman!', view: null },
+        freelancers: { title: 'Freelancers', view: 'freelancersView' },
+        invoices:    { title: 'Invoices',    view: 'invoicesView' },
+        time:        { title: 'Time',         view: 'timeView' }
       };
 
       const links = document.querySelectorAll('.nav-link[data-tab]');
       const homeView = document.getElementById('homeView');
       const dashboardView = document.getElementById('dashboardView');
       const headerTitle = document.querySelector('.header h1');
-      const sectionViews = [];
+      const sectionViews = ['freelancersView', 'invoicesView', 'timeView'].map(id => document.getElementById(id));
+
+      // Finish-setup nudge shown on the workspace tabs while onboarding is incomplete.
+      const setupBanner = (function () {
+        const content = document.querySelector('.content');
+        if (!content) return null;
+        const css = document.createElement('style');
+        css.textContent = '.wm-setup-banner{display:flex;align-items:center;gap:16px;background:var(--neutral-50,#F7F8FA);border:1px solid var(--border,#EEF0F4);border-radius:14px;padding:16px 18px;margin-bottom:20px;}.wm-setup-banner__icon{position:relative;flex:0 0 auto;width:44px;height:44px;border-radius:50%;background:var(--neutral-100,#EEF0F4);display:flex;align-items:center;justify-content:center;color:var(--neutral-500,#6B7588);}.wm-setup-banner__icon svg{width:24px;height:24px;}.wm-setup-banner__badge{position:absolute;right:-1px;bottom:-1px;width:18px;height:18px;border-radius:50%;background:var(--warning-500,#F79009);border:2px solid var(--neutral-0,#fff);display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:700;line-height:1;}.wm-setup-banner__text{flex:1 1 auto;min-width:0;}.wm-setup-banner__title{font-size:15px;font-weight:700;color:var(--text-primary,#222733);}.wm-setup-banner__desc{font-size:13px;color:var(--text-muted,#9AA2B2);margin-top:2px;line-height:1.45;}.wm-setup-banner__btn{flex:0 0 auto;display:inline-flex;align-items:center;height:40px;padding:0 18px;border-radius:100px;background:var(--success-50,#E6F9F0);color:var(--success-700,#027A48);font-family:inherit;font-size:14px;font-weight:700;border:none;cursor:pointer;white-space:nowrap;text-decoration:none;}.wm-setup-banner__btn:hover{background:#D2F4E2;}';
+        document.head.appendChild(css);
+        const b = document.createElement('div');
+        b.className = 'wm-setup-banner';
+        b.hidden = true;
+        b.innerHTML = '<span class="wm-setup-banner__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-shield-tick"/></svg><span class="wm-setup-banner__badge">!</span></span><div class="wm-setup-banner__text"><div class="wm-setup-banner__title">Your account&#39;s almost ready</div><div class="wm-setup-banner__desc">We just need a few more details before you can use Wisemonk.</div></div><a class="wm-setup-banner__btn" href="client-onboarding.html">Set up account</a>';
+        content.insertBefore(b, content.firstChild);
+        return b;
+      })();
 
       // Onboarding state. Set to true once the wizard's Finish step persists the
       // completion flag; this reveals the dashboard on Home and fills every tab.
@@ -2314,14 +2451,21 @@
           const v = document.getElementById(cfg.view);
           if (v) v.hidden = false;
         }
+        // The "Set up account" nudge shows on the workspace tabs until setup is done.
+        if (setupBanner) setupBanner.hidden = onboardingComplete || key === 'home';
         headerTitle.textContent = cfg.title;
         window.scrollTo({ top: 0 });
       }
 
       links.forEach(link => {
         link.addEventListener('click', e => {
+          const key = link.dataset.tab;
+          // Once setup is complete, the workspace tabs go to their populated
+          // standalone pages (follow the link's href). Before setup, stay here
+          // and show the embedded empty state + the "Set up account" banner.
+          if (key !== 'home' && onboardingComplete) return;
           e.preventDefault();
-          showTab(link.dataset.tab);
+          showTab(key);
         });
       });
 
