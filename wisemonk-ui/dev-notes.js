@@ -26,7 +26,7 @@
     + 'body.wm-notes-on [data-wm-note]{outline:1.5px dashed #F79009;outline-offset:2px}'
     // table rows can't paint an outline reliably — tint the cells and box them instead
     + 'body.wm-notes-on tr[data-wm-note]{outline:none}'
-    + 'body.wm-notes-on tr[data-wm-note]>td,body.wm-notes-on tr[data-wm-note]>th{border-top:2px dashed #F79009;border-bottom:2px dashed #F79009;background:rgba(247,144,9,.07)}'
+    + 'body.wm-notes-on tr[data-wm-note]>td,body.wm-notes-on tr[data-wm-note]>th{border-top:2px dashed #F79009;border-bottom:2px dashed #F79009}'
     + 'body.wm-notes-on tr[data-wm-note]>:first-child{border-left:2px dashed #F79009}'
     + 'body.wm-notes-on tr[data-wm-note]>:last-child{border-right:2px dashed #F79009}'
     + '.wm-note-pin--row{right:8px}'
