@@ -330,6 +330,13 @@
     .calc-modal-close:hover { background: var(--neutral-100); color: var(--text-primary); }
     .calc-modal-close svg { width: 18px; height: 18px; }
     .calc-modal-body { padding: 18px 24px 24px; text-align: left; }
+    /* Confirm-payment modal actions */
+    .cf-actions { display: flex; gap: 12px; margin-top: 4px; }
+    .cf-btn { flex: 1; height: 48px; border: none; border-radius: 12px; font-family: inherit; font-size: 15px; font-weight: 700; cursor: pointer; transition: background .15s; }
+    .cf-ghost { background: var(--neutral-100); color: var(--text-primary); }
+    .cf-ghost:hover { background: var(--neutral-200); }
+    .cf-primary { background: var(--primary-500); color: #fff; }
+    .cf-primary:hover { background: var(--primary-600); }
     .calc-field-label {
       display: block;
       font-family: 'Satoshi', sans-serif;
@@ -539,6 +546,25 @@
   </main>
 
   <!-- Payout calculator modal -->
+  <!-- Confirm-payment modal -->
+  <div class="calc-modal-overlay" id="confirmModal" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
+    <div class="calc-modal" style="max-width:420px;">
+      <div class="calc-modal-head">
+        <div>
+          <h2 id="confirmTitle">Have you completed the payment?</h2>
+          <p>Only confirm once you've sent <b id="confirmAmt">the amount</b> from your bank using the reference above. We'll then start matching it to your account.</p>
+        </div>
+        <button class="calc-modal-close" type="button" id="confirmClose" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-close"/></svg></button>
+      </div>
+      <div class="calc-modal-body">
+        <div class="cf-actions">
+          <button class="cf-btn cf-ghost" id="confirmCancel" type="button">Not yet</button>
+          <button class="cf-btn cf-primary" id="confirmYes" type="button">Yes, I've paid</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="calc-modal-overlay" id="calcModal" role="dialog" aria-modal="true" aria-labelledby="calcModalTitle">
     <div class="calc-modal">
       <div class="calc-modal-head">
@@ -645,7 +671,7 @@
       localStorage.setItem('pay-' + invNum, JSON.stringify({ status, t: Date.now() }));
     }
 
-    document.getElementById('madePaymentBtn').addEventListener('click', () => {
+    function proceedPayment() {
       setPayState('matching');
       showStep(2);
       // Auto-advance to step 3 after ~3s to simulate matching
@@ -653,7 +679,26 @@
         setPayState('initiated');
         showStep(3);
       }, 3000);
-    });
+    }
+
+    // "I've made the payment" asks for confirmation before matching begins.
+    (function () {
+      const modal = document.getElementById('confirmModal');
+      const open = () => {
+        const amtEl = document.getElementById('confirmAmt');
+        const sum = document.getElementById('sumPay');
+        if (amtEl && sum) amtEl.textContent = sum.textContent;
+        modal.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      };
+      const close = () => { modal.classList.remove('open'); document.body.style.overflow = ''; };
+      document.getElementById('madePaymentBtn').addEventListener('click', open);
+      document.getElementById('confirmCancel').addEventListener('click', close);
+      document.getElementById('confirmClose').addEventListener('click', close);
+      document.getElementById('confirmYes').addEventListener('click', () => { close(); proceedPayment(); });
+      modal.addEventListener('click', e => { if (e.target === modal) close(); });
+      document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+    })();
 
     // ── Payout calculator modal open / close ──
     function openCalcModal(e) { if (e) e.preventDefault(); const m = document.getElementById('calcModal'); if (m) { m.classList.add('open'); document.body.style.overflow = 'hidden'; } }
