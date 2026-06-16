@@ -805,11 +805,14 @@
     .set-row .lbl svg { width: 15px; height: 15px; color: var(--text-muted); }
     .set-row .val { font-weight: 700; color: var(--text-primary); }
     .set-row .val.rate { color: var(--primary-500); }
+    .set-rate-note { display: flex; align-items: center; justify-content: flex-end; gap: 5px; font-size: 12px; color: var(--text-muted); margin: -6px 0 0; }
+    .set-rate-note svg { width: 13px; height: 13px; }
     .set-row.total { background: var(--primary-50); border-radius: 10px; padding: 14px 16px; margin-top: 10px; }
     .set-row.total .lbl { font-weight: 700; color: var(--text-primary); }
     .set-row.total .val { color: var(--primary-600); font-size: 16px; }
     .set-tl-title { font-size: 13px; font-weight: 400; color: var(--text-muted); margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.04em; }
     .set-tl-item { display: grid; grid-template-columns: 22px 1fr; gap: 12px; position: relative; padding-bottom: 22px; }
+    .set-tl-item:last-child { padding-bottom: 0; }
     .set-tl-item:not(:last-child)::before { content: ''; position: absolute; left: 10px; top: 24px; bottom: 0; width: 2px; background: var(--border-strong); }
     .set-tl-dot { width: 22px; height: 22px; color: var(--primary-500); }
     .set-tl-dot svg { width: 22px; height: 22px; }
@@ -1319,7 +1322,8 @@
           <div class="set-row"><span class="lbl">Bank fx fees (0.5%)</span><span class="val">-$26.55</span></div>
           <div class="set-row"><span class="lbl">Wisemonk fee (0.5%)</span><span class="val">-$26.55</span></div>
           <div class="set-row"><span class="lbl">Net amount (USD)</span><span class="val">$5,256.90</span></div>
-          <div class="set-row"><span class="lbl">Converted to INR <span class="set-tip" data-tip="This rate is live. The final rate will be locked once we receive your payment." tabindex="0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><use href="#ic-info-circle"/></svg></span></span><span class="val rate">1 USD = 89.10 INR</span></div>
+          <div class="set-row" style="padding-bottom:2px"><span class="lbl">Converted to INR <span class="set-tip" id="setRateTip" data-tip="This rate is live. The final rate will be locked once we receive your payment." tabindex="0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><use href="#ic-info-circle"/></svg></span></span><span class="val rate">1 USD = 89.10 INR</span></div>
+          <div class="set-rate-note" id="setRateNote"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>Rate locked at 6:30 PM on 23 May 2025</span></div>
           <div class="set-row total"><span class="lbl" id="setTotalLbl">Net credit to you</span><span class="val">₹4,68,389.79</span></div>
         </div>
 
@@ -1703,9 +1707,9 @@
       // First three stages are shared by every "payment in flight" case.
       function baseStages(name) {
         return [
-          { date: '15 May 2025', title: 'Payment request',          meta: 'By ' + name,             state: 'done' },
-          { date: '20 May 2025', title: 'Approval',                 meta: 'Payment instructions sent', state: 'done' },
-          { date: '22 May 2025', title: 'Payment sent',             meta: '$5,310.00',               state: 'done' }
+          { date: '15 May 2025', title: 'Payment requested',        meta: 'By ' + name,             state: 'done' },
+          { date: '20 May 2025', title: 'You approved the request', meta: 'Payment instructions sent', state: 'done' },
+          { date: '22 May 2025', title: 'You sent the payment',     meta: '$5,310.00',               state: 'done' }
         ];
       }
 
@@ -1715,31 +1719,31 @@
         switch (caseId) {
           case 'settled':
             return baseStages(name).concat([
-              { date: '23 May 2025', title: 'Awaiting payment',   meta: 'Payment matched to our records', state: 'done' },
-              { date: '24 May 2025', title: 'Transfer initiated', meta: 'Sent to ' + name + "'s bank", state: 'done' },
+              { date: '23 May 2025', title: 'Payment received by Wisemonk', meta: 'Payment matched to our records', state: 'done' },
+              { date: '24 May 2025', title: 'Transfer to freelancer initiated', meta: 'Sent to ' + name + "'s bank", state: 'done' },
               { date: '25 May 2025', title: 'Freelancer paid',    meta: '₹4,68,389.79 credited to ' + name, state: 'done', badge: 'Settled' }
             ]);
           case 'verifying':
             return baseStages(name).concat([
-              { date: 'In progress', title: 'Awaiting payment',   state: 'progress', note: 'Matching your transfer to our records', noteType: 'info' },
-              { date: 'Pending',     title: 'Transfer initiated', state: 'pending' },
+              { date: 'In progress', title: 'Confirming your payment', state: 'progress', note: 'Matching your transfer to our records', noteType: 'info' },
+              { date: 'Pending',     title: 'Transfer to freelancer initiated', state: 'pending' },
               { date: 'Pending',     title: 'Freelancer paid',    state: 'pending' }
             ]);
           case 'verifying_delayed':
             return baseStages(name).concat([
-              { date: 'In progress', title: 'Awaiting payment',   state: 'progress', note: 'Verifying is taking longer than usual — our team is reviewing your payment', noteType: 'warning' },
-              { date: 'Pending',     title: 'Transfer initiated', state: 'pending' },
+              { date: 'In progress', title: 'Confirming your payment', state: 'progress', note: 'Verifying is taking longer than usual — our team is reviewing your payment', noteType: 'warning' },
+              { date: 'Pending',     title: 'Transfer to freelancer initiated', state: 'pending' },
               { date: 'Pending',     title: 'Freelancer paid',    state: 'pending' }
             ]);
           case 'mismatch':
             return baseStages(name).concat([
-              { date: '23 May 2025', title: 'Awaiting payment',   state: 'progress', noteHtml: 'Amount mismatch detected — you paid $8,500 against an expected $8,700.<br><a href="#">Contact support &rarr;</a>', noteType: 'danger' },
-              { date: 'Pending',     title: 'Transfer initiated', state: 'pending' },
+              { date: '23 May 2025', title: 'Payment under review', state: 'progress', noteHtml: 'Amount mismatch detected — you paid $8,500 against an expected $8,700.<br><a href="#">Contact support &rarr;</a>', noteType: 'danger' },
+              { date: 'Pending',     title: 'Transfer to freelancer initiated', state: 'pending' },
               { date: 'Pending',     title: 'Freelancer paid',    state: 'pending' }
             ]);
           case 'rejected':
             return [
-              { date: '15 May 2025', title: 'Payment request',         meta: 'By ' + name, state: 'done' },
+              { date: '15 May 2025', title: 'Payment requested',        meta: 'By ' + name, state: 'done' },
               { date: '20 May 2025', title: 'You rejected the request', meta: 'Reason: Hours dispute — not approved for billing', state: 'rejected' }
             ];
           default:
@@ -1769,6 +1773,18 @@
         if (capEl)    capEl.textContent    = settled ? 'Net credited amount'    : 'Estimated net credit';
         if (bankSub)  bankSub.textContent  = settled ? 'Deposited on 25 May 2025' : 'Will be deposited to your bank';
         if (totalLbl) totalLbl.textContent = (settled ? 'Net credit to '       : 'Estimated net credit to ') + name;
+
+        // FX rate: locked (with timestamp) once payment is received; live beforehand.
+        var rateNote = document.getElementById('setRateNote');
+        var rateTip  = document.getElementById('setRateTip');
+        if (rateNote) {
+          rateNote.style.display = settled ? '' : 'none';
+          var rn = rateNote.querySelector('span');
+          if (rn) rn.textContent = 'Rate locked at 6:30 PM on 23 May 2025';
+        }
+        if (rateTip) rateTip.dataset.tip = settled
+          ? 'This is the rate locked when we received your payment.'
+          : 'This rate is live. The final rate will be locked once we receive your payment.';
 
         tlWrap.innerHTML = buildTimeline(caseId, invNum, name).map(function (s) {
           const dotInner = (s.state === 'done')

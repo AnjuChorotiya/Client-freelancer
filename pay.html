@@ -147,7 +147,7 @@
 
     /* Payment reference strip */
     .ref-strip {
-      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      display: flex; align-items: flex-end; justify-content: space-between; gap: 12px;
       padding: 14px 18px;
       background: var(--primary-50);
       border-radius: 12px;
@@ -404,7 +404,7 @@
         <div class="pay-amount-meta" id="metaConvert">
           <span id="reqAmtLine">₹18,500 requested
           <span class="meta-div"></span></span>
-          Rate locked at <span class="rate">1 USD = 94.56</span> INR for 16 hours
+          Live rate <span class="rate">1 USD = 94.56</span> INR · locks when we receive your payment
         </div>
       </div>
 
@@ -462,7 +462,7 @@
 
       <div class="eta-line">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-clock"/></svg>
-        Estimated arrival: <b>1-2 business days</b>
+        Arrives in <b>1–2 business days</b> after you complete the payment
       </div>
 
       <button class="primary-btn" id="madePaymentBtn">I've made the payment</button>
@@ -584,11 +584,23 @@
       ['payAmt2', 'payAmt3'].forEach(id => set(id, '$2,450.00'));
       ['payInr2', 'payInr3'].forEach(id => set(id, '₹18,500'));
 
-      // Hide the "₹… requested" line when the requested currency is USD/dollars.
+      // Requestor name drives both the heading copy and the beneficiary name.
+      const reqName = (params.get('name') || 'Ananya').trim();
+      const benEl = document.getElementById('payBeneficiary');
+      if (benEl) benEl.textContent = reqName;
+
+      // When the request itself is in USD, state the dollar amount in the heading
+      // copy and drop the "₹… requested" conversion line (there's nothing to convert).
       const reqCur = (params.get('cur') || 'INR').trim().toUpperCase();
-      if (reqCur === 'USD' || reqCur === 'USD$' || reqCur === '$') {
+      const isUSD = (reqCur === 'USD' || reqCur === 'USD$' || reqCur === '$');
+      const sub = document.getElementById('paySub');
+      const subTail = ' Send using the bank details below. Once you\'ve completed the payment, please return here to confirm.';
+      if (isUSD) {
         const reqLine = document.getElementById('reqAmtLine');
         if (reqLine) reqLine.style.display = 'none';
+        if (sub) sub.textContent = reqName + ' requested $2,450.00.' + subTail;
+      } else if (sub) {
+        sub.textContent = reqName + ' requested ₹18,500 INR.' + subTail;
       }
     })();
 
