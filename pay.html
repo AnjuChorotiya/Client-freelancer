@@ -609,15 +609,15 @@
       set('payBeneficiary', reqName);
 
       if (isUSD) {
-        // Billed in USD — the client pays that amount directly, no FX conversion.
+        // Billed in USD — the client pays this exact amount; it converts to the
+        // freelancer's local currency (INR) at the live rate, so keep that line.
         const pay = usd(amt);
         if (big) big.textContent = pay;
         if (sub) sub.textContent = reqName + ' requested ' + pay + '.' + subTail;
-        if (meta) meta.style.display = 'none';
-        if (recvCur) recvCur.textContent = 'USD';
-        if (step3Rate) step3Rate.style.display = 'none';
+        if (reqLine) reqLine.style.display = 'none'; // no INR "requested" figure when billed in USD
+        if (recvCur) recvCur.textContent = 'INR';
         ['payAmt2', 'payAmt3'].forEach(id => set(id, pay));
-        ['payInr2', 'payInr3'].forEach(id => set(id, pay));
+        ['payInr2', 'payInr3'].forEach(id => set(id, inr(amt * RATE)));
       } else {
         // Billed in INR — the freelancer receives ₹amt; the client pays the USD equivalent.
         const payUSD = amt / RATE;
