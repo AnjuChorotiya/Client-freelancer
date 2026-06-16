@@ -144,6 +144,13 @@
     .pay-amount-meta { font-size: 13.5px; font-weight: 600; color: var(--text-secondary); margin-top: 16px; }
     .pay-amount-meta .rate { color: var(--primary-500); }
     .pay-amount-meta .meta-div { display: inline-block; width: 1px; height: 11px; background: var(--border-strong); margin: 0 10px; vertical-align: -1px; }
+    /* FX estimate info icon + tooltip on the "₹… requested" line */
+    .fx-info { position: relative; display: inline-flex; align-items: center; vertical-align: middle; margin-left: 5px; cursor: help; }
+    .fx-info > svg { width: 14px; height: 14px; color: var(--text-muted); }
+    .fx-info:hover > svg, .fx-info:focus-visible > svg { color: var(--primary-500); }
+    .fx-tip { position: absolute; bottom: calc(100% + 9px); left: 50%; transform: translateX(-50%) translateY(4px); width: 232px; background: var(--neutral-800); color: #fff; font-size: 12px; font-weight: 500; line-height: 1.5; text-align: left; padding: 9px 11px; border-radius: 8px; box-shadow: 0 6px 20px rgba(18,22,32,0.22); opacity: 0; visibility: hidden; transition: opacity .15s, transform .15s; z-index: 30; pointer-events: none; }
+    .fx-tip::after { content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); border: 5px solid transparent; border-top-color: var(--neutral-800); }
+    .fx-info:hover .fx-tip, .fx-info:focus-visible .fx-tip, .fx-info:focus .fx-tip { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
 
     /* Payment reference strip */
     .ref-strip {
@@ -616,7 +623,12 @@
         const payUSD = amt / RATE;
         if (big) big.textContent = usd(payUSD);
         if (sub) sub.textContent = reqName + ' requested ' + inr(amt) + ' INR.' + subTail;
-        if (reqLine) reqLine.innerHTML = inr(amt) + ' requested <span class="meta-div"></span>';
+        if (reqLine) reqLine.innerHTML = inr(amt) + ' requested'
+          + '<span class="fx-info" tabindex="0" role="img" aria-label="Estimate may change with the FX rate">'
+          + '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 8h.01"/></svg>'
+          + '<span class="fx-tip">Estimated amount. What you pay can change with the FX rate at the time we receive your payment.</span>'
+          + '</span>'
+          + '<span class="meta-div"></span>';
         if (recvCur) recvCur.textContent = 'INR';
         ['payAmt2', 'payAmt3'].forEach(id => set(id, usd(payUSD)));
         ['payInr2', 'payInr3'].forEach(id => set(id, inr(amt)));
