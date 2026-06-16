@@ -1348,6 +1348,14 @@
       </div>
       <div class="ri-body">
         <div class="ri-field">
+          <label for="riType">Invoice type</label>
+          <select id="riType">
+            <option value="service">Service</option>
+            <option value="reimbursement">Reimbursement</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        <div class="ri-field">
           <label for="riContractor">Contractor</label>
           <select id="riContractor">
             <option value="">Select a contractor</option>
@@ -1362,9 +1370,22 @@
             <div class="ri-cm-item"><span class="ri-cm-label">Frequency</span><span class="ri-cm-value" id="riCmFreq">—</span></div>
           </div>
         </div>
+        <div class="ri-field" id="riCurrencyField" hidden>
+          <label for="riCurrency">Currency</label>
+          <select id="riCurrency">
+            <option value="USD" data-sym="$">USD — US Dollar</option>
+            <option value="INR" data-sym="₹">INR — Indian Rupee</option>
+            <option value="EUR" data-sym="€">EUR — Euro</option>
+            <option value="GBP" data-sym="£">GBP — British Pound</option>
+            <option value="AUD" data-sym="A$">AUD — Australian Dollar</option>
+            <option value="SGD" data-sym="S$">SGD — Singapore Dollar</option>
+            <option value="CAD" data-sym="C$">CAD — Canadian Dollar</option>
+            <option value="AED" data-sym="AED">AED — UAE Dirham</option>
+          </select>
+        </div>
         <div class="ri-row">
           <div class="ri-field">
-            <label for="riAmount">Amount (USD)</label>
+            <label for="riAmount" id="riAmountLabel">Amount (USD)</label>
             <div class="ri-amount-wrap">
               <span class="ri-cur">$</span>
               <input id="riAmount" type="text" inputmode="decimal" placeholder="0.00">
@@ -1418,38 +1439,72 @@
       const m = document.getElementById('reqInvoiceModal');
       if (m) { m.addEventListener('click', function (ev) { if (ev.target === this) closeReqInvoice(); }); }
       document.addEventListener('keydown', function (ev) { if (ev.key === 'Escape') closeReqInvoice(); });
-      // Show the selected contractor's rate + frequency
+      // Invoice type + currency drive which fields show and how money is formatted.
       const contractor = document.getElementById('riContractor');
       const cMeta = document.getElementById('riContractorMeta');
-      if (contractor && cMeta) {
-        contractor.addEventListener('change', function () {
-          const opt = contractor.options[contractor.selectedIndex];
-          const rate = opt && opt.dataset ? opt.dataset.rate : '';
-          const freq = opt && opt.dataset ? opt.dataset.freq : '';
-          if (rate && freq) {
-            document.getElementById('riCmRate').textContent = rate;
-            document.getElementById('riCmFreq').textContent = freq;
-            cMeta.classList.add('show');
-          } else {
-            cMeta.classList.remove('show');
-          }
-        });
-      }
-      // Live invoice breakdown
+      const typeSel = document.getElementById('riType');
+      const curField = document.getElementById('riCurrencyField');
+      const curSel = document.getElementById('riCurrency');
+      const amtLabel = document.getElementById('riAmountLabel');
+      const curPrefix = document.querySelector('.ri-amount-wrap .ri-cur');
       const amt = document.getElementById('riAmount');
       const bd = document.getElementById('riBreakdown');
-      const usd = n => '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-      if (amt && bd) {
-        amt.addEventListener('input', function () {
-          const v = parseFloat((amt.value || '').replace(/[^0-9.]/g, '')) || 0;
-          if (v <= 0) { bd.classList.remove('show'); return; }
-          const fee = v * 0.005;
-          document.getElementById('riBdAmount').textContent = usd(v);
-          document.getElementById('riBdFee').textContent = '−' + usd(fee);
-          document.getElementById('riBdNet').textContent = usd(v - fee);
-          bd.classList.add('show');
-        });
+
+      // Service is billed in USD at the contractor's rate; reimbursement/other are
+      // flat amounts in a chosen currency.
+      function activeCurrency() {
+        if (!typeSel || typeSel.value === 'service' || !curSel) return { code: 'USD', sym: '$' };
+        const opt = curSel.options[curSel.selectedIndex];
+        return { code: curSel.value, sym: (opt && opt.dataset.sym) || '$' };
       }
+      const fmtMoney = (n, sym) => sym + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+      function refreshMeta() {
+        const opt = contractor && contractor.options[contractor.selectedIndex];
+        const rate = opt && opt.dataset ? opt.dataset.rate : '';
+        const freq = opt && opt.dataset ? opt.dataset.freq : '';
+        const isService = !typeSel || typeSel.value === 'service';
+        if (cMeta && isService && rate && freq) {
+          document.getElementById('riCmRate').textContent = rate;
+          document.getElementById('riCmFreq').textContent = freq;
+          cMeta.classList.add('show');
+        } else if (cMeta) {
+          cMeta.classList.remove('show');
+        }
+      }
+
+      function recalcBreakdown() {
+        if (!amt || !bd) return;
+        const sym = activeCurrency().sym;
+        const v = parseFloat((amt.value || '').replace(/[^0-9.]/g, '')) || 0;
+        if (v <= 0) { bd.classList.remove('show'); return; }
+        const fee = v * 0.005;
+        document.getElementById('riBdAmount').textContent = fmtMoney(v, sym);
+        document.getElementById('riBdFee').textContent = '−' + fmtMoney(fee, sym);
+        document.getElementById('riBdNet').textContent = fmtMoney(v - fee, sym);
+        bd.classList.add('show');
+      }
+
+      function applyCurrencyUI() {
+        const cur = activeCurrency();
+        if (amtLabel) amtLabel.textContent = 'Amount (' + cur.code + ')';
+        if (curPrefix) curPrefix.textContent = cur.sym;
+        if (amt) amt.style.paddingLeft = (15 + cur.sym.length * 9) + 'px';
+        recalcBreakdown();
+      }
+
+      function syncType() {
+        const isService = !typeSel || typeSel.value === 'service';
+        if (curField) curField.hidden = isService;
+        refreshMeta();
+        applyCurrencyUI();
+      }
+
+      if (typeSel) typeSel.addEventListener('change', syncType);
+      if (curSel) curSel.addEventListener('change', applyCurrencyUI);
+      if (contractor) contractor.addEventListener('change', refreshMeta);
+      if (amt) amt.addEventListener('input', recalcBreakdown);
+      syncType();
 
       // ─── Custom calendar for the Due date field ───
       (function () {
