@@ -1,6 +1,6 @@
 # Wisemonk UI
 
-**Version 1.4.1** · see [CHANGELOG.md](CHANGELOG.md) for version history.
+**Version 1.5.0** · see [CHANGELOG.md](CHANGELOG.md) for version history.
 
 A portable, framework-free component library extracted from the Wisemonk portal.
 Plain HTML + CSS + vanilla JS — no build step, no dependencies. Drop it into any
@@ -95,7 +95,7 @@ automates this with an `inline_sprite.py` script.)
 | Drawer | `.wm-drawer-overlay` / `.wm-drawer` | `-head -body -foot` |
 | Command palette | `.wm-cmdk-trigger` / `.wm-cmdk` | `.wm-kbd` |
 | Toast | `.wm-toast` | `--success --danger` |
-| Dev notes | `data-wm-note="…"` on any element | Floating **Dev notes** toggle → numbered pins + **hover tooltip** (hover an element to read its note). Side panel (full list) is opt-in — click a pin. Open the mode via the button, `Alt+N`, or `?notes`. API: `WMUI.notes`. Devs-only; hidden by default. |
+| Dev notes | `data-wm-note="…"` on any element | Floating **Dev notes** toggle → numbered pins + **hover tooltip** (hover an element to read its note). Side panel (full list) is opt-in — click a pin. Open the mode via the button, `Alt+N`, or `?notes`. API: `WMUI.notes`. Devs-only; hidden by default. **Use on any project (no library needed):** add `<script defer src="https://anjuchorotiya.github.io/Client-freelancer/wisemonk-ui/dev-notes.js"></script>` — see [`dev-notes.js`](dev-notes.js). |
 
 ### Typography
 

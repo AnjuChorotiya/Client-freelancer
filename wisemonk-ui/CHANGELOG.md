@@ -3,11 +3,26 @@
 All notable changes to the Wisemonk UI design system are documented here.
 This project follows [Semantic Versioning](https://semver.org/) (`MAJOR.MINOR.PATCH`):
 
+> Looking for **Dev notes**? They work on any project — see `dev-notes.js` (v1.5.0).
+
 - **MAJOR** — breaking changes to class names, tokens, markup contracts, or the `WMUI` API.
 - **MINOR** — new components, tokens, or behaviors added in a backward-compatible way.
 - **PATCH** — backward-compatible bug fixes, style tweaks, and docs.
 
 ---
+
+## [1.5.0] — 2026-06-12
+
+### Added
+- **`dev-notes.js`** — a standalone, drop-in version of Dev notes that works on
+  **any project**, with no dependency on `wisemonk-ui.css`/`.js`. It self-injects
+  its own styles. Enable on a screen with one line:
+  ```html
+  <script defer src="https://anjuchorotiya.github.io/Client-freelancer/wisemonk-ui/dev-notes.js"></script>
+  ```
+  Then tag elements with `data-wm-note="…"`. Same UX as the bundled version
+  (toggle button, pins, hover tooltip, opt-in panel, `Alt+N`, `?notes`). Exposes
+  `window.DevNotes`; no-ops if the full library's `WMUI.notes` is already present.
 
 ## [1.4.1] — 2026-06-12
 
