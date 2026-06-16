@@ -24,6 +24,11 @@
     + '.wm-notes-toggle.is-on{background:#2684FF}'
     + '.wm-notes-toggle .wm-notes-count{background:#F79009;color:#fff;border-radius:100px;font-size:11px;font-weight:700;padding:1px 7px}'
     + 'body.wm-notes-on [data-wm-note]{outline:1.5px dashed #F79009;outline-offset:2px}'
+    // table rows can't paint an outline reliably — tint the cells and box them instead
+    + 'body.wm-notes-on tr[data-wm-note]{outline:none}'
+    + 'body.wm-notes-on tr[data-wm-note]>td,body.wm-notes-on tr[data-wm-note]>th{background:rgba(247,144,9,.10);box-shadow:inset 0 1.5px #F79009,inset 0 -1.5px #F79009}'
+    + 'body.wm-notes-on tr[data-wm-note]>:first-child{box-shadow:inset 1.5px 0 #F79009,inset 0 1.5px #F79009,inset 0 -1.5px #F79009}'
+    + 'body.wm-notes-on tr[data-wm-note]>:last-child{box-shadow:inset -1.5px 0 #F79009,inset 0 1.5px #F79009,inset 0 -1.5px #F79009}'
     + '.wm-note-pin{position:absolute;z-index:2147482000;top:-11px;right:-11px;width:22px;height:22px;border-radius:50%;background:#F79009;color:#fff;font-family:"Satoshi",system-ui,sans-serif;font-size:12px;font-weight:700;display:none;align-items:center;justify-content:center;cursor:pointer;border:2px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.25)}'
     + 'body.wm-notes-on .wm-note-pin{display:flex}'
     + '.wm-note-pin.is-active{background:#2684FF;transform:scale(1.15)}'
@@ -109,12 +114,14 @@
     if (!els.length) { listEl.innerHTML = '<div class="wm-notes-empty">No notes on this screen.</div>'; return; }
     els.forEach(function (el, i) {
       var n = i + 1;
-      if (getComputedStyle(el).position === 'static') el.style.position = 'relative';
+      // a <tr> can't host an absolutely-positioned pin — anchor it in the last cell
+      var host = (el.tagName === 'TR') ? (el.lastElementChild || el) : el;
+      if (getComputedStyle(host).position === 'static') host.style.position = 'relative';
       var pin = document.createElement('span');
       pin.className = 'wm-note-pin';
       pin.textContent = n;
       pin.addEventListener('click', function (e) { e.stopPropagation(); openPanel(); activate(i, true); });
-      el.appendChild(pin);
+      host.appendChild(pin);
       pins.push(pin);
       var item = document.createElement('div');
       item.className = 'wm-note-item';
