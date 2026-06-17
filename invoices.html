@@ -1845,7 +1845,7 @@
         switch (caseId) {
           case 'settled':
             return baseStages(name).concat([
-              { date: '23 May 2025', title: 'Payment sighted', meta: 'Matched in your Xflow account', state: 'done' },
+              { date: '23 May 2025', title: 'Payment sighted', meta: 'Matched in ' + name + "'s US account", state: 'done' },
               { date: '24 May 2025', title: 'Transfer to freelancer initiated', meta: 'Sent to ' + name + "'s bank", state: 'done' },
               { date: '25 May 2025', title: 'Freelancer paid',    meta: '₹4,68,389.79 credited to ' + name, state: 'done', badge: 'Settled' }
             ]);
