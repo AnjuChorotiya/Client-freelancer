@@ -259,6 +259,17 @@
     .ri-amount-wrap { position: relative; }
     .ri-amount-wrap .ri-cur { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); font-size: 14px; font-weight: 700; color: var(--text-muted); pointer-events: none; }
     .ri-amount-wrap input { padding-left: 26px; }
+    .ri-cur-label { color: var(--text-muted); font-weight: 500; }
+    .ri-item { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+    .ri-item-desc { flex: 1 1 auto; min-width: 0; }
+    .ri-item-amtwrap { flex: 0 0 130px; width: 130px; }
+    .ri-item-remove { flex: 0 0 auto; width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center; border: none; background: transparent; color: var(--text-muted); border-radius: 8px; cursor: pointer; transition: background .15s, color .15s; }
+    .ri-item-remove:hover { background: var(--danger-50, #FFF1F0); color: var(--danger-500, #F04438); }
+    .ri-item-remove svg { width: 16px; height: 16px; }
+    #riItems .ri-item:only-child .ri-item-remove { display: none; }
+    .ri-add-item { display: inline-flex; align-items: center; gap: 6px; margin-top: 10px; padding: 6px 2px; background: none; border: none; font-family: inherit; font-size: 14px; font-weight: 600; color: var(--primary-600); cursor: pointer; }
+    .ri-add-item:hover { color: var(--primary-700); }
+    .ri-add-item svg { width: 16px; height: 16px; }
     .ri-contractor-meta { display: none; grid-template-columns: 1fr 1fr; gap: 10px; margin: 10px 0 18px; }
     .ri-contractor-meta.show { display: grid; }
     .ri-cm-item { padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px; background: #F7F8FA; }
@@ -1380,25 +1391,23 @@
             <option value="INR" data-sym="₹">INR — Indian Rupee</option>
           </select>
         </div>
-        <div class="ri-row">
-          <div class="ri-field">
-            <label for="riAmount" id="riAmountLabel">Amount (USD)</label>
-            <div class="ri-amount-wrap">
-              <span class="ri-cur">$</span>
-              <input id="riAmount" type="text" inputmode="decimal" placeholder="0.00">
+        <div class="ri-field">
+          <label>Line items <span id="riCurLabel" class="ri-cur-label">(USD)</span></label>
+          <div id="riItems">
+            <div class="ri-item">
+              <input type="text" class="ri-item-desc" placeholder="Description (e.g. March cycle)">
+              <div class="ri-amount-wrap ri-item-amtwrap"><span class="ri-cur">$</span><input type="text" inputmode="decimal" class="ri-item-amt" placeholder="0.00"></div>
+              <button type="button" class="ri-item-remove" aria-label="Remove line item" tabindex="-1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
             </div>
           </div>
-          <div class="ri-field">
-            <label for="riDue">Due date</label>
-            <div class="ri-date">
-              <input id="riDue" type="date" readonly>
-              <span class="ri-date-display placeholder" id="riDueDisplay">dd-mm-yyyy</span>
-            </div>
-          </div>
+          <button type="button" class="ri-add-item" id="riAddItem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> Add line item</button>
         </div>
         <div class="ri-field">
-          <label for="riDesc">Work description</label>
-          <textarea id="riDesc" placeholder="e.g. March cycle &mdash; frontend development"></textarea>
+          <label for="riDue">Due date</label>
+          <div class="ri-date">
+            <input id="riDue" type="date" readonly>
+            <span class="ri-date-display placeholder" id="riDueDisplay">dd-mm-yyyy</span>
+          </div>
         </div>
         <div class="ri-field" id="riAttachField" hidden>
           <label for="riAttachInput">Attachment</label>
@@ -1435,7 +1444,9 @@
     function sendReqInvoice() {
       const name = document.getElementById('riContractor').value;
       if (!name) { document.getElementById('riContractor').focus(); return; }
-      const amount = (document.getElementById('riAmount').value || '').replace(/[^0-9.]/g, '');
+      const amount = String(Array.prototype.reduce.call(
+        document.querySelectorAll('#riItems .ri-item-amt'),
+        function (s, i) { return s + (parseFloat((i.value || '').replace(/[^0-9.]/g, '')) || 0); }, 0) || '');
       const invNum = '#INV-' + (1100 + Math.floor(Math.random() * 899));
       const qs = new URLSearchParams({ inv: invNum, to: name });
       if (amount) qs.set('amt', amount);
@@ -1451,9 +1462,8 @@
       const typeSel = document.getElementById('riType');
       const curField = document.getElementById('riCurrencyField');
       const curSel = document.getElementById('riCurrency');
-      const amtLabel = document.getElementById('riAmountLabel');
-      const curPrefix = document.querySelector('.ri-amount-wrap .ri-cur');
-      const amt = document.getElementById('riAmount');
+      const curLabel = document.getElementById('riCurLabel');
+      const itemsWrap = document.getElementById('riItems');
       const bd = document.getElementById('riBreakdown');
       const attachField = document.getElementById('riAttachField');
       const attachInput = document.getElementById('riAttachInput');
@@ -1494,10 +1504,15 @@
         }
       }
 
+      function lineTotal() {
+        return Array.prototype.reduce.call(
+          itemsWrap.querySelectorAll('.ri-item-amt'),
+          function (s, i) { return s + (parseFloat((i.value || '').replace(/[^0-9.]/g, '')) || 0); }, 0);
+      }
       function recalcBreakdown() {
-        if (!amt || !bd) return;
+        if (!bd) return;
         const sym = activeCurrency().sym;
-        const v = parseFloat((amt.value || '').replace(/[^0-9.]/g, '')) || 0;
+        const v = lineTotal();
         if (v <= 0) { bd.classList.remove('show'); return; }
         const fee = v * 0.005;
         document.getElementById('riBdAmount').textContent = fmtMoney(v, sym);
@@ -1508,11 +1523,33 @@
 
       function applyCurrencyUI() {
         const cur = activeCurrency();
-        if (amtLabel) amtLabel.textContent = 'Amount (' + cur.code + ')';
-        if (curPrefix) curPrefix.textContent = cur.sym;
-        if (amt) amt.style.paddingLeft = (15 + cur.sym.length * 9) + 'px';
+        if (curLabel) curLabel.textContent = '(' + cur.code + ')';
+        itemsWrap.querySelectorAll('.ri-cur').forEach(function (p) { p.textContent = cur.sym; });
+        itemsWrap.querySelectorAll('.ri-item-amt').forEach(function (a) { a.style.paddingLeft = (15 + cur.sym.length * 9) + 'px'; });
         recalcBreakdown();
       }
+
+      // Repeatable line items
+      function wireItem(item) {
+        const a = item.querySelector('.ri-item-amt');
+        if (a) a.addEventListener('input', recalcBreakdown);
+        const rm = item.querySelector('.ri-item-remove');
+        if (rm) rm.addEventListener('click', function () {
+          if (itemsWrap.querySelectorAll('.ri-item').length > 1) { item.remove(); recalcBreakdown(); }
+        });
+      }
+      function addItem() {
+        const first = itemsWrap.querySelector('.ri-item');
+        const clone = first.cloneNode(true);
+        clone.querySelectorAll('input').forEach(function (i) { i.value = ''; });
+        itemsWrap.appendChild(clone);
+        wireItem(clone);
+        applyCurrencyUI();
+        const d = clone.querySelector('.ri-item-desc'); if (d) d.focus();
+      }
+      itemsWrap.querySelectorAll('.ri-item').forEach(wireItem);
+      const addBtn = document.getElementById('riAddItem');
+      if (addBtn) addBtn.addEventListener('click', addItem);
 
       function syncType() {
         const isService = !typeSel || typeSel.value === 'service';
@@ -1528,7 +1565,6 @@
       if (typeSel) typeSel.addEventListener('change', syncType);
       if (curSel) curSel.addEventListener('change', applyCurrencyUI);
       if (contractor) contractor.addEventListener('change', refreshMeta);
-      if (amt) amt.addEventListener('input', recalcBreakdown);
       syncType();
 
       // ─── Custom calendar for the Due date field ───
