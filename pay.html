@@ -180,19 +180,15 @@
     .eta-line svg { width: 15px; height: 15px; color: var(--text-muted); flex-shrink: 0; }
     .eta-line b { font-weight: 700; color: var(--text-primary); }
     /* Over/underpayment disclosure (collapsible) */
-    .pay-note { border: 1px solid var(--border-strong); border-radius: 8px; margin-bottom: 20px; text-align: left; }
-    .pay-note > summary { display: flex; align-items: center; gap: 8px; padding: 13px 16px; font-size: 13.5px; font-weight: 600; color: var(--text-secondary); cursor: pointer; list-style: none; }
-    .pay-note > summary::-webkit-details-marker { display: none; }
-    .pay-note-ico { width: 16px; height: 16px; color: var(--text-muted); flex-shrink: 0; }
-    .pay-note-chev { width: 16px; height: 16px; margin-left: auto; color: var(--text-muted); transition: transform .2s; }
-    .pay-note[open] .pay-note-chev { transform: rotate(180deg); }
-    .pay-note-body { padding: 2px 16px 16px; font-size: 13px; color: var(--text-secondary); line-height: 1.55; }
-    .pay-note-intro { margin: 0 0 6px; }
-    .pay-note-row { display: grid; grid-template-columns: 116px 1fr; gap: 12px; align-items: start; padding: 11px 0; border-top: 1px solid var(--border); }
-    .pay-note-tag { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; color: var(--primary-600); padding-top: 1px; }
-    .pay-note-txt { color: var(--text-secondary); }
-    .pay-note-foot { margin: 12px 0 0; padding-top: 12px; border-top: 1px solid var(--border); font-size: 12.5px; font-weight: 600; color: var(--text-primary); }
-    @media (max-width: 520px) { .pay-note-row { grid-template-columns: 1fr; gap: 2px; } }
+    /* Excess-funds preference (action card) */
+    .surplus-card { border: 1px solid var(--border-strong); border-radius: 8px; padding: 14px 16px; margin-bottom: 20px; text-align: left; }
+    .surplus-title { font-size: 13.5px; font-weight: 700; color: var(--text-primary); }
+    .surplus-sub { font-size: 12.5px; color: var(--text-muted); margin: 3px 0 12px; line-height: 1.5; }
+    .surplus-seg { display: flex; gap: 8px; }
+    .surplus-opt { flex: 1; min-height: 38px; padding: 7px 12px; border: 1px solid var(--border-strong); border-radius: 8px; background: var(--neutral-0); font-family: inherit; font-size: 13px; font-weight: 600; color: var(--text-secondary); cursor: pointer; transition: border-color .15s, background .15s, color .15s, box-shadow .15s; }
+    .surplus-opt:hover { border-color: var(--neutral-400); }
+    .surplus-opt.is-active { border-color: var(--primary-500); background: var(--primary-50); color: var(--primary-700); box-shadow: inset 0 0 0 1px var(--primary-500); }
+    .surplus-foot { font-size: 11.5px; color: var(--text-muted); margin: 12px 0 0; line-height: 1.5; }
     .toggle-pill {
       display: inline-flex;
       background: var(--neutral-100);
@@ -495,25 +491,15 @@
         </div>
       </div>
 
-      <details class="pay-note">
-        <summary>
-          <svg class="pay-note-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-info-circle"/></svg>
-          What if the amount we receive differs?
-          <svg class="pay-note-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
-        </summary>
-        <div class="pay-note-body">
-          <p class="pay-note-intro">Please transfer the exact amount shown above. If the amount we receive differs:</p>
-          <div class="pay-note-row">
-            <span class="pay-note-tag">Underpayment</span>
-            <span class="pay-note-txt">We release the amount received to the freelancer.</span>
-          </div>
-          <div class="pay-note-row">
-            <span class="pay-note-tag">Overpayment</span>
-            <span class="pay-note-txt">You choose whether to send the surplus to the freelancer or keep it in your Wisemonk wallet for future payouts.</span>
-          </div>
-          <p class="pay-note-foot">Transferred funds are non-refundable.</p>
+      <div class="surplus-card">
+        <div class="surplus-title">If we receive more than the amount due</div>
+        <p class="surplus-sub">Choose what we should do with any surplus:</p>
+        <div class="surplus-seg" id="surplusSeg" role="radiogroup" aria-label="What to do with surplus funds">
+          <button type="button" class="surplus-opt is-active" data-v="send" role="radio" aria-checked="true">Send extra to freelancer</button>
+          <button type="button" class="surplus-opt" data-v="wallet" role="radio" aria-checked="false">Keep in my wallet</button>
         </div>
-      </details>
+        <p class="surplus-foot">If we receive less, we release the amount received to the freelancer. Transferred funds are non-refundable.</p>
+      </div>
 
       <div class="eta-line">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-clock"/></svg>
@@ -694,6 +680,20 @@
         ['payAmt2', 'payAmt3'].forEach(id => set(id, usd(payUSD)));
         ['payInr2', 'payInr3'].forEach(id => set(id, inr(amt)));
       }
+    })();
+
+    // Surplus-funds preference (segmented choice)
+    (function () {
+      const opts = document.querySelectorAll('#surplusSeg .surplus-opt');
+      opts.forEach(function (o) {
+        o.addEventListener('click', function () {
+          opts.forEach(function (x) {
+            const on = x === o;
+            x.classList.toggle('is-active', on);
+            x.setAttribute('aria-checked', on ? 'true' : 'false');
+          });
+        });
+      });
     })();
 
     function showStep(n) {
