@@ -860,6 +860,13 @@
     .set-tl-note.warning a { color: var(--warning-700, #B54708); }
     .set-tl-note.danger  { background: var(--danger-50, #FEF3F2);  color: var(--danger-700, #B42318); }
     .set-tl-note.danger a  { color: var(--danger-700, #B42318); }
+    .set-choice { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+    .set-choice-btn { flex: 1 1 auto; height: 34px; padding: 0 14px; border-radius: 8px; border: none; background: var(--primary-500); color: #fff; font-family: inherit; font-size: 12.5px; font-weight: 700; cursor: pointer; white-space: nowrap; }
+    .set-choice-btn:hover { background: var(--primary-600); }
+    .set-choice-btn.ghost { background: var(--neutral-0); color: var(--text-primary); border: 1px solid var(--border-strong); }
+    .set-choice-btn.ghost:hover { background: var(--neutral-100); }
+    .set-choice-note { margin-top: 8px; font-size: 11.5px; color: var(--text-muted); }
+    .set-choice-done { margin-top: 6px; font-weight: 600; }
     @media (max-width: 860px) { .set-grid { grid-template-columns: 1fr; } }
   </style>
 </head>
@@ -1129,7 +1136,7 @@
                 <td><button class="row-action"><svg viewBox="0 0 24 24" fill="currentColor"><use href="#ic-more"/></svg></button></td>
               </tr>
 
-              <tr data-case="verifying_delayed">
+              <tr data-case="shortage">
                 <td><span class="inv-num">#INV-1035</span></td>
                 <td><div class="cell-name"><div class="cell-avatar" style="background:#0026FF;">RS</div>Rahul Sharma</div></td>
                 <td>May 22, 2025</td>
@@ -1139,7 +1146,7 @@
                 <td><button class="row-action"><svg viewBox="0 0 24 24" fill="currentColor"><use href="#ic-more"/></svg></button></td>
               </tr>
 
-              <tr data-case="mismatch">
+              <tr data-case="excess">
                 <td><span class="inv-num">#INV-1034</span></td>
                 <td><div class="cell-name"><div class="cell-avatar" style="background:#1A6FE0;">RS</div>Rahul Sharma</div></td>
                 <td>May 22, 2025</td>
@@ -1438,6 +1445,15 @@
   </div>
 
   <script>
+    // Resolve an excess-amount choice in the settlement timeline.
+    function riResolveExtra(btn, choice) {
+      const note = btn.closest('.set-tl-note');
+      if (!note) return;
+      note.innerHTML = (choice === 'send')
+        ? '<span class="set-choice-done">Extra $200 will be sent to the freelancer.</span>'
+        : '<span class="set-choice-done">Extra $200 saved to your Wisemonk wallet for future payouts.</span>';
+    }
+
     // ─── Request invoice modal ───
     function openReqInvoice(e) { if (e) e.preventDefault(); const m = document.getElementById('reqInvoiceModal'); if (m) { m.classList.add('open'); document.body.style.overflow = 'hidden'; void m.offsetWidth; m.classList.add('show'); } }
     function closeReqInvoice() { const m = document.getElementById('reqInvoiceModal'); if (m) { m.classList.remove('show'); document.body.style.overflow = ''; setTimeout(function () { m.classList.remove('open'); }, 320); } }
@@ -1861,10 +1877,23 @@
               { date: 'Pending',     title: 'Transfer to freelancer initiated', state: 'pending' },
               { date: 'Pending',     title: 'Freelancer paid',    state: 'pending' }
             ]);
-          case 'mismatch':
+          case 'excess':
             return baseStages(name).concat([
-              { date: '23 May 2025', title: 'Payment under review', state: 'progress', noteHtml: 'Amount mismatch detected — you paid $8,500 against an expected $8,700.<br><a href="#">Contact support &rarr;</a>', noteType: 'danger' },
+              { date: '23 May 2025', title: 'Extra amount received', state: 'progress', noteType: 'warning', noteHtml:
+                'We received <b>$5,510</b> — $200 more than the <b>$5,310</b> expected. Choose what to do with the extra <b>$200</b>:'
+                + '<div class="set-choice">'
+                + '<button type="button" class="set-choice-btn" onclick="riResolveExtra(this,\'send\')">Send extra to ' + name + '</button>'
+                + '<button type="button" class="set-choice-btn ghost" onclick="riResolveExtra(this,\'wallet\')">Keep in wallet</button>'
+                + '</div>'
+                + '<div class="set-choice-note">Funds can\'t be refunded.</div>' },
               { date: 'Pending',     title: 'Transfer to freelancer initiated', state: 'pending' },
+              { date: 'Pending',     title: 'Freelancer paid',    state: 'pending' }
+            ]);
+          case 'shortage':
+            return baseStages(name).concat([
+              { date: '23 May 2025', title: 'Short amount received', state: 'progress', noteType: 'info', noteHtml:
+                'We received <b>$5,110</b> — $200 less than the <b>$5,310</b> expected. We\'ll pay ' + name + ' the amount received.' },
+              { date: 'In progress', title: 'Transfer to freelancer initiated', state: 'pending' },
               { date: 'Pending',     title: 'Freelancer paid',    state: 'pending' }
             ]);
           case 'rejected':
@@ -1883,7 +1912,7 @@
         const s = (statusText || '').toLowerCase();
         if (s.indexOf('paid') > -1)     return 'settled';
         if (s.indexOf('reject') > -1)   return 'rejected';
-        if (s.indexOf('mismatch') > -1 || s.indexOf('action') > -1) return 'mismatch';
+        if (s.indexOf('mismatch') > -1 || s.indexOf('action') > -1) return 'excess';
         if (s.indexOf('review') > -1)   return 'verifying_delayed';
         return 'verifying'; // initiated / matching / verifying / default in-flight
       }

@@ -179,6 +179,18 @@
     .eta-line { display: flex; align-items: center; justify-content: center; gap: 7px; margin: 24px 0 22px; font-size: 13px; color: var(--text-secondary); }
     .eta-line svg { width: 15px; height: 15px; color: var(--text-muted); flex-shrink: 0; }
     .eta-line b { font-weight: 700; color: var(--text-primary); }
+    /* Over/underpayment disclosure (collapsible) */
+    .pay-note { border: 1px solid var(--border-strong); border-radius: 8px; margin-bottom: 20px; text-align: left; }
+    .pay-note > summary { display: flex; align-items: center; gap: 8px; padding: 13px 16px; font-size: 13.5px; font-weight: 600; color: var(--text-secondary); cursor: pointer; list-style: none; }
+    .pay-note > summary::-webkit-details-marker { display: none; }
+    .pay-note-ico { width: 16px; height: 16px; color: var(--text-muted); flex-shrink: 0; }
+    .pay-note-chev { width: 16px; height: 16px; margin-left: auto; color: var(--text-muted); transition: transform .2s; }
+    .pay-note[open] .pay-note-chev { transform: rotate(180deg); }
+    .pay-note-body { padding: 0 16px 14px; font-size: 13px; color: var(--text-secondary); line-height: 1.55; }
+    .pay-note-body p { margin: 0 0 8px; }
+    .pay-note-body ul { margin: 0 0 8px; padding-left: 18px; }
+    .pay-note-body li { margin-bottom: 4px; }
+    .pay-note-body b { color: var(--text-primary); font-weight: 700; }
     .toggle-pill {
       display: inline-flex;
       background: var(--neutral-100);
@@ -481,6 +493,22 @@
         </div>
       </div>
 
+      <details class="pay-note">
+        <summary>
+          <svg class="pay-note-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-info-circle"/></svg>
+          What if the amount differs?
+          <svg class="pay-note-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </summary>
+        <div class="pay-note-body">
+          <p>Please send the exact amount shown.</p>
+          <ul>
+            <li><b>If we receive less</b>, we'll pay the freelancer the amount received.</li>
+            <li><b>If we receive more</b>, you can send the extra to the freelancer or keep it in your Wisemonk wallet for future payouts.</li>
+          </ul>
+          <p>Transferred funds can't be refunded.</p>
+        </div>
+      </details>
+
       <div class="eta-line">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-clock"/></svg>
         Arrives in <b>1–2 business days</b> after you complete the payment
@@ -558,7 +586,7 @@
     <div class="cf-modal">
       <button class="cf-close" type="button" id="confirmClose" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-close"/></svg></button>
       <h2 class="cf-title" id="confirmTitle">Have you completed the payment?</h2>
-      <p class="cf-desc">Only confirm once you've sent <b id="confirmAmt">the amount</b> from your bank using the reference above. We'll then start matching it to your account.</p>
+      <p class="cf-desc">Only confirm once you've sent <b id="confirmAmt">the amount</b> from your bank using the reference above. We'll then start matching it to your account. Funds can't be refunded once sent.</p>
       <div class="cf-actions">
         <button class="cf-btn cf-ghost" id="confirmCancel" type="button">Not yet</button>
         <button class="cf-btn cf-primary" id="confirmYes" type="button">Yes, I've paid</button>
