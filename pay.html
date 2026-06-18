@@ -186,11 +186,13 @@
     .pay-note-ico { width: 16px; height: 16px; color: var(--text-muted); flex-shrink: 0; }
     .pay-note-chev { width: 16px; height: 16px; margin-left: auto; color: var(--text-muted); transition: transform .2s; }
     .pay-note[open] .pay-note-chev { transform: rotate(180deg); }
-    .pay-note-body { padding: 0 16px 14px; font-size: 13px; color: var(--text-secondary); line-height: 1.55; }
-    .pay-note-body p { margin: 0 0 8px; }
-    .pay-note-body ul { margin: 0 0 8px; padding-left: 18px; }
-    .pay-note-body li { margin-bottom: 4px; }
-    .pay-note-body b { color: var(--text-primary); font-weight: 700; }
+    .pay-note-body { padding: 2px 16px 16px; font-size: 13px; color: var(--text-secondary); line-height: 1.55; }
+    .pay-note-intro { margin: 0 0 6px; }
+    .pay-note-row { display: grid; grid-template-columns: 116px 1fr; gap: 12px; align-items: start; padding: 11px 0; border-top: 1px solid var(--border); }
+    .pay-note-tag { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; color: var(--primary-600); padding-top: 1px; }
+    .pay-note-txt { color: var(--text-secondary); }
+    .pay-note-foot { margin: 12px 0 0; padding-top: 12px; border-top: 1px solid var(--border); font-size: 12.5px; font-weight: 600; color: var(--text-primary); }
+    @media (max-width: 520px) { .pay-note-row { grid-template-columns: 1fr; gap: 2px; } }
     .toggle-pill {
       display: inline-flex;
       background: var(--neutral-100);
@@ -496,16 +498,20 @@
       <details class="pay-note">
         <summary>
           <svg class="pay-note-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-info-circle"/></svg>
-          What if the amount differs?
+          What if the amount we receive differs?
           <svg class="pay-note-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
         </summary>
         <div class="pay-note-body">
-          <p>Please send the exact amount shown.</p>
-          <ul>
-            <li><b>If we receive less</b>, we'll pay the freelancer the amount received.</li>
-            <li><b>If we receive more</b>, you can send the extra to the freelancer or keep it in your Wisemonk wallet for future payouts.</li>
-          </ul>
-          <p>Transferred funds can't be refunded.</p>
+          <p class="pay-note-intro">Please transfer the exact amount shown above. If the amount we receive differs:</p>
+          <div class="pay-note-row">
+            <span class="pay-note-tag">Underpayment</span>
+            <span class="pay-note-txt">We release the amount received to the freelancer.</span>
+          </div>
+          <div class="pay-note-row">
+            <span class="pay-note-tag">Overpayment</span>
+            <span class="pay-note-txt">You choose whether to send the surplus to the freelancer or keep it in your Wisemonk wallet for future payouts.</span>
+          </div>
+          <p class="pay-note-foot">Transferred funds are non-refundable.</p>
         </div>
       </details>
 
