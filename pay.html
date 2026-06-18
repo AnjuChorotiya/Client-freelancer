@@ -181,14 +181,11 @@
     .eta-line b { font-weight: 700; color: var(--text-primary); }
     /* Over/underpayment disclosure (collapsible) */
     /* Excess-funds preference (action card) */
-    .surplus-card { border: 1px solid var(--border-strong); border-radius: 8px; padding: 14px 16px; margin-bottom: 20px; text-align: left; }
-    .surplus-title { font-size: 13.5px; font-weight: 700; color: var(--text-primary); }
-    .surplus-sub { font-size: 12.5px; color: var(--text-muted); margin: 4px 0 0; line-height: 1.55; }
-    .surplus-seg { display: flex; gap: 8px; }
-    .surplus-opt { flex: 1; min-height: 38px; padding: 7px 12px; border: 1px solid var(--border-strong); border-radius: 8px; background: var(--neutral-0); font-family: inherit; font-size: 13px; font-weight: 600; color: var(--text-secondary); cursor: pointer; transition: border-color .15s, background .15s, color .15s, box-shadow .15s; }
-    .surplus-opt:hover { border-color: var(--neutral-400); }
-    .surplus-opt.is-active { border-color: var(--primary-500); background: var(--primary-50); color: var(--primary-700); box-shadow: inset 0 0 0 1px var(--primary-500); }
-    .surplus-foot { font-size: 11.5px; color: var(--text-muted); margin: 12px 0 0; line-height: 1.5; }
+    .surplus-card { border: 1px solid var(--border-strong); border-radius: 8px; padding: 20px 22px; margin-bottom: 20px; text-align: left; }
+    .surplus-title { font-size: 15px; font-weight: 700; color: var(--text-primary); padding-bottom: 14px; border-bottom: 1px solid var(--border); margin-bottom: 14px; }
+    .surplus-sub { font-size: 13px; color: var(--text-secondary); margin: 0 0 14px; line-height: 1.6; }
+    .surplus-check { display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 13.5px; font-weight: 500; color: var(--text-primary); }
+    .surplus-check input { width: 18px; height: 18px; accent-color: var(--neutral-800); cursor: pointer; flex-shrink: 0; }
     .toggle-pill {
       display: inline-flex;
       background: var(--neutral-100);
@@ -492,8 +489,12 @@
       </div>
 
       <div class="surplus-card">
-        <div class="surplus-title">If the amount we receive differs</div>
-        <p class="surplus-sub">Your payment converts at the live exchange rate when it reaches us, so the final amount may differ slightly. We'll send the freelancer the full amount we receive. Transferred funds are non-refundable.</p>
+        <div class="surplus-title">Final amount &amp; exchange rate</div>
+        <p class="surplus-sub">The exchange rate is locked when your payment is received in the freelancer's US account, so the converted amount may differ slightly from the estimate shown. We'll send the freelancer the full amount received. Transferred funds are non-refundable.</p>
+        <label class="surplus-check">
+          <input type="checkbox" id="surplusWallet" checked>
+          <span>Save any extra to my wallet for future payments</span>
+        </label>
       </div>
 
       <div class="eta-line">
