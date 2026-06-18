@@ -183,7 +183,7 @@
     /* Excess-funds preference (action card) */
     .surplus-card { border: 1px solid var(--border-strong); border-radius: 8px; padding: 14px 16px; margin-bottom: 20px; text-align: left; }
     .surplus-title { font-size: 13.5px; font-weight: 700; color: var(--text-primary); }
-    .surplus-sub { font-size: 12.5px; color: var(--text-muted); margin: 3px 0 12px; line-height: 1.5; }
+    .surplus-sub { font-size: 12.5px; color: var(--text-muted); margin: 4px 0 0; line-height: 1.55; }
     .surplus-seg { display: flex; gap: 8px; }
     .surplus-opt { flex: 1; min-height: 38px; padding: 7px 12px; border: 1px solid var(--border-strong); border-radius: 8px; background: var(--neutral-0); font-family: inherit; font-size: 13px; font-weight: 600; color: var(--text-secondary); cursor: pointer; transition: border-color .15s, background .15s, color .15s, box-shadow .15s; }
     .surplus-opt:hover { border-color: var(--neutral-400); }
@@ -492,13 +492,8 @@
       </div>
 
       <div class="surplus-card">
-        <div class="surplus-title">If we receive more than the amount due</div>
-        <p class="surplus-sub">Choose what we should do with any surplus:</p>
-        <div class="surplus-seg" id="surplusSeg" role="radiogroup" aria-label="What to do with surplus funds">
-          <button type="button" class="surplus-opt is-active" data-v="send" role="radio" aria-checked="true">Send extra to freelancer</button>
-          <button type="button" class="surplus-opt" data-v="wallet" role="radio" aria-checked="false">Keep in my wallet</button>
-        </div>
-        <p class="surplus-foot">If we receive less, we release the amount received to the freelancer. Transferred funds are non-refundable.</p>
+        <div class="surplus-title">If the amount we receive differs</div>
+        <p class="surplus-sub">Your payment converts at the live exchange rate when it reaches us, so the final amount may differ slightly. We'll send the freelancer the full amount we receive. Transferred funds are non-refundable.</p>
       </div>
 
       <div class="eta-line">
@@ -680,20 +675,6 @@
         ['payAmt2', 'payAmt3'].forEach(id => set(id, usd(payUSD)));
         ['payInr2', 'payInr3'].forEach(id => set(id, inr(amt)));
       }
-    })();
-
-    // Surplus-funds preference (segmented choice)
-    (function () {
-      const opts = document.querySelectorAll('#surplusSeg .surplus-opt');
-      opts.forEach(function (o) {
-        o.addEventListener('click', function () {
-          opts.forEach(function (x) {
-            const on = x === o;
-            x.classList.toggle('is-active', on);
-            x.setAttribute('aria-checked', on ? 'true' : 'false');
-          });
-        });
-      });
     })();
 
     function showStep(n) {

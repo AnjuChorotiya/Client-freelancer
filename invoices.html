@@ -1445,15 +1445,6 @@
   </div>
 
   <script>
-    // Resolve an excess-amount choice in the settlement timeline.
-    function riResolveExtra(btn, choice) {
-      const note = btn.closest('.set-tl-note');
-      if (!note) return;
-      note.innerHTML = (choice === 'send')
-        ? '<span class="set-choice-done">Extra $200 will be sent to the freelancer.</span>'
-        : '<span class="set-choice-done">Extra $200 saved to your Wisemonk wallet for future payouts.</span>';
-    }
-
     // ─── Request invoice modal ───
     function openReqInvoice(e) { if (e) e.preventDefault(); const m = document.getElementById('reqInvoiceModal'); if (m) { m.classList.add('open'); document.body.style.overflow = 'hidden'; void m.offsetWidth; m.classList.add('show'); } }
     function closeReqInvoice() { const m = document.getElementById('reqInvoiceModal'); if (m) { m.classList.remove('show'); document.body.style.overflow = ''; setTimeout(function () { m.classList.remove('open'); }, 320); } }
@@ -1879,13 +1870,8 @@
             ]);
           case 'excess':
             return baseStages(name).concat([
-              { date: '23 May 2025', title: 'Extra amount received', state: 'progress', noteType: 'warning', noteHtml:
-                'We received <b>$5,510</b> — $200 more than the <b>$5,310</b> expected. Choose what to do with the extra <b>$200</b>:'
-                + '<div class="set-choice">'
-                + '<button type="button" class="set-choice-btn" onclick="riResolveExtra(this,\'send\')">Send extra to ' + name + '</button>'
-                + '<button type="button" class="set-choice-btn ghost" onclick="riResolveExtra(this,\'wallet\')">Keep in wallet</button>'
-                + '</div>'
-                + '<div class="set-choice-note">Funds can\'t be refunded.</div>' },
+              { date: '23 May 2025', title: 'Extra amount received', state: 'done', noteType: 'info', noteHtml:
+                'We received <b>$5,510</b> — $200 more than the <b>$5,310</b> expected. We\'ll send ' + name + ' the full amount received.' },
               { date: 'Pending',     title: 'Transfer to freelancer initiated', state: 'pending' },
               { date: 'Pending',     title: 'Freelancer paid',    state: 'pending' }
             ]);
