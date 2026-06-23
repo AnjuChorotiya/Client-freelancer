@@ -121,7 +121,8 @@
     .led-bal { color: var(--text-secondary); }
     .led-empty { padding: 40px 24px; text-align: center; color: var(--text-muted); font-size: 14px; }
 
-    .pill-note { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; color: var(--text-muted); }
+    .pill-note { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 500; color: var(--text-muted); }
+    .pill-note b { color: var(--text-primary); font-weight: 700; }
     .pill-note svg { width: 15px; height: 15px; }
   </style>
 </head>
@@ -238,10 +239,7 @@
         <div class="wm-card">
           <div class="wm-card-head">
             <h2>Transactions</h2>
-            <span class="pill-note">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-info-circle"/></svg>
-              All amounts in USD
-            </span>
+            <span class="pill-note">Balance <b id="txnBalance">$0.00</b></span>
           </div>
           <table class="led-table">
             <thead>
@@ -249,7 +247,6 @@
                 <th>Description</th>
                 <th>Date</th>
                 <th class="num">Amount</th>
-                <th class="num">Balance</th>
               </tr>
             </thead>
             <tbody id="ledgerBody"></tbody>
@@ -268,6 +265,8 @@
       const W = window.WMWallet;
 
       document.getElementById('balAmount').textContent = usd(W.balance());
+      const txnBal = document.getElementById('txnBalance');
+      if (txnBal) txnBal.textContent = usd(W.balance());
 
       const body = document.getElementById('ledgerBody');
       const empty = document.getElementById('ledgerEmpty');
@@ -291,8 +290,7 @@
               (r.ref ? '<div class="led-ref">' + r.ref + '</div>' : '') + '</span>' +
             '</div></td>' +
             '<td class="led-date">' + (r.date || '') + '</td>' +
-            '<td class="num"><span class="led-amt ' + r.type + '">' + sign + usd(r.amount) + '</span></td>' +
-            '<td class="num led-bal">' + usd(r.balanceAfter) + '</td>';
+            '<td class="num"><span class="led-amt ' + r.type + '">' + sign + usd(r.amount) + '</span></td>';
           body.appendChild(tr);
         });
       }
