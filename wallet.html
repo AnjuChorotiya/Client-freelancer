@@ -82,11 +82,10 @@
     .wallet-grid { margin-bottom: 20px; }
 
     /* Balance card */
-    .bal-card { background: #E9EDFB; color: var(--text-primary); border: 1px solid #DCE3F6; border-radius: 8px; padding: 26px 28px; display: flex; flex-direction: column; justify-content: space-between; min-height: 168px; max-width: 420px; position: relative; }
-    .bal-card .bal-ico { position: absolute; right: 18px; top: 18px; width: 26px; height: 26px; color: var(--primary-500); opacity: 0.5; }
-    .bal-cap { display: flex; align-items: center; gap: 6px; font-family: 'Satoshi', sans-serif; font-weight: 300; font-size: 12px; letter-spacing: 0.6px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px; }
+    .bal-card { background: #E9EDFB; color: var(--text-primary); border-radius: 8px; padding: 30px 32px; display: flex; flex-direction: column; max-width: 420px; }
+    .bal-cap { display: flex; align-items: center; gap: 6px; font-family: 'Satoshi', sans-serif; font-weight: 300; font-size: 12px; letter-spacing: 0.6px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 14px; }
     .bal-amount { font-size: 42px; font-weight: 700; letter-spacing: -1.4px; line-height: 1; color: var(--text-primary); }
-    .bal-sub { font-size: 13px; color: var(--text-secondary); margin-top: 14px; line-height: 1.5; }
+    .bal-sub { font-size: 13px; color: var(--text-secondary); margin-top: 20px; line-height: 1.55; }
 
     /* Info tooltip on the balance */
     .bal-info { position: relative; display: inline-flex; cursor: help; color: var(--text-muted); }
@@ -214,7 +213,6 @@
 
         <div class="wallet-grid">
           <div class="bal-card">
-            <svg class="bal-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-wallet-money"/></svg>
             <div>
               <div class="bal-cap">Available balance
                 <span class="bal-info" tabindex="0" role="img" aria-label="How your wallet works">
