@@ -263,6 +263,11 @@
     .ri-item { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
     .ri-item-desc { flex: 1 1 auto; min-width: 0; }
     .ri-item-amtwrap { flex: 0 0 130px; width: 130px; }
+    .ri-item-hrswrap { position: relative; flex: 0 0 84px; width: 84px; display: none; }
+    #riItems.is-hourly .ri-item-hrswrap { display: block; }
+    .ri-item-hrs { width: 100%; padding-right: 34px; }
+    .ri-hrs-suffix { position: absolute; right: 11px; top: 50%; transform: translateY(-50%); font-size: 12px; font-weight: 500; color: var(--text-muted); pointer-events: none; }
+    #riItems.is-hourly .ri-item-amt { background: var(--neutral-50); color: var(--text-secondary); cursor: default; }
     .ri-item-remove { flex: 0 0 auto; width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center; border: none; background: transparent; color: var(--text-muted); border-radius: 8px; cursor: pointer; transition: background .15s, color .15s; }
     .ri-item-remove:hover { background: var(--danger-50, #FFF1F0); color: var(--danger-500, #F04438); }
     .ri-item-remove svg { width: 16px; height: 16px; }
@@ -1403,6 +1408,7 @@
           <div id="riItems">
             <div class="ri-item">
               <input type="text" class="ri-item-desc" placeholder="Description (e.g. March cycle)">
+              <div class="ri-item-hrswrap"><input type="text" inputmode="decimal" class="ri-item-hrs" placeholder="0"><span class="ri-hrs-suffix">hrs</span></div>
               <div class="ri-amount-wrap ri-item-amtwrap"><span class="ri-cur">$</span><input type="text" inputmode="decimal" class="ri-item-amt" placeholder="0.00"></div>
               <button type="button" class="ri-item-remove" aria-label="Remove line item" tabindex="-1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
             </div>
@@ -1497,6 +1503,22 @@
       }
       const fmtMoney = (n, sym) => sym + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
+      function contractorFreq() {
+        const opt = contractor && contractor.options[contractor.selectedIndex];
+        return opt && opt.dataset ? (opt.dataset.freq || '') : '';
+      }
+      // Hourly service contractors bill by hours at their agreed rate, so the
+      // line item asks for hours and computes the amount = rate × hours.
+      function hourlyRate() {
+        const opt = contractor && contractor.options[contractor.selectedIndex];
+        const raw = opt && opt.dataset ? (opt.dataset.rate || '') : '';
+        return parseFloat(raw.replace(/[^0-9.]/g, '')) || 0;
+      }
+      function isHourly() {
+        const isService = !typeSel || typeSel.value === 'service';
+        return isService && contractorFreq() === 'Hourly';
+      }
+
       function refreshMeta() {
         const opt = contractor && contractor.options[contractor.selectedIndex];
         const rate = opt && opt.dataset ? opt.dataset.rate : '';
@@ -1509,6 +1531,27 @@
         } else if (cMeta) {
           cMeta.classList.remove('show');
         }
+      }
+
+      // Show/hide the hours fields, lock the amount inputs, and recompute each
+      // row's amount from its hours when the selected contractor is hourly.
+      function applyHourly() {
+        const hourly = isHourly();
+        itemsWrap.classList.toggle('is-hourly', hourly);
+        const rate = hourlyRate();
+        itemsWrap.querySelectorAll('.ri-item').forEach(function (it) {
+          const amt = it.querySelector('.ri-item-amt');
+          const hrs = it.querySelector('.ri-item-hrs');
+          if (!amt) return;
+          if (hourly) {
+            amt.readOnly = true;
+            const h = parseFloat((hrs && hrs.value || '').replace(/[^0-9.]/g, '')) || 0;
+            amt.value = h ? (h * rate).toFixed(2) : '';
+          } else {
+            amt.readOnly = false;
+          }
+        });
+        recalcBreakdown();
       }
 
       function lineTotal() {
@@ -1539,7 +1582,14 @@
       // Repeatable line items
       function wireItem(item) {
         const a = item.querySelector('.ri-item-amt');
-        if (a) a.addEventListener('input', recalcBreakdown);
+        if (a) a.addEventListener('input', function () { if (!isHourly()) recalcBreakdown(); });
+        const h = item.querySelector('.ri-item-hrs');
+        if (h) h.addEventListener('input', function () {
+          const amt = item.querySelector('.ri-item-amt');
+          const hrs = parseFloat((h.value || '').replace(/[^0-9.]/g, '')) || 0;
+          if (amt) amt.value = hrs ? (hrs * hourlyRate()).toFixed(2) : '';
+          recalcBreakdown();
+        });
         const rm = item.querySelector('.ri-item-remove');
         if (rm) rm.addEventListener('click', function () {
           if (itemsWrap.querySelectorAll('.ri-item').length > 1) { item.remove(); recalcBreakdown(); }
@@ -1552,6 +1602,7 @@
         itemsWrap.appendChild(clone);
         wireItem(clone);
         applyCurrencyUI();
+        applyHourly();
         const d = clone.querySelector('.ri-item-desc'); if (d) d.focus();
       }
       itemsWrap.querySelectorAll('.ri-item').forEach(wireItem);
@@ -1567,11 +1618,12 @@
         }
         refreshMeta();
         applyCurrencyUI();
+        applyHourly();
       }
 
       if (typeSel) typeSel.addEventListener('change', syncType);
       if (curSel) curSel.addEventListener('change', applyCurrencyUI);
-      if (contractor) contractor.addEventListener('change', refreshMeta);
+      if (contractor) contractor.addEventListener('change', function () { refreshMeta(); applyHourly(); });
       syncType();
 
       // ─── Custom calendar for the Due date field ───
