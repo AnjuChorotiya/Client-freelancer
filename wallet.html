@@ -79,24 +79,25 @@
     .title-row h1 { font-size: 24px; font-weight: 700; letter-spacing: -0.3px; margin-bottom: 4px; }
     .title-row p { font-size: 14px; color: var(--text-secondary); }
 
-    .wallet-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 20px; margin-bottom: 20px; }
-    @media (max-width: 900px) { .wallet-grid { grid-template-columns: 1fr; } }
+    .wallet-grid { margin-bottom: 20px; }
 
     /* Balance card */
-    .bal-card { background: var(--neutral-800); color: #fff; border-radius: 8px; padding: 26px 28px; display: flex; flex-direction: column; justify-content: space-between; min-height: 168px; position: relative; overflow: hidden; }
+    .bal-card { background: var(--neutral-800); color: #fff; border-radius: 8px; padding: 26px 28px; display: flex; flex-direction: column; justify-content: space-between; min-height: 168px; max-width: 420px; position: relative; }
     .bal-card .bal-ico { position: absolute; right: 18px; top: 18px; width: 26px; height: 26px; color: rgba(255,255,255,0.55); }
-    .bal-cap { font-family: 'Satoshi', sans-serif; font-weight: 300; font-size: 12px; letter-spacing: 0.6px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 10px; }
+    .bal-cap { display: flex; align-items: center; gap: 6px; font-family: 'Satoshi', sans-serif; font-weight: 300; font-size: 12px; letter-spacing: 0.6px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 10px; }
     .bal-amount { font-size: 42px; font-weight: 700; letter-spacing: -1.4px; line-height: 1; }
     .bal-sub { font-size: 13px; color: rgba(255,255,255,0.65); margin-top: 14px; line-height: 1.5; }
 
-    /* How-it-works card */
-    .how-card { background: var(--neutral-0); border: 1px solid var(--border); border-radius: 8px; padding: 22px 24px; }
-    .how-card h3 { font-size: 15px; font-weight: 700; margin-bottom: 14px; }
-    .how-step { display: flex; gap: 12px; margin-bottom: 14px; }
-    .how-step:last-child { margin-bottom: 0; }
-    .how-num { flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%; background: var(--accent-tint); color: var(--accent-500); font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
-    .how-text { font-size: 13.5px; color: var(--text-secondary); line-height: 1.55; }
-    .how-text b { color: var(--text-primary); font-weight: 600; }
+    /* Info tooltip on the balance */
+    .bal-info { position: relative; display: inline-flex; cursor: help; color: rgba(255,255,255,0.55); }
+    .bal-info svg { width: 15px; height: 15px; }
+    .bal-info:hover, .bal-info:focus { color: #fff; outline: none; }
+    .bal-tip { position: absolute; top: calc(100% + 10px); left: -10px; width: 300px; background: #fff; color: var(--text-secondary); border: 1px solid var(--border); border-radius: 10px; box-shadow: 0 14px 36px -10px rgba(0,0,0,.4); padding: 14px 16px; opacity: 0; visibility: hidden; transform: translateY(4px); transition: opacity .15s ease, transform .15s ease; z-index: 40; text-transform: none; letter-spacing: 0; font-weight: 400; }
+    .bal-info:hover .bal-tip, .bal-info:focus .bal-tip { opacity: 1; visibility: visible; transform: none; }
+    .bal-tip b { display: block; font-size: 13px; color: var(--text-primary); margin-bottom: 8px; }
+    .bal-tip span { display: block; font-size: 12.5px; line-height: 1.5; margin-bottom: 8px; }
+    .bal-tip span:last-child { margin-bottom: 0; }
+    .bal-tip strong { color: var(--text-primary); font-weight: 600; }
 
     /* Ledger */
     .wm-card { background: var(--neutral-0); border: 1px solid var(--border); border-radius: 8px; padding: 0; overflow: hidden; }
@@ -213,26 +214,20 @@
           <div class="bal-card">
             <svg class="bal-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-wallet-money"/></svg>
             <div>
-              <div class="bal-cap">Available balance</div>
+              <div class="bal-cap">Available balance
+                <span class="bal-info" tabindex="0" role="img" aria-label="How your wallet works">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 8h.01"/></svg>
+                  <span class="bal-tip">
+                    <b>How your wallet works</b>
+                    <span>When a payment converts at a <strong>favourable FX rate</strong>, the extra is credited here — if you chose to keep it at checkout.</span>
+                    <span>On your next invoice, the balance is <strong>applied automatically</strong> to reduce what you transfer.</span>
+                    <span>Wallet credit can only be used toward invoices — <strong>transferred funds are non-refundable</strong>.</span>
+                  </span>
+                </span>
+              </div>
               <div class="bal-amount" id="balAmount">$0.00</div>
             </div>
             <div class="bal-sub">Held in your Wisemonk account · USD. Applied automatically when you pay your next invoice.</div>
-          </div>
-
-          <div class="how-card">
-            <h3>How your wallet works</h3>
-            <div class="how-step">
-              <span class="how-num">1</span>
-              <span class="how-text">When a payment converts at a <b>favourable FX rate</b>, the extra is credited here — if you chose to keep it at checkout.</span>
-            </div>
-            <div class="how-step">
-              <span class="how-num">2</span>
-              <span class="how-text">On your next invoice, the balance is <b>applied automatically</b> to reduce what you transfer.</span>
-            </div>
-            <div class="how-step">
-              <span class="how-num">3</span>
-              <span class="how-text">Wallet credit can only be used toward invoices — <b>transferred funds are non-refundable</b>.</span>
-            </div>
           </div>
         </div>
 
