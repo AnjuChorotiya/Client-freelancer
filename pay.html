@@ -186,6 +186,17 @@
     .surplus-sub { font-size: 13px; color: var(--text-secondary); margin: 0 0 14px; line-height: 1.6; }
     .surplus-check { display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 13.5px; font-weight: 500; color: var(--text-primary); }
     .surplus-check input { width: 18px; height: 18px; accent-color: var(--neutral-800); cursor: pointer; flex-shrink: 0; }
+    /* Apply wallet credit toward this payment */
+    .wallet-apply { border: 1px solid var(--border-strong); border-radius: 8px; margin-bottom: 20px; }
+    .wallet-apply-row { display: flex; align-items: center; gap: 12px; padding: 14px 16px; cursor: pointer; }
+    .wallet-apply-row input { width: 18px; height: 18px; accent-color: var(--primary-600); cursor: pointer; flex-shrink: 0; }
+    .wallet-apply-ico { width: 34px; height: 34px; border-radius: 8px; background: var(--primary-50, #E8F2FF); color: var(--primary-600); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .wallet-apply-ico svg { width: 18px; height: 18px; }
+    .wallet-apply-main { flex: 1; min-width: 0; text-align: left; }
+    .wallet-apply-title { display: block; font-size: 14px; font-weight: 600; color: var(--text-primary); }
+    .wallet-apply-sub { display: block; font-size: 12.5px; color: var(--text-secondary); margin-top: 1px; }
+    .wallet-apply-amt { font-size: 14px; font-weight: 700; color: var(--primary-600); white-space: nowrap; }
+    .pay-credit-line { font-size: 13px; font-weight: 600; color: var(--primary-600); margin-top: 8px; }
     .toggle-pill {
       display: inline-flex;
       background: var(--neutral-100);
@@ -435,6 +446,19 @@
           <span class="meta-div"></span></span>
           Live rate <span class="rate">1 USD = 94.56</span> INR · locks when we receive your payment
         </div>
+        <div class="pay-credit-line" id="payCreditLine" style="display:none;"></div>
+      </div>
+
+      <div class="wallet-apply" id="walletApply" style="display:none;">
+        <label class="wallet-apply-row">
+          <input type="checkbox" id="walletApplyChk" checked>
+          <span class="wallet-apply-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M19 7H6a3 3 0 0 1 0-6h11v6Z"/><path d="M3 5v11a3 3 0 0 0 3 3h13a2 2 0 0 0 2-2v-2"/><path d="M16 12.5a1.5 1.5 0 0 0 1.5 1.5H22v-3h-4.5A1.5 1.5 0 0 0 16 12.5Z"/></svg></span>
+          <span class="wallet-apply-main">
+            <span class="wallet-apply-title">Apply wallet credit</span>
+            <span class="wallet-apply-sub" id="walletApplySub">You have credit available</span>
+          </span>
+          <span class="wallet-apply-amt" id="walletApplyAmt"></span>
+        </label>
       </div>
 
       <div class="ref-strip">
@@ -619,10 +643,15 @@
     </div>
   </div>
 
+  <script src="wm-wallet.js"></script>
   <script>
     // Pick up the invoice number from ?inv=
     const params = new URLSearchParams(location.search);
     const invNum = params.get('inv') || '#INV-1042';
+
+    // Settlement state shared with proceedPayment(): how much wallet credit is
+    // applied to this transfer, and the surplus this payment may credit back.
+    const PAY = { applied: 0, basePayUSD: 0, isUSD: false, surplusUSD: 0, RATE: 94.56 };
 
     // When arriving from an approval, reflect the beneficiary name if one is passed.
     // The payment amount + locked FX rate shown here are fixed for this transfer.
@@ -631,6 +660,7 @@
       const RATE = 94.56; // 1 USD = RATE INR
       const usd = n => '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
       const inr = n => '₹' + Math.round(n).toLocaleString('en-IN');
+      const round2 = n => Math.round(n * 100) / 100;
 
       // Carried from the invoice row: requestor name, billed currency, amount.
       const reqName = (params.get('name') || 'Ananya').trim();
@@ -646,27 +676,27 @@
       const subTail = ' Send using the bank details below. Once you\'ve completed the payment, please return here to confirm.';
       const big = document.getElementById('sumPay');
       const reqLine = document.getElementById('reqAmtLine');
-      const meta = document.getElementById('metaConvert');
       const recvCur = document.getElementById('payRecvCur');
-      const step3Rate = document.getElementById('step3RateLine');
+      const creditLine = document.getElementById('payCreditLine');
 
       // Requestor name drives both the heading copy and the beneficiary name.
       set('payBeneficiary', reqName);
+      if (recvCur) recvCur.textContent = 'INR';
 
+      // Base amount the client must transfer before any wallet credit is applied.
+      const basePayUSD = isUSD ? amt : (amt / RATE);
+      PAY.basePayUSD = basePayUSD;
+      PAY.isUSD = isUSD;
+      PAY.RATE = RATE;
+      // INR conversions may settle slightly in the client's favour — model a small
+      // surplus that can be credited to the wallet.
+      PAY.surplusUSD = isUSD ? 0 : round2(basePayUSD * 0.012);
+
+      // "Requested" copy describes the invoice — it stays fixed regardless of credit.
       if (isUSD) {
-        // Billed in USD — the client pays this exact amount; it converts to the
-        // freelancer's local currency (INR) at the live rate, so keep that line.
-        const pay = usd(amt);
-        if (big) big.textContent = pay;
-        if (sub) sub.textContent = reqName + ' requested ' + pay + '.' + subTail;
+        if (sub) sub.textContent = reqName + ' requested ' + usd(amt) + '.' + subTail;
         if (reqLine) reqLine.style.display = 'none'; // no INR "requested" figure when billed in USD
-        if (recvCur) recvCur.textContent = 'INR';
-        ['payAmt2', 'payAmt3'].forEach(id => set(id, pay));
-        ['payInr2', 'payInr3'].forEach(id => set(id, inr(amt * RATE)));
       } else {
-        // Billed in INR — the freelancer receives ₹amt; the client pays the USD equivalent.
-        const payUSD = amt / RATE;
-        if (big) big.textContent = usd(payUSD);
         if (sub) sub.textContent = reqName + ' requested ' + inr(amt) + ' INR.' + subTail;
         if (reqLine) reqLine.innerHTML = inr(amt) + ' requested'
           + '<span class="fx-info" tabindex="0" role="img" aria-label="Estimate may change with the FX rate">'
@@ -674,10 +704,44 @@
           + '<span class="fx-tip">Estimated using the current exchange rate. The final amount will be confirmed when we receive your payment.</span>'
           + '</span>'
           + '<span class="meta-div"></span>';
-        if (recvCur) recvCur.textContent = 'INR';
-        ['payAmt2', 'payAmt3'].forEach(id => set(id, usd(payUSD)));
-        ['payInr2', 'payInr3'].forEach(id => set(id, inr(amt)));
       }
+
+      // The big figure + step 2/3 amounts reflect what the client actually transfers
+      // (base minus any wallet credit applied). The INR alt mirrors that USD value.
+      function renderTransfer() {
+        const transfer = Math.max(0, round2(basePayUSD - PAY.applied));
+        if (big) big.textContent = usd(transfer);
+        ['payAmt2', 'payAmt3'].forEach(id => set(id, usd(transfer)));
+        ['payInr2', 'payInr3'].forEach(id => set(id, inr(transfer * RATE)));
+        if (creditLine) {
+          if (PAY.applied > 0) { creditLine.textContent = '− ' + usd(PAY.applied) + ' wallet credit applied'; creditLine.style.display = ''; }
+          else { creditLine.style.display = 'none'; }
+        }
+      }
+
+      // Offer to apply existing wallet credit toward this payment.
+      (function () {
+        const W = window.WMWallet;
+        const card = document.getElementById('walletApply');
+        const chk = document.getElementById('walletApplyChk');
+        if (!W || !card || !chk) { renderTransfer(); return; }
+        const bal = W.balance();
+        if (bal <= 0) { renderTransfer(); return; }
+        const applicable = round2(Math.min(bal, basePayUSD));
+        const subEl = document.getElementById('walletApplySub');
+        const amtEl = document.getElementById('walletApplyAmt');
+        if (subEl) subEl.innerHTML = 'You have <b>' + usd(bal) + '</b> available';
+        if (amtEl) amtEl.textContent = '− ' + usd(applicable);
+        card.style.display = '';
+        chk.checked = true;
+        PAY.applied = applicable;
+        chk.addEventListener('change', function () {
+          PAY.applied = chk.checked ? applicable : 0;
+          renderTransfer();
+        });
+      })();
+
+      renderTransfer();
     })();
 
     function showStep(n) {
@@ -696,6 +760,18 @@
       // Auto-advance to step 3 after ~3s to simulate matching
       setTimeout(() => {
         setPayState('initiated');
+        // Settle wallet movements once the payment is matched: debit any credit
+        // applied, and credit back the FX surplus if the client opted to keep it.
+        try {
+          const W = window.WMWallet;
+          if (W) {
+            if (PAY.applied > 0) W.debit(PAY.applied, invNum, 'Applied to payment');
+            const surplusChk = document.getElementById('surplusWallet');
+            if (PAY.surplusUSD > 0 && surplusChk && surplusChk.checked) {
+              W.credit(PAY.surplusUSD, invNum, 'Payment surplus');
+            }
+          }
+        } catch (e) { /* wallet optional */ }
         showStep(3);
       }, 3000);
     }
