@@ -82,16 +82,16 @@
     .wallet-grid { margin-bottom: 20px; }
 
     /* Balance card */
-    .bal-card { background: var(--neutral-800); color: #fff; border-radius: 8px; padding: 26px 28px; display: flex; flex-direction: column; justify-content: space-between; min-height: 168px; max-width: 420px; position: relative; }
-    .bal-card .bal-ico { position: absolute; right: 18px; top: 18px; width: 26px; height: 26px; color: rgba(255,255,255,0.55); }
-    .bal-cap { display: flex; align-items: center; gap: 6px; font-family: 'Satoshi', sans-serif; font-weight: 300; font-size: 12px; letter-spacing: 0.6px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 10px; }
-    .bal-amount { font-size: 42px; font-weight: 700; letter-spacing: -1.4px; line-height: 1; }
-    .bal-sub { font-size: 13px; color: rgba(255,255,255,0.65); margin-top: 14px; line-height: 1.5; }
+    .bal-card { background: #E9EDFB; color: var(--text-primary); border: 1px solid #DCE3F6; border-radius: 8px; padding: 26px 28px; display: flex; flex-direction: column; justify-content: space-between; min-height: 168px; max-width: 420px; position: relative; }
+    .bal-card .bal-ico { position: absolute; right: 18px; top: 18px; width: 26px; height: 26px; color: var(--primary-500); opacity: 0.5; }
+    .bal-cap { display: flex; align-items: center; gap: 6px; font-family: 'Satoshi', sans-serif; font-weight: 300; font-size: 12px; letter-spacing: 0.6px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px; }
+    .bal-amount { font-size: 42px; font-weight: 700; letter-spacing: -1.4px; line-height: 1; color: var(--text-primary); }
+    .bal-sub { font-size: 13px; color: var(--text-secondary); margin-top: 14px; line-height: 1.5; }
 
     /* Info tooltip on the balance */
-    .bal-info { position: relative; display: inline-flex; cursor: help; color: rgba(255,255,255,0.55); }
+    .bal-info { position: relative; display: inline-flex; cursor: help; color: var(--text-muted); }
     .bal-info svg { width: 15px; height: 15px; }
-    .bal-info:hover, .bal-info:focus { color: #fff; outline: none; }
+    .bal-info:hover, .bal-info:focus { color: var(--text-primary); outline: none; }
     .bal-tip { position: absolute; top: calc(100% + 10px); left: -10px; width: 300px; background: #fff; color: var(--text-secondary); border: 1px solid var(--border); border-radius: 10px; box-shadow: 0 14px 36px -10px rgba(0,0,0,.4); padding: 14px 16px; opacity: 0; visibility: hidden; transform: translateY(4px); transition: opacity .15s ease, transform .15s ease; z-index: 40; text-transform: none; letter-spacing: 0; font-weight: 400; }
     .bal-info:hover .bal-tip, .bal-info:focus .bal-tip { opacity: 1; visibility: visible; transform: none; }
     .bal-tip b { display: block; font-size: 13px; color: var(--text-primary); margin-bottom: 8px; }
