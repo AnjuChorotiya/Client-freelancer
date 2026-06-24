@@ -559,6 +559,21 @@
     .agreement-foot { max-width: 632px; margin: 8px auto 0; padding: 0 4px; font-size: 14px; color: var(--text-muted); text-align: center; }
     .agreement-foot a { color: var(--brand-500); font-weight: 700; }
 
+    /* Upload signed agreement sub-screen */
+    .upload-screen { display: none; }
+    .dropzone { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; text-align: center; border: 1.5px dashed #D5DAE3; border-radius: 8px; padding: 38px 20px; cursor: pointer; transition: border-color 0.15s, background 0.15s; }
+    .dropzone:hover, .dropzone.dragover { border-color: var(--brand-500); background: var(--brand-50); }
+    .dz-ico { color: var(--text-muted); margin-bottom: 6px; }
+    .dz-ico svg { width: 26px; height: 26px; }
+    .dz-text { font-size: 14px; color: var(--text-muted); }
+    .dz-browse { color: var(--brand-500); font-weight: 700; }
+    .dz-hint { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+    .dz-file { display: flex; align-items: center; gap: 14px; padding: 14px 16px; border: 1px solid var(--brand-500); background: var(--brand-50); border-radius: 8px; }
+    .dz-remove { margin-left: auto; flex-shrink: 0; width: 30px; height: 30px; display: inline-flex; align-items: center; justify-content: center; border: none; background: transparent; color: var(--text-muted); border-radius: 6px; cursor: pointer; }
+    .dz-remove:hover { background: #fff; color: var(--text-primary); }
+    .dz-remove svg { width: 16px; height: 16px; }
+    .dz-actions { display: flex; justify-content: flex-end; margin-top: 24px; }
+
     /* Step panels */
     .step { display: none; }
     .step.active { display: block; }
@@ -818,11 +833,10 @@
             <span class="file-sub">Click to view the file</span>
           </span>
         </div>
-        <label class="upload-link">
+        <button type="button" class="upload-link" id="openUploadScreen">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-document-upload"/></svg>
           Upload signed contractor agreement
-          <input type="file" hidden>
-        </label>
+        </button>
 
         <div style="margin-top:20px;">
           <div class="check-row">
@@ -836,6 +850,49 @@
         </div>
       </div>
 
+    </div>
+
+    <!-- UPLOAD SIGNED AGREEMENT — sub-screen opened from step 4 -->
+    <div class="upload-screen" id="uploadScreen">
+      <div class="page-heading">
+        <h1>Upload a signed agreement</h1>
+        <p>Upload the agreement you've already signed with your contractor. We'll keep it on file for this engagement.</p>
+      </div>
+
+      <div class="section-card">
+        <label class="dropzone" id="dropzone">
+          <input type="file" id="uploadFile" accept=".pdf,.jpg,.jpeg,.png" hidden>
+          <span class="dz-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v13"/></svg></span>
+          <span class="dz-text">Drag &amp; drop your file here, or <span class="dz-browse">click to browse</span></span>
+          <span class="dz-hint">PDF, JPG, PNG (max 5MB)</span>
+        </label>
+
+        <div class="dz-file" id="dzFile" hidden>
+          <span class="file-pdf"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-document-text"/></svg></span>
+          <span class="file-body">
+            <span class="file-title" id="dzFileName">document.pdf</span>
+            <span class="file-sub" id="dzFileSize"></span>
+          </span>
+          <button type="button" class="dz-remove" id="dzRemove" aria-label="Remove file">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+          </button>
+        </div>
+
+        <div style="margin-top:20px;">
+          <div class="check-row">
+            <input type="checkbox" id="uConfirm">
+            <label for="uConfirm">I confirm the agreement above is accurate and I am authorized to send it to contractors on behalf of my company.</label>
+          </div>
+          <div class="check-row">
+            <input type="checkbox" id="uTerms">
+            <label for="uTerms">By proceeding, you agree to <a href="#" class="terms-link">Wisemonk's terms</a> for managing contractor payments on your behalf.</label>
+          </div>
+        </div>
+
+        <div class="dz-actions">
+          <button type="button" class="save-btn" id="uploadConfirmBtn" disabled>Upload &amp; confirm</button>
+        </div>
+      </div>
     </div>
 
   </main>
@@ -951,8 +1008,93 @@
     });
 
     document.getElementById('backBtn').addEventListener('click', () => {
+      if (window.__onUpload) { if (window.__hideUpload) window.__hideUpload(); return; }
       if (current > 1) { current--; render(); saveState(); }
     });
+
+    // ----- Upload signed agreement sub-screen (opens from step 4) -----
+    (function () {
+      const openBtn = document.getElementById('openUploadScreen');
+      const screen = document.getElementById('uploadScreen');
+      const footerRight = document.querySelector('.footer-right');
+      const backBtn = document.getElementById('backBtn');
+      const dz = document.getElementById('dropzone');
+      const fileInput = document.getElementById('uploadFile');
+      const dzFile = document.getElementById('dzFile');
+      const dzName = document.getElementById('dzFileName');
+      const dzSize = document.getElementById('dzFileSize');
+      const dzRemove = document.getElementById('dzRemove');
+      const uConfirm = document.getElementById('uConfirm');
+      const uTerms = document.getElementById('uTerms');
+      const confirmBtn = document.getElementById('uploadConfirmBtn');
+      if (!openBtn || !screen) return;
+
+      let picked = null;
+
+      function show() {
+        window.__onUpload = true;
+        steps.forEach(s => s.classList.remove('active'));
+        screen.style.display = 'block';
+        if (footerRight) footerRight.style.visibility = 'hidden';
+        backBtn.disabled = false;
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+      function hide() {
+        window.__onUpload = false;
+        screen.style.display = 'none';
+        if (footerRight) footerRight.style.visibility = '';
+        render(); // restore the agreement step
+      }
+      window.__hideUpload = hide;
+
+      function fmtSize(b) {
+        if (b < 1024) return b + ' B';
+        if (b < 1048576) return Math.round(b / 1024) + ' KB';
+        return (b / 1048576).toFixed(1) + ' MB';
+      }
+      function syncConfirm() {
+        confirmBtn.disabled = !(picked && uConfirm.checked && uTerms.checked);
+      }
+      function setFile(f) {
+        if (!f) return;
+        picked = f;
+        dzName.textContent = f.name;
+        dzSize.textContent = fmtSize(f.size);
+        dzFile.hidden = false;
+        dz.style.display = 'none';
+        syncConfirm();
+      }
+      function clearFile() {
+        picked = null;
+        fileInput.value = '';
+        dzFile.hidden = true;
+        dz.style.display = '';
+        syncConfirm();
+      }
+
+      openBtn.addEventListener('click', show);
+      dz.addEventListener('click', () => fileInput.click());
+      fileInput.addEventListener('change', () => { if (fileInput.files[0]) setFile(fileInput.files[0]); });
+      ['dragover', 'dragenter'].forEach(ev => dz.addEventListener(ev, e => { e.preventDefault(); dz.classList.add('dragover'); }));
+      ['dragleave', 'dragend'].forEach(ev => dz.addEventListener(ev, e => { e.preventDefault(); dz.classList.remove('dragover'); }));
+      dz.addEventListener('drop', e => { e.preventDefault(); dz.classList.remove('dragover'); const f = e.dataTransfer.files[0]; if (f) setFile(f); });
+      if (dzRemove) dzRemove.addEventListener('click', clearFile);
+      uConfirm.addEventListener('change', syncConfirm);
+      uTerms.addEventListener('change', syncConfirm);
+
+      confirmBtn.addEventListener('click', () => {
+        // Uploaded + confirmed → continue to the next screen of the current flow.
+        window.__onUpload = false;
+        screen.style.display = 'none';
+        if (footerRight) footerRight.style.visibility = '';
+        if (current === total) {
+          try { localStorage.removeItem(SAVE_KEY); } catch (e) {}
+          location.href = 'freelancers.html';
+        } else {
+          current++; render(); saveState();
+        }
+      });
+    })();
 
     // Selectable option cards — single choice per group
     document.querySelectorAll('.option-cards').forEach(grp => {
