@@ -716,8 +716,8 @@
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-receipt-text"/></svg>
             </span>
             <span class="option-card-body">
-              <span class="option-card-title">Auto-generate each month</span>
-              <span class="option-card-desc">Wisemonk creates and sends the invoice on the 1st of every month — no action needed from the contractor.</span>
+              <span class="option-card-title">Auto-generate monthly</span>
+              <span class="option-card-desc">Wisemonk generates and sends each invoice automatically — no action needed from the contractor.</span>
             </span>
             <span class="option-card-radio"></span>
           </button>
@@ -727,10 +727,18 @@
             </span>
             <span class="option-card-body">
               <span class="option-card-title">On contractor request</span>
-              <span class="option-card-desc">The contractor submits their own invoice each cycle and you approve it before payout.</span>
+              <span class="option-card-desc">The contractor submits an invoice each cycle, which you approve before payout.</span>
             </span>
             <span class="option-card-radio"></span>
           </button>
+        </div>
+
+        <div id="firstInvoiceField" style="margin-top:20px;">
+          <div class="fl-field">
+            <input id="firstInvoiceDate" type="date" placeholder=" ">
+            <label>First invoice date</label>
+            <p class="field-hint">Wisemonk generates the first invoice on this date, then monthly afterwards.</p>
+          </div>
         </div>
       </div>
     </div>
@@ -850,6 +858,19 @@
         });
       });
     });
+
+    // First-invoice-date field shows only when invoices are auto-generated.
+    (function () {
+      const field = document.getElementById('firstInvoiceField');
+      const grp = document.querySelector('.option-cards');
+      if (!field || !grp) return;
+      function sync() {
+        const sel = grp.querySelector('.option-card.selected');
+        field.style.display = (sel && sel.dataset.invoice === 'auto') ? '' : 'none';
+      }
+      grp.querySelectorAll('.option-card').forEach(c => c.addEventListener('click', sync));
+      sync();
+    })();
 
     // ----- Custom select dropdowns -----
     function closeAllPopovers() {
