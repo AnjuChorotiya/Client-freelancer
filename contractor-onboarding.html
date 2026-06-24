@@ -714,7 +714,7 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-document-text"/></svg>
           </span>
           <span class="file-body">
-            <span class="file-title">Independent Contractor Agreement</span>
+            <span class="file-title">Contractor Agreement</span>
             <span class="file-sub">Click to view the file</span>
           </span>
         </div>
@@ -809,7 +809,7 @@
         <div class="tpl-head-l">
           <span class="file-pdf"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-document-text"/></svg></span>
           <div>
-            <div class="tpl-title" id="tplTitle">Independent Contractor Agreement</div>
+            <div class="tpl-title" id="tplTitle">Contractor Agreement</div>
             <div class="tpl-sub">Wisemonk standard template · Preview</div>
           </div>
         </div>
@@ -819,9 +819,9 @@
       </div>
       <div class="tpl-body">
         <div class="tpl-doc">
-          <h2>Independent Contractor Agreement</h2>
+          <h2>Contractor Agreement</h2>
           <div class="tpl-doc-meta">Wisemonk standard template · For preview only</div>
-          <p>This Independent Contractor Agreement (the "Agreement") is entered into between the Company and the Contractor identified during onboarding, effective as of the start date specified therein.</p>
+          <p>This Contractor Agreement (the "Agreement") is entered into between the Company and the Contractor identified during onboarding, effective as of the start date specified therein.</p>
           <h3>1. Services</h3>
           <p>The Contractor agrees to perform the services described in the engagement details. The Contractor determines the manner and means of performing the services, subject to the agreed scope and timelines.</p>
           <h3>2. Compensation</h3>
@@ -999,8 +999,9 @@
         valueEl.textContent = fmt(d); valueEl.classList.remove('placeholder');
         // Invoice is raised on the selected date; payment is due 7 days later.
         const due = new Date(d); due.setDate(d.getDate() + 7);
-        // The contractor is paid on the due date, moved to Friday if it's a weekend.
-        const payDay = new Date(due);
+        // The contractor is paid at the end of the month the payment falls due in,
+        // brought forward to the Friday before if month-end lands on a weekend.
+        const payDay = new Date(due.getFullYear(), due.getMonth() + 1, 0);
         const dd = payDay.getDay();
         if (dd === 0) payDay.setDate(payDay.getDate() - 2);
         else if (dd === 6) payDay.setDate(payDay.getDate() - 1);
@@ -1009,7 +1010,7 @@
         contractorPayEl.textContent = fmt(payDay);
         if (dd === 0 || dd === 6) {
           note.hidden = false;
-          note.textContent = 'The contractor will be paid on ' + DOW[payDay.getDay()] + ' ' + fmt(payDay) + ', since the payment due date falls on a weekend.';
+          note.textContent = 'The contractor will be paid on ' + DOW[payDay.getDay()] + ' ' + fmt(payDay) + ', since month-end falls on a weekend.';
         } else {
           note.hidden = true;
         }
