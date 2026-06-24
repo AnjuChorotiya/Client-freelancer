@@ -424,6 +424,21 @@
     .option-card.selected .option-card-radio { border-color: var(--brand-500); }
     .option-card.selected .option-card-radio::after { content: ''; position: absolute; inset: 3px; border-radius: 8px; background: var(--brand-500); }
 
+    /* First payment date component */
+    .pay-date-wrap { position: relative; }
+    .pay-date-trigger { width: 100%; background: var(--card); border: 1px solid var(--border-strong); border-radius: 8px; padding: 11px 16px; display: flex; flex-direction: column; gap: 1px; }
+    .pay-date-wrap:hover .pay-date-trigger { border-color: var(--brand-500); }
+    .pdt-label { font-size: 12px; color: var(--text-muted); }
+    .pdt-value { font-size: 15px; font-weight: 600; color: var(--text-primary); }
+    .pdt-value.placeholder { font-weight: 500; color: var(--text-muted); }
+    .pdt-chev { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; color: var(--text-muted); pointer-events: none; }
+    .pay-date-input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+    .pay-note { font-size: 12.5px; color: var(--text-muted); margin: 8px 4px 0; line-height: 1.5; }
+    .pay-summary { margin-top: 16px; display: flex; flex-direction: column; gap: 10px; }
+    .pay-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; background: #F5F6F8; border-radius: 8px; padding: 15px 18px; }
+    .pay-row > span:first-child { font-size: 14px; color: var(--text-muted); }
+    .pay-row > span:last-child { font-size: 14px; font-weight: 700; color: var(--text-primary); }
+
     /* Step panels */
     .step { display: none; }
     .step.active { display: block; }
@@ -733,11 +748,24 @@
           </button>
         </div>
 
-        <div id="firstInvoiceField" style="margin-top:20px;">
-          <div class="fl-field">
-            <input id="firstInvoiceDate" type="date" placeholder=" ">
-            <label>First invoice date</label>
-            <p class="field-hint">Wisemonk generates the first invoice on this date, then monthly afterwards.</p>
+        <div id="firstInvoiceField" style="margin-top:28px;">
+          <div class="section-title">First payment date</div>
+          <div class="section-desc">Define the date when the contractor will receive their first payment.</div>
+
+          <div class="pay-date-wrap">
+            <div class="pay-date-trigger">
+              <span class="pdt-label">First payment date</span>
+              <span class="pdt-value placeholder" id="payDateValue">Select a date</span>
+              <svg class="pdt-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+            </div>
+            <input id="firstPaymentDate" type="date" class="pay-date-input" aria-label="First payment date">
+          </div>
+          <p class="pay-note" id="payNote" hidden></p>
+
+          <div class="pay-summary">
+            <div class="pay-row"><span>Invoice cycle starts</span><span id="cycleStart">—</span></div>
+            <div class="pay-row"><span>Invoice cycle ends</span><span id="cycleEnd">—</span></div>
+            <div class="pay-row"><span>Payment due</span><span>7 days after the cycle ends</span></div>
           </div>
         </div>
       </div>
@@ -870,6 +898,52 @@
       }
       grp.querySelectorAll('.option-card').forEach(c => c.addEventListener('click', sync));
       sync();
+    })();
+
+    // First payment date — formatted picker, weekend note, derived invoice cycle.
+    (function () {
+      const input = document.getElementById('firstPaymentDate');
+      const valueEl = document.getElementById('payDateValue');
+      const note = document.getElementById('payNote');
+      const cycleStartEl = document.getElementById('cycleStart');
+      const cycleEndEl = document.getElementById('cycleEnd');
+      if (!input || !valueEl) return;
+
+      const M = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+      const DOW = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+      function ord(d) { if (d > 3 && d < 21) return 'th'; switch (d % 10) { case 1: return 'st'; case 2: return 'nd'; case 3: return 'rd'; default: return 'th'; } }
+      function fmt(dt) { return M[dt.getMonth()] + ' ' + dt.getDate() + ord(dt.getDate()) + ' ' + dt.getFullYear(); }
+      function parse(v) { const p = v.split('-'); return new Date(+p[0], +p[1] - 1, +p[2]); }
+
+      function update() {
+        if (!input.value) {
+          valueEl.textContent = 'Select a date'; valueEl.classList.add('placeholder');
+          note.hidden = true; cycleStartEl.textContent = '—'; cycleEndEl.textContent = '—';
+          return;
+        }
+        const d = parse(input.value);
+        valueEl.textContent = fmt(d); valueEl.classList.remove('placeholder');
+        // Invoice cycle = the calendar month before the payment month.
+        const cycleEnd = new Date(d.getFullYear(), d.getMonth(), 0);
+        const cycleStart = new Date(d.getFullYear(), d.getMonth() - 1, 1);
+        cycleStartEl.textContent = fmt(cycleStart);
+        cycleEndEl.textContent = fmt(cycleEnd);
+        // If the payment date lands on a weekend, it's brought forward to Friday.
+        const day = d.getDay();
+        if (day === 0 || day === 6) {
+          const fri = new Date(d); fri.setDate(d.getDate() - (day === 0 ? 2 : 1));
+          note.hidden = false;
+          note.textContent = 'Payment will be made on ' + DOW[fri.getDay()] + ' ' + fmt(fri) + ', since the selected date falls on a weekend.';
+        } else {
+          note.hidden = true;
+        }
+      }
+
+      input.addEventListener('change', update);
+      input.addEventListener('click', () => { if (input.showPicker) try { input.showPicker(); } catch (e) {} });
+      // Default to a sample so the block previews fully.
+      input.value = '2026-03-06';
+      update();
     })();
 
     // ----- Custom select dropdowns -----
