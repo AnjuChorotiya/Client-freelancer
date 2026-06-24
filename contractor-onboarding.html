@@ -435,6 +435,27 @@
     .pay-row > span:first-child { font-size: 14px; color: var(--text-muted); }
     .pay-row > span:last-child { font-size: 14px; font-weight: 700; color: var(--text-primary); }
 
+    /* Agreement template preview modal */
+    .tpl-overlay { position: fixed; inset: 0; background: rgba(18,22,32,0.55); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 24px; }
+    .tpl-overlay.open { display: flex; }
+    .tpl-modal { background: var(--card); width: min(720px, 100%); max-height: 86vh; border-radius: 12px; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 24px 60px -12px rgba(0,0,0,0.4); }
+    .tpl-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 16px 20px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+    .tpl-head-l { display: flex; align-items: center; gap: 12px; }
+    .tpl-title { font-size: 16px; font-weight: 700; color: var(--text-primary); }
+    .tpl-sub { font-size: 12.5px; color: var(--text-muted); margin-top: 2px; }
+    .tpl-close { width: 34px; height: 34px; border: none; background: transparent; color: var(--text-muted); border-radius: 8px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .tpl-close:hover { background: #F5F6F8; color: var(--text-primary); }
+    .tpl-close svg { width: 18px; height: 18px; }
+    .tpl-body { overflow-y: auto; padding: 24px; background: #EEF1F6; }
+    .tpl-doc { background: #fff; max-width: 600px; margin: 0 auto; padding: 40px 44px; border-radius: 4px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); font-size: 13px; line-height: 1.7; color: #454C5A; }
+    .tpl-doc h2 { font-size: 18px; font-weight: 700; color: var(--text-primary); text-align: center; margin-bottom: 4px; }
+    .tpl-doc-meta { text-align: center; font-size: 12px; color: var(--text-muted); margin-bottom: 24px; }
+    .tpl-doc h3 { font-size: 13.5px; font-weight: 700; color: var(--text-primary); margin: 18px 0 6px; }
+    .tpl-doc p { margin: 0 0 10px; }
+    .tpl-sign { display: flex; gap: 40px; margin-top: 32px; }
+    .tpl-sign > div { flex: 1; }
+    .tpl-sign .line { border-top: 1px solid var(--border-strong); margin-top: 28px; padding-top: 6px; font-size: 12px; color: var(--text-muted); }
+
     /* Step panels */
     .step { display: none; }
     .step.active { display: block; }
@@ -781,6 +802,49 @@
     </div>
   </footer>
 
+  <!-- Agreement template preview -->
+  <div class="tpl-overlay" id="tplOverlay" aria-hidden="true">
+    <div class="tpl-modal" role="dialog" aria-modal="true" aria-labelledby="tplTitle">
+      <div class="tpl-head">
+        <div class="tpl-head-l">
+          <span class="file-pdf"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-document-text"/></svg></span>
+          <div>
+            <div class="tpl-title" id="tplTitle">Independent Contractor Agreement</div>
+            <div class="tpl-sub">Wisemonk standard template · Preview</div>
+          </div>
+        </div>
+        <button type="button" class="tpl-close" id="tplClose" aria-label="Close">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6 18 18M18 6 6 18"/></svg>
+        </button>
+      </div>
+      <div class="tpl-body">
+        <div class="tpl-doc">
+          <h2>Independent Contractor Agreement</h2>
+          <div class="tpl-doc-meta">Wisemonk standard template · For preview only</div>
+          <p>This Independent Contractor Agreement (the "Agreement") is entered into between the Company and the Contractor identified during onboarding, effective as of the start date specified therein.</p>
+          <h3>1. Services</h3>
+          <p>The Contractor agrees to perform the services described in the engagement details. The Contractor determines the manner and means of performing the services, subject to the agreed scope and timelines.</p>
+          <h3>2. Compensation</h3>
+          <p>The Company shall pay the Contractor the fees set out in the payment terms. Invoices are raised per the agreed schedule and settled within the stated payment window.</p>
+          <h3>3. Term &amp; Termination</h3>
+          <p>This Agreement remains in effect until the end date specified, or until terminated by either party with prior written notice in line with the agreed terms.</p>
+          <h3>4. Confidentiality</h3>
+          <p>The Contractor shall keep confidential all non-public information of the Company and shall not disclose it to any third party during or after the engagement.</p>
+          <h3>5. Intellectual Property</h3>
+          <p>All work product created by the Contractor in connection with the services shall be the sole property of the Company upon payment.</p>
+          <h3>6. Independent Contractor Status</h3>
+          <p>The Contractor is an independent contractor and not an employee of the Company, and is responsible for their own taxes and statutory contributions.</p>
+          <h3>7. Governing Law</h3>
+          <p>This Agreement is governed by and construed in accordance with the applicable laws agreed between the parties.</p>
+          <div class="tpl-sign">
+            <div><div class="line">For the Company (via Wisemonk)</div></div>
+            <div><div class="line">Contractor signature</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script>
     const steps = document.querySelectorAll('.step');
     const total = steps.length;
@@ -892,6 +956,20 @@
       }
       grp.querySelectorAll('.option-card').forEach(c => c.addEventListener('click', sync));
       sync();
+    })();
+
+    // Agreement template preview modal
+    (function () {
+      const trigger = document.getElementById('viewAgreement');
+      const overlay = document.getElementById('tplOverlay');
+      const closeBtn = document.getElementById('tplClose');
+      if (!trigger || !overlay) return;
+      const open = () => { overlay.classList.add('open'); overlay.setAttribute('aria-hidden', 'false'); document.body.style.overflow = 'hidden'; };
+      const close = () => { overlay.classList.remove('open'); overlay.setAttribute('aria-hidden', 'true'); document.body.style.overflow = ''; };
+      trigger.addEventListener('click', open);
+      closeBtn.addEventListener('click', close);
+      overlay.addEventListener('click', e => { if (e.target === overlay) close(); });
+      document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.classList.contains('open')) close(); });
     })();
 
     // First payment date — formatted picker, weekend note, derived invoice cycle.
