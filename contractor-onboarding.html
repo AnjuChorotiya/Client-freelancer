@@ -435,6 +435,9 @@
     .pay-row > span:first-child { font-size: 14px; color: var(--text-muted); }
     .pay-row > span:last-child { font-size: 14px; font-weight: 700; color: var(--text-primary); }
 
+    .rate-preview { margin: 2px 4px 0; font-size: 13.5px; font-weight: 700; color: var(--brand-500); }
+    .rate-preview::before { content: '≈ '; font-weight: 600; }
+
     /* Agreement template preview modal */
     .tpl-overlay { position: fixed; inset: 0; background: rgba(18,22,32,0.55); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 24px; }
     .tpl-overlay.open { display: flex; }
@@ -614,7 +617,7 @@
           <!-- Fixed rate fields -->
           <div class="fl-row-3" id="fixedFields">
             <div class="fl-field">
-              <select>
+              <select id="fixedCurrency">
                 <option value="" disabled selected hidden></option>
                 <option>USD</option>
                 <option>INR</option>
@@ -626,11 +629,11 @@
               <label>Currency</label>
             </div>
             <div class="fl-field">
-              <input type="number" placeholder=" ">
+              <input id="fixedAmount" type="number" placeholder=" ">
               <label>Payment rate</label>
             </div>
             <div class="fl-field">
-              <select>
+              <select id="fixedFreq">
                 <option value="" disabled selected hidden></option>
                 <option>Monthly</option>
                 <option>Weekly</option>
@@ -645,7 +648,7 @@
           <!-- Pay as you go fields -->
           <div class="fl-row-3" id="paygFields" style="display:none;">
             <div class="fl-field">
-              <select>
+              <select id="paygCurrency">
                 <option value="" disabled selected hidden></option>
                 <option>USD</option>
                 <option>INR</option>
@@ -657,11 +660,11 @@
               <label>Currency</label>
             </div>
             <div class="fl-field">
-              <input type="number" placeholder=" ">
+              <input id="paygRate" type="number" placeholder=" ">
               <label>Rate</label>
             </div>
             <div class="fl-field">
-              <select>
+              <select id="paygUnit">
                 <option value="" disabled selected hidden></option>
                 <option>Per hour</option>
                 <option>Per day</option>
@@ -670,6 +673,8 @@
               <label>Billing unit</label>
             </div>
           </div>
+
+          <p class="rate-preview" id="ratePreview" hidden></p>
           <div class="fl-field">
             <textarea placeholder=" "></textarea>
             <label>Special clauses for the contract (if any)</label>
@@ -981,6 +986,35 @@
           if (paygFields) paygFields.style.display = isPayg ? '' : 'none';
         });
       });
+    })();
+
+    // Live rate preview — spells out the unit (e.g. "$3,400 / month" or "$500 / hour").
+    (function () {
+      const grp = document.getElementById('contractType');
+      const preview = document.getElementById('ratePreview');
+      if (!grp || !preview) return;
+      const SYM = { USD: '$', INR: '₹', EUR: '€', GBP: '£', SGD: 'S$', AUD: 'A$' };
+      const FREQ = { 'Monthly': '/ month', 'Weekly': '/ week', 'Bi-weekly': '/ 2 weeks', 'Per milestone': '/ milestone', 'One-time': 'one-time' };
+      const UNIT = { 'Per hour': '/ hour', 'Per day': '/ day', 'Per milestone': '/ milestone' };
+      const amt = v => { const n = parseFloat(v); return isFinite(n) && n > 0 ? n.toLocaleString('en-US') : ''; };
+      const val = id => { const el = document.getElementById(id); return el ? el.value : ''; };
+      function render() {
+        const sel = grp.querySelector('.option-card.selected');
+        const isPayg = sel && sel.dataset.value === 'payg';
+        const cur = isPayg ? val('paygCurrency') : val('fixedCurrency');
+        const amount = isPayg ? amt(val('paygRate')) : amt(val('fixedAmount'));
+        const suffix = isPayg ? (UNIT[val('paygUnit')] || '') : (FREQ[val('fixedFreq')] || '');
+        if (!amount) { preview.hidden = true; return; }
+        const money = (SYM[cur] || (cur ? cur + ' ' : '')) + amount;
+        preview.hidden = false;
+        preview.textContent = (suffix === 'one-time') ? ('One-time payment of ' + money) : (money + (suffix ? ' ' + suffix : ''));
+      }
+      ['fixedCurrency', 'fixedAmount', 'fixedFreq', 'paygCurrency', 'paygRate', 'paygUnit'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) { el.addEventListener('change', render); el.addEventListener('input', render); }
+      });
+      grp.querySelectorAll('.option-card').forEach(c => c.addEventListener('click', render));
+      render();
     })();
 
     // Choice cards — single choice per group (uses .selected)
