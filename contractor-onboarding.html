@@ -757,9 +757,9 @@
           <p class="pay-note" id="payNote" hidden></p>
 
           <div class="pay-summary">
-            <div class="pay-row"><span>Invoice cycle starts</span><span id="cycleStart">—</span></div>
-            <div class="pay-row"><span>Invoice cycle ends</span><span id="cycleEnd">—</span></div>
-            <div class="pay-row"><span>Payment due</span><span>7 days after the cycle ends</span></div>
+            <div class="pay-row"><span>Invoice date</span><span id="invoiceDate">—</span></div>
+            <div class="pay-row"><span>Payment due date</span><span id="dueDate">—</span></div>
+            <div class="pay-row"><span>Contractor payment date</span><span id="contractorPayDate">—</span></div>
           </div>
         </div>
       </div>
@@ -899,8 +899,9 @@
       const input = document.getElementById('firstPaymentDate');
       const valueEl = document.getElementById('payDateValue');
       const note = document.getElementById('payNote');
-      const cycleStartEl = document.getElementById('cycleStart');
-      const cycleEndEl = document.getElementById('cycleEnd');
+      const invoiceDateEl = document.getElementById('invoiceDate');
+      const dueDateEl = document.getElementById('dueDate');
+      const contractorPayEl = document.getElementById('contractorPayDate');
       if (!input || !valueEl) return;
 
       const M = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -912,22 +913,25 @@
       function update() {
         if (!input.value) {
           valueEl.textContent = 'Select a date'; valueEl.classList.add('placeholder');
-          note.hidden = true; cycleStartEl.textContent = '—'; cycleEndEl.textContent = '—';
+          note.hidden = true;
+          invoiceDateEl.textContent = '—'; dueDateEl.textContent = '—'; contractorPayEl.textContent = '—';
           return;
         }
         const d = parse(input.value);
         valueEl.textContent = fmt(d); valueEl.classList.remove('placeholder');
-        // Invoice cycle = the calendar month before the payment month.
-        const cycleEnd = new Date(d.getFullYear(), d.getMonth(), 0);
-        const cycleStart = new Date(d.getFullYear(), d.getMonth() - 1, 1);
-        cycleStartEl.textContent = fmt(cycleStart);
-        cycleEndEl.textContent = fmt(cycleEnd);
-        // If the invoice date lands on a weekend, it's brought forward to Friday.
-        const day = d.getDay();
-        if (day === 0 || day === 6) {
-          const fri = new Date(d); fri.setDate(d.getDate() - (day === 0 ? 2 : 1));
+        // Invoice is raised on the selected date; payment is due 7 days later.
+        const due = new Date(d); due.setDate(d.getDate() + 7);
+        // The contractor is paid on the due date, moved to Friday if it's a weekend.
+        const payDay = new Date(due);
+        const dd = payDay.getDay();
+        if (dd === 0) payDay.setDate(payDay.getDate() - 2);
+        else if (dd === 6) payDay.setDate(payDay.getDate() - 1);
+        invoiceDateEl.textContent = fmt(d);
+        dueDateEl.textContent = fmt(due);
+        contractorPayEl.textContent = fmt(payDay);
+        if (dd === 0 || dd === 6) {
           note.hidden = false;
-          note.textContent = 'The invoice will be generated on ' + DOW[fri.getDay()] + ' ' + fmt(fri) + ', since the selected date falls on a weekend.';
+          note.textContent = 'The contractor will be paid on ' + DOW[payDay.getDay()] + ' ' + fmt(payDay) + ', since the payment due date falls on a weekend.';
         } else {
           note.hidden = true;
         }
