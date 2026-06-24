@@ -559,6 +559,12 @@
     .agreement-foot { max-width: 632px; margin: 8px auto 0; padding: 0 4px; font-size: 14px; color: var(--text-muted); text-align: center; }
     .agreement-foot a { color: var(--brand-500); font-weight: 700; }
 
+    /* Agreement step — intro line + in-card action buttons */
+    .agreement-intro { font-size: 14px; color: var(--text-primary); margin-bottom: 18px; line-height: 1.55; }
+    .agreement-actions { display: flex; justify-content: flex-end; gap: 12px; margin-top: 24px; }
+    .btn-outline { height: 48px; padding: 0 22px; background: #fff; color: var(--brand-500); border: 1.5px solid var(--brand-500); border-radius: 8px; font-family: inherit; font-size: 16px; font-weight: 700; cursor: pointer; transition: background 0.15s; }
+    .btn-outline:hover { background: var(--brand-50); }
+
     /* Upload signed agreement sub-screen */
     .upload-screen { display: none; }
     .dropzone { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; text-align: center; border: 1.5px dashed #D5DAE3; border-radius: 8px; padding: 38px 20px; cursor: pointer; transition: border-color 0.15s, background 0.15s; }
@@ -816,37 +822,36 @@
       </div>
     </div>
 
-    <!-- STEP 4: SET UP CONTRACTOR AGREEMENT -->
+    <!-- STEP 4: SET UP FREELANCER AGREEMENT -->
     <div class="step" data-step="4">
       <div class="page-heading">
         <h1>Set up your freelancer agreement</h1>
-        <p>Choose how you want to proceed. You can use our template for signing or upload an already signed agreement.</p>
+        <p>Use Wisemonk's template to send for signature, or upload an agreement that's already signed.</p>
       </div>
 
       <div class="section-card">
+        <p class="agreement-intro">We'll send this agreement to your freelancer for review and signature.</p>
+
         <div class="file-row" id="viewAgreement">
           <span class="file-pdf">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-document-text"/></svg>
           </span>
           <span class="file-body">
-            <span class="file-title">Independent Freelancer Agreement</span>
+            <span class="file-title">Wisemonk Freelancer Agreement</span>
             <span class="file-sub">Click to view the file</span>
           </span>
         </div>
-        <button type="button" class="upload-link" id="openUploadScreen">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-document-upload"/></svg>
-          Upload signed freelancer agreement
-        </button>
 
         <div style="margin-top:20px;">
           <div class="check-row">
-            <input type="checkbox" id="agree1" data-must>
-            <label for="agree1">I confirm the agreement above is accurate and I am authorized to send it to freelancers on behalf of my company.</label>
+            <input type="checkbox" id="agree1">
+            <label for="agree1">I agree to <a href="#" class="terms-link">Wisemonk's terms</a> for managing freelancer payments on my behalf.</label>
           </div>
-          <div class="check-row">
-            <input type="checkbox" id="agree2" data-must>
-            <label for="agree2">By proceeding, you agree to <a href="#" class="terms-link">Wisemonk's terms</a> for managing freelancer payments on your behalf.</label>
-          </div>
+        </div>
+
+        <div class="agreement-actions">
+          <button type="button" class="btn-outline" id="openUploadScreen">Upload Signed Agreement</button>
+          <button type="button" class="save-btn" id="continueTemplate" disabled>Continue with Template</button>
         </div>
       </div>
 
@@ -943,6 +948,10 @@
       document.getElementById('saveBtn').textContent = isLast ? 'Finish setup' : 'Save & continue';
       document.getElementById('saveBtn').classList.toggle('success', isLast);
       document.getElementById('nextLabel').innerHTML = isLast ? '' : 'Next: <strong>' + nextLabels[current - 1] + '</strong>';
+      // The agreement step (last) drives navigation from its in-card buttons, so
+      // hide the footer's Save/Next there.
+      const footerRight = document.querySelector('.footer-right');
+      if (footerRight) footerRight.style.display = isLast ? 'none' : 'flex';
       updateSaveBtn();
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
@@ -1011,6 +1020,24 @@
       if (window.__onUpload) { if (window.__hideUpload) window.__hideUpload(); return; }
       if (current > 1) { current--; render(); saveState(); }
     });
+
+    // ----- Agreement step: "Continue with Template" (gated by the terms checkbox) -----
+    (function () {
+      const continueBtn = document.getElementById('continueTemplate');
+      const agree1 = document.getElementById('agree1');
+      if (!continueBtn) return;
+      const sync = () => { continueBtn.disabled = !(agree1 && agree1.checked); };
+      if (agree1) agree1.addEventListener('change', sync);
+      sync();
+      continueBtn.addEventListener('click', () => {
+        if (current === total) {
+          try { localStorage.removeItem(SAVE_KEY); } catch (e) {}
+          location.href = 'freelancers.html';
+        } else {
+          current++; render(); saveState();
+        }
+      });
+    })();
 
     // ----- Upload signed agreement sub-screen (opens from step 4) -----
     (function () {
