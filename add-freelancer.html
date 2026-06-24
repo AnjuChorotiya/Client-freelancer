@@ -574,7 +574,7 @@
     .dz-text { font-size: 14px; color: var(--text-muted); }
     .dz-browse { color: var(--brand-500); font-weight: 700; }
     .dz-hint { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
-    .dz-file { display: flex; align-items: center; gap: 14px; padding: 14px 16px; border: 1px solid var(--brand-500); background: var(--brand-50); border-radius: 8px; }
+    .dz-file { display: flex; align-items: center; gap: 12px; margin-top: 12px; padding: 0; }
     .dz-remove { margin-left: auto; flex-shrink: 0; width: 30px; height: 30px; display: inline-flex; align-items: center; justify-content: center; border: none; background: transparent; color: var(--text-muted); border-radius: 6px; cursor: pointer; }
     .dz-remove:hover { background: #fff; color: var(--text-primary); }
     .dz-remove svg { width: 16px; height: 16px; }
@@ -1088,14 +1088,12 @@
         dzName.textContent = f.name;
         dzSize.textContent = fmtSize(f.size);
         dzFile.hidden = false;
-        dz.style.display = 'none';
         syncConfirm();
       }
       function clearFile() {
         picked = null;
         fileInput.value = '';
         dzFile.hidden = true;
-        dz.style.display = '';
         syncConfirm();
       }
 
