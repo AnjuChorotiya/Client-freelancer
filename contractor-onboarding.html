@@ -595,12 +595,26 @@
         <div class="fields">
           <div>
             <div class="seg-label">Contract type</div>
-            <div class="seg" data-name="contractType">
-              <button type="button" class="active" data-value="fixed">Fixed rate</button>
-              <button type="button" data-value="payg">Pay as you go</button>
+            <div class="choice-cards" id="contractType">
+              <button type="button" class="option-card selected" data-value="fixed">
+                <span class="option-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-receipt-text"/></svg></span>
+                <span class="option-card-body">
+                  <span class="option-card-title">Fixed rate</span>
+                  <span class="option-card-desc">A set amount paid each cycle.</span>
+                </span>
+              </button>
+              <button type="button" class="option-card" data-value="payg">
+                <span class="option-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-clock"/></svg></span>
+                <span class="option-card-body">
+                  <span class="option-card-title">Pay as you go</span>
+                  <span class="option-card-desc">Billed for time or work done.</span>
+                </span>
+              </button>
             </div>
           </div>
-          <div class="fl-row-3">
+
+          <!-- Fixed rate fields -->
+          <div class="fl-row-3" id="fixedFields">
             <div class="fl-field">
               <select>
                 <option value="" disabled selected hidden></option>
@@ -627,6 +641,35 @@
                 <option>One-time</option>
               </select>
               <label>Frequency</label>
+            </div>
+          </div>
+
+          <!-- Pay as you go fields -->
+          <div class="fl-row-3" id="paygFields" style="display:none;">
+            <div class="fl-field">
+              <select>
+                <option value="" disabled selected hidden></option>
+                <option>USD</option>
+                <option>INR</option>
+                <option>EUR</option>
+                <option>GBP</option>
+                <option>SGD</option>
+                <option>AUD</option>
+              </select>
+              <label>Currency</label>
+            </div>
+            <div class="fl-field">
+              <input type="number" placeholder=" ">
+              <label>Rate</label>
+            </div>
+            <div class="fl-field">
+              <select>
+                <option value="" disabled selected hidden></option>
+                <option>Per hour</option>
+                <option>Per day</option>
+                <option>Per milestone</option>
+              </select>
+              <label>Billing unit</label>
             </div>
           </div>
           <div class="fl-field">
@@ -924,6 +967,23 @@
         });
       });
     });
+
+    // Contract type — clearly switch between Fixed rate and Pay as you go field sets.
+    (function () {
+      const grp = document.getElementById('contractType');
+      const fixedFields = document.getElementById('fixedFields');
+      const paygFields = document.getElementById('paygFields');
+      if (!grp) return;
+      const cards = grp.querySelectorAll('.option-card');
+      cards.forEach(card => {
+        card.addEventListener('click', () => {
+          cards.forEach(c => c.classList.toggle('selected', c === card));
+          const isPayg = card.dataset.value === 'payg';
+          if (fixedFields) fixedFields.style.display = isPayg ? 'none' : '';
+          if (paygFields) paygFields.style.display = isPayg ? '' : 'none';
+        });
+      });
+    })();
 
     // Choice cards — single choice per group (uses .selected)
     document.querySelectorAll('.choice-cards').forEach(grp => {
