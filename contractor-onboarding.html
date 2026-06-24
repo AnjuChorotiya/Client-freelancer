@@ -681,7 +681,7 @@
     </div>
 
     <!-- STEP 4: SET UP CONTRACTOR AGREEMENT -->
-    <div class="step" data-step="4">
+    <div class="step" data-step="5">
       <div class="page-heading">
         <h1>Review your contractor agreement</h1>
         <p>Wisemonk signs this agreement directly with your contractor. Review the template below before we send it for signature.</p>
@@ -712,10 +712,10 @@
     </div>
 
     <!-- STEP 5: INVOICING (FINAL) -->
-    <div class="step" data-step="5">
+    <div class="step" data-step="4">
       <div class="page-heading">
         <h1>How should invoices be raised?</h1>
-        <p>Choose how invoices are raised for this contractor. This is the last step — you can change it any time later.</p>
+        <p>Choose how invoices are raised for this contractor. You can change this any time later.</p>
       </div>
 
       <div class="section-card">
@@ -745,14 +745,14 @@
         </div>
 
         <div id="firstInvoiceField" style="margin-top:28px;">
-          <div class="section-title">First payment date</div>
-          <div class="section-desc">Define the date when the contractor will receive their first payment.</div>
+          <div class="section-title">First invoice date</div>
+          <div class="section-desc">Set the date the contractor's first invoice is generated.</div>
 
           <div class="fl-field float pay-date-field">
             <input id="firstPaymentDate" type="date" placeholder=" ">
             <span class="pay-date-value placeholder" id="payDateValue">Select a date</span>
             <svg class="pdt-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
-            <label>First payment date</label>
+            <label>First invoice date</label>
           </div>
           <p class="pay-note" id="payNote" hidden></p>
 
@@ -789,8 +789,8 @@
     const nextLabels = [
       'Contract & payment terms',
       'GST & tax applicability',
-      'Set up agreement',
       'Invoicing',
+      'Review agreement',
       'Finish'
     ];
 
@@ -922,12 +922,12 @@
         const cycleStart = new Date(d.getFullYear(), d.getMonth() - 1, 1);
         cycleStartEl.textContent = fmt(cycleStart);
         cycleEndEl.textContent = fmt(cycleEnd);
-        // If the payment date lands on a weekend, it's brought forward to Friday.
+        // If the invoice date lands on a weekend, it's brought forward to Friday.
         const day = d.getDay();
         if (day === 0 || day === 6) {
           const fri = new Date(d); fri.setDate(d.getDate() - (day === 0 ? 2 : 1));
           note.hidden = false;
-          note.textContent = 'Payment will be made on ' + DOW[fri.getDay()] + ' ' + fmt(fri) + ', since the selected date falls on a weekend.';
+          note.textContent = 'The invoice will be generated on ' + DOW[fri.getDay()] + ' ' + fmt(fri) + ', since the selected date falls on a weekend.';
         } else {
           note.hidden = true;
         }
