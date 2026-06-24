@@ -424,15 +424,11 @@
     .option-card.selected .option-card-radio { border-color: var(--brand-500); }
     .option-card.selected .option-card-radio::after { content: ''; position: absolute; inset: 3px; border-radius: 8px; background: var(--brand-500); }
 
-    /* First payment date component */
-    .pay-date-wrap { position: relative; }
-    .pay-date-trigger { width: 100%; background: var(--card); border: 1px solid var(--border-strong); border-radius: 8px; padding: 11px 16px; display: flex; flex-direction: column; gap: 1px; }
-    .pay-date-wrap:hover .pay-date-trigger { border-color: var(--brand-500); }
-    .pdt-label { font-size: 12px; color: var(--text-muted); }
-    .pdt-value { font-size: 15px; font-weight: 600; color: var(--text-primary); }
-    .pdt-value.placeholder { font-weight: 500; color: var(--text-muted); }
-    .pdt-chev { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; color: var(--text-muted); pointer-events: none; }
-    .pay-date-input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+    /* First payment date component — uses the branded custom calendar */
+    .pay-date-field input[type="date"] { color: transparent !important; cursor: pointer; }
+    .pay-date-value { position: absolute; left: 14px; top: 23px; font-size: 16px; font-weight: 600; color: var(--text-primary); pointer-events: none; }
+    .pay-date-value.placeholder { font-weight: 500; color: var(--text-muted); }
+    .pdt-chev { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; color: var(--text-muted); pointer-events: none; }
     .pay-note { font-size: 12.5px; color: var(--text-muted); margin: 8px 4px 0; line-height: 1.5; }
     .pay-summary { margin-top: 16px; display: flex; flex-direction: column; gap: 10px; }
     .pay-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; background: #F5F6F8; border-radius: 8px; padding: 15px 18px; }
@@ -752,13 +748,11 @@
           <div class="section-title">First payment date</div>
           <div class="section-desc">Define the date when the contractor will receive their first payment.</div>
 
-          <div class="pay-date-wrap">
-            <div class="pay-date-trigger">
-              <span class="pdt-label">First payment date</span>
-              <span class="pdt-value placeholder" id="payDateValue">Select a date</span>
-              <svg class="pdt-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
-            </div>
-            <input id="firstPaymentDate" type="date" class="pay-date-input" aria-label="First payment date">
+          <div class="fl-field float pay-date-field">
+            <input id="firstPaymentDate" type="date" placeholder=" ">
+            <span class="pay-date-value placeholder" id="payDateValue">Select a date</span>
+            <svg class="pdt-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+            <label>First payment date</label>
           </div>
           <p class="pay-note" id="payNote" hidden></p>
 
@@ -940,7 +934,6 @@
       }
 
       input.addEventListener('change', update);
-      input.addEventListener('click', () => { if (input.showPicker) try { input.showPicker(); } catch (e) {} });
       // Default to a sample so the block previews fully.
       input.value = '2026-03-06';
       update();
