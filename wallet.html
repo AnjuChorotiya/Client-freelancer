@@ -339,7 +339,7 @@
       function buildInvoice(d) {
         const m = INVDATA[d.ref] || { role: 'Freelancer', item: 'Professional services', subtotal: 2000 };
         const fee = Math.round(m.subtotal * 0.005 * 100) / 100;
-        const total = Math.round((m.subtotal - fee) * 100) / 100;
+        const total = Math.round((m.subtotal + fee) * 100) / 100;
         const isCredit = d.amount.charAt(0) === '+';
         const walletRow = isCredit
           ? '<div class="inv-wallet"><span>FX surplus credited to your wallet</span><span class="v">' + d.amount + '</span></div>'
@@ -351,8 +351,8 @@
           + '<table class="inv-items"><thead><tr><th>Description</th><th class="num">Amount</th></tr></thead>'
           + '<tbody><tr><td>' + m.item + '</td><td class="num">' + usd2(m.subtotal) + '</td></tr></tbody></table>'
           + '<div class="inv-trow"><span>Subtotal</span><span>' + usd2(m.subtotal) + '</span></div>'
-          + '<div class="inv-trow"><span>Wisemonk fee (0.5%)</span><span>−' + usd2(fee) + '</span></div>'
-          + '<div class="inv-trow total"><span>Total</span><span>' + usd2(total) + '</span></div>'
+          + '<div class="inv-trow"><span>Wisemonk fee (0.5%)</span><span>+' + usd2(fee) + '</span></div>'
+          + '<div class="inv-trow total"><span>Total you pay</span><span>' + usd2(total) + '</span></div>'
           + walletRow
           + '</div>';
       }
