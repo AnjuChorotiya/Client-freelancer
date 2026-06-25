@@ -444,6 +444,12 @@
     .amount-sym { display: flex; align-items: center; padding-left: 16px; font-size: 16px; font-weight: 600; color: var(--text-muted); }
     .amount-input { flex: 1; min-width: 0; border: none; outline: none; background: none; padding: 13px 12px 13px 6px; font-family: inherit; font-size: 16px; font-weight: 500; color: var(--text-primary); }
     .amount-cur { border: none; outline: none; border-left: 1px solid var(--border); padding: 0 38px 0 16px; font-family: inherit; font-size: 14px; font-weight: 600; color: var(--text-primary); cursor: pointer; appearance: none; -webkit-appearance: none; background-color: var(--neutral-50, #F7F8FA); background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236A7282' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='m6 9 6 6 6-6'/></svg>"); background-repeat: no-repeat; background-position: right 14px center; background-size: 16px; }
+    .rate-row { display: flex; gap: 10px; align-items: stretch; flex-wrap: wrap; }
+    .rate-row .amount-box { flex: 1 1 240px; max-width: 300px; }
+    .unit-box { display: flex; align-items: center; gap: 4px; padding-left: 14px; border: 1px solid var(--border); border-radius: 8px; background: var(--card); transition: border-color 0.15s, box-shadow 0.15s; }
+    .unit-box:focus-within { border-color: var(--brand-500); box-shadow: 0 0 0 1.5px var(--brand-100); }
+    .unit-per { font-size: 14px; color: var(--text-muted); }
+    .unit-select { border: none; outline: none; background: transparent; padding: 13px 36px 13px 4px; font-family: inherit; font-size: 15px; font-weight: 600; color: var(--text-primary); cursor: pointer; appearance: none; -webkit-appearance: none; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236A7282' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='m6 9 6 6 6-6'/></svg>"); background-repeat: no-repeat; background-position: right 12px center; background-size: 16px; }
     .pay-callout { margin-top: 18px; padding: 14px 16px; background: var(--brand-50); border-radius: 8px; font-size: 13.5px; color: var(--text-secondary, #4A5160); line-height: 1.55; }
     .pay-callout strong { color: var(--brand-600, #1A6FE0); font-weight: 700; }
 
@@ -627,25 +633,31 @@
           <div id="fixedFields">
             <div class="pay-block">
               <label class="pay-label">Payment amount</label>
-              <div class="amount-box">
-                <span class="amount-sym" id="fixedSym">$</span>
-                <input id="fixedAmount" type="number" class="amount-input" placeholder="0.00">
-                <select id="fixedCurrency" class="amount-cur" aria-label="Currency">
-                  <option>USD</option>
-                  <option>INR</option>
-                  <option>EUR</option>
-                  <option>GBP</option>
-                  <option>SGD</option>
-                  <option>AUD</option>
-                </select>
-              </div>
-            </div>
-            <div class="pay-block">
-              <label class="pay-label">Payment frequency</label>
-              <div class="seg" id="fixedFreqSeg">
-                <button type="button" data-value="Weekly">Weekly</button>
-                <button type="button" data-value="Bi-weekly">Bi-weekly</button>
-                <button type="button" class="active" data-value="Monthly">Monthly</button>
+              <div class="rate-row">
+                <div class="amount-box">
+                  <span class="amount-sym" id="fixedSym">$</span>
+                  <input id="fixedAmount" type="number" class="amount-input" placeholder="0.00">
+                  <select id="fixedCurrency" class="amount-cur" aria-label="Currency">
+                    <option>USD</option>
+                    <option>INR</option>
+                    <option>EUR</option>
+                    <option>GBP</option>
+                    <option>SGD</option>
+                    <option>AUD</option>
+                  </select>
+                </div>
+                <div class="unit-box">
+                  <span class="unit-per">per</span>
+                  <select id="fixedUnit" class="unit-select" aria-label="Payment unit">
+                    <option value="Hourly">hour</option>
+                    <option value="Daily">day</option>
+                    <option value="Weekly">week</option>
+                    <option value="Bi-weekly">2 weeks</option>
+                    <option value="Monthly" selected>month</option>
+                    <option value="Per milestone">milestone</option>
+                    <option value="Other">other</option>
+                  </select>
+                </div>
               </div>
             </div>
           </div>
@@ -992,7 +1004,7 @@
       const callout = document.getElementById('payCallout');
       if (!grp || !callout) return;
       const SYM = { USD: '$', INR: '₹', EUR: '€', GBP: '£', SGD: 'S$', AUD: 'A$' };
-      const FREQ = { 'Weekly': '/ week', 'Bi-weekly': '/ 2 weeks', 'Monthly': '/ month' };
+      const FREQ = { 'Hourly': '/ hour', 'Daily': '/ day', 'Weekly': '/ week', 'Bi-weekly': '/ 2 weeks', 'Monthly': '/ month', 'Per milestone': '/ milestone' };
       const UNIT = { 'Per hour': '/ hour', 'Per day': '/ day', 'Per milestone': '/ milestone' };
       const fmt = v => { const n = parseFloat(v); return isFinite(n) && n > 0 ? n.toLocaleString('en-US', { maximumFractionDigits: 2 }) : ''; };
       const val = id => { const el = document.getElementById(id); return el ? el.value : ''; };
@@ -1014,10 +1026,12 @@
         } else {
           const amount = fmt(val('fixedAmount'));
           if (amount) {
-            const f = segVal('fixedFreqSeg');
+            const u = val('fixedUnit');
             const money = (SYM[fc] || '') + amount;
-            if (f === 'Monthly') text = "You'll pay this contractor <strong>" + money + " / month</strong>.";
-            else if (FREQ[f]) text = "You'll pay this contractor <strong>" + money + ' ' + FREQ[f] + "</strong>, settled monthly.";
+            if (u === 'Monthly') text = "You'll pay this contractor <strong>" + money + " / month</strong>.";
+            else if (u === 'Per milestone') text = "You'll pay this contractor <strong>" + money + " / milestone</strong>.";
+            else if (u === 'Other') text = "You'll pay this contractor <strong>" + money + "</strong>.";
+            else if (FREQ[u]) text = "You'll pay this contractor <strong>" + money + ' ' + FREQ[u] + "</strong>, settled monthly.";
             else text = "You'll pay this contractor <strong>" + money + "</strong>.";
           }
         }
@@ -1025,11 +1039,11 @@
         callout.hidden = false;
         callout.innerHTML = text;
       }
-      ['fixedCurrency', 'fixedAmount', 'paygCurrency', 'paygRate'].forEach(id => {
+      ['fixedCurrency', 'fixedAmount', 'fixedUnit', 'paygCurrency', 'paygRate'].forEach(id => {
         const el = document.getElementById(id);
         if (el) { el.addEventListener('change', render); el.addEventListener('input', render); }
       });
-      ['fixedFreqSeg', 'paygUnitSeg'].forEach(id => {
+      ['paygUnitSeg'].forEach(id => {
         const seg = document.getElementById(id);
         if (seg) seg.querySelectorAll('button').forEach(b => b.addEventListener('click', () => {
           seg.querySelectorAll('button').forEach(x => x.classList.toggle('active', x === b));
