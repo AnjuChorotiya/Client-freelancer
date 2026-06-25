@@ -435,6 +435,19 @@
     .pay-row > span:first-child { font-size: 14px; color: var(--text-muted); }
     .pay-row > span:last-child { font-size: 14px; font-weight: 700; color: var(--text-primary); }
 
+    /* Payment rate input — currency prefix + code suffix */
+    .rate-field input { padding-left: 28px; padding-right: 52px; }
+    .rate-affix { position: absolute; bottom: 9px; font-size: 16px; font-weight: 500; line-height: 1.2; pointer-events: none; }
+    .rate-prefix { left: 14px; color: var(--text-primary); }
+    .rate-suffix { right: 14px; color: var(--text-muted); }
+
+    /* Market rate insights collapsible */
+    .mri-toggle { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 12px; padding: 13px 16px; background: var(--neutral-50, #F7F8FA); border: none; border-radius: 8px; font-family: inherit; font-size: 14px; font-weight: 700; color: var(--text-primary); cursor: pointer; }
+    .mri-chev { width: 18px; height: 18px; color: var(--text-muted); transition: transform 0.2s; }
+    .mri-toggle.open .mri-chev { transform: rotate(180deg); }
+    .mri-body { padding: 12px 16px 2px; font-size: 13px; color: var(--text-secondary, #4A5160); line-height: 1.6; }
+    .mri-body strong { color: var(--text-primary); font-weight: 700; }
+
     /* Agreement template preview modal */
     .tpl-overlay { position: fixed; inset: 0; background: rgba(18,22,32,0.55); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 24px; }
     .tpl-overlay.open { display: flex; }
@@ -612,28 +625,39 @@
           </div>
 
           <!-- Fixed rate fields -->
-          <div class="fl-row-3" id="fixedFields">
-            <div class="fl-field">
-              <select id="fixedCurrency">
-                <option value="" disabled selected hidden></option>
-                <option>USD</option>
-                <option>INR</option>
-                <option>EUR</option>
-                <option>GBP</option>
-                <option>SGD</option>
-                <option>AUD</option>
-              </select>
-              <label>Currency</label>
+          <div id="fixedFields">
+            <div class="fl-row">
+              <div class="fl-field">
+                <select id="fixedCurrency">
+                  <option value="" disabled selected hidden></option>
+                  <option>USD</option>
+                  <option>INR</option>
+                  <option>EUR</option>
+                  <option>GBP</option>
+                  <option>SGD</option>
+                  <option>AUD</option>
+                </select>
+                <label>Currency</label>
+              </div>
+              <div class="fl-field rate-field">
+                <span class="rate-affix rate-prefix" id="fixedPrefix">$</span>
+                <input id="fixedAmount" type="number" placeholder=" ">
+                <span class="rate-affix rate-suffix" id="fixedSuffix"></span>
+                <label>Payment rate <span class="req">*</span></label>
+              </div>
             </div>
-            <div class="fl-field">
-              <input id="fixedAmount" type="number" placeholder=" ">
-              <label>Payment rate</label>
+
+            <button type="button" class="mri-toggle" id="mriToggle" aria-expanded="false">
+              <span>Market rate insights</span>
+              <svg class="mri-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div class="mri-body" id="mriBody" hidden>
+              <p>Similar roles in this market typically pay <strong>$15–$30 / hour</strong> or <strong>$2,500–$4,500 / month</strong>. Setting a rate in range helps you attract and retain talent.</p>
             </div>
-            <div class="fl-field">
+
+            <div class="fl-field" style="margin-top:12px;">
               <select id="fixedFreq">
                 <option value="" disabled selected hidden></option>
-                <option>Hourly</option>
-                <option>Daily</option>
                 <option>Weekly</option>
                 <option>Bi-weekly</option>
                 <option>Monthly</option>
@@ -995,7 +1019,7 @@
       const rateLabel = document.getElementById('rateLabel');
       if (!grp || !preview || !wrap) return;
       const SYM = { USD: '$', INR: '₹', EUR: '€', GBP: '£', SGD: 'S$', AUD: 'A$' };
-      const FREQ = { 'Hourly': '/ hour', 'Daily': '/ day', 'Weekly': '/ week', 'Bi-weekly': '/ 2 weeks', 'Monthly': '/ month', 'Per milestone': '/ milestone', 'One-time': 'one-time' };
+      const FREQ = { 'Weekly': '/ week', 'Bi-weekly': '/ 2 weeks', 'Monthly': '/ month' };
       const UNIT = { 'Per hour': '/ hour', 'Per day': '/ day', 'Per milestone': '/ milestone' };
       const amt = v => { const n = parseFloat(v); return isFinite(n) && n > 0 ? n.toLocaleString('en-US') : ''; };
       const val = id => { const el = document.getElementById(id); return el ? el.value : ''; };
@@ -1003,6 +1027,11 @@
         const sel = grp.querySelector('.option-card.selected');
         const isPayg = sel && sel.dataset.value === 'payg';
         const cur = isPayg ? val('paygCurrency') : val('fixedCurrency');
+        // Keep the fixed-rate input's currency prefix/suffix in sync with the selection.
+        const fp = document.getElementById('fixedPrefix'), fs = document.getElementById('fixedSuffix');
+        const fc = val('fixedCurrency');
+        if (fp) fp.textContent = SYM[fc] || '$';
+        if (fs) fs.textContent = fc || '';
         const amount = isPayg ? amt(val('paygRate')) : amt(val('fixedAmount'));
         let suffix;
         if (isPayg) {
@@ -1011,7 +1040,7 @@
           const f = val('fixedFreq');
           suffix = FREQ[f] || '';
           // Fixed rate is always settled monthly; flag it when the rate basis is sub-monthly.
-          if (['Hourly', 'Daily', 'Weekly', 'Bi-weekly'].indexOf(f) !== -1) suffix += ' · paid monthly';
+          if (['Weekly', 'Bi-weekly'].indexOf(f) !== -1) suffix += ' · paid monthly';
         }
         if (!amount) { wrap.hidden = true; return; }
         const money = (SYM[cur] || (cur ? cur + ' ' : '')) + amount;
@@ -1024,6 +1053,18 @@
       });
       grp.querySelectorAll('.option-card').forEach(c => c.addEventListener('click', render));
       render();
+    })();
+
+    // Market rate insights collapsible
+    (function () {
+      const t = document.getElementById('mriToggle'); const b = document.getElementById('mriBody');
+      if (!t || !b) return;
+      t.addEventListener('click', () => {
+        const open = b.hidden;
+        b.hidden = !open;
+        t.classList.toggle('open', open);
+        t.setAttribute('aria-expanded', String(open));
+      });
     })();
 
     // Choice cards — single choice per group (uses .selected)
