@@ -285,6 +285,12 @@
     }
     .row-action:hover { background: var(--neutral-100); color: var(--text-primary); }
     .row-action svg { width: 18px; height: 18px; }
+    /* Row action dropdown (shared, fixed-positioned so it isn't clipped by the table) */
+    .action-menu { position: fixed; min-width: 178px; background: #fff; border: 1px solid var(--border); border-radius: 10px; box-shadow: 0 12px 32px rgba(0,0,0,0.14); padding: 6px; z-index: 2000; display: none; }
+    .action-menu.open { display: block; }
+    .action-item { display: flex; align-items: center; gap: 10px; width: 100%; padding: 9px 10px; background: none; border: none; border-radius: 7px; font-family: inherit; font-size: 13.5px; font-weight: 500; color: var(--text-primary); text-align: left; cursor: pointer; }
+    .action-item:hover { background: var(--neutral-50, #F7F8FA); }
+    .action-item svg { width: 16px; height: 16px; color: var(--text-muted); flex-shrink: 0; }
 
     @media (max-width: 980px) {
       .sidebar { display: none; }
@@ -749,6 +755,56 @@
     document.querySelectorAll('.cor-banner-close').forEach(btn => {
       btn.addEventListener('click', () => btn.closest('.cor-banner').remove());
     });
+  </script>
+
+  <!-- Shared row action menu -->
+  <div class="action-menu" id="rowActionMenu" role="menu">
+    <button type="button" class="action-item" data-act="view"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg>View profile</button>
+    <button type="button" class="action-item" data-act="inactive"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12h8"/></svg>Mark inactive</button>
+    <button type="button" class="action-item" data-act="settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z"/></svg>Settings</button>
+  </div>
+
+  <script>
+    // Row "..." action menu — one shared, fixed-positioned menu reused by every row.
+    (function () {
+      const menu = document.getElementById('rowActionMenu');
+      if (!menu) return;
+      let currentRow = null;
+      function openAt(btn) {
+        currentRow = btn.closest('tr');
+        menu.classList.add('open');
+        const r = btn.getBoundingClientRect();
+        let left = r.right - menu.offsetWidth;
+        if (left < 8) left = 8;
+        let top = r.bottom + 6;
+        if (top + menu.offsetHeight > window.innerHeight - 8) top = r.top - menu.offsetHeight - 6;
+        menu.style.left = left + 'px';
+        menu.style.top = top + 'px';
+      }
+      function close() { menu.classList.remove('open'); currentRow = null; }
+      document.addEventListener('click', e => {
+        const btn = e.target.closest('.row-action');
+        if (btn) {
+          e.stopPropagation();
+          if (menu.classList.contains('open') && currentRow === btn.closest('tr')) close();
+          else openAt(btn);
+          return;
+        }
+        if (!e.target.closest('#rowActionMenu')) close();
+      });
+      menu.addEventListener('click', e => {
+        const item = e.target.closest('.action-item');
+        if (!item) return;
+        if (item.dataset.act === 'inactive' && currentRow) {
+          const pill = currentRow.querySelector('.pill');
+          if (pill) { pill.className = 'pill paused'; pill.textContent = 'Inactive'; }
+        }
+        close();
+      });
+      window.addEventListener('scroll', close, true);
+      window.addEventListener('resize', close);
+      document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+    })();
   </script>
 
 
