@@ -681,6 +681,7 @@
 
       // Requestor name drives both the heading copy and the beneficiary name.
       set('payBeneficiary', reqName);
+      PAY.name = reqName;
       if (recvCur) recvCur.textContent = 'INR';
 
       // Base amount the client must transfer before any wallet credit is applied.
@@ -765,10 +766,10 @@
         try {
           const W = window.WMWallet;
           if (W) {
-            if (PAY.applied > 0) W.debit(PAY.applied, invNum, 'Applied to payment');
+            if (PAY.applied > 0) W.debit(PAY.applied, invNum, 'Applied to payment', PAY.name);
             const surplusChk = document.getElementById('surplusWallet');
             if (PAY.surplusUSD > 0 && surplusChk && surplusChk.checked) {
-              W.credit(PAY.surplusUSD, invNum, 'Payment surplus');
+              W.credit(PAY.surplusUSD, invNum, 'Payment surplus', PAY.name);
             }
           }
         } catch (e) { /* wallet optional */ }

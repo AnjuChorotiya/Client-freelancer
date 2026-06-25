@@ -28,28 +28,32 @@
 
   // Record a movement, update the running balance, and prepend it to the ledger
   // (newest first). Returns the new balance.
-  function record(type, amount, ref, note, date) {
+  function record(type, amount, ref, note, name, date) {
     amount = round2(amount);
     if (amount <= 0) return balance();
     var bal = round2(balance() + (type === 'credit' ? amount : -amount));
     if (bal < 0) bal = 0;
     setBalance(bal);
     var l = ledger();
-    l.unshift({ date: date || todayLabel(), type: type, amount: amount, ref: ref || '', note: note || '', balanceAfter: bal });
+    l.unshift({ date: date || todayLabel(), type: type, amount: amount, ref: ref || '', note: note || '', name: name || '', balanceAfter: bal });
     writeLedger(l);
     return bal;
   }
-  function credit(amount, ref, note, date) { return record('credit', amount, ref, note, date); }
-  function debit(amount, ref, note, date) { return record('debit', amount, ref, note, date); }
+  function credit(amount, ref, note, name, date) { return record('credit', amount, ref, note, name, date); }
+  function debit(amount, ref, note, name, date) { return record('debit', amount, ref, note, name, date); }
 
-  // First-run sample data so the wallet screen demos with content.
+  // First-run sample data so the wallet screen demos with content. Versioned so
+  // an updated demo set replaces an older one once.
+  var SEED_V = 'wm_wallet_seed_v';
   function seedIfEmpty() {
-    if (localStorage.getItem(KL) !== null) return;
+    if (localStorage.getItem(SEED_V) === '2') return;
     writeLedger([
-      { date: 'Jun 12, 2026', type: 'credit', amount: 42.10, ref: '#INV-1034', note: 'Payment surplus', balanceAfter: 60.85 },
-      { date: 'May 28, 2026', type: 'credit', amount: 18.75, ref: '#INV-1029', note: 'Payment surplus', balanceAfter: 18.75 }
+      { date: 'Jun 24, 2026', type: 'debit', amount: 60.85, ref: '#INV-2024', note: 'Applied to payment', name: 'Priya Sharma', balanceAfter: 0.00 },
+      { date: 'Jun 12, 2026', type: 'credit', amount: 42.10, ref: '#INV-1034', note: 'Payment surplus', name: 'Carlos Mendez', balanceAfter: 60.85 },
+      { date: 'May 28, 2026', type: 'credit', amount: 18.75, ref: '#INV-1029', note: 'Payment surplus', name: 'Maria Silva', balanceAfter: 18.75 }
     ]);
-    setBalance(60.85);
+    setBalance(0.00);
+    localStorage.setItem(SEED_V, '2');
   }
 
   seedIfEmpty();

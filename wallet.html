@@ -122,6 +122,28 @@
     .led-amt.credit { color: var(--primary-600); }
     .led-amt.debit { color: var(--text-primary); }
     .led-empty { padding: 40px 24px; text-align: center; color: var(--text-muted); font-size: 14px; }
+    .led-row { cursor: pointer; }
+    .led-contract { color: var(--text-secondary); }
+
+    /* Invoice side panel */
+    .inv-overlay { position: fixed; inset: 0; background: rgba(18,22,32,0.45); display: none; z-index: 1000; }
+    .inv-overlay.open { display: block; }
+    .inv-panel { position: fixed; top: 0; right: 0; bottom: 0; width: min(420px, 92vw); background: #fff; box-shadow: -8px 0 32px rgba(0,0,0,0.18); display: flex; flex-direction: column; transform: translateX(100%); transition: transform 0.28s ease; }
+    .inv-overlay.open .inv-panel { transform: translateX(0); }
+    .inv-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 20px 22px; border-bottom: 1px solid var(--border); }
+    .inv-ref { font-size: 17px; font-weight: 700; color: var(--text-primary); }
+    .inv-sub { font-size: 13px; color: var(--text-muted); margin-top: 3px; }
+    .inv-close { width: 34px; height: 34px; border: none; background: transparent; color: var(--text-muted); border-radius: 8px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .inv-close:hover { background: var(--neutral-100); color: var(--text-primary); }
+    .inv-close svg { width: 18px; height: 18px; }
+    .inv-body { flex: 1; overflow-y: auto; padding: 4px 22px; }
+    .inv-kv { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+    .inv-kv:last-child { border-bottom: none; }
+    .inv-kv .k { font-size: 13.5px; color: var(--text-muted); }
+    .inv-kv .v { font-size: 14px; font-weight: 600; color: var(--text-primary); text-align: right; }
+    .inv-foot { padding: 16px 22px; border-top: 1px solid var(--border); }
+    .inv-foot a { display: flex; align-items: center; justify-content: center; height: 44px; border-radius: 8px; background: var(--primary-500); color: #fff; font-weight: 700; font-size: 14px; text-decoration: none; }
+    .inv-foot a:hover { background: var(--primary-600); }
 
     .pill-note { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 500; color: var(--text-muted); }
     .pill-note b { color: var(--text-primary); font-weight: 700; }
@@ -240,6 +262,7 @@
             <thead>
               <tr>
                 <th>Description</th>
+                <th>Contract</th>
                 <th>Date</th>
                 <th class="num">Amount</th>
               </tr>
@@ -251,6 +274,30 @@
 
       </div>
     </div>
+  </div>
+
+  <!-- Invoice side panel -->
+  <div class="inv-overlay" id="invOverlay">
+    <aside class="inv-panel" role="dialog" aria-modal="true" aria-labelledby="invRef">
+      <div class="inv-head">
+        <div>
+          <div class="inv-ref" id="invRef">#INV-0000</div>
+          <div class="inv-sub" id="invSub">Wallet transaction</div>
+        </div>
+        <button class="inv-close" id="invClose" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6 18 18M18 6 6 18"/></svg></button>
+      </div>
+      <div class="inv-body">
+        <div class="inv-kv"><span class="k">Contract</span><span class="v" id="invName">—</span></div>
+        <div class="inv-kv"><span class="k">Invoice</span><span class="v" id="invNum">—</span></div>
+        <div class="inv-kv"><span class="k">Date</span><span class="v" id="invDate">—</span></div>
+        <div class="inv-kv"><span class="k">Type</span><span class="v" id="invType">—</span></div>
+        <div class="inv-kv"><span class="k">Amount</span><span class="v" id="invAmount">—</span></div>
+        <div class="inv-kv"><span class="k">Wallet balance after</span><span class="v" id="invBalance">—</span></div>
+      </div>
+      <div class="inv-foot">
+        <a href="invoices.html" id="invOpenLink">View full invoice</a>
+      </div>
+    </aside>
   </div>
 
   <script src="wm-wallet.js"></script>
@@ -270,6 +317,27 @@
       const CREDIT_ICO = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-arrow-down-left"/></svg>';
       const DEBIT_ICO = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-arrow-up-right"/></svg>';
 
+      // Invoice side panel — opens when a transaction row is clicked.
+      const ov = document.getElementById('invOverlay');
+      function openInvoicePanel(d) {
+        document.getElementById('invRef').textContent = d.ref;
+        document.getElementById('invSub').textContent = d.note;
+        document.getElementById('invName').textContent = d.name;
+        document.getElementById('invNum').textContent = d.ref;
+        document.getElementById('invDate').textContent = d.date;
+        document.getElementById('invType').textContent = d.type;
+        document.getElementById('invAmount').textContent = d.amount;
+        document.getElementById('invBalance').textContent = d.balanceAfter;
+        ov.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      }
+      function closeInvoicePanel() { ov.classList.remove('open'); document.body.style.overflow = ''; }
+      if (ov) {
+        document.getElementById('invClose').addEventListener('click', closeInvoicePanel);
+        ov.addEventListener('click', e => { if (e.target === ov) closeInvoicePanel(); });
+        document.addEventListener('keydown', e => { if (e.key === 'Escape' && ov.classList.contains('open')) closeInvoicePanel(); });
+      }
+
       if (!rows.length) {
         empty.style.display = 'block';
       } else {
@@ -278,14 +346,24 @@
           const title = isCredit ? (r.note || 'Credit') : (r.note || 'Applied to payment');
           const sign = isCredit ? '+' : '−';
           const tr = document.createElement('tr');
+          tr.className = 'led-row';
           tr.innerHTML =
             '<td><div class="led-desc">' +
               '<span class="led-icon ' + r.type + '">' + (isCredit ? CREDIT_ICO : DEBIT_ICO) + '</span>' +
               '<span><div class="led-title">' + title + '</div>' +
               (r.ref ? '<div class="led-ref">' + r.ref + '</div>' : '') + '</span>' +
             '</div></td>' +
+            '<td class="led-contract">' + (r.name || '—') + '</td>' +
             '<td class="led-date">' + (r.date || '') + '</td>' +
             '<td class="num"><span class="led-amt ' + r.type + '">' + sign + usd(r.amount) + '</span></td>';
+          tr.addEventListener('click', function () {
+            openInvoicePanel({
+              ref: r.ref || '—', name: r.name || '—', date: r.date || '—',
+              type: isCredit ? 'Surplus credit' : 'Applied to payment',
+              amount: (isCredit ? '+' : '−') + usd(r.amount),
+              balanceAfter: usd(r.balanceAfter), note: title
+            });
+          });
           body.appendChild(tr);
         });
       }
