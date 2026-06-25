@@ -599,13 +599,13 @@
               <button type="button" class="option-card selected" data-value="fixed">
                 <span class="option-card-body">
                   <span class="option-card-title">Fixed rate</span>
-                  <span class="option-card-desc">A set amount paid each cycle.</span>
+                  <span class="option-card-desc">A set amount paid on a regular cycle (e.g. monthly).</span>
                 </span>
               </button>
               <button type="button" class="option-card" data-value="payg">
                 <span class="option-card-body">
                   <span class="option-card-title">Pay as you go</span>
-                  <span class="option-card-desc">Hourly or daily rate, paid monthly for time worked.</span>
+                  <span class="option-card-desc">Paid as the contractor invoices, at the agreed rate.</span>
                 </span>
               </button>
             </div>
@@ -995,7 +995,7 @@
       if (!grp || !preview || !wrap) return;
       const SYM = { USD: '$', INR: '₹', EUR: '€', GBP: '£', SGD: 'S$', AUD: 'A$' };
       const FREQ = { 'Monthly': '/ month', 'Weekly': '/ week', 'Bi-weekly': '/ 2 weeks', 'Per milestone': '/ milestone', 'One-time': 'one-time' };
-      const UNIT = { 'Per hour': '/ hour · paid monthly', 'Per day': '/ day · paid monthly' };
+      const UNIT = { 'Per hour': '/ hour · paid as invoiced', 'Per day': '/ day · paid as invoiced' };
       const amt = v => { const n = parseFloat(v); return isFinite(n) && n > 0 ? n.toLocaleString('en-US') : ''; };
       const val = id => { const el = document.getElementById(id); return el ? el.value : ''; };
       function render() {
