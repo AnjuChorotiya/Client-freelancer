@@ -144,6 +144,26 @@
     .inv-foot { padding: 16px 22px; border-top: 1px solid var(--border); }
     .inv-foot a { display: flex; align-items: center; justify-content: center; height: 44px; border-radius: 8px; background: var(--primary-500); color: #fff; font-weight: 700; font-size: 14px; text-decoration: none; }
     .inv-foot a:hover { background: var(--primary-600); }
+    /* Full invoice document inside the panel */
+    .inv-doc { font-size: 13px; color: var(--text-secondary, #4A5160); }
+    .inv-doc-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 20px; }
+    .inv-doc-num { font-size: 16px; font-weight: 700; color: var(--text-primary); }
+    .inv-status { display: inline-block; margin-top: 6px; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 100px; background: var(--success-50, #E6F9F0); color: var(--success-700, #027A48); }
+    .inv-doc-logo { font-family: 'Satoshi', sans-serif; font-weight: 700; color: var(--primary-600); font-size: 15px; }
+    .inv-parties, .inv-dates { display: flex; gap: 16px; margin-bottom: 18px; }
+    .inv-parties > div, .inv-dates > div { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+    .inv-lbl { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; color: var(--text-muted); margin-bottom: 2px; }
+    .inv-parties strong { font-size: 14px; color: var(--text-primary); font-weight: 700; }
+    .inv-items { width: 100%; border-collapse: collapse; margin-bottom: 12px; }
+    .inv-items th { text-align: left; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; color: var(--text-muted); padding: 8px 0; border-bottom: 1px solid var(--border); }
+    .inv-items th.num, .inv-items td.num { text-align: right; }
+    .inv-items td { padding: 12px 0; border-bottom: 1px solid var(--border); font-size: 13px; color: var(--text-primary); }
+    .inv-trow { display: flex; justify-content: space-between; padding: 7px 0; font-size: 13px; }
+    .inv-trow span:last-child { font-weight: 600; color: var(--text-primary); }
+    .inv-trow.total { border-top: 1px solid var(--border-strong, #DDE1E9); margin-top: 4px; padding-top: 12px; font-size: 15px; }
+    .inv-trow.total span { font-weight: 800; color: var(--text-primary); }
+    .inv-wallet { margin-top: 14px; padding: 12px 14px; border-radius: 8px; background: var(--primary-50, #E8F2FF); font-size: 12.5px; font-weight: 600; display: flex; justify-content: space-between; gap: 12px; }
+    .inv-wallet .v { color: var(--primary-600); }
 
     .pill-note { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 500; color: var(--text-muted); }
     .pill-note b { color: var(--text-primary); font-weight: 700; }
@@ -262,7 +282,7 @@
             <thead>
               <tr>
                 <th>Description</th>
-                <th>Contract</th>
+                <th>Freelancer</th>
                 <th>Date</th>
                 <th class="num">Amount</th>
               </tr>
@@ -287,15 +307,7 @@
         <button class="inv-close" id="invClose" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6 18 18M18 6 6 18"/></svg></button>
       </div>
       <div class="inv-body">
-        <div class="inv-kv"><span class="k">Contract</span><span class="v" id="invName">—</span></div>
-        <div class="inv-kv"><span class="k">Invoice</span><span class="v" id="invNum">—</span></div>
-        <div class="inv-kv"><span class="k">Date</span><span class="v" id="invDate">—</span></div>
-        <div class="inv-kv"><span class="k">Type</span><span class="v" id="invType">—</span></div>
-        <div class="inv-kv"><span class="k">Amount</span><span class="v" id="invAmount">—</span></div>
-        <div class="inv-kv"><span class="k">Wallet balance after</span><span class="v" id="invBalance">—</span></div>
-      </div>
-      <div class="inv-foot">
-        <a href="invoices.html" id="invOpenLink">View full invoice</a>
+        <div id="invDoc"></div>
       </div>
     </aside>
   </div>
@@ -319,15 +331,37 @@
 
       // Invoice side panel — opens when a transaction row is clicked.
       const ov = document.getElementById('invOverlay');
+      const INVDATA = {
+        '#INV-2024': { role: 'Senior Designer', item: 'Design retainer — June 2026', subtotal: 3400 },
+        '#INV-1034': { role: 'Backend Developer', item: 'Backend development — 40 hrs @ $45/hr', subtotal: 1800 },
+        '#INV-1029': { role: 'Translator', item: 'Translation — 40 hrs @ $32/hr', subtotal: 1280 }
+      };
+      const usd2 = n => '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      function buildInvoice(d) {
+        const m = INVDATA[d.ref] || { role: 'Freelancer', item: 'Professional services', subtotal: 2000 };
+        const fee = Math.round(m.subtotal * 0.005 * 100) / 100;
+        const total = Math.round((m.subtotal - fee) * 100) / 100;
+        const isCredit = d.amount.charAt(0) === '+';
+        const walletRow = isCredit
+          ? '<div class="inv-wallet"><span>FX surplus credited to your wallet</span><span class="v">' + d.amount + '</span></div>'
+          : '<div class="inv-wallet"><span>Wallet credit applied to your payment</span><span class="v">' + d.amount + '</span></div>';
+        return '<div class="inv-doc">'
+          + '<div class="inv-doc-top"><div><div class="inv-doc-num">' + d.ref + '</div><span class="inv-status">Paid</span></div><div class="inv-doc-logo">Wisemonk</div></div>'
+          + '<div class="inv-parties"><div><span class="inv-lbl">Billed by</span><strong>' + d.name + '</strong><span>' + m.role + '</span></div>'
+          + '<div><span class="inv-lbl">Billed to</span><strong>Aman Singh</strong><span>Acme Inc.</span></div></div>'
+          + '<div class="inv-dates"><div><span class="inv-lbl">Issue date</span><span>' + d.date + '</span></div><div><span class="inv-lbl">Status</span><span>Paid</span></div></div>'
+          + '<table class="inv-items"><thead><tr><th>Description</th><th class="num">Amount</th></tr></thead>'
+          + '<tbody><tr><td>' + m.item + '</td><td class="num">' + usd2(m.subtotal) + '</td></tr></tbody></table>'
+          + '<div class="inv-trow"><span>Subtotal</span><span>' + usd2(m.subtotal) + '</span></div>'
+          + '<div class="inv-trow"><span>Wisemonk fee (0.5%)</span><span>−' + usd2(fee) + '</span></div>'
+          + '<div class="inv-trow total"><span>Total</span><span>' + usd2(total) + '</span></div>'
+          + walletRow
+          + '</div>';
+      }
       function openInvoicePanel(d) {
         document.getElementById('invRef').textContent = d.ref;
-        document.getElementById('invSub').textContent = d.note;
-        document.getElementById('invName').textContent = d.name;
-        document.getElementById('invNum').textContent = d.ref;
-        document.getElementById('invDate').textContent = d.date;
-        document.getElementById('invType').textContent = d.type;
-        document.getElementById('invAmount').textContent = d.amount;
-        document.getElementById('invBalance').textContent = d.balanceAfter;
+        document.getElementById('invSub').textContent = d.name;
+        document.getElementById('invDoc').innerHTML = buildInvoice(d);
         ov.classList.add('open');
         document.body.style.overflow = 'hidden';
       }
