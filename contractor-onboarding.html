@@ -660,6 +660,14 @@
                 </div>
               </div>
             </div>
+            <div class="pay-block">
+              <label class="pay-label">Payment frequency</label>
+              <div class="seg" id="fixedFreqSeg">
+                <button type="button" data-value="Weekly">Weekly</button>
+                <button type="button" data-value="Bi-weekly">Bi-weekly</button>
+                <button type="button" class="active" data-value="Monthly">Monthly</button>
+              </div>
+            </div>
           </div>
 
           <!-- Pay as you go -->
@@ -1005,6 +1013,7 @@
       if (!grp || !callout) return;
       const SYM = { USD: '$', INR: '₹', EUR: '€', GBP: '£', SGD: 'S$', AUD: 'A$' };
       const FREQ = { 'Hourly': '/ hour', 'Daily': '/ day', 'Weekly': '/ week', 'Bi-weekly': '/ 2 weeks', 'Monthly': '/ month', 'Per milestone': '/ milestone' };
+      const FREQWORD = { 'Weekly': 'weekly', 'Bi-weekly': 'every 2 weeks', 'Monthly': 'monthly' };
       const UNIT = { 'Per hour': '/ hour', 'Per day': '/ day', 'Per milestone': '/ milestone' };
       const fmt = v => { const n = parseFloat(v); return isFinite(n) && n > 0 ? n.toLocaleString('en-US', { maximumFractionDigits: 2 }) : ''; };
       const val = id => { const el = document.getElementById(id); return el ? el.value : ''; };
@@ -1028,11 +1037,9 @@
           if (amount) {
             const u = val('fixedUnit');
             const money = (SYM[fc] || '') + amount;
-            if (u === 'Monthly') text = "You'll pay this contractor <strong>" + money + " / month</strong>.";
-            else if (u === 'Per milestone') text = "You'll pay this contractor <strong>" + money + " / milestone</strong>.";
-            else if (u === 'Other') text = "You'll pay this contractor <strong>" + money + "</strong>.";
-            else if (FREQ[u]) text = "You'll pay this contractor <strong>" + money + ' ' + FREQ[u] + "</strong>, settled monthly.";
-            else text = "You'll pay this contractor <strong>" + money + "</strong>.";
+            const rateStr = (u === 'Other' || !FREQ[u]) ? money : (money + ' ' + FREQ[u]);
+            const fw = FREQWORD[segVal('fixedFreqSeg')] || '';
+            text = "You'll pay this contractor <strong>" + rateStr + "</strong>" + (fw ? ", paid <strong>" + fw + "</strong>." : ".");
           }
         }
         if (!text) { callout.hidden = true; return; }
@@ -1043,7 +1050,7 @@
         const el = document.getElementById(id);
         if (el) { el.addEventListener('change', render); el.addEventListener('input', render); }
       });
-      ['paygUnitSeg'].forEach(id => {
+      ['fixedFreqSeg', 'paygUnitSeg'].forEach(id => {
         const seg = document.getElementById(id);
         if (seg) seg.querySelectorAll('button').forEach(b => b.addEventListener('click', () => {
           seg.querySelectorAll('button').forEach(x => x.classList.toggle('active', x === b));
