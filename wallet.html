@@ -136,7 +136,7 @@
     .inv-close { width: 34px; height: 34px; border: none; background: transparent; color: var(--text-muted); border-radius: 8px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
     .inv-close:hover { background: var(--neutral-100); color: var(--text-primary); }
     .inv-close svg { width: 18px; height: 18px; }
-    .inv-body { flex: 1; overflow-y: auto; padding: 4px 22px; }
+    .inv-body { flex: 1; overflow-y: auto; padding: 22px; }
     .inv-kv { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--border); }
     .inv-kv:last-child { border-bottom: none; }
     .inv-kv .k { font-size: 13.5px; color: var(--text-muted); }
@@ -150,19 +150,19 @@
     .inv-doc-num { font-size: 16px; font-weight: 700; color: var(--text-primary); }
     .inv-status { display: inline-block; margin-top: 6px; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 100px; background: var(--success-50, #E6F9F0); color: var(--success-700, #027A48); }
     .inv-doc-logo { font-family: 'Satoshi', sans-serif; font-weight: 700; color: var(--primary-600); font-size: 15px; }
-    .inv-parties, .inv-dates { display: flex; gap: 16px; margin-bottom: 18px; }
+    .inv-parties, .inv-dates { display: flex; gap: 16px; margin-bottom: 24px; }
     .inv-parties > div, .inv-dates > div { flex: 1; display: flex; flex-direction: column; gap: 2px; }
     .inv-lbl { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; color: var(--text-muted); margin-bottom: 2px; }
     .inv-parties strong { font-size: 14px; color: var(--text-primary); font-weight: 700; }
-    .inv-items { width: 100%; border-collapse: collapse; margin-bottom: 12px; }
+    .inv-items { width: 100%; border-collapse: collapse; margin-bottom: 16px; }
     .inv-items th { text-align: left; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; color: var(--text-muted); padding: 8px 0; border-bottom: 1px solid var(--border); }
     .inv-items th.num, .inv-items td.num { text-align: right; }
     .inv-items td { padding: 12px 0; border-bottom: 1px solid var(--border); font-size: 13px; color: var(--text-primary); }
-    .inv-trow { display: flex; justify-content: space-between; padding: 7px 0; font-size: 13px; }
+    .inv-trow { display: flex; justify-content: space-between; padding: 9px 0; font-size: 13px; }
     .inv-trow span:last-child { font-weight: 600; color: var(--text-primary); }
     .inv-trow.total { border-top: 1px solid var(--border-strong, #DDE1E9); margin-top: 4px; padding-top: 12px; font-size: 15px; }
     .inv-trow.total span { font-weight: 800; color: var(--text-primary); }
-    .inv-wallet { margin-top: 14px; padding: 12px 14px; border-radius: 8px; background: var(--primary-50, #E8F2FF); font-size: 12.5px; font-weight: 600; display: flex; justify-content: space-between; gap: 12px; }
+    .inv-wallet { margin-top: 20px; padding: 14px 16px; border-radius: 8px; background: var(--primary-50, #E8F2FF); font-size: 12.5px; font-weight: 600; display: flex; justify-content: space-between; gap: 12px; }
     .inv-wallet .v { color: var(--primary-600); }
 
     .pill-note { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 500; color: var(--text-muted); }
@@ -302,7 +302,6 @@
       <div class="inv-head">
         <div>
           <div class="inv-ref" id="invRef">#INV-0000</div>
-          <div class="inv-sub" id="invSub">Wallet transaction</div>
         </div>
         <button class="inv-close" id="invClose" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6 18 18M18 6 6 18"/></svg></button>
       </div>
@@ -359,7 +358,6 @@
       }
       function openInvoicePanel(d) {
         document.getElementById('invRef').textContent = d.ref;
-        document.getElementById('invSub').textContent = d.name;
         document.getElementById('invDoc').innerHTML = buildInvoice(d);
         ov.classList.add('open');
         document.body.style.overflow = 'hidden';
