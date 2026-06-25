@@ -435,9 +435,6 @@
     .pay-row > span:first-child { font-size: 14px; color: var(--text-muted); }
     .pay-row > span:last-child { font-size: 14px; font-weight: 700; color: var(--text-primary); }
 
-    .rate-preview { margin: 2px 4px 0; font-size: 13.5px; font-weight: 700; color: var(--brand-500); }
-    .rate-preview::before { content: '≈ '; font-weight: 600; }
-
     /* Agreement template preview modal */
     .tpl-overlay { position: fixed; inset: 0; background: rgba(18,22,32,0.55); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 24px; }
     .tpl-overlay.open { display: flex; }
@@ -673,7 +670,9 @@
             </div>
           </div>
 
-          <p class="rate-preview" id="ratePreview" hidden></p>
+          <div class="pay-summary" id="ratePreviewWrap" hidden>
+            <div class="pay-row"><span id="rateLabel">Payment rate</span><span id="ratePreview">—</span></div>
+          </div>
           <div class="fl-field">
             <textarea placeholder=" "></textarea>
             <label>Special clauses for the contract (if any)</label>
@@ -991,7 +990,9 @@
     (function () {
       const grp = document.getElementById('contractType');
       const preview = document.getElementById('ratePreview');
-      if (!grp || !preview) return;
+      const wrap = document.getElementById('ratePreviewWrap');
+      const rateLabel = document.getElementById('rateLabel');
+      if (!grp || !preview || !wrap) return;
       const SYM = { USD: '$', INR: '₹', EUR: '€', GBP: '£', SGD: 'S$', AUD: 'A$' };
       const FREQ = { 'Monthly': '/ month', 'Weekly': '/ week', 'Bi-weekly': '/ 2 weeks', 'Per milestone': '/ milestone', 'One-time': 'one-time' };
       const UNIT = { 'Per hour': '/ hour · paid monthly', 'Per day': '/ day · paid monthly' };
@@ -1003,9 +1004,9 @@
         const cur = isPayg ? val('paygCurrency') : val('fixedCurrency');
         const amount = isPayg ? amt(val('paygRate')) : amt(val('fixedAmount'));
         const suffix = isPayg ? (UNIT[val('paygUnit')] || '') : (FREQ[val('fixedFreq')] || '');
-        if (!amount) { preview.hidden = true; return; }
+        if (!amount) { wrap.hidden = true; return; }
         const money = (SYM[cur] || (cur ? cur + ' ' : '')) + amount;
-        preview.hidden = false;
+        wrap.hidden = false;
         preview.textContent = (suffix === 'one-time') ? ('One-time payment of ' + money) : (money + (suffix ? ' ' + suffix : ''));
       }
       ['fixedCurrency', 'fixedAmount', 'fixedFreq', 'paygCurrency', 'paygRate', 'paygUnit'].forEach(id => {
