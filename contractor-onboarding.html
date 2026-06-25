@@ -1005,7 +1005,15 @@
         const isPayg = sel && sel.dataset.value === 'payg';
         const cur = isPayg ? val('paygCurrency') : val('fixedCurrency');
         const amount = isPayg ? amt(val('paygRate')) : amt(val('fixedAmount'));
-        const suffix = isPayg ? (UNIT[val('paygUnit')] || '') : (FREQ[val('fixedFreq')] || '');
+        let suffix;
+        if (isPayg) {
+          suffix = UNIT[val('paygUnit')] || '';
+        } else {
+          const f = val('fixedFreq');
+          suffix = FREQ[f] || '';
+          // Fixed rate is always settled monthly; flag it when the rate basis is sub-monthly.
+          if (['Hourly', 'Daily', 'Weekly', 'Bi-weekly'].indexOf(f) !== -1) suffix += ' · paid monthly';
+        }
         if (!amount) { wrap.hidden = true; return; }
         const money = (SYM[cur] || (cur ? cur + ' ' : '')) + amount;
         wrap.hidden = false;
