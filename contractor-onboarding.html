@@ -608,7 +608,7 @@
               <button type="button" class="option-card" data-value="payg">
                 <span class="option-card-body">
                   <span class="option-card-title">Pay as you go</span>
-                  <span class="option-card-desc">Billed for time or work done.</span>
+                  <span class="option-card-desc">Hourly or daily rate, paid monthly for time worked.</span>
                 </span>
               </button>
             </div>
@@ -668,7 +668,6 @@
                 <option value="" disabled selected hidden></option>
                 <option>Per hour</option>
                 <option>Per day</option>
-                <option>Per milestone</option>
               </select>
               <label>Billing unit</label>
             </div>
@@ -995,7 +994,7 @@
       if (!grp || !preview) return;
       const SYM = { USD: '$', INR: '₹', EUR: '€', GBP: '£', SGD: 'S$', AUD: 'A$' };
       const FREQ = { 'Monthly': '/ month', 'Weekly': '/ week', 'Bi-weekly': '/ 2 weeks', 'Per milestone': '/ milestone', 'One-time': 'one-time' };
-      const UNIT = { 'Per hour': '/ hour', 'Per day': '/ day', 'Per milestone': '/ milestone' };
+      const UNIT = { 'Per hour': '/ hour · paid monthly', 'Per day': '/ day · paid monthly' };
       const amt = v => { const n = parseFloat(v); return isFinite(n) && n > 0 ? n.toLocaleString('en-US') : ''; };
       const val = id => { const el = document.getElementById(id); return el ? el.value : ''; };
       function render() {
