@@ -697,7 +697,9 @@
             </div>
           </div>
 
-          <div class="pay-callout" id="payCallout" hidden></div>
+          <div class="pay-summary" id="payCalloutWrap" hidden style="margin-top:18px;">
+            <div class="pay-row"><span>Payment</span><span id="payCallout">—</span></div>
+          </div>
         </div>
       </div>
 
@@ -1010,7 +1012,8 @@
     (function () {
       const grp = document.getElementById('contractType');
       const callout = document.getElementById('payCallout');
-      if (!grp || !callout) return;
+      const wrap = document.getElementById('payCalloutWrap');
+      if (!grp || !callout || !wrap) return;
       const SYM = { USD: '$', INR: '₹', EUR: '€', GBP: '£', SGD: 'S$', AUD: 'A$' };
       const FREQ = { 'Hourly': '/ hour', 'Daily': '/ day', 'Weekly': '/ week', 'Bi-weekly': '/ 2 weeks', 'Monthly': '/ month', 'Per milestone': '/ milestone' };
       const FREQWORD = { 'Weekly': 'weekly', 'Bi-weekly': 'every 2 weeks', 'Monthly': 'monthly' };
@@ -1025,12 +1028,12 @@
         const fSym = document.getElementById('fixedSym'), pSym = document.getElementById('paygSym');
         if (fSym) fSym.textContent = SYM[fc] || '$';
         if (pSym) pSym.textContent = SYM[pc] || '$';
-        let text = '';
+        let value = '';
         if (isPayg) {
           const amount = fmt(val('paygRate'));
           if (amount) {
             const u = segVal('paygUnitSeg');
-            text = 'This contractor bills <strong>' + (SYM[pc] || '') + amount + (UNIT[u] ? ' ' + UNIT[u] : '') + '</strong>. Paid as invoiced.';
+            value = (SYM[pc] || '') + amount + (UNIT[u] ? ' ' + UNIT[u] : '') + ' · as invoiced';
           }
         } else {
           const amount = fmt(val('fixedAmount'));
@@ -1039,12 +1042,12 @@
             const money = (SYM[fc] || '') + amount;
             const rateStr = (u === 'Other' || !FREQ[u]) ? money : (money + ' ' + FREQ[u]);
             const fw = FREQWORD[segVal('fixedFreqSeg')] || '';
-            text = "You'll pay this contractor <strong>" + rateStr + "</strong>" + (fw ? ", paid <strong>" + fw + "</strong>." : ".");
+            value = rateStr + (fw ? ' · paid ' + fw : '');
           }
         }
-        if (!text) { callout.hidden = true; return; }
-        callout.hidden = false;
-        callout.innerHTML = text;
+        if (!value) { wrap.hidden = true; return; }
+        wrap.hidden = false;
+        callout.textContent = value;
       }
       ['fixedCurrency', 'fixedAmount', 'fixedUnit', 'paygCurrency', 'paygRate'].forEach(id => {
         const el = document.getElementById(id);
