@@ -997,7 +997,7 @@
       if (!grp || !preview || !wrap) return;
       const SYM = { USD: '$', INR: '₹', EUR: '€', GBP: '£', SGD: 'S$', AUD: 'A$' };
       const FREQ = { 'Hourly': '/ hour', 'Daily': '/ day', 'Weekly': '/ week', 'Bi-weekly': '/ 2 weeks', 'Monthly': '/ month', 'Per milestone': '/ milestone', 'One-time': 'one-time' };
-      const UNIT = { 'Per hour': '/ hour · paid anytime', 'Per day': '/ day · paid anytime' };
+      const UNIT = { 'Per hour': '/ hour', 'Per day': '/ day' };
       const amt = v => { const n = parseFloat(v); return isFinite(n) && n > 0 ? n.toLocaleString('en-US') : ''; };
       const val = id => { const el = document.getElementById(id); return el ? el.value : ''; };
       function render() {
