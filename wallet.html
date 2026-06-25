@@ -401,11 +401,10 @@
 
       // Time submenu toggle (matches other portal pages)
       const tp = document.getElementById('timeParent');
-      const tc = document.getElementById('timeChildren');
-      if (tp && tc) tp.addEventListener('click', function () {
-        tp.classList.toggle('open');
-        tc.style.display = tp.classList.contains('open') ? 'flex' : 'none';
-      });
+      if (tp) {
+        tp.style.cursor = 'pointer';
+        tp.addEventListener('click', function () { location.href = 'time-leaves.html'; });
+      }
     })();
   </script>
 </body>
