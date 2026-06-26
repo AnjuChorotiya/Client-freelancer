@@ -730,6 +730,25 @@
                 <span class="switch-track"></span>
               </span>
             </label>
+
+            <div id="firstInvoiceField" style="margin-top:24px;" hidden>
+              <div class="prh">
+                <div class="prh-title">First invoice date</div>
+                <div class="prh-sub">Set the date the contractor's first invoice is generated.</div>
+              </div>
+              <div class="fl-field float pay-date-field rate-cycle">
+                <input id="firstPaymentDate" type="date" placeholder=" ">
+                <span class="pay-date-value placeholder" id="payDateValue">Select a date</span>
+                <svg class="pdt-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+                <label>First invoice date</label>
+              </div>
+              <p class="pay-note" id="payNote" hidden></p>
+              <div class="pay-summary" style="margin-top:14px;">
+                <div class="pay-row"><span>Invoice date</span><span id="invoiceDate">—</span></div>
+                <div class="pay-row"><span>Payment due date</span><span id="dueDate">—</span></div>
+                <div class="pay-row"><span>Contractor payment date</span><span id="contractorPayDate">—</span></div>
+              </div>
+            </div>
           </div>
 
           <!-- Pay as you go (same config as fixed, no billing cycle) -->
@@ -776,24 +795,6 @@
         </div>
       </div>
 
-      <div class="section-card">
-        <div class="section-title">Authorized Signatory</div>
-        <div class="section-desc">Enter the details of the person from <strong>your organization</strong> who is authorized to sign this agreement on the company's behalf. They'll receive the agreement for e-signature via our secure signature partner.</div>
-        <div class="fields">
-          <div class="fl-field">
-            <input type="text" placeholder=" ">
-            <label>Full legal name</label>
-          </div>
-          <div class="fl-field">
-            <input type="email" placeholder=" ">
-            <label>Email address</label>
-          </div>
-          <div class="fl-field">
-            <input type="text" placeholder=" ">
-            <label>Designation / Job title</label>
-          </div>
-        </div>
-      </div>
     </div>
 
     <!-- STEP 3: GST & TAX APPLICABILITY -->
@@ -841,7 +842,7 @@
     </div>
 
     <!-- STEP 4: SET UP CONTRACTOR AGREEMENT -->
-    <div class="step" data-step="5">
+    <div class="step" data-step="4">
       <div class="page-heading">
         <h1>Review your contractor agreement</h1>
         <p>Wisemonk signs this agreement directly with your contractor. Review the template below before we send it for signature.</p>
@@ -869,60 +870,6 @@
         </div>
       </div>
 
-    </div>
-
-    <!-- STEP 5: INVOICING (FINAL) -->
-    <div class="step" data-step="4">
-      <div class="page-heading">
-        <h1>How should invoices be raised?</h1>
-        <p>Choose how invoices are raised for this contractor. You can change this any time later.</p>
-      </div>
-
-      <div class="section-card">
-        <div class="section-title">Invoicing</div>
-        <div class="section-desc">Choose how invoices are raised for this contractor.</div>
-        <div class="option-cards">
-          <button type="button" class="option-card selected" data-invoice="auto">
-            <span class="option-card-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-receipt-text"/></svg>
-            </span>
-            <span class="option-card-body">
-              <span class="option-card-title">Auto-generate monthly</span>
-              <span class="option-card-desc">Wisemonk generates and sends each invoice automatically — no action needed from the contractor.</span>
-            </span>
-            <span class="option-card-radio"></span>
-          </button>
-          <button type="button" class="option-card" data-invoice="request">
-            <span class="option-card-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-document-upload"/></svg>
-            </span>
-            <span class="option-card-body">
-              <span class="option-card-title">On contractor request</span>
-              <span class="option-card-desc">The contractor submits an invoice each cycle, which you approve before payout.</span>
-            </span>
-            <span class="option-card-radio"></span>
-          </button>
-        </div>
-
-        <div id="firstInvoiceField" style="margin-top:28px;">
-          <div class="section-title">First invoice date</div>
-          <div class="section-desc">Set the date the contractor's first invoice is generated.</div>
-
-          <div class="fl-field float pay-date-field">
-            <input id="firstPaymentDate" type="date" placeholder=" ">
-            <span class="pay-date-value placeholder" id="payDateValue">Select a date</span>
-            <svg class="pdt-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
-            <label>First invoice date</label>
-          </div>
-          <p class="pay-note" id="payNote" hidden></p>
-
-          <div class="pay-summary">
-            <div class="pay-row"><span>Invoice date</span><span id="invoiceDate">—</span></div>
-            <div class="pay-row"><span>Payment due date</span><span id="dueDate">—</span></div>
-            <div class="pay-row"><span>Contractor payment date</span><span id="contractorPayDate">—</span></div>
-          </div>
-        </div>
-      </div>
     </div>
 
   </main>
@@ -992,7 +939,6 @@
     const nextLabels = [
       'Contract & payment terms',
       'GST & tax applicability',
-      'Invoicing',
       'Review agreement',
       'Finish'
     ];
@@ -1138,16 +1084,13 @@
       });
     });
 
-    // First-invoice-date field shows only when invoices are auto-generated.
+    // First invoice date shows only when "Auto-generate invoices" is on.
     (function () {
+      const toggle = document.getElementById('autoInvoice');
       const field = document.getElementById('firstInvoiceField');
-      const grp = document.querySelector('.option-cards');
-      if (!field || !grp) return;
-      function sync() {
-        const sel = grp.querySelector('.option-card.selected');
-        field.style.display = (sel && sel.dataset.invoice === 'auto') ? '' : 'none';
-      }
-      grp.querySelectorAll('.option-card').forEach(c => c.addEventListener('click', sync));
+      if (!toggle || !field) return;
+      const sync = () => { field.hidden = !toggle.checked; };
+      toggle.addEventListener('change', sync);
       sync();
     })();
 
