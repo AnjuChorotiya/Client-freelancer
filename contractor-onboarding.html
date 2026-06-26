@@ -687,6 +687,7 @@
                   <option>Hour</option>
                   <option>Day</option>
                   <option>Week</option>
+                  <option>2 weeks</option>
                   <option>Month</option>
                   <option>Milestone</option>
                 </select>
@@ -740,6 +741,7 @@
                   <option>Hour</option>
                   <option>Day</option>
                   <option>Week</option>
+                  <option>2 weeks</option>
                   <option>Month</option>
                   <option>Milestone</option>
                 </select>
@@ -1063,7 +1065,7 @@
       const grp = document.getElementById('contractType');
       if (!grp) return;
       const SYM = { USD: '$', INR: '₹', EUR: '€', GBP: '£', SGD: 'S$', AUD: 'A$' };
-      const UNITABBR = { 'Hour': '/hr', 'Day': '/day', 'Week': '/wk', 'Month': '/mo', 'Milestone': '/milestone' };
+      const UNITABBR = { 'Hour': '/hr', 'Day': '/day', 'Week': '/wk', '2 weeks': '/2wk', 'Month': '/mo', 'Milestone': '/milestone' };
       const UNIT = { 'Per hour': '/ hour', 'Per day': '/ day', 'Per milestone': '/ milestone' };
       const fmt = v => { const n = parseFloat(v); return isFinite(n) && n > 0 ? n.toLocaleString('en-US', { maximumFractionDigits: 2 }) : ''; };
       const val = id => { const el = document.getElementById(id); return el ? el.value : ''; };
