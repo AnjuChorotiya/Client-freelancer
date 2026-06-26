@@ -694,7 +694,7 @@
               </div>
             </div>
             <div class="pay-summary" id="fixedSummaryWrap" hidden style="margin-top:0;">
-              <div class="pay-row"><span>Payment rate</span><span id="fixedSummary">—</span></div>
+              <div class="pay-row"><span>Payment rate</span><span id="fixedSummary">/hr</span></div>
             </div>
             <div class="prh" style="margin-top:24px;">
               <div class="prh-title">Billing cycle</div>
@@ -1066,8 +1066,9 @@
         set('fixedSuffix', fc || '');
         // Fixed rate summary: amount + currency symbol + unit abbreviation.
         const fAmt = fmt(val('fixedAmount'));
-        if (fAmt) { set('fixedSummary', (SYM[fc] || '') + fAmt + (UNITABBR[val('fixedUnit')] || '')); show('fixedSummaryWrap', true); }
-        else show('fixedSummaryWrap', false);
+        const fAbbr = UNITABBR[val('fixedUnit')] || '';
+        set('fixedSummary', fAmt ? ((SYM[fc] || '') + fAmt + fAbbr) : fAbbr);
+        show('fixedSummaryWrap', true);
         // Pay-as-you-go summary.
         const pAmt = fmt(val('paygRate'));
         if (pAmt) {
