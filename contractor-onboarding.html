@@ -458,6 +458,19 @@
     .ab-sym { font-size: 16px; font-weight: 600; color: var(--text-muted); }
     .ab-input { flex: 1; min-width: 0; border: none; outline: none; background: none; padding: 13px 8px; font-family: inherit; font-size: 16px; font-weight: 500; color: var(--text-primary); }
     .ab-unit { font-size: 14px; font-weight: 600; color: var(--text-muted); white-space: nowrap; }
+    /* Payment rate sub-heading */
+    .prh { margin-bottom: 14px; }
+    .prh-title { font-size: 15px; font-weight: 700; color: var(--text-primary); }
+    .prh-sub { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
+    /* Payment rate input affixes (currency symbol + code) */
+    .rate-field2 input { padding-left: 26px; padding-right: 50px; }
+    .rate-affix2 { position: absolute; bottom: 9px; font-size: 16px; font-weight: 500; line-height: 1.2; pointer-events: none; }
+    .rf-prefix { left: 14px; color: var(--text-primary); }
+    .rf-suffix { right: 14px; color: var(--text-muted); }
+    /* Billing cycle segmented control */
+    .segmented { display: flex; gap: 4px; padding: 4px; background: var(--neutral-100, #EEF0F4); border-radius: 10px; max-width: 460px; }
+    .segmented button { flex: 1; padding: 9px 12px; border: none; background: transparent; border-radius: 7px; font-family: inherit; font-size: 14px; font-weight: 600; color: var(--text-secondary, #4A5160); cursor: pointer; transition: background 0.15s, color 0.15s, box-shadow 0.15s; }
+    .segmented button.active { background: #fff; color: var(--text-primary); font-weight: 700; box-shadow: 0 1px 3px rgba(0,0,0,0.12); }
     .pay-callout { margin-top: 18px; padding: 14px 16px; background: var(--brand-50); border-radius: 8px; font-size: 13.5px; color: var(--text-secondary, #4A5160); line-height: 1.55; }
     .pay-callout strong { color: var(--brand-600, #1A6FE0); font-weight: 700; }
 
@@ -639,42 +652,37 @@
 
           <!-- Fixed rate -->
           <div id="fixedFields">
+            <div class="prh">
+              <div class="prh-title">Payment rate</div>
+              <div class="prh-sub">Define how much the contractor will be paid.</div>
+            </div>
             <div class="pay-block">
-              <label class="pay-label">Currency &amp; unit</label>
-              <div class="rate-selects">
-                <select id="fixedCurrency" class="rate-select" aria-label="Currency">
-                  <option>USD</option>
-                  <option>INR</option>
-                  <option>EUR</option>
-                  <option>GBP</option>
-                  <option>SGD</option>
-                  <option>AUD</option>
-                </select>
-                <select id="fixedUnit" class="rate-select" aria-label="Unit">
-                  <option value="Hourly">Per hour</option>
-                  <option value="Daily">Per day</option>
-                  <option value="Weekly">Per week</option>
-                  <option value="Bi-weekly">Per 2 weeks</option>
-                  <option value="Monthly" selected>Per month</option>
-                  <option value="Per milestone">Per milestone</option>
-                  <option value="Other">Other</option>
-                </select>
+              <div class="fl-row">
+                <div class="fl-field">
+                  <select id="fixedCurrency">
+                    <option>USD</option>
+                    <option>INR</option>
+                    <option>EUR</option>
+                    <option>GBP</option>
+                    <option>SGD</option>
+                    <option>AUD</option>
+                  </select>
+                  <label>Currency</label>
+                </div>
+                <div class="fl-field float rate-field2">
+                  <span class="rate-affix2 rf-prefix" id="fixedSym">$</span>
+                  <input id="fixedAmount" type="number" placeholder=" ">
+                  <span class="rate-affix2 rf-suffix" id="fixedSuffix">USD</span>
+                  <label>Payment rate <span class="req">*</span></label>
+                </div>
               </div>
             </div>
             <div class="pay-block">
-              <label class="pay-label">Amount</label>
-              <div class="amount-box2">
-                <span class="ab-sym" id="fixedSym">$</span>
-                <input id="fixedAmount" type="number" class="ab-input" placeholder="0.00">
-                <span class="ab-unit" id="fixedUnitSuffix">/mo</span>
-              </div>
-            </div>
-            <div class="pay-block">
-              <label class="pay-label">Payment frequency</label>
-              <div class="seg" id="fixedFreqSeg">
-                <button type="button" data-value="Weekly">Weekly</button>
+              <label class="pay-label">Billing cycle</label>
+              <div class="segmented" id="fixedFreqSeg">
+                <button type="button" class="active" data-value="Weekly">Weekly</button>
                 <button type="button" data-value="Bi-weekly">Bi-weekly</button>
-                <button type="button" class="active" data-value="Monthly">Monthly</button>
+                <button type="button" data-value="Monthly">Monthly</button>
               </div>
             </div>
           </div>
@@ -1038,8 +1046,8 @@
         const fSym = document.getElementById('fixedSym'), pSym = document.getElementById('paygSym');
         if (fSym) fSym.textContent = SYM[fc] || '$';
         if (pSym) pSym.textContent = SYM[pc] || '$';
-        const fUnitSuffix = document.getElementById('fixedUnitSuffix');
-        if (fUnitSuffix) fUnitSuffix.textContent = UNITABBR[val('fixedUnit')] || '';
+        const fSuffix = document.getElementById('fixedSuffix');
+        if (fSuffix) fSuffix.textContent = fc || '';
         let value = '';
         if (isPayg) {
           const amount = fmt(val('paygRate'));
@@ -1050,18 +1058,16 @@
         } else {
           const amount = fmt(val('fixedAmount'));
           if (amount) {
-            const u = val('fixedUnit');
-            const money = (SYM[fc] || '') + amount;
-            const rateStr = (u === 'Other' || !FREQ[u]) ? money : (money + ' ' + FREQ[u]);
-            const fw = FREQWORD[segVal('fixedFreqSeg')] || '';
-            value = rateStr + (fw ? ' · paid ' + fw : '');
+            const cyc = segVal('fixedFreqSeg');
+            const per = { 'Weekly': '/ week', 'Bi-weekly': '/ 2 weeks', 'Monthly': '/ month' }[cyc] || '';
+            value = (SYM[fc] || '') + amount + (per ? ' ' + per : '');
           }
         }
         if (!value) { wrap.hidden = true; return; }
         wrap.hidden = false;
         callout.textContent = value;
       }
-      ['fixedCurrency', 'fixedAmount', 'fixedUnit', 'paygCurrency', 'paygRate'].forEach(id => {
+      ['fixedCurrency', 'fixedAmount', 'paygCurrency', 'paygRate'].forEach(id => {
         const el = document.getElementById(id);
         if (el) { el.addEventListener('change', render); el.addEventListener('input', render); }
       });
