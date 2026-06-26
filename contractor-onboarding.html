@@ -476,7 +476,7 @@
     .rate-cur { flex: 0 0 132px; }
     .rate-field2 { flex: 1 1 180px; }
     .rate-unit { flex: 0 0 132px; }
-    .rate-cycle { max-width: 360px; }
+    .rate-cycle { max-width: none; width: 100%; }
     .rate-per { font-size: 14px; color: var(--text-muted); }
     .pay-callout { margin-top: 18px; padding: 14px 16px; background: var(--brand-50); border-radius: 8px; font-size: 13.5px; color: var(--text-secondary, #4A5160); line-height: 1.55; }
     .pay-callout strong { color: var(--brand-600, #1A6FE0); font-weight: 700; }
@@ -710,14 +710,15 @@
             </div>
           </div>
 
-          <!-- Pay as you go -->
+          <!-- Pay as you go (same config as fixed, no billing cycle) -->
           <div id="paygFields" style="display:none;">
-            <div class="pay-block">
-              <label class="pay-label">Rate</label>
-              <div class="amount-box">
-                <span class="amount-sym" id="paygSym">$</span>
-                <input id="paygRate" type="number" class="amount-input" placeholder="0.00">
-                <select id="paygCurrency" class="amount-cur" aria-label="Currency">
+            <div class="prh">
+              <div class="prh-title">Payment rate</div>
+              <div class="prh-sub">Define how much the contractor will be paid.</div>
+            </div>
+            <div class="rate-line" style="margin-bottom:10px;">
+              <div class="fl-field rate-cur">
+                <select id="paygCurrency">
                   <option>USD</option>
                   <option>INR</option>
                   <option>EUR</option>
@@ -725,18 +726,28 @@
                   <option>SGD</option>
                   <option>AUD</option>
                 </select>
+                <label>Currency</label>
+              </div>
+              <div class="fl-field float rate-field2">
+                <span class="rate-affix2 rf-prefix" id="paygSym">$</span>
+                <input id="paygRate" type="number" placeholder=" ">
+                <span class="rate-affix2 rf-suffix" id="paygSuffix">USD</span>
+                <label>Payment rate <span class="req">*</span></label>
+              </div>
+              <span class="rate-per">per</span>
+              <div class="fl-field rate-unit">
+                <select id="paygUnit">
+                  <option>Hour</option>
+                  <option>Day</option>
+                  <option>Week</option>
+                  <option>Month</option>
+                  <option>Milestone</option>
+                </select>
+                <label>Unit</label>
               </div>
             </div>
-            <div class="pay-block">
-              <label class="pay-label">Billing unit</label>
-              <div class="seg" id="paygUnitSeg">
-                <button type="button" class="active" data-value="Per hour">Per hour</button>
-                <button type="button" data-value="Per day">Per day</button>
-                <button type="button" data-value="Per milestone">Per milestone</button>
-              </div>
-            </div>
-            <div class="pay-summary" id="paygSummaryWrap" hidden style="margin-top:16px;">
-              <div class="pay-row"><span>Rate</span><span id="paygSummary">—</span></div>
+            <div class="pay-summary" id="paygSummaryWrap" hidden style="margin-top:0;">
+              <div class="pay-row"><span>Payment rate</span><span id="paygSummary">/hr</span></div>
             </div>
           </div>
         </div>
@@ -1064,28 +1075,22 @@
         set('fixedSym', SYM[fc] || '$');
         set('paygSym', SYM[pc] || '$');
         set('fixedSuffix', fc || '');
+        set('paygSuffix', pc || '');
         // Fixed rate summary: amount + currency symbol + unit abbreviation.
         const fAmt = fmt(val('fixedAmount'));
         const fAbbr = UNITABBR[val('fixedUnit')] || '';
         set('fixedSummary', fAmt ? ((SYM[fc] || '') + fAmt + fAbbr) : fAbbr);
         show('fixedSummaryWrap', true);
-        // Pay-as-you-go summary.
+        // Pay-as-you-go summary (same format as fixed; no billing cycle).
         const pAmt = fmt(val('paygRate'));
-        if (pAmt) {
-          const u = segVal('paygUnitSeg');
-          set('paygSummary', (SYM[pc] || '') + pAmt + (UNIT[u] ? ' ' + UNIT[u] : '') + ' · as invoiced');
-          show('paygSummaryWrap', true);
-        } else show('paygSummaryWrap', false);
+        const pAbbr = UNITABBR[val('paygUnit')] || '';
+        set('paygSummary', pAmt ? ((SYM[pc] || '') + pAmt + pAbbr) : pAbbr);
+        show('paygSummaryWrap', true);
       }
-      ['fixedCurrency', 'fixedAmount', 'fixedUnit', 'fixedCycle', 'paygCurrency', 'paygRate'].forEach(id => {
+      ['fixedCurrency', 'fixedAmount', 'fixedUnit', 'fixedCycle', 'paygCurrency', 'paygRate', 'paygUnit'].forEach(id => {
         const el = document.getElementById(id);
         if (el) { el.addEventListener('change', render); el.addEventListener('input', render); }
       });
-      const seg = document.getElementById('paygUnitSeg');
-      if (seg) seg.querySelectorAll('button').forEach(b => b.addEventListener('click', () => {
-        seg.querySelectorAll('button').forEach(x => x.classList.toggle('active', x === b));
-        render();
-      }));
       grp.querySelectorAll('.option-card').forEach(c => c.addEventListener('click', render));
       render();
     })();
