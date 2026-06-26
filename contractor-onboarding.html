@@ -450,6 +450,14 @@
     .unit-box:focus-within { border-color: var(--brand-500); box-shadow: 0 0 0 1.5px var(--brand-100); }
     .unit-per { font-size: 14px; color: var(--text-muted); }
     .unit-select { border: none; outline: none; background: transparent; padding: 13px 36px 13px 4px; font-family: inherit; font-size: 15px; font-weight: 600; color: var(--text-primary); cursor: pointer; appearance: none; -webkit-appearance: none; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236A7282' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='m6 9 6 6 6-6'/></svg>"); background-repeat: no-repeat; background-position: right 12px center; background-size: 16px; }
+    .rate-selects { display: flex; gap: 10px; }
+    .rate-select { flex: 1; max-width: 220px; appearance: none; -webkit-appearance: none; border: 1px solid var(--border); border-radius: 8px; background-color: var(--card); background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236A7282' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='m6 9 6 6 6-6'/></svg>"); background-repeat: no-repeat; background-position: right 14px center; background-size: 16px; padding: 13px 38px 13px 16px; font-family: inherit; font-size: 15px; font-weight: 500; color: var(--text-primary); cursor: pointer; }
+    .rate-select:focus { border-color: var(--brand-500); box-shadow: 0 0 0 1.5px var(--brand-100); outline: none; }
+    .amount-box2 { display: flex; align-items: center; max-width: 360px; border: 1px solid var(--border); border-radius: 8px; background: var(--card); padding: 0 16px; transition: border-color 0.15s, box-shadow 0.15s; }
+    .amount-box2:focus-within { border-color: var(--brand-500); box-shadow: 0 0 0 1.5px var(--brand-100); }
+    .ab-sym { font-size: 16px; font-weight: 600; color: var(--text-muted); }
+    .ab-input { flex: 1; min-width: 0; border: none; outline: none; background: none; padding: 13px 8px; font-family: inherit; font-size: 16px; font-weight: 500; color: var(--text-primary); }
+    .ab-unit { font-size: 14px; font-weight: 600; color: var(--text-muted); white-space: nowrap; }
     .pay-callout { margin-top: 18px; padding: 14px 16px; background: var(--brand-50); border-radius: 8px; font-size: 13.5px; color: var(--text-secondary, #4A5160); line-height: 1.55; }
     .pay-callout strong { color: var(--brand-600, #1A6FE0); font-weight: 700; }
 
@@ -632,32 +640,33 @@
           <!-- Fixed rate -->
           <div id="fixedFields">
             <div class="pay-block">
-              <label class="pay-label">Payment amount</label>
-              <div class="rate-row">
-                <div class="amount-box">
-                  <span class="amount-sym" id="fixedSym">$</span>
-                  <input id="fixedAmount" type="number" class="amount-input" placeholder="0.00">
-                  <select id="fixedCurrency" class="amount-cur" aria-label="Currency">
-                    <option>USD</option>
-                    <option>INR</option>
-                    <option>EUR</option>
-                    <option>GBP</option>
-                    <option>SGD</option>
-                    <option>AUD</option>
-                  </select>
-                </div>
-                <div class="unit-box">
-                  <span class="unit-per">per</span>
-                  <select id="fixedUnit" class="unit-select" aria-label="Payment unit">
-                    <option value="Hourly">hour</option>
-                    <option value="Daily">day</option>
-                    <option value="Weekly">week</option>
-                    <option value="Bi-weekly">2 weeks</option>
-                    <option value="Monthly" selected>month</option>
-                    <option value="Per milestone">milestone</option>
-                    <option value="Other">other</option>
-                  </select>
-                </div>
+              <label class="pay-label">Currency &amp; unit</label>
+              <div class="rate-selects">
+                <select id="fixedCurrency" class="rate-select" aria-label="Currency">
+                  <option>USD</option>
+                  <option>INR</option>
+                  <option>EUR</option>
+                  <option>GBP</option>
+                  <option>SGD</option>
+                  <option>AUD</option>
+                </select>
+                <select id="fixedUnit" class="rate-select" aria-label="Unit">
+                  <option value="Hourly">Per hour</option>
+                  <option value="Daily">Per day</option>
+                  <option value="Weekly">Per week</option>
+                  <option value="Bi-weekly">Per 2 weeks</option>
+                  <option value="Monthly" selected>Per month</option>
+                  <option value="Per milestone">Per milestone</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+            </div>
+            <div class="pay-block">
+              <label class="pay-label">Amount</label>
+              <div class="amount-box2">
+                <span class="ab-sym" id="fixedSym">$</span>
+                <input id="fixedAmount" type="number" class="ab-input" placeholder="0.00">
+                <span class="ab-unit" id="fixedUnitSuffix">/mo</span>
               </div>
             </div>
             <div class="pay-block">
@@ -1017,6 +1026,7 @@
       const SYM = { USD: '$', INR: '₹', EUR: '€', GBP: '£', SGD: 'S$', AUD: 'A$' };
       const FREQ = { 'Hourly': '/ hour', 'Daily': '/ day', 'Weekly': '/ week', 'Bi-weekly': '/ 2 weeks', 'Monthly': '/ month', 'Per milestone': '/ milestone' };
       const FREQWORD = { 'Weekly': 'weekly', 'Bi-weekly': 'every 2 weeks', 'Monthly': 'monthly' };
+      const UNITABBR = { 'Hourly': '/hr', 'Daily': '/day', 'Weekly': '/wk', 'Bi-weekly': '/2wk', 'Monthly': '/mo', 'Per milestone': '/milestone', 'Other': '' };
       const UNIT = { 'Per hour': '/ hour', 'Per day': '/ day', 'Per milestone': '/ milestone' };
       const fmt = v => { const n = parseFloat(v); return isFinite(n) && n > 0 ? n.toLocaleString('en-US', { maximumFractionDigits: 2 }) : ''; };
       const val = id => { const el = document.getElementById(id); return el ? el.value : ''; };
@@ -1028,6 +1038,8 @@
         const fSym = document.getElementById('fixedSym'), pSym = document.getElementById('paygSym');
         if (fSym) fSym.textContent = SYM[fc] || '$';
         if (pSym) pSym.textContent = SYM[pc] || '$';
+        const fUnitSuffix = document.getElementById('fixedUnitSuffix');
+        if (fUnitSuffix) fUnitSuffix.textContent = UNITABBR[val('fixedUnit')] || '';
         let value = '';
         if (isPayg) {
           const amount = fmt(val('paygRate'));
