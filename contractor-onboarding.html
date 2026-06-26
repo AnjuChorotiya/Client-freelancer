@@ -471,6 +471,13 @@
     .segmented { display: flex; gap: 4px; padding: 4px; background: var(--neutral-100, #EEF0F4); border-radius: 10px; max-width: 460px; }
     .segmented button { flex: 1; padding: 9px 12px; border: none; background: transparent; border-radius: 7px; font-family: inherit; font-size: 14px; font-weight: 600; color: var(--text-secondary, #4A5160); cursor: pointer; transition: background 0.15s, color 0.15s, box-shadow 0.15s; }
     .segmented button.active { background: #fff; color: var(--text-primary); font-weight: 700; box-shadow: 0 1px 3px rgba(0,0,0,0.12); }
+    /* Payment rate line: currency + amount + per + unit */
+    .rate-line { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .rate-cur { flex: 0 0 132px; }
+    .rate-field2 { flex: 1 1 180px; }
+    .rate-unit { flex: 0 0 132px; }
+    .rate-cycle { max-width: 360px; }
+    .rate-per { font-size: 14px; color: var(--text-muted); }
     .pay-callout { margin-top: 18px; padding: 14px 16px; background: var(--brand-50); border-radius: 8px; font-size: 13.5px; color: var(--text-secondary, #4A5160); line-height: 1.55; }
     .pay-callout strong { color: var(--brand-600, #1A6FE0); font-weight: 700; }
 
@@ -656,34 +663,50 @@
               <div class="prh-title">Payment rate</div>
               <div class="prh-sub">Define how much the contractor will be paid.</div>
             </div>
-            <div class="pay-block">
-              <div class="fl-row">
-                <div class="fl-field">
-                  <select id="fixedCurrency">
-                    <option>USD</option>
-                    <option>INR</option>
-                    <option>EUR</option>
-                    <option>GBP</option>
-                    <option>SGD</option>
-                    <option>AUD</option>
-                  </select>
-                  <label>Currency</label>
-                </div>
-                <div class="fl-field float rate-field2">
-                  <span class="rate-affix2 rf-prefix" id="fixedSym">$</span>
-                  <input id="fixedAmount" type="number" placeholder=" ">
-                  <span class="rate-affix2 rf-suffix" id="fixedSuffix">USD</span>
-                  <label>Payment rate <span class="req">*</span></label>
-                </div>
+            <div class="rate-line" style="margin-bottom:10px;">
+              <div class="fl-field rate-cur">
+                <select id="fixedCurrency">
+                  <option>USD</option>
+                  <option>INR</option>
+                  <option>EUR</option>
+                  <option>GBP</option>
+                  <option>SGD</option>
+                  <option>AUD</option>
+                </select>
+                <label>Currency</label>
+              </div>
+              <div class="fl-field float rate-field2">
+                <span class="rate-affix2 rf-prefix" id="fixedSym">$</span>
+                <input id="fixedAmount" type="number" placeholder=" ">
+                <span class="rate-affix2 rf-suffix" id="fixedSuffix">USD</span>
+                <label>Payment rate <span class="req">*</span></label>
+              </div>
+              <span class="rate-per">per</span>
+              <div class="fl-field rate-unit">
+                <select id="fixedUnit">
+                  <option>Hour</option>
+                  <option>Day</option>
+                  <option>Week</option>
+                  <option>Month</option>
+                  <option>Milestone</option>
+                </select>
+                <label>Unit</label>
               </div>
             </div>
-            <div class="pay-block">
-              <label class="pay-label">Billing cycle</label>
-              <div class="segmented" id="fixedFreqSeg">
-                <button type="button" class="active" data-value="Weekly">Weekly</button>
-                <button type="button" data-value="Bi-weekly">Bi-weekly</button>
-                <button type="button" data-value="Monthly">Monthly</button>
-              </div>
+            <div class="pay-summary" id="fixedSummaryWrap" hidden style="margin-top:0;">
+              <div class="pay-row"><span>Payment rate</span><span id="fixedSummary">—</span></div>
+            </div>
+            <div class="prh" style="margin-top:24px;">
+              <div class="prh-title">Billing cycle</div>
+              <div class="prh-sub">Contractor will be invoiced on this schedule.</div>
+            </div>
+            <div class="fl-field rate-cycle">
+              <select id="fixedCycle">
+                <option>Weekly</option>
+                <option>Bi-weekly</option>
+                <option selected>Monthly</option>
+              </select>
+              <label>Select cycle</label>
             </div>
           </div>
 
@@ -712,10 +735,9 @@
                 <button type="button" data-value="Per milestone">Per milestone</button>
               </div>
             </div>
-          </div>
-
-          <div class="pay-summary" id="payCalloutWrap" hidden style="margin-top:18px;">
-            <div class="pay-row"><span>Payment</span><span id="payCallout">—</span></div>
+            <div class="pay-summary" id="paygSummaryWrap" hidden style="margin-top:16px;">
+              <div class="pay-row"><span>Rate</span><span id="paygSummary">—</span></div>
+            </div>
           </div>
         </div>
       </div>
@@ -1025,59 +1047,44 @@
       });
     })();
 
-    // Payment summary callout — plain-language line built from the selected values.
+    // Payment rate summary rows — show the rate for each mode as it's filled in.
     (function () {
       const grp = document.getElementById('contractType');
-      const callout = document.getElementById('payCallout');
-      const wrap = document.getElementById('payCalloutWrap');
-      if (!grp || !callout || !wrap) return;
+      if (!grp) return;
       const SYM = { USD: '$', INR: '₹', EUR: '€', GBP: '£', SGD: 'S$', AUD: 'A$' };
-      const FREQ = { 'Hourly': '/ hour', 'Daily': '/ day', 'Weekly': '/ week', 'Bi-weekly': '/ 2 weeks', 'Monthly': '/ month', 'Per milestone': '/ milestone' };
-      const FREQWORD = { 'Weekly': 'weekly', 'Bi-weekly': 'every 2 weeks', 'Monthly': 'monthly' };
-      const UNITABBR = { 'Hourly': '/hr', 'Daily': '/day', 'Weekly': '/wk', 'Bi-weekly': '/2wk', 'Monthly': '/mo', 'Per milestone': '/milestone', 'Other': '' };
+      const UNITABBR = { 'Hour': '/hr', 'Day': '/day', 'Week': '/wk', 'Month': '/mo', 'Milestone': '/milestone' };
       const UNIT = { 'Per hour': '/ hour', 'Per day': '/ day', 'Per milestone': '/ milestone' };
       const fmt = v => { const n = parseFloat(v); return isFinite(n) && n > 0 ? n.toLocaleString('en-US', { maximumFractionDigits: 2 }) : ''; };
       const val = id => { const el = document.getElementById(id); return el ? el.value : ''; };
       const segVal = id => { const a = document.querySelector('#' + id + ' .active'); return a ? a.dataset.value : ''; };
+      const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+      function show(id, on) { const el = document.getElementById(id); if (el) el.hidden = !on; }
       function render() {
-        const sel = grp.querySelector('.option-card.selected');
-        const isPayg = sel && sel.dataset.value === 'payg';
         const fc = val('fixedCurrency'), pc = val('paygCurrency');
-        const fSym = document.getElementById('fixedSym'), pSym = document.getElementById('paygSym');
-        if (fSym) fSym.textContent = SYM[fc] || '$';
-        if (pSym) pSym.textContent = SYM[pc] || '$';
-        const fSuffix = document.getElementById('fixedSuffix');
-        if (fSuffix) fSuffix.textContent = fc || '';
-        let value = '';
-        if (isPayg) {
-          const amount = fmt(val('paygRate'));
-          if (amount) {
-            const u = segVal('paygUnitSeg');
-            value = (SYM[pc] || '') + amount + (UNIT[u] ? ' ' + UNIT[u] : '') + ' · as invoiced';
-          }
-        } else {
-          const amount = fmt(val('fixedAmount'));
-          if (amount) {
-            const cyc = segVal('fixedFreqSeg');
-            const per = { 'Weekly': '/ week', 'Bi-weekly': '/ 2 weeks', 'Monthly': '/ month' }[cyc] || '';
-            value = (SYM[fc] || '') + amount + (per ? ' ' + per : '');
-          }
-        }
-        if (!value) { wrap.hidden = true; return; }
-        wrap.hidden = false;
-        callout.textContent = value;
+        set('fixedSym', SYM[fc] || '$');
+        set('paygSym', SYM[pc] || '$');
+        set('fixedSuffix', fc || '');
+        // Fixed rate summary: amount + currency symbol + unit abbreviation.
+        const fAmt = fmt(val('fixedAmount'));
+        if (fAmt) { set('fixedSummary', (SYM[fc] || '') + fAmt + (UNITABBR[val('fixedUnit')] || '')); show('fixedSummaryWrap', true); }
+        else show('fixedSummaryWrap', false);
+        // Pay-as-you-go summary.
+        const pAmt = fmt(val('paygRate'));
+        if (pAmt) {
+          const u = segVal('paygUnitSeg');
+          set('paygSummary', (SYM[pc] || '') + pAmt + (UNIT[u] ? ' ' + UNIT[u] : '') + ' · as invoiced');
+          show('paygSummaryWrap', true);
+        } else show('paygSummaryWrap', false);
       }
-      ['fixedCurrency', 'fixedAmount', 'paygCurrency', 'paygRate'].forEach(id => {
+      ['fixedCurrency', 'fixedAmount', 'fixedUnit', 'fixedCycle', 'paygCurrency', 'paygRate'].forEach(id => {
         const el = document.getElementById(id);
         if (el) { el.addEventListener('change', render); el.addEventListener('input', render); }
       });
-      ['fixedFreqSeg', 'paygUnitSeg'].forEach(id => {
-        const seg = document.getElementById(id);
-        if (seg) seg.querySelectorAll('button').forEach(b => b.addEventListener('click', () => {
-          seg.querySelectorAll('button').forEach(x => x.classList.toggle('active', x === b));
-          render();
-        }));
-      });
+      const seg = document.getElementById('paygUnitSeg');
+      if (seg) seg.querySelectorAll('button').forEach(b => b.addEventListener('click', () => {
+        seg.querySelectorAll('button').forEach(x => x.classList.toggle('active', x === b));
+        render();
+      }));
       grp.querySelectorAll('.option-card').forEach(c => c.addEventListener('click', render));
       render();
     })();
