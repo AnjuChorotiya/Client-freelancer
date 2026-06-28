@@ -1655,6 +1655,10 @@
           if (el.closest('#directorList')) return;
           if (el.id === 'uboSelect') return;
           const key = 's' + sn + '_' + (idx++);
+          // Never restore the signed-agreement upload — the file and its confirm
+          // checkboxes must start clean each session.
+          if (el.type === 'file') return;
+          if (el.id === 'uConfirm' || el.id === 'uTerms') return;
           if (el.type === 'radio') return;
           if (el.type === 'checkbox') { if (raw.checks && key in raw.checks) el.checked = raw.checks[key]; return; }
           if (raw.fields && key in raw.fields) {
