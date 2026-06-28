@@ -500,6 +500,58 @@
     .option-card.selected .option-card-radio { border-color: var(--brand-500); }
     .option-card.selected .option-card-radio::after { content: ''; position: absolute; inset: 3px; border-radius: 8px; background: var(--brand-500); }
 
+    /* Payment details — Deel-style rate line + summary */
+    .pay-block { margin-bottom: 18px; }
+    .pay-block:last-of-type { margin-bottom: 0; }
+    .pay-label { display: block; font-size: 13px; font-weight: 600; color: var(--text-secondary, #4A5160); margin-bottom: 8px; }
+    /* Payment rate sub-heading */
+    .prh { margin-bottom: 14px; }
+    .prh-title { font-size: 15px; font-weight: 700; color: var(--text-primary); }
+    .prh-sub { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
+    /* Payment rate input affixes (currency symbol + code) */
+    .rate-field2 input { padding-left: 26px; padding-right: 50px; }
+    .rate-affix2 { position: absolute; bottom: 9px; font-size: 16px; font-weight: 500; line-height: 1.2; pointer-events: none; }
+    .rf-prefix { left: 14px; color: var(--text-primary); }
+    .rf-suffix { right: 14px; color: var(--text-muted); }
+    /* Billing cycle segmented control */
+    .segmented { display: flex; gap: 4px; padding: 4px; background: var(--neutral-100, #EEF0F4); border-radius: 10px; max-width: 460px; }
+    .segmented button { flex: 1; padding: 9px 12px; border: none; background: transparent; border-radius: 7px; font-family: inherit; font-size: 14px; font-weight: 600; color: var(--text-secondary, #4A5160); cursor: pointer; transition: background 0.15s, color 0.15s, box-shadow 0.15s; }
+    .segmented button.active { background: #fff; color: var(--text-primary); font-weight: 700; box-shadow: 0 1px 3px rgba(0,0,0,0.12); }
+    /* Payment rate line: currency + amount + per + unit */
+    .rate-line { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .rate-cur { flex: 0 0 132px; }
+    .rate-field2 { flex: 1 1 180px; }
+    .rate-unit { flex: 0 0 132px; }
+    .rate-cycle { max-width: none; width: 100%; }
+    .rate-per { font-size: 14px; color: var(--text-muted); }
+    /* Auto-generate invoices toggle */
+    .toggle-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 18px; cursor: pointer; }
+    .toggle-text { display: flex; align-items: center; gap: 8px; flex: 1; min-width: 0; }
+    .toggle-title { font-size: 14px; font-weight: 700; color: var(--text-primary); }
+    .toggle-info { position: relative; display: inline-flex; flex-shrink: 0; cursor: help; color: var(--text-muted); }
+    .toggle-info svg { width: 16px; height: 16px; }
+    .toggle-info:hover, .toggle-info:focus { color: var(--brand-500); outline: none; }
+    .toggle-tip { position: absolute; bottom: calc(100% + 8px); left: -6px; width: 260px; background: #1A1D24; color: #fff; font-size: 12.5px; font-weight: 500; line-height: 1.45; padding: 9px 12px; border-radius: 8px; opacity: 0; visibility: hidden; transform: translateY(4px); transition: opacity 0.15s ease, transform 0.15s ease; z-index: 40; }
+    .toggle-info:hover .toggle-tip, .toggle-info:focus .toggle-tip { opacity: 1; visibility: visible; transform: none; }
+    .switch { position: relative; display: inline-block; width: 42px; height: 24px; flex-shrink: 0; }
+    .switch input { position: absolute; opacity: 0; width: 0; height: 0; }
+    .switch-track { position: absolute; inset: 0; background: var(--border-strong, #DDE1E9); border-radius: 100px; transition: background 0.2s; }
+    .switch-track::after { content: ''; position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; background: #fff; border-radius: 50%; box-shadow: 0 1px 3px rgba(0,0,0,0.25); transition: transform 0.2s; }
+    .switch input:checked + .switch-track { background: var(--brand-500); }
+    .switch input:checked + .switch-track::after { transform: translateX(18px); }
+    .pay-callout { margin-top: 18px; padding: 14px 16px; background: var(--brand-50); border-radius: 8px; font-size: 13.5px; color: var(--text-secondary, #4A5160); line-height: 1.55; }
+    .pay-callout strong { color: var(--brand-600, #1A6FE0); font-weight: 700; }
+    /* First payment date component — uses the branded custom calendar */
+    .pay-date-field input[type="date"] { color: transparent !important; cursor: pointer; }
+    .pay-date-value { position: absolute; left: 14px; top: 23px; font-size: 16px; font-weight: 600; color: var(--text-primary); pointer-events: none; }
+    .pay-date-value.placeholder { font-weight: 500; color: var(--text-muted); }
+    .pdt-chev { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; color: var(--text-muted); pointer-events: none; }
+    .pay-note { font-size: 12.5px; color: var(--text-muted); margin: 8px 4px 0; line-height: 1.5; }
+    .pay-summary { margin-top: 16px; display: flex; flex-direction: column; gap: 10px; }
+    .pay-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; background: #F5F6F8; border-radius: 8px; padding: 15px 18px; }
+    .pay-row > span:first-child { font-size: 14px; color: var(--text-muted); }
+    .pay-row > span:last-child { font-size: 14px; font-weight: 700; color: var(--text-primary); }
+
     /* Inline info icon (in a question label, not a field) */
     .info-icon.inline { position: relative; top: auto; right: auto; width: 18px; height: 18px; vertical-align: middle; display: inline-flex; align-items: center; justify-content: center; background: transparent; border: none; padding: 0; color: var(--text-muted); cursor: help; border-radius: 50%; transition: color 0.15s, background 0.15s; }
     .info-icon.inline:hover { color: var(--brand-500); background: var(--brand-50); }
@@ -736,63 +788,148 @@
         <div class="fields">
           <div>
             <div class="seg-label">Contract type</div>
-            <div class="seg" data-name="contractType">
-              <button type="button" class="active" data-value="fixed">Fixed rate</button>
-              <button type="button" data-value="payg">Pay as you go</button>
+            <div class="choice-cards" id="contractType">
+              <button type="button" class="option-card selected" data-value="fixed">
+                <span class="option-card-body">
+                  <span class="option-card-title">Fixed rate</span>
+                  <span class="option-card-desc">A set amount paid on a regular cycle.</span>
+                </span>
+              </button>
+              <button type="button" class="option-card" data-value="payg">
+                <span class="option-card-body">
+                  <span class="option-card-title">Pay as you go</span>
+                  <span class="option-card-desc">Hourly or daily rate, can be paid anytime.</span>
+                </span>
+              </button>
             </div>
           </div>
-          <div class="fl-row-3">
-            <div class="fl-field">
-              <select data-must>
-                <option value="" disabled selected hidden></option>
-                <option>USD</option>
-                <option>INR</option>
-                <option>EUR</option>
-                <option>GBP</option>
-                <option>SGD</option>
-                <option>AUD</option>
-              </select>
-              <label>Currency<span class="req">*</span></label>
+
+          <!-- Fixed rate -->
+          <div id="fixedFields">
+            <div class="prh">
+              <div class="prh-title">Payment rate</div>
+              <div class="prh-sub">Define how much the freelancer will be paid.</div>
             </div>
-            <div class="fl-field">
-              <input type="number" placeholder=" " data-must>
-              <label>Payment rate<span class="req">*</span></label>
+            <div class="rate-line" style="margin-bottom:10px;">
+              <div class="fl-field rate-cur">
+                <select id="fixedCurrency">
+                  <option>USD</option>
+                  <option>INR</option>
+                  <option>EUR</option>
+                  <option>GBP</option>
+                  <option>SGD</option>
+                  <option>AUD</option>
+                </select>
+                <label>Currency</label>
+              </div>
+              <div class="fl-field float rate-field2">
+                <span class="rate-affix2 rf-prefix" id="fixedSym">$</span>
+                <input id="fixedAmount" type="number" placeholder=" ">
+                <span class="rate-affix2 rf-suffix" id="fixedSuffix">USD</span>
+                <label>Payment rate <span class="req">*</span></label>
+              </div>
+              <span class="rate-per">per</span>
+              <div class="fl-field rate-unit">
+                <select id="fixedUnit">
+                  <option>Hour</option>
+                  <option>Day</option>
+                  <option>Week</option>
+                  <option>2 weeks</option>
+                  <option>Month</option>
+                  <option>Milestone</option>
+                </select>
+                <label>Unit</label>
+              </div>
             </div>
-            <div class="fl-field">
-              <select data-must>
-                <option value="" disabled selected hidden></option>
-                <option>Monthly</option>
+            <div class="pay-summary" id="fixedSummaryWrap" hidden style="margin-top:0;">
+              <div class="pay-row"><span>Payment rate</span><span id="fixedSummary">/hr</span></div>
+            </div>
+            <div class="prh" style="margin-top:24px;">
+              <div class="prh-title">Billing cycle</div>
+              <div class="prh-sub">Freelancer will be invoiced on this schedule.</div>
+            </div>
+            <div class="fl-field rate-cycle">
+              <select id="fixedCycle">
                 <option>Weekly</option>
                 <option>Bi-weekly</option>
-                <option>Per milestone</option>
-                <option>One-time</option>
+                <option selected>Monthly</option>
               </select>
-              <label>Frequency<span class="req">*</span></label>
+              <label>Select cycle</label>
+            </div>
+            <label class="toggle-row">
+              <span class="toggle-text">
+                <span class="toggle-info" tabindex="0" role="img" aria-label="About auto-generated invoices">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 8h.01"/></svg>
+                  <span class="toggle-tip">Wisemonk creates and sends each invoice on this schedule — no action needed from the freelancer.</span>
+                </span>
+                <span class="toggle-title">Auto-generate invoices from Wisemonk</span>
+              </span>
+              <span class="switch">
+                <input type="checkbox" id="autoInvoice" checked>
+                <span class="switch-track"></span>
+              </span>
+            </label>
+
+            <div id="firstInvoiceField" style="margin-top:24px;" hidden>
+              <div class="prh">
+                <div class="prh-title">First invoice date</div>
+                <div class="prh-sub">Set the date the freelancer's first invoice is generated.</div>
+              </div>
+              <div class="fl-field float pay-date-field rate-cycle">
+                <input id="firstPaymentDate" type="date" placeholder=" ">
+                <span class="pay-date-value placeholder" id="payDateValue">Select a date</span>
+                <svg class="pdt-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+                <label>First invoice date</label>
+              </div>
+              <p class="pay-note" id="payNote" hidden></p>
+              <div class="pay-summary" style="margin-top:14px;">
+                <div class="pay-row"><span>Invoice date</span><span id="invoiceDate">—</span></div>
+                <div class="pay-row"><span>Payment due date</span><span id="dueDate">—</span></div>
+                <div class="pay-row"><span>Freelancer payment date</span><span id="contractorPayDate">—</span></div>
+              </div>
             </div>
           </div>
-          <div class="fl-field">
-            <textarea placeholder=" "></textarea>
-            <label>Special clauses for the contract (if any)</label>
-            <p class="field-hint">This text will appear in the legal agreement.</p>
-          </div>
-        </div>
-      </div>
 
-      <div class="section-card">
-        <div class="section-title">Authorized Signatory</div>
-        <p class="section-desc">Enter the details of the person from <strong>your organization</strong> who is authorized to sign this agreement on the company's behalf. They'll receive the agreement for e-signature via our secure signature partner.</p>
-        <div class="fields">
-          <div class="fl-field">
-            <input type="text" placeholder=" " data-must>
-            <label>Full legal name<span class="req">*</span></label>
-          </div>
-          <div class="fl-field">
-            <input type="email" placeholder=" " data-must>
-            <label>Email address<span class="req">*</span></label>
-          </div>
-          <div class="fl-field">
-            <input type="text" placeholder=" " data-must>
-            <label>Designation / Job title<span class="req">*</span></label>
+          <!-- Pay as you go (same config as fixed, no billing cycle) -->
+          <div id="paygFields" style="display:none;">
+            <div class="prh">
+              <div class="prh-title">Payment rate</div>
+              <div class="prh-sub">Define how much the freelancer will be paid.</div>
+            </div>
+            <div class="rate-line" style="margin-bottom:10px;">
+              <div class="fl-field rate-cur">
+                <select id="paygCurrency">
+                  <option>USD</option>
+                  <option>INR</option>
+                  <option>EUR</option>
+                  <option>GBP</option>
+                  <option>SGD</option>
+                  <option>AUD</option>
+                </select>
+                <label>Currency</label>
+              </div>
+              <div class="fl-field float rate-field2">
+                <span class="rate-affix2 rf-prefix" id="paygSym">$</span>
+                <input id="paygRate" type="number" placeholder=" ">
+                <span class="rate-affix2 rf-suffix" id="paygSuffix">USD</span>
+                <label>Payment rate <span class="req">*</span></label>
+              </div>
+              <span class="rate-per">per</span>
+              <div class="fl-field rate-unit">
+                <select id="paygUnit">
+                  <option>Hour</option>
+                  <option>Day</option>
+                  <option>Week</option>
+                  <option>2 weeks</option>
+                  <option>Month</option>
+                  <option>Milestone</option>
+                </select>
+                <label>Unit</label>
+              </div>
+            </div>
+            <div class="pay-summary" id="paygSummaryWrap" hidden style="margin-top:0;">
+              <div class="pay-row"><span>Payment rate</span><span id="paygSummary">/hr</span></div>
+            </div>
           </div>
         </div>
       </div>
@@ -1556,6 +1693,121 @@
     // Catch every field edit (including dynamically-added director fields)
     document.addEventListener('input', saveState, true);
     document.addEventListener('change', saveState, true);
+
+    // Contract type — clearly switch between Fixed rate and Pay as you go field sets.
+    (function () {
+      const grp = document.getElementById('contractType');
+      const fixedFields = document.getElementById('fixedFields');
+      const paygFields = document.getElementById('paygFields');
+      if (!grp) return;
+      const cards = grp.querySelectorAll('.option-card');
+      cards.forEach(card => {
+        card.addEventListener('click', () => {
+          cards.forEach(c => c.classList.toggle('selected', c === card));
+          const isPayg = card.dataset.value === 'payg';
+          if (fixedFields) fixedFields.style.display = isPayg ? 'none' : '';
+          if (paygFields) paygFields.style.display = isPayg ? '' : 'none';
+        });
+      });
+    })();
+
+    // Payment rate summary rows — show the rate for each mode as it's filled in.
+    (function () {
+      const grp = document.getElementById('contractType');
+      if (!grp) return;
+      const SYM = { USD: '$', INR: '₹', EUR: '€', GBP: '£', SGD: 'S$', AUD: 'A$' };
+      const UNITABBR = { 'Hour': '/hr', 'Day': '/day', 'Week': '/wk', '2 weeks': '/2wk', 'Month': '/mo', 'Milestone': '/milestone' };
+      const fmt = v => { const n = parseFloat(v); return isFinite(n) && n > 0 ? n.toLocaleString('en-US', { maximumFractionDigits: 2 }) : ''; };
+      const val = id => { const el = document.getElementById(id); return el ? el.value : ''; };
+      const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+      function show(id, on) { const el = document.getElementById(id); if (el) el.hidden = !on; }
+      function render() {
+        const fc = val('fixedCurrency'), pc = val('paygCurrency');
+        set('fixedSym', SYM[fc] || '$');
+        set('paygSym', SYM[pc] || '$');
+        set('fixedSuffix', fc || '');
+        set('paygSuffix', pc || '');
+        // Fixed rate summary: amount + currency symbol + unit abbreviation.
+        const fAmt = fmt(val('fixedAmount'));
+        const fAbbr = UNITABBR[val('fixedUnit')] || '';
+        set('fixedSummary', fAmt ? ((SYM[fc] || '') + fAmt + fAbbr) : fAbbr);
+        show('fixedSummaryWrap', true);
+        // Pay-as-you-go summary (same format as fixed; no billing cycle).
+        const pAmt = fmt(val('paygRate'));
+        const pAbbr = UNITABBR[val('paygUnit')] || '';
+        set('paygSummary', pAmt ? ((SYM[pc] || '') + pAmt + pAbbr) : pAbbr);
+        show('paygSummaryWrap', true);
+      }
+      ['fixedCurrency', 'fixedAmount', 'fixedUnit', 'fixedCycle', 'paygCurrency', 'paygRate', 'paygUnit'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) { el.addEventListener('change', render); el.addEventListener('input', render); }
+      });
+      grp.querySelectorAll('.option-card').forEach(c => c.addEventListener('click', render));
+      render();
+    })();
+
+    // First invoice date shows only when "Auto-generate invoices" is on.
+    (function () {
+      const toggle = document.getElementById('autoInvoice');
+      const field = document.getElementById('firstInvoiceField');
+      if (!toggle || !field) return;
+      const sync = () => { field.hidden = !toggle.checked; };
+      toggle.addEventListener('change', sync);
+      sync();
+    })();
+
+    // First payment date — formatted picker, weekend note, derived invoice cycle.
+    (function () {
+      const input = document.getElementById('firstPaymentDate');
+      const valueEl = document.getElementById('payDateValue');
+      const note = document.getElementById('payNote');
+      const invoiceDateEl = document.getElementById('invoiceDate');
+      const dueDateEl = document.getElementById('dueDate');
+      const contractorPayEl = document.getElementById('contractorPayDate');
+      if (!input || !valueEl) return;
+
+      const M = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+      const DOW = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+      function ord(d) { if (d > 3 && d < 21) return 'th'; switch (d % 10) { case 1: return 'st'; case 2: return 'nd'; case 3: return 'rd'; default: return 'th'; } }
+      function fmt(dt) { return M[dt.getMonth()] + ' ' + dt.getDate() + ord(dt.getDate()) + ' ' + dt.getFullYear(); }
+      function parse(v) { const p = v.split('-'); return new Date(+p[0], +p[1] - 1, +p[2]); }
+
+      function update() {
+        if (!input.value) {
+          valueEl.textContent = 'Select a date'; valueEl.classList.add('placeholder');
+          note.hidden = true;
+          invoiceDateEl.textContent = '—'; dueDateEl.textContent = '—'; contractorPayEl.textContent = '—';
+          return;
+        }
+        const d = parse(input.value);
+        valueEl.textContent = fmt(d); valueEl.classList.remove('placeholder');
+        // Freelancer is paid at the end of the cycle month, moved to the Friday
+        // before if month-end lands on a weekend.
+        const monthRef = new Date(d); monthRef.setDate(d.getDate() + 7);
+        const payDay = new Date(monthRef.getFullYear(), monthRef.getMonth() + 1, 0);
+        const dd = payDay.getDay();
+        if (dd === 0) payDay.setDate(payDay.getDate() - 2);
+        else if (dd === 6) payDay.setDate(payDay.getDate() - 1);
+        // Payment is due 4 business days before the freelancer is paid (excluding weekends).
+        const due = new Date(payDay);
+        let bd = 0;
+        while (bd < 4) { due.setDate(due.getDate() - 1); const wd = due.getDay(); if (wd !== 0 && wd !== 6) bd++; }
+        invoiceDateEl.textContent = fmt(d);
+        dueDateEl.textContent = fmt(due);
+        contractorPayEl.textContent = fmt(payDay);
+        if (dd === 0 || dd === 6) {
+          note.hidden = false;
+          note.textContent = 'The freelancer will be paid on ' + DOW[payDay.getDay()] + ' ' + fmt(payDay) + ', since month-end falls on a weekend.';
+        } else {
+          note.hidden = true;
+        }
+      }
+
+      input.addEventListener('change', update);
+      // Default to a sample so the block previews fully.
+      input.value = '2026-03-06';
+      update();
+    })();
 
     restoreState();
     render();
