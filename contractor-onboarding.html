@@ -1140,14 +1140,17 @@
         }
         const d = parse(input.value);
         valueEl.textContent = fmt(d); valueEl.classList.remove('placeholder');
-        // Invoice is raised on the selected date; payment is due 7 days later.
-        const due = new Date(d); due.setDate(d.getDate() + 7);
-        // The contractor is paid at the end of the month the payment falls due in,
-        // brought forward to the Friday before if month-end lands on a weekend.
-        const payDay = new Date(due.getFullYear(), due.getMonth() + 1, 0);
+        // Contractor is paid at the end of the cycle month, moved to the Friday
+        // before if month-end lands on a weekend.
+        const monthRef = new Date(d); monthRef.setDate(d.getDate() + 7);
+        const payDay = new Date(monthRef.getFullYear(), monthRef.getMonth() + 1, 0);
         const dd = payDay.getDay();
         if (dd === 0) payDay.setDate(payDay.getDate() - 2);
         else if (dd === 6) payDay.setDate(payDay.getDate() - 1);
+        // Payment is due 4 business days before the contractor is paid (excluding weekends).
+        const due = new Date(payDay);
+        let bd = 0;
+        while (bd < 4) { due.setDate(due.getDate() - 1); const wd = due.getDay(); if (wd !== 0 && wd !== 6) bd++; }
         invoiceDateEl.textContent = fmt(d);
         dueDateEl.textContent = fmt(due);
         contractorPayEl.textContent = fmt(payDay);
