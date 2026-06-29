@@ -614,6 +614,7 @@
     /* Agreement step — intro line + in-card action buttons */
     .agreement-intro { font-size: 14px; color: var(--text-primary); margin-bottom: 18px; line-height: 1.55; }
     .agreement-actions { display: flex; justify-content: flex-end; gap: 12px; margin-top: 24px; }
+    .agree-error { margin: 8px 0 0; font-size: 12.5px; font-weight: 600; color: var(--danger-700, #B42318); }
     .btn-outline { height: 48px; padding: 0 22px; background: #fff; color: var(--brand-500); border: 1.5px solid var(--brand-500); border-radius: 8px; font-family: inherit; font-size: 16px; font-weight: 700; cursor: pointer; transition: background 0.15s; }
     .btn-outline:hover { background: var(--brand-50); }
 
@@ -1004,11 +1005,12 @@
             <input type="checkbox" id="agree1">
             <label for="agree1">I agree to <a href="#" class="terms-link">Wisemonk's terms</a> for managing freelancer payments on my behalf.</label>
           </div>
+          <p class="agree-error" id="agreeError" hidden>Please agree to Wisemonk's terms to continue.</p>
         </div>
 
         <div class="agreement-actions">
           <button type="button" class="btn-outline" id="openUploadScreen">Upload Signed Agreement</button>
-          <button type="button" class="save-btn" id="continueTemplate" disabled>Continue with Template</button>
+          <button type="button" class="save-btn" id="continueTemplate">Continue with Template</button>
         </div>
       </div>
 
@@ -1178,15 +1180,16 @@
       if (current > 1) { current--; render(); saveState(); }
     });
 
-    // ----- Agreement step: "Continue with Template" (gated by the terms checkbox) -----
+    // ----- Agreement step: "Continue with Template" (always active; validate the terms checkbox on click) -----
     (function () {
       const continueBtn = document.getElementById('continueTemplate');
       const agree1 = document.getElementById('agree1');
+      const err = document.getElementById('agreeError');
       if (!continueBtn) return;
-      const sync = () => { continueBtn.disabled = !(agree1 && agree1.checked); };
-      if (agree1) agree1.addEventListener('change', sync);
-      sync();
+      if (agree1) agree1.addEventListener('change', () => { if (agree1.checked && err) err.hidden = true; });
       continueBtn.addEventListener('click', () => {
+        if (agree1 && !agree1.checked) { if (err) err.hidden = false; return; }
+        if (err) err.hidden = true;
         if (current === total) {
           try { localStorage.removeItem(SAVE_KEY); } catch (e) {}
           location.href = 'freelancers.html';
