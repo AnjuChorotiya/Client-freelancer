@@ -521,6 +521,10 @@
     .rate-line { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
     .rate-cur { flex: 0 0 132px; }
     .rate-field2 { flex: 1 1 180px; }
+    /* Payment rate with the currency selector built into the field */
+    .rate-field3 { flex: 1 1 220px; }
+    .rate-field3 input { padding-left: 26px; padding-right: 86px; }
+    .rate-cur-inline { position: absolute; right: 10px; bottom: 7px; border: none; background: transparent; font-family: inherit; font-size: 14px; font-weight: 600; color: var(--text-primary); cursor: pointer; appearance: none; -webkit-appearance: none; padding: 0 20px 0 0; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236A7282' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='m6 9 6 6 6-6'/></svg>"); background-repeat: no-repeat; background-position: right center; background-size: 15px; }
     .rate-unit { flex: 0 0 132px; }
     .rate-cycle { max-width: none; width: 100%; }
     .rate-per { font-size: 14px; color: var(--text-muted); }
@@ -780,40 +784,23 @@
     <!-- STEP 2: CONTRACT & PAYMENT TERMS -->
     <div class="step" data-step="2">
       <div class="page-heading">
-        <h1>Contract &amp; payment terms</h1>
-        <p>Set how this freelancer is paid and the legal terms that govern the agreement.</p>
+        <h1>Payment terms</h1>
+        <p>Set how this freelancer is paid.</p>
       </div>
 
       <div class="section-card">
         <div class="section-title">Payment details</div>
         <div class="fields">
-          <div>
-            <div class="seg-label">Contract type</div>
-            <div class="choice-cards" id="contractType">
-              <button type="button" class="option-card selected" data-value="fixed">
-                <span class="option-card-body">
-                  <span class="option-card-title">Fixed rate</span>
-                  <span class="option-card-desc">A set amount paid on a regular cycle.</span>
-                </span>
-              </button>
-              <button type="button" class="option-card" data-value="payg">
-                <span class="option-card-body">
-                  <span class="option-card-title">Pay as you go</span>
-                  <span class="option-card-desc">Hourly or daily rate, can be paid anytime.</span>
-                </span>
-              </button>
-            </div>
-          </div>
-
-          <!-- Fixed rate -->
           <div id="fixedFields">
             <div class="prh">
               <div class="prh-title">Payment rate</div>
               <div class="prh-sub">Define how much the freelancer will be paid.</div>
             </div>
             <div class="rate-line" style="margin-bottom:10px;">
-              <div class="fl-field rate-cur">
-                <select id="fixedCurrency">
+              <div class="fl-field float rate-field3">
+                <span class="rate-affix2 rf-prefix" id="fixedSym">$</span>
+                <input id="fixedAmount" type="number" placeholder=" ">
+                <select id="fixedCurrency" class="rate-cur-inline" aria-label="Currency">
                   <option>USD</option>
                   <option>INR</option>
                   <option>EUR</option>
@@ -821,12 +808,6 @@
                   <option>SGD</option>
                   <option>AUD</option>
                 </select>
-                <label>Currency</label>
-              </div>
-              <div class="fl-field float rate-field2">
-                <span class="rate-affix2 rf-prefix" id="fixedSym">$</span>
-                <input id="fixedAmount" type="number" placeholder=" ">
-                <span class="rate-affix2 rf-suffix" id="fixedSuffix">USD</span>
                 <label>Payment rate <span class="req">*</span></label>
               </div>
               <span class="rate-per">per</span>
@@ -878,47 +859,6 @@
             </div>
           </div>
 
-          <!-- Pay as you go (same config as fixed, no billing cycle) -->
-          <div id="paygFields" style="display:none;">
-            <div class="prh">
-              <div class="prh-title">Payment rate</div>
-              <div class="prh-sub">Define how much the freelancer will be paid.</div>
-            </div>
-            <div class="rate-line" style="margin-bottom:10px;">
-              <div class="fl-field rate-cur">
-                <select id="paygCurrency">
-                  <option>USD</option>
-                  <option>INR</option>
-                  <option>EUR</option>
-                  <option>GBP</option>
-                  <option>SGD</option>
-                  <option>AUD</option>
-                </select>
-                <label>Currency</label>
-              </div>
-              <div class="fl-field float rate-field2">
-                <span class="rate-affix2 rf-prefix" id="paygSym">$</span>
-                <input id="paygRate" type="number" placeholder=" ">
-                <span class="rate-affix2 rf-suffix" id="paygSuffix">USD</span>
-                <label>Payment rate <span class="req">*</span></label>
-              </div>
-              <span class="rate-per">per</span>
-              <div class="fl-field rate-unit">
-                <select id="paygUnit">
-                  <option>Hour</option>
-                  <option>Day</option>
-                  <option>Week</option>
-                  <option>2 weeks</option>
-                  <option>Month</option>
-                  <option>Milestone</option>
-                </select>
-                <label>Unit</label>
-              </div>
-            </div>
-            <div class="pay-summary" id="paygSummaryWrap" hidden style="margin-top:0;">
-              <div class="pay-row"><span>Payment rate</span><span id="paygSummary">/hr</span></div>
-            </div>
-          </div>
         </div>
       </div>
     </div>
@@ -1571,7 +1511,7 @@
     });
 
     // ===== Auto-save: persist the user's progress to localStorage =====
-    const SAVE_KEY = 'wm_add_freelancer_v1';
+    const SAVE_KEY = 'wm_add_freelancer_v2';
     let saveTimer = null;
     let restoring = false;
 
@@ -1688,55 +1628,26 @@
     document.addEventListener('input', saveState, true);
     document.addEventListener('change', saveState, true);
 
-    // Contract type — clearly switch between Fixed rate and Pay as you go field sets.
+    // Payment rate summary — single fixed-rate mode (no contract-type switch).
     (function () {
-      const grp = document.getElementById('contractType');
-      const fixedFields = document.getElementById('fixedFields');
-      const paygFields = document.getElementById('paygFields');
-      if (!grp) return;
-      const cards = grp.querySelectorAll('.option-card');
-      cards.forEach(card => {
-        card.addEventListener('click', () => {
-          cards.forEach(c => c.classList.toggle('selected', c === card));
-          const isPayg = card.dataset.value === 'payg';
-          if (fixedFields) fixedFields.style.display = isPayg ? 'none' : '';
-          if (paygFields) paygFields.style.display = isPayg ? '' : 'none';
-        });
-      });
-    })();
-
-    // Payment rate summary rows — show the rate for each mode as it's filled in.
-    (function () {
-      const grp = document.getElementById('contractType');
-      if (!grp) return;
       const SYM = { USD: '$', INR: '₹', EUR: '€', GBP: '£', SGD: 'S$', AUD: 'A$' };
       const UNITABBR = { 'Hour': '/hr', 'Day': '/day', 'Week': '/wk', '2 weeks': '/2wk', 'Month': '/mo', 'Milestone': '/milestone' };
       const fmt = v => { const n = parseFloat(v); return isFinite(n) && n > 0 ? n.toLocaleString('en-US', { maximumFractionDigits: 2 }) : ''; };
       const val = id => { const el = document.getElementById(id); return el ? el.value : ''; };
       const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
-      function show(id, on) { const el = document.getElementById(id); if (el) el.hidden = !on; }
+      const show = (id, on) => { const el = document.getElementById(id); if (el) el.hidden = !on; };
       function render() {
-        const fc = val('fixedCurrency'), pc = val('paygCurrency');
+        const fc = val('fixedCurrency') || 'USD';
         set('fixedSym', SYM[fc] || '$');
-        set('paygSym', SYM[pc] || '$');
-        set('fixedSuffix', fc || '');
-        set('paygSuffix', pc || '');
-        // Fixed rate summary: amount + currency symbol + unit abbreviation.
         const fAmt = fmt(val('fixedAmount'));
         const fAbbr = UNITABBR[val('fixedUnit')] || '';
         set('fixedSummary', fAmt ? ((SYM[fc] || '') + fAmt + fAbbr) : fAbbr);
         show('fixedSummaryWrap', true);
-        // Pay-as-you-go summary (same format as fixed; no billing cycle).
-        const pAmt = fmt(val('paygRate'));
-        const pAbbr = UNITABBR[val('paygUnit')] || '';
-        set('paygSummary', pAmt ? ((SYM[pc] || '') + pAmt + pAbbr) : pAbbr);
-        show('paygSummaryWrap', true);
       }
-      ['fixedCurrency', 'fixedAmount', 'fixedUnit', 'fixedCycle', 'paygCurrency', 'paygRate', 'paygUnit'].forEach(id => {
+      ['fixedCurrency', 'fixedAmount', 'fixedUnit', 'fixedCycle'].forEach(id => {
         const el = document.getElementById(id);
         if (el) { el.addEventListener('change', render); el.addEventListener('input', render); }
       });
-      grp.querySelectorAll('.option-card').forEach(c => c.addEventListener('click', render));
       render();
     })();
 
