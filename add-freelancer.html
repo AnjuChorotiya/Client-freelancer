@@ -518,6 +518,12 @@
     .segmented button { flex: 1; padding: 9px 12px; border: none; background: transparent; border-radius: 7px; font-family: inherit; font-size: 14px; font-weight: 600; color: var(--text-secondary, #4A5160); cursor: pointer; transition: background 0.15s, color 0.15s, box-shadow 0.15s; }
     .segmented button.active { background: #fff; color: var(--text-primary); font-weight: 700; box-shadow: 0 1px 3px rgba(0,0,0,0.12); }
     /* Payment rate line: currency + amount + per + unit */
+    /* Amount field with built-in currency selector */
+    .amount-box { display: flex; align-items: stretch; flex: 1 1 240px; max-width: 340px; border: 1px solid var(--border); border-radius: 8px; background: var(--card); overflow: hidden; transition: border-color 0.15s, box-shadow 0.15s; }
+    .amount-box:focus-within { border-color: var(--brand-500); box-shadow: 0 0 0 1.5px var(--brand-100); }
+    .amount-sym { display: flex; align-items: center; padding-left: 16px; font-size: 16px; font-weight: 600; color: var(--text-muted); }
+    .amount-input { flex: 1; min-width: 0; border: none; outline: none; background: none; padding: 13px 10px 13px 6px; font-family: inherit; font-size: 16px; font-weight: 500; color: var(--text-primary); }
+    .amount-cur { border: none; outline: none; border-left: 1px solid var(--border); background-color: var(--neutral-50, #F7F8FA); padding: 0 34px 0 14px; font-family: inherit; font-size: 14px; font-weight: 600; color: var(--text-primary); cursor: pointer; appearance: none; -webkit-appearance: none; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236A7282' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='m6 9 6 6 6-6'/></svg>"); background-repeat: no-repeat; background-position: right 12px center; background-size: 15px; }
     .rate-line { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
     .rate-cur { flex: 0 0 132px; }
     .rate-field2 { flex: 1 1 180px; }
@@ -797,10 +803,10 @@
               <div class="prh-sub">Define how much the freelancer will be paid.</div>
             </div>
             <div class="rate-line" style="margin-bottom:10px;">
-              <div class="fl-field float rate-field3">
-                <span class="rate-affix2 rf-prefix" id="fixedSym">$</span>
-                <input id="fixedAmount" type="number" placeholder=" ">
-                <select id="fixedCurrency" class="rate-cur-inline" aria-label="Currency">
+              <div class="amount-box">
+                <span class="amount-sym" id="fixedSym">$</span>
+                <input id="fixedAmount" type="number" class="amount-input" placeholder="0.00">
+                <select id="fixedCurrency" class="amount-cur" aria-label="Currency">
                   <option>USD</option>
                   <option>INR</option>
                   <option>EUR</option>
@@ -808,7 +814,6 @@
                   <option>SGD</option>
                   <option>AUD</option>
                 </select>
-                <label>Payment rate <span class="req">*</span></label>
               </div>
               <span class="rate-per">per</span>
               <div class="fl-field rate-unit">
@@ -825,37 +830,6 @@
             </div>
             <div class="pay-summary" id="fixedSummaryWrap" hidden style="margin-top:0;">
               <div class="pay-row"><span>Payment rate</span><span id="fixedSummary">/hr</span></div>
-            </div>
-            <div class="prh" style="margin-top:24px;">
-              <div class="prh-title">Billing cycle</div>
-              <div class="prh-sub">Freelancer will be invoiced on this schedule.</div>
-            </div>
-            <div class="fl-field rate-cycle">
-              <select id="fixedCycle">
-                <option>Weekly</option>
-                <option>Bi-weekly</option>
-                <option selected>Monthly</option>
-              </select>
-              <label>Select cycle</label>
-            </div>
-
-            <div id="firstInvoiceField" style="margin-top:24px;">
-              <div class="prh">
-                <div class="prh-title">First invoice date</div>
-                <div class="prh-sub">Set the date the freelancer's first invoice is generated.</div>
-              </div>
-              <div class="fl-field float pay-date-field rate-cycle">
-                <input id="firstPaymentDate" type="date" placeholder=" ">
-                <span class="pay-date-value placeholder" id="payDateValue">Select a date</span>
-                <svg class="pdt-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
-                <label>First invoice date</label>
-              </div>
-              <p class="pay-note" id="payNote" hidden></p>
-              <div class="pay-summary" style="margin-top:14px;">
-                <div class="pay-row"><span>Invoice date</span><span id="invoiceDate">—</span></div>
-                <div class="pay-row"><span>Payment due date</span><span id="dueDate">—</span></div>
-                <div class="pay-row"><span>Freelancer payment date</span><span id="contractorPayDate">—</span></div>
-              </div>
             </div>
           </div>
 
