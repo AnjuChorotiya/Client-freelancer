@@ -665,6 +665,19 @@
     .save-btn { height: 48px; padding: 0 28px; background: var(--brand-500); color: #fff; border: none; border-radius: 8px; font-family: inherit; font-size: 16px; font-weight: 700; cursor: pointer; transition: background 0.15s; }
     .save-btn:hover:not(:disabled) { background: var(--brand-600); }
     .save-btn:disabled { background: #E5E7EB; color: #99A1AF; cursor: not-allowed; }
+
+    /* Congratulations modal */
+    .congrats-overlay { position: fixed; inset: 0; background: rgba(18,22,32,0.5); display: none; align-items: center; justify-content: center; z-index: 3000; padding: 24px; }
+    .congrats-overlay.open { display: flex; }
+    .congrats-modal { background: #fff; width: min(420px, 100%); border-radius: 16px; padding: 38px 34px 30px; text-align: center; box-shadow: 0 24px 60px -12px rgba(0,0,0,0.4); animation: congratsPop .26s cubic-bezier(.2,.9,.3,1.2); }
+    @keyframes congratsPop { from { transform: scale(.9); opacity: 0; } to { transform: none; opacity: 1; } }
+    .congrats-icon { width: 64px; height: 64px; margin: 0 auto 20px; border-radius: 50%; background: var(--brand-50, #EBF2FF); color: var(--brand-500); display: flex; align-items: center; justify-content: center; }
+    .congrats-icon svg { width: 32px; height: 32px; }
+    .congrats-title { font-size: 22px; font-weight: 700; color: var(--text-primary); margin: 0 0 10px; }
+    .congrats-text { font-size: 14px; color: var(--text-muted); line-height: 1.6; margin: 0 0 26px; }
+    .congrats-text strong { color: var(--text-primary); font-weight: 700; }
+    .congrats-btn { width: 100%; height: 48px; border: none; border-radius: 8px; background: var(--brand-500); color: #fff; font-family: inherit; font-size: 16px; font-weight: 700; cursor: pointer; transition: background .15s; }
+    .congrats-btn:hover { background: var(--brand-600); }
     .save-btn.success:not(:disabled) { background: var(--brand-500); }
 
     @media (max-width: 720px) {
@@ -835,6 +848,25 @@
 
         </div>
       </div>
+
+      <div class="section-card">
+        <div class="section-title">Authorized signatory</div>
+        <div class="section-desc">Details of the person from <strong>your organization</strong> authorized to sign this agreement on the company's behalf. They'll receive it for e-signature.</div>
+        <div class="fields">
+          <div class="fl-field">
+            <input type="text" placeholder=" " data-must>
+            <label>Full legal name<span class="req">*</span></label>
+          </div>
+          <div class="fl-field">
+            <input type="email" placeholder=" " data-must>
+            <label>Email address<span class="req">*</span></label>
+          </div>
+          <div class="fl-field">
+            <input type="text" placeholder=" ">
+            <label>Designation / Job title</label>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- STEP 3: GST & TAX APPLICABILITY -->
@@ -976,6 +1008,18 @@
     </div>
   </footer>
 
+  <!-- Congratulations modal (after inviting a freelancer) -->
+  <div class="congrats-overlay" id="congratsOverlay">
+    <div class="congrats-modal" role="dialog" aria-modal="true" aria-labelledby="congratsTitle">
+      <div class="congrats-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>
+      </div>
+      <h2 class="congrats-title" id="congratsTitle">Freelancer invited! 🎉</h2>
+      <p class="congrats-text"><strong id="congratsName">The freelancer</strong> has been sent the agreement to review and sign. We'll notify you the moment they accept.</p>
+      <button type="button" class="congrats-btn" id="congratsDone">Go to freelancers</button>
+    </div>
+  </div>
+
   <script>
     const steps = document.querySelectorAll('.step');
     const total = steps.length;
@@ -1065,10 +1109,26 @@
       });
     }
 
-    document.getElementById('saveBtn').addEventListener('click', () => {
-      if (current === total) {
+    // ----- Congratulations modal (after inviting a freelancer) -----
+    function showCongrats() {
+      const nameEl = document.querySelector('.step[data-step="1"] input[data-must]');
+      const cn = document.getElementById('congratsName');
+      if (cn) cn.textContent = (nameEl && nameEl.value.trim()) ? nameEl.value.trim() : 'The freelancer';
+      const ov = document.getElementById('congratsOverlay');
+      if (ov) ov.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    (function () {
+      const done = document.getElementById('congratsDone');
+      if (done) done.addEventListener('click', () => {
         try { localStorage.removeItem(SAVE_KEY); } catch (e) {}
         location.href = 'freelancers.html';
+      });
+    })();
+
+    document.getElementById('saveBtn').addEventListener('click', () => {
+      if (current === total) {
+        showCongrats();
         return;
       }
       current++;
@@ -1092,8 +1152,7 @@
         if (agree1 && !agree1.checked) { if (err) err.hidden = false; return; }
         if (err) err.hidden = true;
         if (current === total) {
-          try { localStorage.removeItem(SAVE_KEY); } catch (e) {}
-          location.href = 'freelancers.html';
+          showCongrats();
         } else {
           current++; render(); saveState();
         }
@@ -1174,8 +1233,7 @@
         screen.style.display = 'none';
         if (footerRight) footerRight.style.visibility = '';
         if (current === total) {
-          try { localStorage.removeItem(SAVE_KEY); } catch (e) {}
-          location.href = 'freelancers.html';
+          showCongrats();
         } else {
           current++; render(); saveState();
         }
