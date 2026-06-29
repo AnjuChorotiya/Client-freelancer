@@ -519,12 +519,15 @@
     .segmented button.active { background: #fff; color: var(--text-primary); font-weight: 700; box-shadow: 0 1px 3px rgba(0,0,0,0.12); }
     /* Payment rate line: currency + amount + per + unit */
     /* Amount field with built-in currency selector */
-    .amount-box { display: flex; align-items: stretch; flex: 1 1 240px; max-width: 340px; border: 1px solid var(--border); border-radius: 8px; background: var(--card); overflow: hidden; transition: border-color 0.15s, box-shadow 0.15s; }
+    .amount-box { display: flex; align-items: center; flex: 1 1 240px; max-width: 340px; height: 48px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 8px; background: var(--card); overflow: hidden; transition: border-color 0.15s, box-shadow 0.15s; }
     .amount-box:focus-within { border-color: var(--brand-500); box-shadow: 0 0 0 1.5px var(--brand-100); }
     .amount-sym { display: flex; align-items: center; padding-left: 16px; font-size: 16px; font-weight: 600; color: var(--text-muted); }
-    .amount-input { flex: 1; min-width: 0; border: none; outline: none; background: none; padding: 13px 10px 13px 6px; font-family: inherit; font-size: 16px; font-weight: 500; color: var(--text-primary); }
-    .amount-cur { border: none; outline: none; border-left: 1px solid var(--border); background-color: var(--neutral-50, #F7F8FA); padding: 0 34px 0 14px; font-family: inherit; font-size: 14px; font-weight: 600; color: var(--text-primary); cursor: pointer; appearance: none; -webkit-appearance: none; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236A7282' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='m6 9 6 6 6-6'/></svg>"); background-repeat: no-repeat; background-position: right 12px center; background-size: 15px; }
+    .amount-input { flex: 1; min-width: 0; height: 100%; border: none; outline: none; background: none; padding: 0 10px 0 6px; font-family: inherit; font-size: 16px; font-weight: 500; color: var(--text-primary); }
+    .amount-cur { align-self: stretch; border: none; outline: none; border-left: 1px solid var(--border); background-color: var(--neutral-50, #F7F8FA); padding: 0 34px 0 14px; font-family: inherit; font-size: 14px; font-weight: 600; color: var(--text-primary); cursor: pointer; appearance: none; -webkit-appearance: none; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236A7282' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='m6 9 6 6 6-6'/></svg>"); background-repeat: no-repeat; background-position: right 12px center; background-size: 15px; }
+    .unit-box { flex: 0 0 150px; height: 48px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 8px; background-color: var(--card); padding: 0 36px 0 14px; font-family: inherit; font-size: 15px; font-weight: 500; color: var(--text-primary); cursor: pointer; appearance: none; -webkit-appearance: none; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236A7282' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='m6 9 6 6 6-6'/></svg>"); background-repeat: no-repeat; background-position: right 12px center; background-size: 15px; }
+    .unit-box:focus { border-color: var(--brand-500); box-shadow: 0 0 0 1.5px var(--brand-100); outline: none; }
     .rate-line { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .rate-per { align-self: center; font-size: 14px; color: var(--text-muted); }
     .rate-cur { flex: 0 0 132px; }
     .rate-field2 { flex: 1 1 180px; }
     /* Payment rate with the currency selector built into the field */
@@ -816,17 +819,14 @@
                 </select>
               </div>
               <span class="rate-per">per</span>
-              <div class="fl-field rate-unit">
-                <select id="fixedUnit">
-                  <option>Hour</option>
-                  <option>Day</option>
-                  <option>Week</option>
-                  <option>2 weeks</option>
-                  <option>Month</option>
-                  <option>Milestone</option>
-                </select>
-                <label>Unit</label>
-              </div>
+              <select id="fixedUnit" class="unit-box" aria-label="Unit">
+                <option>Hour</option>
+                <option>Day</option>
+                <option>Week</option>
+                <option>2 weeks</option>
+                <option>Month</option>
+                <option>Milestone</option>
+              </select>
             </div>
             <div class="pay-summary" id="fixedSummaryWrap" hidden style="margin-top:0;">
               <div class="pay-row"><span>Payment rate</span><span id="fixedSummary">/hr</span></div>
