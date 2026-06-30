@@ -765,7 +765,6 @@
               </div>
               <p class="pay-note" id="payNote" hidden></p>
               <div class="pay-summary" style="margin-top:14px;">
-                <div class="pay-row"><span>Invoice date</span><span id="invoiceDate">—</span></div>
                 <div class="pay-row"><span>Payment due date</span><span id="dueDate">—</span></div>
                 <div class="pay-row"><span>Contractor payment date</span><span id="contractorPayDate">—</span></div>
               </div>
@@ -1187,7 +1186,6 @@
       const input = document.getElementById('firstPaymentDate');
       const valueEl = document.getElementById('payDateValue');
       const note = document.getElementById('payNote');
-      const invoiceDateEl = document.getElementById('invoiceDate');
       const dueDateEl = document.getElementById('dueDate');
       const contractorPayEl = document.getElementById('contractorPayDate');
       if (!input || !valueEl) return;
@@ -1202,7 +1200,7 @@
         if (!input.value) {
           valueEl.textContent = 'Select a date'; valueEl.classList.add('placeholder');
           note.hidden = true;
-          invoiceDateEl.textContent = '—'; dueDateEl.textContent = '—'; contractorPayEl.textContent = '—';
+          dueDateEl.textContent = '—'; contractorPayEl.textContent = '—';
           return;
         }
         const d = parse(input.value);
@@ -1218,7 +1216,6 @@
         const due = new Date(payDay);
         let bd = 0;
         while (bd < 4) { due.setDate(due.getDate() - 1); const wd = due.getDay(); if (wd !== 0 && wd !== 6) bd++; }
-        invoiceDateEl.textContent = fmt(d);
         dueDateEl.textContent = fmt(due);
         contractorPayEl.textContent = fmt(payDay);
         if (dd === 0 || dd === 6) {
