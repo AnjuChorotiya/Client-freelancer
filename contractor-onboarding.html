@@ -751,7 +751,6 @@
                 <div class="pay-summary" style="margin-top:14px;">
                   <div class="pay-row"><span id="estimateLabel">Monthly invoice amount</span><span id="estimateAmount">—</span></div>
                 </div>
-                <p class="pay-note" id="estimateNote" hidden></p>
               </div>
               <div class="prh" style="margin-top:24px;">
                 <div class="prh-title">First invoice date</div>
@@ -1093,14 +1092,12 @@
         const qtyInput = document.getElementById('defaultHours');
         const qtyLabel = document.getElementById('defaultQtyLabel');
         const amtEl = document.getElementById('estimateAmount');
-        const noteEl = document.getElementById('estimateNote');
         // Units without a clean monthly recurrence can't be auto-estimated.
         if (unit === 'Milestone' || unit === '2 weeks') { block.hidden = true; return; }
         block.hidden = false;
         if (unit === 'Month') {
           qtyWrap.style.display = 'none';
           amtEl.textContent = rate ? (sym + fmt(rate)) : '—';
-          noteEl.hidden = true;
           return;
         }
         qtyWrap.style.display = '';
@@ -1108,12 +1105,6 @@
         const qty = num(qtyInput && qtyInput.value);
         const total = rate * qty;
         amtEl.textContent = (rate && qty) ? (sym + fmt(total)) : '—';
-        if (rate && qty) {
-          noteEl.hidden = false;
-          noteEl.textContent = fmt(qty) + ' ' + (UNIT_NOUN[unit] || 'units') + ' × ' + sym + fmt(rate) + ' / ' + unit.toLowerCase() + ' — invoiced automatically each month.';
-        } else {
-          noteEl.hidden = true;
-        }
       }
 
       ['fixedCurrency', 'fixedAmount', 'fixedUnit', 'fixedCycle', 'paygCurrency', 'paygRate', 'paygUnit'].forEach(id => {
