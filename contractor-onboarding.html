@@ -739,7 +739,21 @@
             </label>
 
             <div id="firstInvoiceField" style="margin-top:24px;" hidden>
-              <div class="prh">
+              <div id="autoEstimateBlock">
+                <div class="prh">
+                  <div class="prh-title">Default monthly invoice</div>
+                  <div class="prh-sub">Wisemonk auto-generates this invoice every month. Hours can be adjusted on any individual invoice later.</div>
+                </div>
+                <div class="fl-field float rate-cycle" id="defaultQtyWrap">
+                  <input id="defaultHours" type="number" placeholder=" " value="160">
+                  <label id="defaultQtyLabel">Default hours / month</label>
+                </div>
+                <div class="pay-summary" style="margin-top:14px;">
+                  <div class="pay-row"><span id="estimateLabel">Monthly invoice amount</span><span id="estimateAmount">—</span></div>
+                </div>
+                <p class="pay-note" id="estimateNote" hidden></p>
+              </div>
+              <div class="prh" style="margin-top:24px;">
                 <div class="prh-title">First invoice date</div>
                 <div class="prh-sub">Set the date the contractor's first invoice is generated.</div>
               </div>
@@ -1062,11 +1076,64 @@
         const pAbbr = UNITABBR[val('paygUnit')] || '';
         set('paygSummary', pAmt ? ((SYM[pc] || '') + pAmt + pAbbr) : pAbbr);
         show('paygSummaryWrap', true);
+        renderEstimate();
       }
+
+      // Default monthly invoice estimate (shown when auto-generate is on).
+      const QTY_DEFAULTS = { 'Hour': 160, 'Day': 22, 'Week': 4 };
+      const QTY_LABELS = { 'Hour': 'Default hours / month', 'Day': 'Default days / month', 'Week': 'Default weeks / month' };
+      const UNIT_NOUN = { 'Hour': 'hours', 'Day': 'days', 'Week': 'weeks' };
+      const num = v => { const n = parseFloat(v); return isFinite(n) ? n : 0; };
+      function renderEstimate() {
+        const block = document.getElementById('autoEstimateBlock');
+        if (!block) return;
+        const unit = val('fixedUnit');
+        const sym = SYM[val('fixedCurrency')] || '$';
+        const rate = num(val('fixedAmount'));
+        const qtyWrap = document.getElementById('defaultQtyWrap');
+        const qtyInput = document.getElementById('defaultHours');
+        const qtyLabel = document.getElementById('defaultQtyLabel');
+        const amtEl = document.getElementById('estimateAmount');
+        const noteEl = document.getElementById('estimateNote');
+        // Units without a clean monthly recurrence can't be auto-estimated.
+        if (unit === 'Milestone' || unit === '2 weeks') { block.hidden = true; return; }
+        block.hidden = false;
+        if (unit === 'Month') {
+          qtyWrap.style.display = 'none';
+          amtEl.textContent = rate ? (sym + fmt(rate)) : '—';
+          noteEl.hidden = true;
+          return;
+        }
+        qtyWrap.style.display = '';
+        qtyLabel.textContent = QTY_LABELS[unit] || ('Default ' + (UNIT_NOUN[unit] || 'units') + ' / month');
+        const qty = num(qtyInput && qtyInput.value);
+        const total = rate * qty;
+        amtEl.textContent = (rate && qty) ? (sym + fmt(total)) : '—';
+        if (rate && qty) {
+          noteEl.hidden = false;
+          noteEl.textContent = fmt(qty) + ' ' + (UNIT_NOUN[unit] || 'units') + ' × ' + sym + fmt(rate) + ' / ' + unit.toLowerCase() + ' — invoiced automatically each month.';
+        } else {
+          noteEl.hidden = true;
+        }
+      }
+
       ['fixedCurrency', 'fixedAmount', 'fixedUnit', 'fixedCycle', 'paygCurrency', 'paygRate', 'paygUnit'].forEach(id => {
         const el = document.getElementById(id);
         if (el) { el.addEventListener('change', render); el.addEventListener('input', render); }
       });
+      // Reset the default quantity to the per-unit norm when the unit changes.
+      const unitSel = document.getElementById('fixedUnit');
+      const qtyInputEl = document.getElementById('defaultHours');
+      if (unitSel && qtyInputEl) {
+        unitSel.addEventListener('change', () => {
+          const d = QTY_DEFAULTS[unitSel.value];
+          if (d) qtyInputEl.value = d;
+          renderEstimate();
+        });
+      }
+      if (qtyInputEl) qtyInputEl.addEventListener('input', renderEstimate);
+      const autoTgl = document.getElementById('autoInvoice');
+      if (autoTgl) autoTgl.addEventListener('change', renderEstimate);
       grp.querySelectorAll('.option-card').forEach(c => c.addEventListener('click', render));
       render();
     })();
