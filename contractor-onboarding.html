@@ -679,17 +679,6 @@
               <div class="prh-sub">Define how much the contractor will be paid.</div>
             </div>
             <div class="rate-line" style="margin-bottom:10px;">
-              <div class="fl-field rate-cur">
-                <select id="fixedCurrency">
-                  <option>USD</option>
-                  <option>INR</option>
-                  <option>EUR</option>
-                  <option>GBP</option>
-                  <option>SGD</option>
-                  <option>AUD</option>
-                </select>
-                <label>Currency</label>
-              </div>
               <div class="fl-field float rate-field2">
                 <span class="rate-affix2 rf-prefix" id="fixedSym">$</span>
                 <input id="fixedAmount" type="number" placeholder=" " value="50">
@@ -777,17 +766,6 @@
               <div class="prh-sub">Define how much the contractor will be paid.</div>
             </div>
             <div class="rate-line" style="margin-bottom:10px;">
-              <div class="fl-field rate-cur">
-                <select id="paygCurrency">
-                  <option>USD</option>
-                  <option>INR</option>
-                  <option>EUR</option>
-                  <option>GBP</option>
-                  <option>SGD</option>
-                  <option>AUD</option>
-                </select>
-                <label>Currency</label>
-              </div>
               <div class="fl-field float rate-field2">
                 <span class="rate-affix2 rf-prefix" id="paygSym">$</span>
                 <input id="paygRate" type="number" placeholder=" ">
@@ -1059,7 +1037,8 @@
       const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
       function show(id, on) { const el = document.getElementById(id); if (el) el.hidden = !on; }
       function render() {
-        const fc = val('fixedCurrency'), pc = val('paygCurrency');
+        // Currency is fixed to USD (selector removed).
+        const fc = 'USD', pc = 'USD';
         set('fixedSym', SYM[fc] || '$');
         set('paygSym', SYM[pc] || '$');
         set('fixedSuffix', fc || '');
@@ -1086,7 +1065,7 @@
         const block = document.getElementById('autoEstimateBlock');
         if (!block) return;
         const unit = val('fixedUnit');
-        const sym = SYM[val('fixedCurrency')] || '$';
+        const sym = SYM['USD'];
         const rate = num(val('fixedAmount'));
         const qtyWrap = document.getElementById('defaultQtyWrap');
         const qtyInput = document.getElementById('defaultHours');
