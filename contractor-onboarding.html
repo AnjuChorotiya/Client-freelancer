@@ -463,10 +463,23 @@
     .prh-title { font-size: 15px; font-weight: 700; color: var(--text-primary); }
     .prh-sub { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
     /* Payment rate input affixes (currency symbol + code) */
-    .rate-field2 input { padding-left: 26px; padding-right: 50px; }
+    .rate-field2 input { padding-left: 26px; padding-right: 78px; }
     .rate-affix2 { position: absolute; bottom: 9px; font-size: 16px; font-weight: 500; line-height: 1.2; pointer-events: none; }
     .rf-prefix { left: 14px; color: var(--text-primary); }
     .rf-suffix { right: 14px; color: var(--text-muted); }
+    /* Inline currency dropdown inside the payment-rate field */
+    .rate-field2 .rf-cur {
+      position: absolute; right: 6px; bottom: 6px;
+      width: auto; height: auto;
+      padding: 4px 24px 4px 8px;
+      border: 1px solid transparent; border-radius: 6px;
+      background-color: transparent;
+      background-position: right 5px center; background-size: 14px;
+      font-size: 15px; font-weight: 500; color: var(--text-muted);
+      line-height: 1.2; cursor: pointer;
+    }
+    .rate-field2 .rf-cur:hover { background-color: var(--neutral-100, #EEF0F4); border-color: transparent; }
+    .rate-field2 .rf-cur:focus { border-color: transparent; box-shadow: none; }
     /* Billing cycle segmented control */
     .segmented { display: flex; gap: 4px; padding: 4px; background: var(--neutral-100, #EEF0F4); border-radius: 10px; max-width: 460px; }
     .segmented button { flex: 1; padding: 9px 12px; border: none; background: transparent; border-radius: 7px; font-family: inherit; font-size: 14px; font-weight: 600; color: var(--text-secondary, #4A5160); cursor: pointer; transition: background 0.15s, color 0.15s, box-shadow 0.15s; }
@@ -682,7 +695,14 @@
               <div class="fl-field float rate-field2">
                 <span class="rate-affix2 rf-prefix" id="fixedSym">$</span>
                 <input id="fixedAmount" type="number" placeholder=" " value="50">
-                <span class="rate-affix2 rf-suffix" id="fixedSuffix">USD</span>
+                <select class="rf-cur" id="fixedCurrency" aria-label="Currency">
+                  <option>USD</option>
+                  <option>INR</option>
+                  <option>EUR</option>
+                  <option>GBP</option>
+                  <option>SGD</option>
+                  <option>AUD</option>
+                </select>
                 <label>Payment rate <span class="req">*</span></label>
               </div>
               <span class="rate-per">per</span>
@@ -769,7 +789,14 @@
               <div class="fl-field float rate-field2">
                 <span class="rate-affix2 rf-prefix" id="paygSym">$</span>
                 <input id="paygRate" type="number" placeholder=" ">
-                <span class="rate-affix2 rf-suffix" id="paygSuffix">USD</span>
+                <select class="rf-cur" id="paygCurrency" aria-label="Currency">
+                  <option>USD</option>
+                  <option>INR</option>
+                  <option>EUR</option>
+                  <option>GBP</option>
+                  <option>SGD</option>
+                  <option>AUD</option>
+                </select>
                 <label>Payment rate <span class="req">*</span></label>
               </div>
               <span class="rate-per">per</span>
@@ -970,7 +997,7 @@
     });
 
     // Floating-label state for selects
-    document.querySelectorAll('.fl-field select').forEach(sel => {
+    document.querySelectorAll('.fl-field select:not(.rf-cur)').forEach(sel => {
       const sync = () => sel.classList.toggle('touched', !!sel.value);
       sync();
       sel.addEventListener('change', sync);
@@ -1037,12 +1064,9 @@
       const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
       function show(id, on) { const el = document.getElementById(id); if (el) el.hidden = !on; }
       function render() {
-        // Currency is fixed to USD (selector removed).
-        const fc = 'USD', pc = 'USD';
+        const fc = val('fixedCurrency') || 'USD', pc = val('paygCurrency') || 'USD';
         set('fixedSym', SYM[fc] || '$');
         set('paygSym', SYM[pc] || '$');
-        set('fixedSuffix', fc || '');
-        set('paygSuffix', pc || '');
         // Fixed rate summary: amount + currency symbol + unit abbreviation.
         const fAmt = fmt(val('fixedAmount'));
         const fAbbr = UNITABBR[val('fixedUnit')] || '';
@@ -1065,7 +1089,7 @@
         const block = document.getElementById('autoEstimateBlock');
         if (!block) return;
         const unit = val('fixedUnit');
-        const sym = SYM['USD'];
+        const sym = SYM[val('fixedCurrency')] || '$';
         const rate = num(val('fixedAmount'));
         const qtyWrap = document.getElementById('defaultQtyWrap');
         const qtyInput = document.getElementById('defaultHours');
@@ -1247,7 +1271,7 @@
         else if (e.key === 'Escape') closeMenu();
       });
     }
-    document.querySelectorAll('.fl-field select').forEach(enhanceSelect);
+    document.querySelectorAll('.fl-field select:not(.rf-cur)').forEach(enhanceSelect);
 
     // ----- Custom calendar date picker -----
     function pad(n) { return n < 10 ? '0' + n : '' + n; }
