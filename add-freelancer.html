@@ -509,10 +509,36 @@
     .prh-title { font-size: 15px; font-weight: 700; color: var(--text-primary); }
     .prh-sub { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
     /* Payment rate input affixes (currency symbol + code) */
-    .rate-field2 input { padding-left: 26px; padding-right: 50px; }
+    .rate-field2 input { padding-left: 26px; padding-right: 78px; }
     .rate-affix2 { position: absolute; bottom: 9px; font-size: 16px; font-weight: 500; line-height: 1.2; pointer-events: none; }
     .rf-prefix { left: 14px; color: var(--text-primary); }
     .rf-suffix { right: 14px; color: var(--text-muted); }
+    /* Inline currency dropdown inside the payment-rate field */
+    .rate-field2 .rf-cur {
+      position: absolute; right: 6px; bottom: 6px;
+      width: auto; height: auto;
+      padding: 4px 24px 4px 8px;
+      border: 1px solid transparent; border-radius: 6px;
+      background-color: transparent;
+      background-position: right 5px center; background-size: 14px;
+      font-size: 15px; font-weight: 500; color: var(--text-muted);
+      line-height: 1.2; cursor: pointer;
+    }
+    .rate-field2 .rf-cur:hover { background-color: var(--neutral-100, #EEF0F4); border-color: transparent; }
+    .rate-field2 .rf-cur:focus { border-color: transparent; box-shadow: none; }
+    /* Custom (design-system) currency dropdown trigger + menu */
+    .rate-field2 .rf-cur-trigger {
+      position: absolute; right: 6px; bottom: 7px;
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 4px 8px; border: 1px solid transparent; border-radius: 6px;
+      background: transparent; font-family: inherit; font-size: 15px; font-weight: 600;
+      color: var(--text-secondary, #4A5160); line-height: 1.2; cursor: pointer;
+      transition: background 0.12s;
+    }
+    .rate-field2 .rf-cur-trigger:hover { background: var(--neutral-100, #EEF0F4); }
+    .rate-field2 .rf-cur-trigger svg { width: 14px; height: 14px; color: var(--text-muted); transition: transform 0.15s; }
+    .rate-field2 .rf-cur-trigger.open svg { transform: rotate(180deg); }
+    .rf-cur-menu { left: auto; right: 6px; min-width: 104px; }
     /* Billing cycle segmented control */
     .segmented { display: flex; gap: 4px; padding: 4px; background: var(--neutral-100, #EEF0F4); border-radius: 10px; max-width: 460px; }
     .segmented button { flex: 1; padding: 9px 12px; border: none; background: transparent; border-radius: 7px; font-family: inherit; font-size: 14px; font-weight: 600; color: var(--text-secondary, #4A5160); cursor: pointer; transition: background 0.15s, color 0.15s, box-shadow 0.15s; }
@@ -819,10 +845,10 @@
               <div class="prh-sub">Define how much the freelancer will be paid.</div>
             </div>
             <div class="rate-line" style="margin-bottom:10px;">
-              <div class="amount-box">
-                <span class="amount-sym" id="fixedSym">$</span>
-                <input id="fixedAmount" type="number" class="amount-input" placeholder="0.00">
-                <select id="fixedCurrency" class="amount-cur" aria-label="Currency">
+              <div class="fl-field float rate-field2">
+                <span class="rate-affix2 rf-prefix" id="fixedSym">$</span>
+                <input id="fixedAmount" type="number" placeholder=" ">
+                <select class="rf-cur" id="fixedCurrency" aria-label="Currency">
                   <option>USD</option>
                   <option>INR</option>
                   <option>EUR</option>
@@ -830,16 +856,20 @@
                   <option>SGD</option>
                   <option>AUD</option>
                 </select>
+                <label>Payment rate <span class="req">*</span></label>
               </div>
               <span class="rate-per">per</span>
-              <select id="fixedUnit" class="unit-box" aria-label="Unit">
-                <option>Hour</option>
-                <option>Day</option>
-                <option>Week</option>
-                <option>2 weeks</option>
-                <option>Month</option>
-                <option>Milestone</option>
-              </select>
+              <div class="fl-field rate-unit">
+                <select id="fixedUnit">
+                  <option>Hour</option>
+                  <option>Day</option>
+                  <option>Week</option>
+                  <option>2 weeks</option>
+                  <option>Month</option>
+                  <option>Milestone</option>
+                </select>
+                <label>Unit</label>
+              </div>
             </div>
             <div class="pay-summary" id="fixedSummaryWrap" hidden style="margin-top:0;">
               <div class="pay-row"><span>Payment rate</span><span id="fixedSummary">/hr</span></div>
@@ -1067,7 +1097,7 @@
     });
 
     // Floating-label state for selects (needed because <select> doesn't support :placeholder-shown)
-    document.querySelectorAll('.fl-field select').forEach(sel => {
+    document.querySelectorAll('.fl-field select:not(.rf-cur)').forEach(sel => {
       const sync = () => sel.classList.toggle('touched', !!sel.value);
       sync();
       sel.addEventListener('change', sync);
@@ -1338,7 +1368,58 @@
         else if (e.key === 'Escape') closeMenu();
       });
     }
-    document.querySelectorAll('.fl-field select').forEach(enhanceSelect);
+    document.querySelectorAll('.fl-field select:not(.rf-cur)').forEach(enhanceSelect);
+
+    // ----- Inline currency dropdown (design-system styled, anchored to the payment field) -----
+    function enhanceCurrency(selectEl) {
+      const wrap = selectEl.closest('.rate-field2');
+      if (!wrap || selectEl.dataset.curEnhanced) return;
+      selectEl.dataset.curEnhanced = '1';
+      const CHEV = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>';
+
+      const trigger = document.createElement('button');
+      trigger.type = 'button';
+      trigger.className = 'rf-cur-trigger';
+
+      const menu = document.createElement('div');
+      menu.className = 'custom-select-menu rf-cur-menu';
+
+      function syncFromValue() {
+        trigger.innerHTML = '<span>' + selectEl.value + '</span>' + CHEV;
+        menu.querySelectorAll('.custom-select-item').forEach(c => c.classList.toggle('selected', c.textContent === selectEl.value));
+      }
+
+      Array.from(selectEl.options).forEach(opt => {
+        const v = opt.value || opt.textContent;
+        const item = document.createElement('button');
+        item.type = 'button';
+        item.className = 'custom-select-item';
+        item.textContent = v;
+        if (v === selectEl.value) item.classList.add('selected');
+        item.addEventListener('click', e => {
+          e.stopPropagation();
+          selectEl.value = v;
+          selectEl.dispatchEvent(new Event('change', { bubbles: true }));
+          syncFromValue();
+          close();
+        });
+        menu.appendChild(item);
+      });
+
+      wrap.appendChild(trigger);
+      wrap.appendChild(menu);
+      selectEl.style.display = 'none';
+      selectEl._rebuildMenu = syncFromValue; // keep trigger in sync when state is restored
+      syncFromValue();
+
+      function open() { closeAllPopovers(); menu.classList.add('open'); trigger.classList.add('open'); wrap.classList.add('open'); }
+      function close() { menu.classList.remove('open'); trigger.classList.remove('open'); wrap.classList.remove('open'); }
+      trigger.addEventListener('click', e => {
+        e.stopPropagation();
+        if (menu.classList.contains('open')) close(); else open();
+      });
+    }
+    document.querySelectorAll('select.rf-cur').forEach(enhanceCurrency);
 
     // ----- Custom calendar date picker -----
     function pad(n) { return n < 10 ? '0' + n : '' + n; }
