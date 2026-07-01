@@ -480,6 +480,19 @@
     }
     .rate-field2 .rf-cur:hover { background-color: var(--neutral-100, #EEF0F4); border-color: transparent; }
     .rate-field2 .rf-cur:focus { border-color: transparent; box-shadow: none; }
+    /* Custom (design-system) currency dropdown trigger + menu */
+    .rate-field2 .rf-cur-trigger {
+      position: absolute; right: 6px; bottom: 7px;
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 4px 8px; border: 1px solid transparent; border-radius: 6px;
+      background: transparent; font-family: inherit; font-size: 15px; font-weight: 600;
+      color: var(--text-secondary, #4A5160); line-height: 1.2; cursor: pointer;
+      transition: background 0.12s;
+    }
+    .rate-field2 .rf-cur-trigger:hover { background: var(--neutral-100, #EEF0F4); }
+    .rate-field2 .rf-cur-trigger svg { width: 14px; height: 14px; color: var(--text-muted); transition: transform 0.15s; }
+    .rate-field2 .rf-cur-trigger.open svg { transform: rotate(180deg); }
+    .rf-cur-menu { left: auto; right: 6px; min-width: 104px; }
     /* Billing cycle segmented control */
     .segmented { display: flex; gap: 4px; padding: 4px; background: var(--neutral-100, #EEF0F4); border-radius: 10px; max-width: 460px; }
     .segmented button { flex: 1; padding: 9px 12px; border: none; background: transparent; border-radius: 7px; font-family: inherit; font-size: 14px; font-weight: 600; color: var(--text-secondary, #4A5160); cursor: pointer; transition: background 0.15s, color 0.15s, box-shadow 0.15s; }
@@ -1272,6 +1285,53 @@
       });
     }
     document.querySelectorAll('.fl-field select:not(.rf-cur)').forEach(enhanceSelect);
+
+    // ----- Inline currency dropdown (design-system styled, anchored to the payment field) -----
+    function enhanceCurrency(selectEl) {
+      const wrap = selectEl.closest('.rate-field2');
+      if (!wrap || selectEl.dataset.curEnhanced) return;
+      selectEl.dataset.curEnhanced = '1';
+      const CHEV = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>';
+
+      const trigger = document.createElement('button');
+      trigger.type = 'button';
+      trigger.className = 'rf-cur-trigger';
+      const setLabel = () => { trigger.innerHTML = '<span>' + selectEl.value + '</span>' + CHEV; };
+
+      const menu = document.createElement('div');
+      menu.className = 'custom-select-menu rf-cur-menu';
+      Array.from(selectEl.options).forEach(opt => {
+        const v = opt.value || opt.textContent;
+        const item = document.createElement('button');
+        item.type = 'button';
+        item.className = 'custom-select-item';
+        item.textContent = v;
+        if (v === selectEl.value) item.classList.add('selected');
+        item.addEventListener('click', e => {
+          e.stopPropagation();
+          selectEl.value = v;
+          selectEl.dispatchEvent(new Event('change', { bubbles: true }));
+          menu.querySelectorAll('.custom-select-item').forEach(c => c.classList.remove('selected'));
+          item.classList.add('selected');
+          setLabel();
+          close();
+        });
+        menu.appendChild(item);
+      });
+
+      wrap.appendChild(trigger);
+      wrap.appendChild(menu);
+      selectEl.style.display = 'none';
+      setLabel();
+
+      function open() { closeAllPopovers(); menu.classList.add('open'); trigger.classList.add('open'); wrap.classList.add('open'); }
+      function close() { menu.classList.remove('open'); trigger.classList.remove('open'); wrap.classList.remove('open'); }
+      trigger.addEventListener('click', e => {
+        e.stopPropagation();
+        if (menu.classList.contains('open')) close(); else open();
+      });
+    }
+    document.querySelectorAll('select.rf-cur').forEach(enhanceCurrency);
 
     // ----- Custom calendar date picker -----
     function pad(n) { return n < 10 ? '0' + n : '' + n; }
